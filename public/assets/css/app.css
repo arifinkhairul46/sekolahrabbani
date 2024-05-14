@@ -145,3 +145,121 @@ main {
 .jenjang-program {
     background-image: linear-gradient(#FFF, #EEDDFF);
 }
+
+.star-1 {
+    position: absolute;
+    left: 25%;
+    bottom: 58%;
+}
+
+.star-2 {
+    position: absolute;
+    right: 25%;
+    bottom: 58%;
+}
+
+.star-3 {
+    position: absolute;
+    right: 10%;
+    bottom: 59%;
+}
+
+.star-4 {
+    position: absolute;
+    left: 12%;
+    bottom: 59%;
+}
+
+.star-5 {
+    position: absolute;
+    left: 20%;
+    bottom: 28%;
+}
+
+.rocket {
+    position: absolute;
+    left: 15%;
+    bottom: 54%;
+}
+
+.ufo {
+    position: absolute;
+    right: 15%;
+    bottom: 55%;
+}
+
+.bumi {
+    position: absolute;
+    left: 20%;
+    bottom: 39%;
+}
+
+.komet {
+    position: absolute;
+    right: 14%;
+    bottom: 33%;
+}
+
+.planet {
+    position: absolute;
+    right: 21%;
+    bottom: 28%;
+}
+
+.perahu {
+    position: absolute;
+    left: 21%;
+    bottom: 10%;
+}
+
+.ufo-2 {
+    position: absolute;
+    right: 21%;
+    bottom: 11%;
+}
+
+.card-program {
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.kegiatan {
+    position: relative;
+}
+
+.btn-primary {
+    background-color: #E21387 !important;
+    border: none !important;
+    padding: 0.5rem 1rem;
+    border-radius: 1rem !important;
+    cursor: pointer;
+}
+
+.fasilitas {
+    background-image: linear-gradient( #EEDDFF, #FFF);
+}
+
+.bg-fasilitas {
+    background-color: #006193;
+    padding: 1rem;
+}
+
+.bg-logo {
+    background-color: #FFF;
+    padding: 1rem;
+    border-radius: 4rem;
+}
+
+.img-fasilitas {
+    position: absolute;
+    bottom: 5%;
+    width: 15%;
+    left: 10%;
+}
+
+.footer {
+    background-image: url('../images/cloud-bottom.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    /* background-position-y: bottom; */
+}

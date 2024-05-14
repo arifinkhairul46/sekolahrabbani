@@ -73,7 +73,7 @@
     </div>
 
     {{-- Jenjang --}}
-    <div class="jenjang-program">
+    <div class="jenjang-program ">
         <div class="container ">
             <div class="center">
                 <img src="{{ asset('assets/images/icon-jenjang.png') }}" class="center" alt="logo jenjang" width="3%">
@@ -131,13 +131,235 @@
                 </div>
             </div>
             <br>
+            <br>
             
             {{-- program --}}
+            <div class="vector mt-4">
+                <img src="{{ asset('assets/images/star.png') }}" class="star-1" alt="vector" width="3%">
+                <img src="{{ asset('assets/images/star.png') }}" class="star-2" alt="vector" width="1%">
+                <img src="{{ asset('assets/images/star-sm.png') }}" class="star-3" alt="vector" width="3%">
+                <img src="{{ asset('assets/images/star-sm.png') }}" class="star-4" alt="vector" width="1%">
+                <img src="{{ asset('assets/images/rocket.png') }}" class="rocket" alt="vector" width="5%">
+                <img src="{{ asset('assets/images/ufo.png') }}" class="ufo" alt="vector" width="7%">
+            </div>
             <div class="center mt-3">
                 <img src="{{ asset('assets/images/icon-jenjang.png') }}" class="center" alt="logo program" width="3%">
                 <h6 class="mt-1" style="color: #ED145B">Program Unggulan</h6>
                 <h4 class="mb-3">Beragam Kegiatan Sekolah</h4>
+                <p> Sekolah Rabbani menawarkan beragam program bagi siswa. Program-program ini <br> bertujuan menciptakan lingkungan belajar yang menyenangkan bagi siswa. </p>
             </div>
+
+            <div class="row mt-4">
+                <div class="col-md-2">
+                </div>
+                <div class="col-md-4">
+                    <div class="card card-program shadow">
+                        <div class="d-flex p-3">
+                            <div style="margin-right: 1rem;">
+                                <img src="{{ asset('assets/images/img-program.png') }}" width="200" alt="img program">
+                            </div>
+                            <div style="overflow-y: auto">
+                                <h5 class="text-danger"> ZINDANI </h5>
+                                <p style="font-size: 12px"> Program Zindani adalah program yang bertujuan untuk membentuk karakter siswa agar menjadi pribadi yang berakhlak mulia dan berbudi pekerti luhur. </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card card-program shadow">
+                        <div class="d-flex p-3">
+                            <div style="margin-right: 1rem;">
+                                <img src="{{ asset('assets/images/img-program.png') }}" width="200" alt="img program">
+                            </div>
+                            <div>
+                            <h5 class="text-danger"> Tahfidz On The Stage </h5>
+                            <p style="font-size: 12px"> Program Zindani adalah program yang bertujuan untuk membentuk karakter siswa agar menjadi pribadi yang berakhlak mulia dan berbudi pekerti luhur. </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-md-2">
+                </div>
+                <div class="col-md-4">
+                    <div class="card card-program shadow">
+                        <div class="d-flex p-3">
+                            <div style="margin-right: 1rem;">
+                                <img src="{{ asset('assets/images/img-program.png') }}" width="200" alt="img program">
+                            </div>
+                            <div>
+                            <h5 class="text-danger"> Businees Apprentice Training </h5>
+                            <p style="font-size: 12px"> Program Zindani adalah program yang bertujuan untuk membentuk karakter siswa agar menjadi pribadi yang berakhlak mulia dan berbudi pekerti luhur. </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card card-program shadow">
+                        <div class="d-flex p-3">
+                            <div style="margin-right: 1rem;">
+                                <img src="{{ asset('assets/images/img-program.png') }}" width="200" alt="img program">
+                            </div>
+                            <div>
+                            <h5 class="text-danger"> Tajir </h5>
+                            <p style="font-size: 12px"> Program Zindani adalah program yang bertujuan untuk membentuk karakter siswa agar menjadi pribadi yang berakhlak mulia dan berbudi pekerti luhur. </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                </div>
+            </div>
+            <br>
+            <br>
+        </div>
+    </div>
+
+    {{-- kegiatan --}}
+    <div class="container my-5">
+        <div class="vector">
+            <img src="{{ asset('assets/images/bumi.png') }}" class="bumi" alt="logo program" width="4%">
+            <img src="{{ asset('assets/images/komet.png') }}" class="komet" alt="vector" width="7%">
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <img src="{{ asset('assets/images/icon-jenjang.png') }}" class="kegiatan" alt="logo program" width="10%">
+                <h6 class="mt-1" style="color: #ED145B">Melangkah Bersama</h6>
+                <h4 class="mb-3">Beragam Kegiatan Sekolah</h4>
+                <p style="font-size: 12px">Sorotan kegiatan terbaru yang dilaksanakan oleh Sekolah Rabbani</p>
+                <a href="#" class="btn btn-primary">Berita Sekolah</a>
+            </div>
+            {{-- <div class="col-md-3">
+                <img src="{{ asset('assets/images/bumi.png') }}" class="bumi" alt="logo program" width="5%">
+            </div> --}}
+            <div class="col-md-6">
+                <img src="{{ asset('assets/images/img-kegiatan-1.png') }}" class="kegiatan" alt="logo program" width="48%">
+                <img src="{{ asset('assets/images/img-kegiatan-2.png') }}" class="kegiatan" alt="logo program" width="48%">
+            </div>
+            <div class="col-md-2">
+            </div>
+        </div>
+    </div>
+
+    {{-- fasilitas --}}
+    <div class="fasilitas">
+        <div class="container my-5">
+            <div class="vector">
+                <img src="{{ asset('assets/images/star-happy.png') }}" class="star-5" alt="vector" width="7%">
+                <img src="{{ asset('assets/images/planet.png') }}" class="planet" alt="vector" width="7%">
+            </div>
+            <div class="center">
+                <img src="{{ asset('assets/images/icon-jenjang.png') }}" class="center" alt="logo program" width="3%">
+                <h6 class="mt-1" style="color: #ED145B">Jelajahi Sarana Terbaik</h6>
+                <h4 class="mb-3">Keunggulan Fasilitas Terbaru</h4>
+                <p >Sekolah Rabbani memberikan fasilitas yang maksimal untuk pengalaman pendidikan <br> yang menyeluruh, memotivasi, dan mempersiapkan siswa untuk menjadi pengusaha muslim.</p>
+            </div>
+            <div class="row mt-4">
+                <div class="col-md-3">
+                    <div class="card shadow">
+                        <div class="bg-fasilitas">
+                            <img src="{{ asset('assets/images/kelas.png') }}" class="card-img-top" alt="kober">
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title mb-3">Kelas Eksekutif</h5>
+                            <p style="font-size: 12px"> Eksplorasi Ruang Kelas Interaktif, Modern dilengkapi AC dan TV untuk menunjang kenyamanan Belajar </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card shadow">
+                        <div class="bg-fasilitas">
+                            <img src="{{ asset('assets/images/lift.png') }}" class="card-img-top" alt="kober">
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title mb-3">Lift</h5>
+                            <p style="font-size: 12px"> Eksplorasi Ruang Kelas Interaktif, Modern dilengkapi AC dan TV untuk menunjang kenyamanan Belajar </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card shadow">
+                        <div class="bg-fasilitas">
+                            <img src="{{ asset('assets/images/jemputan.png') }}" class="card-img-top" alt="kober">
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title mb-3">Mobil Antar Jemput</h5>
+                            <p style="font-size: 12px"> Eksplorasi Ruang Kelas Interaktif, Modern dilengkapi AC dan TV untuk menunjang kenyamanan Belajar </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card shadow">
+                        <div class="bg-fasilitas">
+                            <img src="{{ asset('assets/images/playground.png') }}" class="card-img-top" alt="kober">
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title mb-3">Playground</h5>
+                            <p style="font-size: 12px"> Eksplorasi Ruang Kelas Interaktif, Modern dilengkapi AC dan TV untuk menunjang kenyamanan Belajar </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="vector">
+                <img src="{{ asset('assets/images/perahu.png') }}" class="perahu" alt="vector" width="7%">
+                <img src="{{ asset('assets/images/ufo-2.png') }}" class="ufo-2" alt="vector" width="7%">
+            </div>
+            <div class="center">
+                <img src="{{ asset('assets/images/icon-jenjang.png') }}" class="center" alt="logo program" width="3%">
+                <h6 class="mt-1" style="color: #ED145B">Media Sosial Sekolah Rabbani</h6>
+                <h4 class="mb-3">Follow us</h4>
+                <img src="{{ asset('assets/images/instagram-2.png') }}" class="icon-sosial" alt="logo ig" width="5%">
+            </div>
+        </div>
+    </div>
+
+    {{-- Footer --}}
+    <div class="footer">
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-md-3">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md">
+                    <div class="bg-logo mt-4" style="width: 25%">
+                        <img src="{{ asset('assets/images/logo.png') }}" class="center" alt="logo" width="100%">
+                    </div>
+                    <h6 class="text-white"> Yayasan Rabbani Asysa </h6>
+                    <p class="text-white text-sm"> Jl. Jati No. 5 RT 06 RW 01 Kelurahan Cisaranten Kulon Kec. Arcamanik, Bandung </p>
+                </div>
+                <div class="col-md-2 text-white mt-3">
+                    <h6> Halaman </h6>
+                    <a href="#" class="text-white" style="text-decoration: none"> Tentang Sekolah </a> <br>
+                    <a href="#" class="text-white" style="text-decoration: none"> Guru Karyawan </a> <br>
+                    <a href="#" class="text-white" style="text-decoration: none"> Sarana </a> <br>
+                    <a href="#" class="text-white" style="text-decoration: none"> Karir </a> <br>
+                </div>
+                <div class="col-md-2 text-white mt-3">
+                    <h6> Bantuan </h6>
+                    <a href="#" class="text-white" style="text-decoration: none"> Kebijakan Sekolah </a> <br>
+                    <a href="#" class="text-white" style="text-decoration: none"> FAQ </a> <br>
+                    <a href="#" class="text-white" style="text-decoration: none"> Kontak Kami </a> <br>
+                </div>
+                <div class="col-md text-white mt-3">
+                    <h6> Galeri </h6>
+                    <a href="#" class="text-white" style="text-decoration: none"> Tentang Sekolah </a> <br>
+                    <a href="#" class="text-white" style="text-decoration: none"> Guru Karyawan </a> <br>
+                    <a href="#" class="text-white" style="text-decoration: none"> Sarana </a> <br>
+                    <a href="#" class="text-white" style="text-decoration: none"> Karir </a> <br>
+                </div>
+            </div>
+           
         </div>
     </div>
 @endsection
