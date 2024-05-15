@@ -14,8 +14,17 @@
 <body>
     <div>
         <header>
-            @include('layouts.navbars.navbar')
+            @if (Route::currentRouteName() == 'login' || Route::currentRouteName() == 'karir' )
+                @include('layouts.navbars.no_menu')
+            @elseif (Route::currentRouteName() == 'karir.login' || Route::currentRouteName() == 'karir.verifikasi')
+                @include('layouts.navbars.no_content')
+            @else 
+                @include('layouts.navbars.navbar')
+            @endif
         </header>
+        {{-- <header>
+            @include('layouts.navbars.navbar')
+        </header> --}}
 
         <main>
             @yield('content')

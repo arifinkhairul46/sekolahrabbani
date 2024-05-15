@@ -46,9 +46,9 @@
                 <span class="visually-hidden">Next</span>
             </button>
         </div>
-    </div>
-    <div class="cloud">
-        {{-- <img src="{{ asset('assets/images/awan1.png') }}" class="cloud"  alt="cloud"> --}}
+        {{-- <div>
+            <img src="{{ asset('assets/images/awan2.png') }}" class="cloud"  alt="cloud">
+        </div> --}}
     </div>
     <div class="container">
         <div class="row">
@@ -335,7 +335,7 @@
                     <div class="bg-logo mt-4" style="width: 25%">
                         <img src="{{ asset('assets/images/logo.png') }}" class="center" alt="logo" width="100%">
                     </div>
-                    <h6 class="text-white"> Yayasan Rabbani Asysa </h6>
+                    <h6 class="text-white mt-3"> Yayasan Rabbani Asysa </h6>
                     <p class="text-white text-sm"> Jl. Jati No. 5 RT 06 RW 01 Kelurahan Cisaranten Kulon Kec. Arcamanik, Bandung </p>
                 </div>
                 <div class="col-md-2 text-white mt-3">

@@ -3,7 +3,6 @@
 /* Global styles */
 body {
     font-family: 'Nunito', sans-serif;
-    font-size: 16px;
     line-height: 1.5;
 }
 
@@ -84,6 +83,19 @@ main {
     transform: translate(-50%, -50%);
   }
 
+.carousel {
+    position: relative;
+}
+
+.carousel-item {
+    position: relative;
+}
+
+
+#header-carousel {
+  position: relative;
+}
+
 .carousel-caption {
     color: black;
     right: 58%;
@@ -105,12 +117,12 @@ main {
     height: auto;
     max-width: 100%;
     filter: brightness(0.4);
+    position: relative;
 }
 
 .cloud {
-    top: 40%;
     position: absolute;
-    animation: moveclouds 15s linear infinite;
+    top: 10%;
 }
 
 .bg-kb {
@@ -235,6 +247,15 @@ main {
     cursor: pointer;
 }
 
+.btn-blue {
+    background-color: #3152A4 !important;
+    color: #FFF !important;
+    border: none !important;
+    padding: 0.5rem 1rem;
+    border-radius: 1rem !important;
+    cursor: pointer;
+}
+
 .fasilitas {
     background-image: linear-gradient( #EEDDFF, #FFF);
 }
@@ -262,4 +283,8 @@ main {
     background-size: cover;
     background-repeat: no-repeat;
     /* background-position-y: bottom; */
+}
+
+.karir {
+    background-image: linear-gradient( #FFF, #704996);
 }
