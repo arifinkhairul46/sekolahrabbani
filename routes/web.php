@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\KarirController;
+use App\Http\Controllers\KelasDiklatController;
 use App\Http\Controllers\PendaftaranController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
@@ -50,7 +51,28 @@ Route::prefix('karir')->group(function () {
     Route::get('/', [KarirController::class, 'index'])->name('karir');
     Route::get('/login', [KarirController::class, 'login'])->name('karir.login');
     Route::get('/verifikasi', [KarirController::class, 'verifikasi'])->name('karir.verifikasi');
+    Route::post('/login', [KarirController::class, 'store_login'])->name('karir.store_login');
     Route::post('/verifikasi', [KarirController::class, 'store_verifikasi'])->name('karir.store_verifikasi');
+    Route::post('logout', [KarirController::class, 'logout'])->name('karir.logout');
+    Route::get('/profile', [KarirController::class, 'profile'])->name('karir.profile');
+    Route::get('/profile/{id}', [KarirController::class, 'profile_by_id'])->name('karir.profile_by_id');
+    Route::post('profile/{id}', [KarirController::class, 'store_profile'])->name('karir.store_profile');
+    Route::put('/profile/{id}', [KarirController::class, 'edit_profile'])->name('karir.edit_profile');
+    Route::get('/kelas', [KelasDiklatController::class, 'index'])->name('karir.kelas');
+    Route::get('/kelas/pertemuan/{pertemuan}', [KelasDiklatController::class, 'get_kelas_by_pertemuan_id'])->name('karir.kelas_pertemuan');
+
+    Route::prefix('admin')->group(function () {
+        Route::get('/', [KarirController::class, 'admin'])->name('karir.admin');
+        Route::get('/kelas', [KelasDiklatController::class, 'admin_kelas'])->name('karir.admin.kelas');
+        Route::get('/kelas/pertemuan/{pertemuan}', [KelasDiklatController::class, 'admin_kelas_by_pertemuan_id'])->name('karir.admin.kelas_pertemuan');
+        Route::get('/kelas/pertemuan/{pertemuan}/tugas', [KelasDiklatController::class, 'admin_kelas_tugas'])->name('karir.admin.kelas_tugas');
+        Route::get('/kelas/pertemuan/{pertemuan}/tugas/{id}', [KelasDiklatController::class, 'admin_kelas_tugas_by_id'])->name('karir.admin.kelas_tugas_by_id');
+        Route::get('/kelas/pertemuan/{pertemuan}/tugas/{id}/edit', [KelasDiklatController::class, 'admin_kelas_tugas_edit'])->name('karir.admin.kelas_tugas_edit');
+        Route::put('/kelas/pertemuan/{pertemuan}/tugas/{id}', [KelasDiklatController::class, 'admin_kelas_tugas_update'])->name('karir.admin.kelas_tugas_update');
+        Route::get('/kelas/pertemuan/{pertemuan}/tugas/{id}/delete', [KelasDiklatController::class, 'admin_kelas_tugas_delete'])->name('karir.admin.kelas_tugas_delete');
+        Route::get('/kelas/pertemuan/{pertemuan}/tugas/create', [KelasDiklatController::class, 'admin_kelas_tugas_create'])->name('karir.admin.kelas_tugas_create');
+    });
+
 });
 
 Route::prefix('pendaftaran')->group(function () {

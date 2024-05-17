@@ -288,3 +288,9 @@ main {
 .karir {
     background-image: linear-gradient( #FFF, #704996);
 }
+
+.foto-profile {
+    border: 1px solid black;
+    height: 120px;
+    width: 90px;
+}

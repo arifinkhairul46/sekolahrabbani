@@ -13,7 +13,7 @@
                         <form action="{{ route('karir.login') }}" method="post">
                             @csrf
                             <div class="mb-3">
-                                <input type="text" class="form-control" id="id_csdm" name="id_csdm" placeholder="ID CSDM">
+                                <input type="text" class="form-control" id="email" name="email" placeholder="ID">
                             </div>
                             <div class="mb-3">
                                 <input type="password" class="form-control" id="password" name="password" placeholder="password">

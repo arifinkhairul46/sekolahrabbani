@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Csdm;
 use App\Models\Karir;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class KarirController extends Controller
 {
@@ -85,12 +89,43 @@ class KarirController extends Controller
 
     public function login()
     {
+       
         return view('karir.login');
     }
 
     public function verifikasi()
     {
         return view('karir.verifikasi');
+    }
+
+    public function logout()
+    {
+        session()->flush();
+        Auth::logout();
+        return redirect()->route('karir.login');
+    }
+
+    public function store_login (Request $request) {
+
+        $request->validate([
+            'email' => 'required',
+            'password' => 'required',
+            'g-recaptcha-response' => 'required|captcha'
+        ]);
+
+        $user_csdm = User::where('email', $request->email)->first();
+
+        if ($user_csdm) {
+            if (Hash::check($request->password, $user_csdm->password)) {
+                $request->session()->regenerate();
+
+                Auth::login($user_csdm);
+
+                return redirect()->route('karir.profile')->with('success', 'Login berhasil');
+            } else {
+                return redirect()->route('karir.login')->with('error', 'ID atau password salah');
+            }
+        } 
     }
 
     public function store_verifikasi(Request $request) {
@@ -101,13 +136,13 @@ class KarirController extends Controller
                 'g-recaptcha-response' => 'required|captcha'
             ]);
 
-            $user_csdm = Karir::where('no_hp', $request->no_hp)
+            $user_csdm = User::where('no_hp', $request->no_hp)
                         ->where('email', $request->email)
                         ->first();
 
             if ($user_csdm) {
                 $message = "Halo $user_csdm->nama Silahkan masuk ke https://sekolahrabbani.sch.id/karir/login dengan 
-        ID : " . $user_csdm->id_csdm . "  
+        ID : " . $user_csdm->email . "  
         password : " . $user_csdm->password . "
                 
 *Mohon untuk tidak menyebarkan ID dan password ini kepada siapapun. Terima kasih.*";
@@ -122,6 +157,74 @@ class KarirController extends Controller
         }
     }
 
+    public function profile() {
+        $user = Auth::user();
+
+        $user_csdm = User::get_profile_csdm($user->id);
+        // dd($user_csdm);
+        return view('karir.profile.index', compact('user', 'user_csdm'));
+    }
+
+    public function profile_by_id($id) {
+        $user = Auth::user();
+
+        $user_csdm = User::get_profile_csdm($user->id);
+        return view('karir.profile.edit', compact('user', 'user_csdm'));
+    }
+
+    public function store_profile(Request $request, $id) {
+
+        $user = User::find($id);
+        $id_csdm = $user->id_csdm;
+
+       $store_csdm = Csdm::create([
+            'id_csdm' => $id_csdm,
+            'nama_lengkap' => $request->nama_lengkap,
+            'foto_profile' => $request->foto_profile,
+            'tgl_lahir' => $request->tgl_lahir,
+            'tempat_lahir' => $request->tempat_lahir,
+            'jenis_kelamin' => $request->jenis_kelamin,
+            'posisi_dilamar' => $request->posisi_dilamar,
+            'domisili_sekarang' => $request->domisili_sekarang,
+        ]);
+
+        $user->id_csdm = $store_csdm->id;
+        $user->save();
+
+        return redirect()->route('karir.profile')->with('success', 'Data berhasil diubah');
+
+    }
+
+    public function edit_profile (Request $request, $id) {
+        try {
+    
+            $user = User::find($id);
+            $id_csdm = $user->id_csdm;
+            $user_csdm = CSDM::find($id_csdm);
+
+            $user_csdm->update($request->all());
+            // dd($user);
+    
+            // $update_csdm = Csdm::where('id_csdm', $id_csdm)->update([
+            //     'nama_lengkap' => $request->nama,
+            //     'foto_profile' => $request->foto_profile,
+            //     'tgl_lahir' => $request->tgl_lahir,
+            //     'tempat_lahir' => $request->tempat_lahir,
+            //     'jenis_kelamin' => $request->jenis_kelamin,
+            //     'posisi_dilamar' => $request->posisi_dilamar,
+            //     'domisili_sekarang' => $request->domisili_sekarang,
+            // ]);
+    
+            return redirect()->route('karir.profile')->with('success', 'Data berhasil diubah');
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+        
+    }
+
+    public function admin() {
+        return view('karir.admin.index');
+    }
 
     function send_notif($message,$no_wha){
         $curl = curl_init();

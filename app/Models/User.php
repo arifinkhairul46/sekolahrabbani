@@ -23,6 +23,8 @@ class User extends Authenticatable
         'email',
         'password',
         'google_id',
+        'id_csdm',
+        'id_role',
     ];
 
     protected $primaryKey = 'id';
@@ -46,4 +48,36 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    public $incrementing = false;
+    public $timestamps = false;
+
+
+    public function csdm()
+    {
+        return $this->belongsTo(Csdm::class, 'id_csdm', 'id');
+    }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class, 'id_role', 'id');
+    }
+
+    public static function get_profile_csdm($id)
+    {
+        $data = static::with(['role', 'csdm'])
+            ->where('id', $id)
+            ->first();
+
+        return $data;
+
+    }
+
+    public static function get_all()
+    {
+        $data = static::with(['role', 'csdm'])
+            ->get();
+
+        return $data;
+
+    }
 }
