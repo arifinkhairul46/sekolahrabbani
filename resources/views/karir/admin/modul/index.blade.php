@@ -8,33 +8,35 @@
                 <div class="col-md">
                     <div class="card">
                         <div class="card-body mb-3">
-                            <h3 class="card-title">Kelas Diklat</h3>
+                            <h3 class="card-title">Modul Diklat</h3>
                             <div class="mb-2" style="text-align: right">
-                                <a href="{{route('admin.create_kelas')}}" class="btn btn-success">Tambah Kelas</a>
+                                <a href="{{route('admin.create_modul')}}" class="btn btn-success">Tambah Modul</a>
                             </div>
                             <div class="table-responsive">
-                                <table id="kelas_diklat" class="table table-striped">
+                                <table id="modul_diklat" class="table table-striped">
                                     <thead>
                                         <tr>
                                             <th scope="col">No</th>
-                                            <th scope="col">Pertemuan</th>
-                                            <th scope="col">Link</th>
+                                            <th scope="col">Judul Modul</th>
+                                            <th scope="col">Deskripsi Modul</th>
+                                            <th scope="col">File Modul</th>
                                             <th scope="col">Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($kelasDiklat as $item)
+                                        @foreach ($modulDiklat as $item)
                                             <tr>
                                                 <th scope="row">{{$loop->iteration}}</th>
-                                                <td>Pertemuan ke-{{$item->pertemuan}}</td>
-                                                <td><a href="{{$item->forum_link}}" target="_blank"> {{$item->forum_link}} </a></td>
+                                                <td>{{$item->judul_modul}}</td>
+                                                <td>{{$item->deskripsi_modul}}</td>
+                                                <td>{{$item->file_modul}}</td>
                                                 <td class="d-flex">
-                                                    <a href="{{route('admin.edit_kelas', $item->id)}}" class="btn btn-warning" title="edit"><i class="fa-solid fa-pencil"></i></a>
-                                                    <form action="{{route('admin.delete_kelas', $item->id)}}" method="post">
+                                                    <a href="{{route('admin.edit_modul', $item->id)}}" class="btn btn-warning" title="edit"><i class="fa-solid fa-pencil"></i></a>
+                                                    <form action="{{route('admin.delete_modul', $item->id)}}" method="post">
                                                         @csrf @method('DELETE')
                                                         <button type="submit" class="btn btn-danger mx-2" title="delete"><i class="fa-solid fa-trash"></i></button>
                                                     </form>
-                                                    {{-- <a href="{{route('admin.delete_kelas', $item->id)}}" class="btn btn-danger mx-2" title="delete"><i class="fa-solid fa-trash"></i></a> --}}
+                                                    {{-- <a href="{{route('admin.delete_modul', $item->id)}}" class="btn btn-danger mx-2" title="delete"><i class="fa-solid fa-trash"></i></a> --}}
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -51,7 +53,7 @@
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script>
         $(document).ready(function() {
-            $('#kelas_diklat').DataTable( {
+            $('#modul_diklat').DataTable( {
                 responsive: true,
             });
         });

@@ -287,6 +287,7 @@ main {
 
 .karir {
     background-image: linear-gradient( #FFF, #704996);
+    min-height: 600px;
 }
 
 .foto-profile {

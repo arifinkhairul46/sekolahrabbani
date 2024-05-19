@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\UsersImport;
 use App\Models\Csdm;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CsdmController extends Controller
 {
@@ -14,7 +18,8 @@ class CsdmController extends Controller
      */
     public function index()
     {
-        //
+        $csdm = csdm::all();
+        return view('karir.admin.csdm.index', compact('csdm'));
     }
 
     /**
@@ -24,7 +29,8 @@ class CsdmController extends Controller
      */
     public function create()
     {
-        //
+        return view('karir.admin.csdm.create');
+        
     }
 
     /**
@@ -35,7 +41,22 @@ class CsdmController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'kode_csdm' => 'required',
+            'name' => 'required',
+            'email' => 'required',
+            'password' => 'required',
+        ]);
+
+        User::create([
+            'kode_csdm' => $request->kode_csdm,
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+
+        return redirect()->route('karir.admin.csdm')
+            ->with('success', 'User Csdm created successfully.');
     }
 
     /**
@@ -82,4 +103,21 @@ class CsdmController extends Controller
     {
         //
     }
+
+    public function import_excel(Request $request) 
+	{
+		// validasi
+		$this->validate($request, [
+			'file' => 'required|mimes:csv,xls,xlsx'
+		]);
+ 
+		// menangkap file excel
+		$file = $request->file('file');
+		$nama_file = rand().$file->getClientOriginalName();
+		$file->move('user_csdm',$nama_file);
+		Excel::import(new UsersImport, public_path('/user_csdm/'.$nama_file));
+ 
+		// alihkan halaman kembali
+		return redirect()->route('karir.admin.csdm');
+	}
 }

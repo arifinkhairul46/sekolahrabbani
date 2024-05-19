@@ -9,7 +9,7 @@ class Csdm extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'id_csdm',
+        'kode_csdm',
         'nama_lengkap',
         'jenis_kelamin',
         'tempat_lahir',
@@ -23,7 +23,7 @@ class Csdm extends Model
 
     public function user()
     {
-        return $this->hasOne(User::class, 'id_csdm', 'id');
+        return $this->hasOne(User::class, 'id_profile_csdm', 'id');
     }
 
     public static function get_all()

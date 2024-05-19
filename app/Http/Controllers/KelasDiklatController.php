@@ -99,4 +99,49 @@ class KelasDiklatController extends Controller
 
         return view('karir.admin.kelas.index', compact('kelasDiklat'));
     }
+
+    public function admin_create_kelas()
+    {
+        return view('karir.admin.kelas.create');
+    }
+
+    public function admin_store_kelas(Request $request)
+    {
+        $request->validate([
+            
+            'pertemuan' => 'required',
+            'forum_link' => 'required',
+        ]);
+
+        KelasDiklat::create($request->all());
+
+        return redirect()->route('karir.admin.kelas')->with('success', 'Kelas berhasil ditambahkan');
+    }
+
+    public function admin_edit_kelas($id)
+    {
+        $kelasDiklat = KelasDiklat::find($id);
+
+        return view('karir.admin.kelas.edit', compact('kelasDiklat'));
+    }
+
+    public function admin_update_kelas(Request $request, $id)
+    {
+        $request->validate([
+            
+            'pertemuan' => 'required',
+            'forum_link' => 'required',
+        ]);
+
+        KelasDiklat::find($id)->update($request->all());
+
+        return redirect()->route('karir.admin.kelas')->with('success', 'Kelas berhasil diupdate');
+    }
+
+    public function admin_delete_kelas($id)
+    {
+        KelasDiklat::where('id', $id)->delete();
+
+        return redirect()->route('karir.admin.kelas')->with('success', 'Kelas berhasil dihapus');
+    }
 }

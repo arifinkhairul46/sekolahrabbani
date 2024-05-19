@@ -89,7 +89,6 @@ class KarirController extends Controller
 
     public function login()
     {
-       
         return view('karir.login');
     }
 
@@ -175,21 +174,29 @@ class KarirController extends Controller
     public function store_profile(Request $request, $id) {
 
         $user = User::find($id);
-        $id_csdm = $user->id_csdm;
 
-       $store_csdm = Csdm::create([
-            'id_csdm' => $id_csdm,
-            'nama_lengkap' => $request->nama_lengkap,
-            'foto_profile' => $request->foto_profile,
-            'tgl_lahir' => $request->tgl_lahir,
-            'tempat_lahir' => $request->tempat_lahir,
-            'jenis_kelamin' => $request->jenis_kelamin,
-            'posisi_dilamar' => $request->posisi_dilamar,
-            'domisili_sekarang' => $request->domisili_sekarang,
-        ]);
+        if ($user->id_profile_csdm != null) {
+            $id_profile_csdm = $user->id_profile_csdm;
+            $user_csdm = CSDM::find($id_profile_csdm);
 
-        $user->id_csdm = $store_csdm->id;
-        $user->save();
+            $user_csdm->update($request->all());
+        } else {
+            $store_csdm = Csdm::create([
+                 'kode_csdm' => $user->kode_csdm,
+                 'nama_lengkap' => $request->nama_lengkap,
+                 'foto_profile' => $request->foto_profile,
+                 'tgl_lahir' => $request->tgl_lahir,
+                 'tempat_lahir' => $request->tempat_lahir,
+                 'jenis_kelamin' => $request->jenis_kelamin,
+                 'posisi_dilamar' => $request->posisi_dilamar,
+                 'domisili_sekarang' => $request->domisili_sekarang,
+             ]);
+     
+             $user->id_profile_csdm = $store_csdm->id;
+             $user->save();
+            
+        }
+
 
         return redirect()->route('karir.profile')->with('success', 'Data berhasil diubah');
 

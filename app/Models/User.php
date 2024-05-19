@@ -23,8 +23,9 @@ class User extends Authenticatable
         'email',
         'password',
         'google_id',
-        'id_csdm',
+        'kode_csdm',
         'id_role',
+        'id_profile_csdm',
     ];
 
     protected $primaryKey = 'id';
@@ -54,7 +55,7 @@ class User extends Authenticatable
 
     public function csdm()
     {
-        return $this->belongsTo(Csdm::class, 'id_csdm', 'id');
+        return $this->belongsTo(Csdm::class, 'id_profile_csdm', 'id');
     }
 
     public function role()

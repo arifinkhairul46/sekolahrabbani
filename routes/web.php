@@ -1,9 +1,12 @@
 <?php
 
+use App\Http\Controllers\CsdmController;
 use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\KarirController;
 use App\Http\Controllers\KelasDiklatController;
+use App\Http\Controllers\ModulDiklatController;
 use App\Http\Controllers\PendaftaranController;
+use App\Http\Controllers\TugasDiklatController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 
@@ -64,6 +67,34 @@ Route::prefix('karir')->group(function () {
     Route::prefix('admin')->group(function () {
         Route::get('/', [KarirController::class, 'admin'])->name('karir.admin');
         Route::get('/kelas', [KelasDiklatController::class, 'admin_kelas'])->name('karir.admin.kelas');
+        Route::get('/kelas/create', [KelasDiklatController::class, 'admin_create_kelas'])->name('admin.create_kelas');
+        Route::post('/kelas/create', [KelasDiklatController::class, 'admin_store_kelas'])->name('admin.store_kelas');
+        Route::get('/kelas/{id}', [KelasDiklatController::class, 'admin_edit_kelas'])->name('admin.edit_kelas');
+        Route::put('/kelas/{id}', [KelasDiklatController::class, 'admin_update_kelas'])->name('admin.update_kelas');
+        Route::delete('/kelas/{id}', [KelasDiklatController::class, 'admin_delete_kelas'])->name('admin.delete_kelas');
+
+        Route::get('/modul', [ModulDiklatController::class, 'index'])->name('karir.admin.modul');
+        Route::get('/modul/create', [ModulDiklatController::class, 'create'])->name('admin.create_modul');
+        Route::post('/modul/create', [ModulDiklatController::class, 'store'])->name('admin.store_modul');
+        Route::get('/modul/{id}', [ModulDiklatController::class, 'edit'])->name('admin.edit_modul');
+        Route::put('/modul/{id}', [ModulDiklatController::class, 'update'])->name('admin.update_modul');
+        Route::delete('/modul/{id}', [ModulDiklatController::class, 'destroy'])->name('admin.delete_modul');
+
+        Route::get('/tugas', [TugasDiklatController::class, 'index'])->name('karir.admin.tugas');
+        Route::get('/tugas/create', [TugasDiklatController::class, 'create'])->name('admin.create_tugas');
+        Route::post('/tugas/create', [TugasDiklatController::class, 'store'])->name('admin.store_tugas');
+        Route::get('/tugas/{id}', [TugasDiklatController::class, 'edit'])->name('admin.edit_tugas');
+        Route::put('/tugas/{id}', [TugasDiklatController::class, 'update'])->name('admin.update_tugas');
+        Route::delete('/tugas/{id}', [TugasDiklatController::class, 'destroy'])->name('admin.delete_tugas');
+
+        Route::get('/csdm', [CsdmController::class, 'index'])->name('karir.admin.csdm');
+        Route::get('/csdm/create', [CsdmController::class, 'create'])->name('admin.create_csdm');
+        Route::post('/csdm/create', [CsdmController::class, 'store'])->name('admin.store_csdm');
+        Route::post('/csdm/import', [CsdmController::class, 'import_excel'])->name('admin.import_csdm');
+        Route::get('/csdm/{id}', [CsdmController::class, 'edit'])->name('admin.edit_csdm');
+        Route::put('/csdm/{id}', [CsdmController::class, 'update'])->name('admin.update_csdm');
+        Route::delete('/csdm/{id}', [CsdmController::class, 'destroy'])->name('admin.delete_csdm');
+
         Route::get('/kelas/pertemuan/{pertemuan}', [KelasDiklatController::class, 'admin_kelas_by_pertemuan_id'])->name('karir.admin.kelas_pertemuan');
         Route::get('/kelas/pertemuan/{pertemuan}/tugas', [KelasDiklatController::class, 'admin_kelas_tugas'])->name('karir.admin.kelas_tugas');
         Route::get('/kelas/pertemuan/{pertemuan}/tugas/{id}', [KelasDiklatController::class, 'admin_kelas_tugas_by_id'])->name('karir.admin.kelas_tugas_by_id');

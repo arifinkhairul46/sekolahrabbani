@@ -9,14 +9,19 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet"  type='text/css'>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css"  />
+
 </head>
 
 <body>
   
     <div>
         <header>
-            @if (Route::currentRouteName() == 'karir.profile' || Route::currentRouteName() == 'karir.kelas'  || Route::currentRouteName() == 'karir.edit_profile' 
+            @if (Route::currentRouteName() == 'karir.profile' || Route::currentRouteName() == 'karir.kelas'  || Route::currentRouteName() == 'karir.edit_profile' || Route::currentRouteName() =='karir.profile_by_id'
                 || Route::currentRouteName() == 'karir.kelas_pertemuan' || Route::currentRouteName() == 'karir.admin' || Route::currentRouteName() == 'karir.admin.kelas'
+                || Route::currentRouteName() == 'karir.admin.modul' || Route::currentRouteName() == 'admin.create_modul' || Route::currentRouteName() == 'admin.edit_modul'
+                || Route::currentRouteName() == 'karir.admin.tugas' || Route::currentRouteName() == 'admin.create_tugas' || Route::currentRouteName() == 'admin.edit_tugas'
+                || Route::currentRouteName() == 'karir.admin.csdm' || Route::currentRouteName() == 'admin.create_csdm' || Route::currentRouteName() == 'admin.edit_csdm'
                 )
                 @include('karir.layouts.navbars.no_menu')
             @elseif (Route::currentRouteName() == 'karir.login' || Route::currentRouteName() == 'karir.verifikasi')
@@ -31,6 +36,8 @@
         </main>
       
         <script src="{{ asset('assets/js/script.js') }}"></script>
+        <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+
     </div>
     {{-- @include('layouts.footer.footer') --}}
 </body>
