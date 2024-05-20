@@ -6,6 +6,7 @@ use App\Http\Controllers\KarirController;
 use App\Http\Controllers\KelasDiklatController;
 use App\Http\Controllers\ModulDiklatController;
 use App\Http\Controllers\PendaftaranController;
+use App\Http\Controllers\PosisiLamaranController;
 use App\Http\Controllers\TugasDiklatController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
@@ -63,6 +64,10 @@ Route::prefix('karir')->group(function () {
     Route::put('/profile/{id}', [KarirController::class, 'edit_profile'])->name('karir.edit_profile');
     Route::get('/kelas', [KelasDiklatController::class, 'index'])->name('karir.kelas');
     Route::get('/kelas/pertemuan/{pertemuan}', [KelasDiklatController::class, 'get_kelas_by_pertemuan_id'])->name('karir.kelas_pertemuan');
+    Route::get('/kelas/tugas/download/{id}', [KelasDiklatController::class, 'getDownloadTugas'])->name('download_tugas');
+    Route::post('/kelas/tugas/upload', [KelasDiklatController::class, 'upload_tugas'])->name('upload_tugas');
+    Route::get('/kelas/modul/download/{id}', [KelasDiklatController::class, 'getDownloadModul'])->name('download_modul');
+
 
     Route::prefix('admin')->group(function () {
         Route::get('/', [KarirController::class, 'admin'])->name('karir.admin');
@@ -72,6 +77,14 @@ Route::prefix('karir')->group(function () {
         Route::get('/kelas/{id}', [KelasDiklatController::class, 'admin_edit_kelas'])->name('admin.edit_kelas');
         Route::put('/kelas/{id}', [KelasDiklatController::class, 'admin_update_kelas'])->name('admin.update_kelas');
         Route::delete('/kelas/{id}', [KelasDiklatController::class, 'admin_delete_kelas'])->name('admin.delete_kelas');
+
+        Route::get('/posisi', [PosisiLamaranController::class, 'index'])->name('karir.admin.posisi');
+        Route::get('/posisi/create', [PosisiLamaranController::class, 'create'])->name('admin.create_posisi');
+        Route::post('/posisi/create', [PosisiLamaranController::class, 'store'])->name('admin.store_posisi');
+        Route::get('/posisi/{id}', [PosisiLamaranController::class, 'edit'])->name('admin.edit_posisi');
+        Route::put('/posisi/{id}', [PosisiLamaranController::class, 'update'])->name('admin.update_posisi');
+        Route::delete('/posisi/{id}', [PosisiLamaranController::class, 'destroy'])->name('admin.delete_posisi');
+
 
         Route::get('/modul', [ModulDiklatController::class, 'index'])->name('karir.admin.modul');
         Route::get('/modul/create', [ModulDiklatController::class, 'create'])->name('admin.create_modul');

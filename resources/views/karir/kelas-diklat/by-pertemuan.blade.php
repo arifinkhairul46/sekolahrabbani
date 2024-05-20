@@ -35,16 +35,20 @@
                                     <h5 class="mt-3">Judul Modul</h5>
                                     <p class="mt-3">Deskripsi Modul {{$item->id_modul}} </p>
                                     <p> Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quidem vitae soluta quod. Odit eius ipsum dicta iste, autem blanditiis fugit quaerat dolore accusamus error quos dolorum sed. Hic, vel ipsam?</p>
-                                    <a href="#" class="btn btn-primary">Download Modul</a>
+                                    <a href="{{route('download_modul', $item->id)}}" class="btn btn-primary">Download Modul</a>
                                     
                                 </div>
                                 <div class="tab-pane fade" id="nav-tugas" role="tabpanel" aria-labelledby="nav-tugas-tab" tabindex="0">
                                     <h5 class="mt-3">Judul Tugas</h5>
                                     <p class="mt-3">Deskripsi Tugas</p>
                                     <p> Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quidem vitae soluta quod. Odit eius ipsum dicta iste, autem blanditiis fugit quaerat dolore accusamus error quos dolorum sed. Hic, vel ipsam?</p>
+                                    <h6 class="mt-3"> Status Tugas </h6>
+                                    <p> Waktu Pengumpulan : {{$item->deadline_tugas}} </p>
+                                    <p> Terakhir diupload : <i> {{$item->updated_at}} </i> </p>
+
                                     <div class="d-flex">
-                                        <a href="#" class="btn btn-primary">Upload Tugas</a>
-                                        <a href="#" class="btn btn-primary mx-2">Download Tugas</a>
+                                        <a href="{{route('download_tugas', $item->id)}}" class="btn btn-primary mx-2">Download Tugas</a>
+                                        <button type="button" class="btn btn-warning" style="border-radius: 1rem" data-bs-toggle="modal" data-bs-target="#upload_tugas">Upload Tugas</button>
                                     </div>
                                 </div>
                                 </div>
@@ -53,6 +57,32 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="upload_tugas" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form method="post" action="{{route('upload_tugas')}}" enctype="multipart/form-data">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Upload Tugas</h5>
+                    </div>
+                    <div class="modal-body">
+
+                        {{ csrf_field() }}
+
+                        <label>Pilih file tugas</label>
+                        <div class="form-group">
+                            <input type="file" name="file" required="required">
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-success">Import</button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 @endsection

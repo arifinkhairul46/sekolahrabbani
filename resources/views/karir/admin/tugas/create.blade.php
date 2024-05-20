@@ -11,7 +11,7 @@
                             <h3 class="card-title">Tambah tugas</h3>
                         </div>
                         <div class="card-body">
-                            <form action="{{route('admin.store_tugas')}}" method="POST">
+                            <form action="{{route('admin.store_tugas')}}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="mb-3">
                                     <label for="judul_tugas" class="form-label">Judul tugas</label>

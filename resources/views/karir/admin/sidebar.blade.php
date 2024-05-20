@@ -2,7 +2,7 @@
     <div class="card">
         <div class="card-body">
             <nav class="nav flex-column nav-menu">
-               <a class="nav-link" href="#">Posisi Lamaran</a>
+               <a class="nav-link" href="{{route('karir.admin.posisi')}}">Posisi Lamaran</a>
                <a class="nav-link" href="{{route('karir.admin.modul')}}">Modul</a>
                <a class="nav-link" href="{{route('karir.admin.tugas')}}">Tugas</a>
                <a class="nav-link" href="{{route('karir.admin.kelas')}}">Kelas</a>

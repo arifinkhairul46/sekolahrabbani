@@ -11,7 +11,7 @@
                             <h3 class="card-title">Edit modul</h3>
                         </div>
                         <div class="card-body">
-                            <form action="{{route('admin.update_modul', $modulDiklat->id)}}" method="post">
+                            <form action="{{route('admin.update_modul', $modulDiklat->id)}}" method="post" enctype="multipart/form-data">
                                 @csrf @method('PUT')
                                 <div class="mb-3">
                                     <label for="judul_modul" class="form-label">Judul Modul</label>

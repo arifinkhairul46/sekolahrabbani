@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\KelasDiklat;
+use App\Models\ModulDiklat;
+use App\Models\TugasDiklat;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class KelasDiklatController extends Controller
 {
@@ -143,5 +146,36 @@ class KelasDiklatController extends Controller
         KelasDiklat::where('id', $id)->delete();
 
         return redirect()->route('karir.admin.kelas')->with('success', 'Kelas berhasil dihapus');
+    }
+
+    public function getDownloadTugas($id)
+    {   
+        $tugasDiklat = TugasDiklat::find($id);
+        
+        $file = public_path('storage/'.$tugasDiklat->file_tugas);
+        
+        $headers = [
+            'Content-Type' => 'application/pdf',
+         ];
+
+        return response()->download($file, 'tugas_diklat.pdf', $headers);
+        // return Storage::disk('public')->download($path, $name);
+    }
+
+    public function getDownloadModul($id)
+    {
+        $modulDiklat = ModulDiklat::find($id);
+        
+        $file = public_path('storage/'.$modulDiklat->file_modul);
+        
+        $headers = [
+            'Content-Type' => 'application/pdf',
+         ];
+
+        return response()->download($file, 'modul_diklat.pdf', $headers);
+    }
+
+    public function upload_tugas () {
+        
     }
 }

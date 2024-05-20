@@ -11,7 +11,7 @@
                             <h3 class="card-title">Edit tugas</h3>
                         </div>
                         <div class="card-body">
-                            <form action="{{route('admin.update_tugas', $tugasDiklat->id)}}" method="post">
+                            <form action="{{route('admin.update_tugas', $tugasDiklat->id)}}" method="post" enctype="multipart/form-data">
                                 @csrf @method('PUT')
                                 <div class="mb-3">
                                     <label for="judul_tugas" class="form-label">Judul tugas</label>

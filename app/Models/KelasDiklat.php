@@ -34,4 +34,10 @@ class KelasDiklat extends Model
     {
         return KelasDiklat::where('pertemuan', $pertemuan)->get();
     }
+
+    public static function get_kelas_with_tugas () {
+        $data = static::with(['tugas'])->get();
+
+        return $data;
+    }
 }

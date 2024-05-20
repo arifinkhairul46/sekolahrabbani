@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\TugasDiklat;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class TugasDiklatController extends Controller
 {
@@ -42,7 +43,23 @@ class TugasDiklatController extends Controller
             'judul_tugas' => 'required',
         ]);
 
-        TugasDiklat::create($request->all());
+        $file = null;
+        $file_url = null;
+        $path = 'tugas';
+        if ($request->has('file_tugas')) {
+            $file = $request->file('file_tugas')->store($path);
+            $file_name = $request->file('file_tugas')->getClientOriginalName();
+            $file_url = $path . '/' . $file_name;
+            Storage::disk('public')->put($file_url, file_get_contents($request->file('file_tugas')->getRealPath()));
+        } else {
+            return redirect()->back()->with('failed', 'File tidak boleh kosong');
+        }
+
+        TugasDiklat::create([
+            'judul_tugas' => $request->judul_tugas,
+            'deskripsi_tugas' => $request->deskripsi_tugas,
+            'file_tugas' => $file_url
+        ]);
 
         return redirect()->route('karir.admin.tugas')
             ->with('success', 'Tugas Diklat created successfully.');
@@ -84,7 +101,25 @@ class TugasDiklatController extends Controller
             'judul_tugas' => 'required',
         ]);
 
-        TugasDiklat::find($id)->update($request->all());
+        $file = null;
+        $file_url = null;
+        $path = 'tugas';
+        if ($request->has('file_tugas')) {
+            $file = $request->file('file_tugas')->store($path);
+            $file_name = $request->file('file_tugas')->getClientOriginalName();
+            $file_url = $path . '/' . $file_name;
+            Storage::disk('public')->put($file_url, file_get_contents($request->file('file_tugas')->getRealPath()));
+        } else {
+            return redirect()->back()->with('failed', 'File tidak boleh kosong');
+        }
+
+        TugasDiklat::find($id)->update([
+            'judul_tugas' => $request->judul_tugas,
+            'deskripsi_tugas' => $request->deskripsi_tugas,
+            'file_tugas' => $file_url
+        ]
+
+        );
 
         return redirect()->route('karir.admin.tugas')
             ->with('success', 'Tugas Diklat updated successfully');

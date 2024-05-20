@@ -8,22 +8,22 @@
                 <div class="col-md">
                     <div class="card">
                         <div class="card-body mb-3">
-                            <h3 class="card-title">Tambah modul</h3>
+                            <h3 class="card-title">Tambah posisi</h3>
                         </div>
                         <div class="card-body">
-                            <form action="{{route('admin.store_modul')}}" method="POST" enctype="multipart/form-data">
+                            <form action="{{route('admin.store_posisi')}}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="mb-3">
-                                    <label for="judul_modul" class="form-label">Judul Modul</label>
-                                    <input type="text" class="form-control" id="judul_modul" name="judul_modul" required>
+                                    <label for="posisi_dilamar" class="form-label">Posisi Dilamar</label>
+                                    <input type="text" class="form-control" id="posisi_dilamar" name="posisi_dilamar" required>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="deskripsi_modul" class="form-label">Deskripsi</label>
-                                    <input type="text" class="form-control" id="deskripsi_modul" name="deskripsi_modul" required>
+                                    <label for="tingkat_jabatan" class="form-label">Tingkat Jabatan</label>
+                                    <input type="text" class="form-control" id="tingkat_jabatan" name="tingkat_jabatan" required>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="file_modul" class="form-label">File Modul</label>
-                                    <input type="file" class="form-control" id="file_modul" name="file_modul" required>
+                                    <label for="divisi" class="form-label">Divisi</label>
+                                    <input type="text" class="form-control" id="divisi" name="divisi" required>
                                 </div>
                                 <button type="submit" class="btn btn-primary">Submit</button>
                             </form>

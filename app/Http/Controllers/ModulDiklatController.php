@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ModulDiklat;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use PhpParser\Node\Expr\AssignOp\Mod;
 
 class ModulDiklatController extends Controller
@@ -40,9 +41,26 @@ class ModulDiklatController extends Controller
     {
         $request->validate([
             'judul_modul' => 'required',
+            'file_modul' => 'required'
         ]);
 
-        ModulDiklat::create($request->all());
+        $file = null;
+        $file_url = null;
+        $path = 'modul';
+        if ($request->has('file_modul')) {
+            $file = $request->file('file_modul')->store($path);
+            $file_name = $request->file('file_modul')->getClientOriginalName();
+            $file_url = $path . '/' . $file_name;
+            Storage::disk('public')->put($file_url, file_get_contents($request->file('file_modul')->getRealPath()));
+        } else {
+            return redirect()->back()->with('failed', 'File tidak boleh kosong');
+        }
+
+        ModulDiklat::create([
+            'judul_modul' => $request->judul_modul,
+            'deskripsi_modul' => $request->deskripsi_modul,
+            'file_modul' => $file_url
+        ]);
 
         return redirect()->route('karir.admin.modul')
             ->with('success', 'Modul Diklat created successfully.');
@@ -82,9 +100,26 @@ class ModulDiklatController extends Controller
     {
         $request->validate([
             'judul_modul' => 'required',
+            'file_modul' => 'required'
         ]);
 
-        ModulDiklat::find($id)->update($request->all());
+        $file = null;
+        $file_url = null;
+        $path = 'modul';
+        if ($request->has('file_modul')) {
+            $file = $request->file('file_modul')->store($path);
+            $file_name = $request->file('file_modul')->getClientOriginalName();
+            $file_url = $path . '/' . $file_name;
+            Storage::disk('public')->put($file_url, file_get_contents($request->file('file_modul')->getRealPath()));
+        } else {
+            return redirect()->back()->with('failed', 'File tidak boleh kosong');
+        }
+
+        ModulDiklat::find($id)->update([
+            'judul_modul' => $request->judul_modul,
+            'deskripsi_modul' => $request->deskripsi_modul,
+            'file_modul' => $file_url
+        ]);
 
         return redirect()->route('karir.admin.modul')
             ->with('success', 'Modul Diklat updated successfully');
