@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PengumpulanTugas;
 use App\Models\TugasDiklat;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -137,5 +139,13 @@ class TugasDiklatController extends Controller
 
         return redirect()->route('karir.admin.tugas')
             ->with('success', 'Tugas Diklat deleted successfully');
+    }
+
+    public function kumpul_tugas() {
+        $kumpul_tugas = PengumpulanTugas::get_kumpul_tugas_with_user();
+
+        // dd($kumpul_tugas);
+
+        return view('karir.admin.tugas.kumpul', compact('kumpul_tugas'));
     }
 }

@@ -8,7 +8,7 @@
                 <div class="col-md">
                     <div class="card">
                         <div class="card-body mb-3 row">
-                            <form role="form" action="{{route('karir.store_profile', auth()->user()->id)}}" method="post">
+                            <form role="form" action="{{route('karir.store_profile', auth()->user()->id)}}" method="post" enctype="multipart/form-data">
                                 @csrf
                                 @method('POST')
                                 <div class="card-title mb-3">
@@ -75,9 +75,9 @@
                                     </div>
                                 </div>
                                 <div class="form-group row mb-3">
-                                    <label for ="foto_profil" class="col-sm-2 col-form-label">Foto Profil</label>
+                                    <label for ="foto_profile" class="col-sm-2 col-form-label">Foto Profile</label>
                                     <div class="col-sm-8">
-                                        <input type="file" class="form-control" id="foto_profil" name="foto_profil" >
+                                        <input type="file" class="form-control" id="foto_profile" name="foto_profile" value="{{$user->csdm != null ? $user->csdm->foto_profile : ''}}" >
                                     </div>
                                 </div>
                                 <div class="d-flex" style="justify-content: flex-end">

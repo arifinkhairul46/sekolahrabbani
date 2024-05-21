@@ -63,6 +63,11 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class, 'id_role', 'id');
     }
 
+    public function kumpul_tugas() {
+        return $this->hasMany(PengumpulanTugas::class, 'user_id');
+
+    }
+
     public static function get_profile_csdm($id)
     {
         $data = static::with(['role', 'csdm'])
@@ -80,5 +85,11 @@ class User extends Authenticatable
 
         return $data;
 
+    }
+
+    public static function get_user_with_kumpul_tugas () {
+        $data = static::with('kumpul_tugas')->get();
+
+        return $data;
     }
 }

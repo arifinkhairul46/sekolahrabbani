@@ -8,34 +8,28 @@
                 <div class="col-md">
                     <div class="card">
                         <div class="card-body mb-3">
-                            <h3 class="card-title">Tugas Diklat</h3>
-                            <div class="mb-2" style="text-align: right">
-                                <a href="{{route('admin.create_tugas')}}" class="btn btn-success">Tambah tugas</a>
-                            </div>
+                            <h3 class="card-title">Kumpulan Tugas CSDM</h3>
+                           
                             <div class="table-responsive">
-                                <table id="tugas_diklat" class="table table-striped">
+                                <table id="kumpul_tugas" class="table table-striped">
                                     <thead>
                                         <tr>
                                             <th scope="col">No</th>
-                                            <th scope="col">Judul tugas</th>
-                                            <th scope="col">Deskripsi tugas</th>
+                                            <th scope="col">Nama</th>
+                                            <th scope="col">Tugas ke</th>
                                             <th scope="col">File tugas</th>
                                             <th scope="col">Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($tugasDiklat as $item)
+                                        @foreach ($kumpul_tugas as $item)
                                             <tr>
                                                 <th scope="row">{{$loop->iteration}}</th>
-                                                <td>{{$item->judul_tugas}}</td>
-                                                <td>{{$item->deskripsi_tugas}}</td>
-                                                <td>{{$item->file_tugas}}</td>
+                                                <td>{{$item->user->name}}</td>
+                                                <td>{{$item->tugas_id}}</td>
+                                                <td>{{$item->file}}</td>
                                                 <td class="d-flex">
-                                                    <a href="{{route('admin.edit_tugas', $item->id)}}" class="btn btn-warning" title="edit"><i class="fa-solid fa-pencil"></i></a>
-                                                    <form action="{{route('admin.delete_tugas', $item->id)}}" method="post">
-                                                        @csrf @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger mx-2" title="delete"><i class="fa-solid fa-trash"></i></button>
-                                                    </form>
+                                                    <a href="#" class="btn btn-warning" title="download"><i class="fa-solid fa-download"></i></a>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -52,7 +46,7 @@
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script>
         $(document).ready(function() {
-            $('#tugas_diklat').DataTable( {
+            $('#kumpul_tugas').DataTable( {
                 responsive: true,
             });
         });

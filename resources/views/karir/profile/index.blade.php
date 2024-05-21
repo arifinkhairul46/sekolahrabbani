@@ -14,7 +14,7 @@
                             </div>
                             <div class="avatar">
                                 @if ($user->csdm && $user->csdm->foto_profile)
-                                    <img src="{{ asset($user->csdm->foto_profile) }}" alt="avatar" class="img-thumbnail">
+                                    <img src="{{ asset('storage/'.$user->csdm->foto_profile) }}" alt="avatar" class="img-thumbnail" width="100">
                                 @else 
                                     <div class="foto-profile">
                                         <p class="center">Foto Profile</p>

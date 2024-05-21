@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class KarirController extends Controller
 {
@@ -180,16 +181,35 @@ class KarirController extends Controller
 
         $user = User::find($id);
 
+        $file = null;
+        $file_url = null;
+        $path = 'foto_profile';
+        if ($request->has('foto_profile')) {
+            $file = $request->file('foto_profile')->store($path);
+            $file_name = $request->file('foto_profile')->getClientOriginalName();
+            $file_url = $path . '/' . $file_name;
+            Storage::disk('public')->put($file_url, file_get_contents($request->file('foto_profile')->getRealPath()));
+        } else {
+            return redirect()->back()->with('failed', 'File tidak boleh kosong');
+        }
+
         if ($user->id_profile_csdm != null) {
             $id_profile_csdm = $user->id_profile_csdm;
             $user_csdm = CSDM::find($id_profile_csdm);
 
-            $user_csdm->update($request->all());
+            $user_csdm->update([
+                'nama_lengkap' => $request->nama_lengkap,
+                'foto_profile' => $file_url,
+                'tgl_lahir' => $request->tgl_lahir,
+                'tempat_lahir' => $request->tempat_lahir,
+                'jenis_kelamin' => $request->jenis_kelamin,
+                'posisi_dilamar' => $request->posisi_dilamar,
+                'domisili_sekarang' => $request->domisili_sekarang,
+            ]);
         } else {
             $store_csdm = Csdm::create([
-                 'kode_csdm' => $user->kode_csdm,
                  'nama_lengkap' => $request->nama_lengkap,
-                 'foto_profile' => $request->foto_profile,
+                 'foto_profile' => $file_url,
                  'tgl_lahir' => $request->tgl_lahir,
                  'tempat_lahir' => $request->tempat_lahir,
                  'jenis_kelamin' => $request->jenis_kelamin,

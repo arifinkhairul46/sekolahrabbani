@@ -103,6 +103,9 @@ Route::prefix('karir')->group(function () {
         Route::put('/tugas/{id}', [TugasDiklatController::class, 'update'])->name('admin.update_tugas');
         Route::delete('/tugas/{id}', [TugasDiklatController::class, 'destroy'])->name('admin.delete_tugas');
 
+        Route::get('/kumpul-tugas', [TugasDiklatController::class, 'kumpul_tugas'])->name('karir.admin.tugas_kumpul');
+
+
         Route::get('/csdm', [CsdmController::class, 'index'])->name('karir.admin.csdm');
         Route::get('/csdm/create', [CsdmController::class, 'create'])->name('admin.create_csdm');
         Route::post('/csdm/create', [CsdmController::class, 'store'])->name('admin.store_csdm');

@@ -7,6 +7,7 @@
                <a class="nav-link" href="{{route('karir.admin.tugas')}}">Tugas</a>
                <a class="nav-link" href="{{route('karir.admin.kelas')}}">Kelas</a>
                <a class="nav-link" href="{{route('karir.admin.csdm')}}">CSDM</a>
+               <a class="nav-link" href="{{route('karir.admin.tugas_kumpul')}}">Kumpul Tugas</a>
             </nav>
         </div>
     </div>

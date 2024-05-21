@@ -17,5 +17,21 @@ class PengumpulanTugas extends Model
         'status',
         'file'
     ];
+
+    public function user() {
+        return $this->belongsTo(User::class, 'user_id');
+
+    }
+
+    public static function get_kumpul_tugas_with_user () {
+        $data = static::with(['user'])
+                ->select( 'user_id', 'tugas_id', 'file', 'updated_at')
+                ->groupBy('user_id', 'tugas_id')
+                ->orderBy('updated_at', 'desc')
+                ->get();
+    
+
+        return $data;
+    }
  
 }
