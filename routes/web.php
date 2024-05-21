@@ -58,17 +58,20 @@ Route::prefix('karir')->group(function () {
     Route::post('/login', [KarirController::class, 'store_login'])->name('karir.store_login');
     Route::post('/verifikasi', [KarirController::class, 'store_verifikasi'])->name('karir.store_verifikasi');
     Route::post('logout', [KarirController::class, 'logout'])->name('karir.logout');
+
     Route::get('/profile', [KarirController::class, 'profile'])->name('karir.profile');
     Route::get('/profile/{id}', [KarirController::class, 'profile_by_id'])->name('karir.profile_by_id');
     Route::post('profile/{id}', [KarirController::class, 'store_profile'])->name('karir.store_profile');
     Route::put('/profile/{id}', [KarirController::class, 'edit_profile'])->name('karir.edit_profile');
+
     Route::get('/kelas', [KelasDiklatController::class, 'index'])->name('karir.kelas');
     Route::get('/kelas/pertemuan/{pertemuan}', [KelasDiklatController::class, 'get_kelas_by_pertemuan_id'])->name('karir.kelas_pertemuan');
     Route::get('/kelas/tugas/download/{id}', [KelasDiklatController::class, 'getDownloadTugas'])->name('download_tugas');
     Route::post('/kelas/tugas/upload', [KelasDiklatController::class, 'upload_tugas'])->name('upload_tugas');
     Route::get('/kelas/modul/download/{id}', [KelasDiklatController::class, 'getDownloadModul'])->name('download_modul');
 
-
+    Route::get('/nilai', [KarirController::class, 'get_nilai'])->name('karir.nilai');
+    
     Route::prefix('admin')->group(function () {
         Route::get('/', [KarirController::class, 'admin'])->name('karir.admin');
         Route::get('/kelas', [KelasDiklatController::class, 'admin_kelas'])->name('karir.admin.kelas');

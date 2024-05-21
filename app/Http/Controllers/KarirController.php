@@ -164,6 +164,11 @@ class KarirController extends Controller
         return view('karir.profile.index', compact('user', 'user_csdm'));
     }
 
+    public function get_nilai() {
+        return view('karir.profile.nilai');
+        
+    }
+
     public function profile_by_id($id) {
         $user = Auth::user();
 

@@ -22,21 +22,20 @@ class KelasDiklat extends Model
 
     public function modul()
     {
-        return $this->belongsTo(ModulDiklat::class, 'id_modul');
+        return $this->hasMany(ModulDiklat::class, 'id');
     }
 
-    public function tugas()
-    {
-        return $this->belongsTo(TugasDiklat::class, 'id_tugas');
-    }
+    
 
     public static function get_kelas_per_pertemuan($pertemuan)
     {
         return KelasDiklat::where('pertemuan', $pertemuan)->get();
     }
 
-    public static function get_kelas_with_tugas () {
-        $data = static::with(['tugas'])->get();
+    public static function get_kelas_with_modul ($pertemuan) {
+        $data = static::with(['modul.tugas'])
+                ->where('pertemuan', $pertemuan)        
+                ->get();
 
         return $data;
     }

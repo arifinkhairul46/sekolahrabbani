@@ -19,6 +19,17 @@ class ModulDiklat extends Model
 
     public function kelas()
     {
-        return $this->hasMany(KelasDiklat::class, 'id_modul');
+        return $this->belongsTo(KelasDiklat::class, 'kelas_diklat_id');
+    }
+
+    public function tugas () {
+
+        return $this->hasOne(TugasDiklat::class, 'id');
+    }
+
+    public static function get_modul_with_tugas () {
+        $data = static::with(['tugas'])->get();
+
+        return $data;
     }
 }

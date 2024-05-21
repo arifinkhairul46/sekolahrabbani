@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Csdm;
 use App\Models\KelasDiklat;
 use App\Models\ModulDiklat;
+use App\Models\PengumpulanTugas;
 use App\Models\TugasDiklat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -92,8 +94,11 @@ class KelasDiklatController extends Controller
     {
         $kelasDiklat = KelasDiklat::all();
         $kelas_pertemuan = KelasDiklat::get_kelas_per_pertemuan($pertemuan);
+        $tugasDiklat = TugasDiklat::all();
+        $kelas_with_modul = KelasDiklat::get_kelas_with_modul($pertemuan);
+        // dd($kelas_with_modul);
 
-        return view('karir.kelas-diklat.by-pertemuan', compact('kelas_pertemuan', 'kelasDiklat'));
+        return view('karir.kelas-diklat.by-pertemuan', compact('kelas_pertemuan', 'kelasDiklat', 'tugasDiklat', 'kelas_with_modul'));
     }
 
     public function admin_kelas()
@@ -175,7 +180,38 @@ class KelasDiklatController extends Controller
         return response()->download($file, 'modul_diklat.pdf', $headers);
     }
 
-    public function upload_tugas () {
-        
+    public function upload_tugas (Request $request) {
+        $request->validate([
+            'file' => 'required',
+        ]);
+
+        // $tugas_id = $pertemuan;
+
+        $user_id = auth()->user()->id;
+        $kode_csdm = auth()->user()->kode_csdm;
+        $file = null;
+        $file_url = null;
+        $path = 'kumpulan_tugas';
+        if ($request->has('file')) {
+            $file = $request->file('file')->store($path);
+            $file_name = $request->file('file')->getClientOriginalName();
+            $file_url = $path . '/' . $file_name;
+            Storage::disk('public')->put($file_url, file_get_contents($request->file('file')->getRealPath()));
+        } else {
+            return redirect()->back()->with('failed', 'File tidak boleh kosong');
+        }
+
+
+        PengumpulanTugas::create([
+            'user_id' => $user_id,
+            'kode_csdm' => $kode_csdm,
+            'file' => $file_url,
+            'status' => 1,
+            'tugas_id' =>$request->pertemuan_ke
+            
+        ]);
+
+        return redirect()->back()
+            ->with('success', 'Tugas Diklat created successfully.');
     }
 }
