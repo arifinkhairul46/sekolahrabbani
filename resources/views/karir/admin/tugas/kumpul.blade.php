@@ -29,7 +29,7 @@
                                                 <td>{{$item->tugas_id}}</td>
                                                 <td>{{$item->file}}</td>
                                                 <td class="d-flex">
-                                                    <a href="#" class="btn btn-warning" title="download"><i class="fa-solid fa-download"></i></a>
+                                                    <a href="{{route('download_kumpulan_tugas', $item->id)}}" class="btn btn-sm btn-warning" title="download"><i class="fa-solid fa-download"></i></a>
                                                 </td>
                                             </tr>
                                         @endforeach

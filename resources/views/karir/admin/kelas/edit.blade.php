@@ -21,6 +21,10 @@
                                     <label for="forum_link" class="form-label">Link</label>
                                     <input type="text" class="form-control" id="forum_link" name="forum_link" value="{{$kelasDiklat->forum_link}}" required>
                                 </div>
+                                <div class="mb-3">
+                                    <label for="deskripsi_kelas" class="form-label">Deskripsi</label>
+                                    <input type="text" class="form-control" id="deskripsi_kelas" name="deskripsi_kelas" value="{{$kelasDiklat->deskripsi_kelas}}" required>
+                                </div>
                                 <button type="submit" class="btn btn-primary">Submit</button>
                             </form>
                         </div>

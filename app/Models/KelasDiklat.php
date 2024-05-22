@@ -13,9 +13,8 @@ class KelasDiklat extends Model
     protected $fillable = [
         'pertemuan',
         'forum_link',
-        'id_tugas',
-        'id_modul',
         'status_kelas',
+        'deskripsi_kelas',
         'tgl_buka_kelas',
         'jam_buka_kelas',
     ];

@@ -148,4 +148,19 @@ class TugasDiklatController extends Controller
 
         return view('karir.admin.tugas.kumpul', compact('kumpul_tugas'));
     }
+
+    public function download_kumpulan_tugas($id)
+    {   
+        $pengumpulan_tugas = PengumpulanTugas::find($id);
+        // dd($pengumpulan_tugas);
+        $file = public_path('storage/'.$pengumpulan_tugas->file);
+        $name = 'hasil-tugas-'.$pengumpulan_tugas->tugas_id.'-'.$pengumpulan_tugas->kode_csdm.'.pdf';
+        
+        $headers = [
+            'Content-Type' => 'application/pdf',
+         ];
+
+        return response()->download($file, $name, $headers);
+        // return Storage::disk('public')->download($path, $name);
+    }
 }

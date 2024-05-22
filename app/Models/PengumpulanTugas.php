@@ -25,7 +25,7 @@ class PengumpulanTugas extends Model
 
     public static function get_kumpul_tugas_with_user () {
         $data = static::with(['user'])
-                ->select( 'user_id', 'tugas_id', 'file', 'updated_at')
+                ->select('id', 'user_id', 'tugas_id', 'file', 'updated_at')
                 ->groupBy('user_id', 'tugas_id')
                 ->orderBy('updated_at', 'desc')
                 ->get();

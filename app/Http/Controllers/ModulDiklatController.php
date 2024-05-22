@@ -29,7 +29,9 @@ class ModulDiklatController extends Controller
      */
     public function create()
     {
-        return view('karir.admin.modul.create');
+        $kelasDiklat = KelasDiklat::all();
+
+        return view('karir.admin.modul.create', compact('kelasDiklat'));
     }
 
     /**

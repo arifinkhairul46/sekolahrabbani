@@ -23,6 +23,8 @@
                 || Route::currentRouteName() == 'karir.admin.tugas' || Route::currentRouteName() == 'admin.create_tugas' || Route::currentRouteName() == 'admin.edit_tugas'
                 || Route::currentRouteName() == 'karir.admin.csdm' || Route::currentRouteName() == 'admin.create_csdm' || Route::currentRouteName() == 'admin.edit_csdm'
                 || Route::currentRouteName() == 'karir.admin.posisi' || Route::currentRouteName() == 'admin.create_posisi' || Route::currentRouteName() == 'admin.edit_posisi'
+                || Route::currentRouteName() == 'karir.admin.nilai' || Route::currentRouteName() == 'karir.admin.tugas_kumpul' || Route::currentRouteName() == 'download_kumpulan_tugas'
+                || Route::currentRouteName() == 'karir.nilai' 
                 )
                 @include('karir.layouts.navbars.no_menu')
             @elseif (Route::currentRouteName() == 'karir.login' || Route::currentRouteName() == 'karir.verifikasi')

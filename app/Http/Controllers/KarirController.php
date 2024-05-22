@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Csdm;
 use App\Models\Karir;
+use App\Models\NilaiDiklat;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -165,9 +166,24 @@ class KarirController extends Controller
         return view('karir.profile.index', compact('user', 'user_csdm'));
     }
 
-    public function get_nilai() {
-        return view('karir.profile.nilai');
+    public function get_nilai($id) {
+        $nilai_diklat = NilaiDiklat::where('id_profile_csdm', $id)->first();
+        // dd($nilai_diklat);
+        return view('karir.profile.nilai', compact('nilai_diklat'));
         
+    }
+
+    public function download_nilai($id) {
+        $nilaiDiklat = NilaiDiklat::where('id_profile_csdm', $id)->first();
+        // dd($nilaiDiklat);
+        $file = public_path('storage/'.$nilaiDiklat->file_nilai);
+        $file_name = 'hasil-diklat-'.$nilaiDiklat->kode_csdm.'.pdf';
+        
+        $headers = [
+            'Content-Type' => 'application/pdf',
+         ];
+
+        return response()->download($file, $file_name, $headers);
     }
 
     public function profile_by_id($id) {

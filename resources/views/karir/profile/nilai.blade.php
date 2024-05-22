@@ -11,6 +11,7 @@
                             <div class="d-flex">
                                 <h3 >Hasil Nilai</h3>
                             </div>
+                            <p> Lihat Disini: <a href="{{route('download_nilai', $nilai_diklat->id_profile_csdm)}}" target="_blank"> Hasil Diklat - {{$nilai_diklat->kode_csdm}} </a> </p>
                         </div>
                     </div>
                 </div>

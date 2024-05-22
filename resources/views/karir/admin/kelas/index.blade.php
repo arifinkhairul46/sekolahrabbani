@@ -13,12 +13,13 @@
                                 <a href="{{route('admin.create_kelas')}}" class="btn btn-success">Tambah Kelas</a>
                             </div>
                             <div class="table-responsive">
-                                <table id="kelas_diklat" class="table table-striped">
+                                <table id="kelas_diklat" class="table table-striped dt-responsive" >
                                     <thead>
                                         <tr>
                                             <th scope="col">No</th>
                                             <th scope="col">Pertemuan</th>
                                             <th scope="col">Link</th>
+                                            <th scope="col">Deskripsi</th>
                                             <th scope="col">Aksi</th>
                                         </tr>
                                     </thead>
@@ -26,13 +27,14 @@
                                         @foreach ($kelasDiklat as $item)
                                             <tr>
                                                 <th scope="row">{{$loop->iteration}}</th>
-                                                <td>Pertemuan ke-{{$item->pertemuan}}</td>
+                                                <td>Pertemuan {{$item->pertemuan}}</td>
                                                 <td><a href="{{$item->forum_link}}" target="_blank"> {{$item->forum_link}} </a></td>
+                                                <td>{{$item->deskripsi_kelas}}</td>
                                                 <td class="d-flex">
-                                                    <a href="{{route('admin.edit_kelas', $item->id)}}" class="btn btn-warning" title="edit"><i class="fa-solid fa-pencil"></i></a>
+                                                    <a href="{{route('admin.edit_kelas', $item->id)}}" class="btn btn-sm btn-warning" title="edit"><i class="fa-solid fa-pencil"></i></a>
                                                     <form action="{{route('admin.delete_kelas', $item->id)}}" method="post">
                                                         @csrf @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger mx-2" title="delete"><i class="fa-solid fa-trash"></i></button>
+                                                        <button type="submit" class="btn btn-sm btn-danger mx-2" title="delete"><i class="fa-solid fa-trash"></i></button>
                                                     </form>
                                                     {{-- <a href="{{route('admin.delete_kelas', $item->id)}}" class="btn btn-danger mx-2" title="delete"><i class="fa-solid fa-trash"></i></a> --}}
                                                 </td>

@@ -71,7 +71,8 @@ Route::prefix('karir')->group(function () {
     Route::post('/kelas/tugas/upload', [KelasDiklatController::class, 'upload_tugas'])->name('upload_tugas');
     Route::get('/kelas/modul/download/{id}', [KelasDiklatController::class, 'getDownloadModul'])->name('download_modul');
 
-    Route::get('/nilai', [KarirController::class, 'get_nilai'])->name('karir.nilai');
+    Route::get('/nilai/{id}', [KarirController::class, 'get_nilai'])->name('karir.nilai');
+    Route::get('/nilai/download/{id}', [KarirController::class, 'download_nilai'])->name('download_nilai');
     
     Route::prefix('admin')->group(function () {
         Route::get('/', [KarirController::class, 'admin'])->name('karir.admin');
@@ -105,6 +106,8 @@ Route::prefix('karir')->group(function () {
         Route::delete('/tugas/{id}', [TugasDiklatController::class, 'destroy'])->name('admin.delete_tugas');
 
         Route::get('/kumpul-tugas', [TugasDiklatController::class, 'kumpul_tugas'])->name('karir.admin.tugas_kumpul');
+        Route::get('/kumpul-tugas/download/{id}', [TugasDiklatController::class, 'download_kumpulan_tugas'])->name('download_kumpulan_tugas');
+
 
         Route::get('/nilai', [NilaiDiklatController::class, 'index'])->name('karir.admin.nilai');
         Route::get('/nilai/create', [NilaiDiklatController::class, 'create'])->name('admin.create_nilai');

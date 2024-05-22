@@ -29,6 +29,7 @@
                                 <div class="tab-content" id="nav-tabContent">
                                 <div class="tab-pane fade show active" id="nav-forum" role="tabpanel" aria-labelledby="nav-forum-tab" tabindex="0">
                                     <p class="mt-3">Tanggal mulai sesi ini : {{$item->tgl_buka_kelas}} </p>
+                                    <p class="mt-3">Deskripsi : {{$item->deskripsi_kelas}} </p>
                                     <p class="mt-3">Link sesi ini : <a href="{{$item->forum_link}}" target="_blank"> {{$item->forum_link}} </a></p>
                                 </div>
                                 <div class="tab-pane fade" id="nav-modul" role="tabpanel" aria-labelledby="nav-modul-tab" tabindex="0">

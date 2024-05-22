@@ -139,6 +139,7 @@ class KelasDiklatController extends Controller
             
             'pertemuan' => 'required',
             'forum_link' => 'required',
+            'deskripsi_kelas' => 'required',
         ]);
 
         KelasDiklat::find($id)->update($request->all());
@@ -213,5 +214,18 @@ class KelasDiklatController extends Controller
 
         return redirect()->back()
             ->with('success', 'Tugas Diklat created successfully.');
+    }
+
+    public function download_nilai($id)
+    {
+        $modulDiklat = ModulDiklat::find($id);
+        
+        $file = public_path('storage/'.$modulDiklat->file_modul);
+        
+        $headers = [
+            'Content-Type' => 'application/pdf',
+         ];
+
+        return response()->download($file, 'modul_diklat.pdf', $headers);
     }
 }

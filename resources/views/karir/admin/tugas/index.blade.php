@@ -31,10 +31,10 @@
                                                 <td>{{$item->deskripsi_tugas}}</td>
                                                 <td>{{$item->file_tugas}}</td>
                                                 <td class="d-flex">
-                                                    <a href="{{route('admin.edit_tugas', $item->id)}}" class="btn btn-warning" title="edit"><i class="fa-solid fa-pencil"></i></a>
+                                                    <a href="{{route('admin.edit_tugas', $item->id)}}" class="btn btn-sm btn-warning" title="edit"><i class="fa-solid fa-pencil"></i></a>
                                                     <form action="{{route('admin.delete_tugas', $item->id)}}" method="post">
                                                         @csrf @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger mx-2" title="delete"><i class="fa-solid fa-trash"></i></button>
+                                                        <button type="submit" class="btn btn-sm btn-danger mx-2" title="delete"><i class="fa-solid fa-trash"></i></button>
                                                     </form>
                                                 </td>
                                             </tr>
