@@ -38,6 +38,14 @@
       
         <script src="{{ asset('assets/js/script.js') }}"></script>
         <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+        <script>
+            document.querySelectorAll(".nav-link").forEach((link) => {
+                if (link.href === window.location.href) {
+                    link.classList.add("active");
+                    link.setAttribute("aria-current", "page");
+                }
+            });
+        </script>
 
     </div>
     {{-- @include('layouts.footer.footer') --}}

@@ -5,6 +5,7 @@ use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\KarirController;
 use App\Http\Controllers\KelasDiklatController;
 use App\Http\Controllers\ModulDiklatController;
+use App\Http\Controllers\NilaiDiklatController;
 use App\Http\Controllers\PendaftaranController;
 use App\Http\Controllers\PosisiLamaranController;
 use App\Http\Controllers\TugasDiklatController;
@@ -104,6 +105,14 @@ Route::prefix('karir')->group(function () {
         Route::delete('/tugas/{id}', [TugasDiklatController::class, 'destroy'])->name('admin.delete_tugas');
 
         Route::get('/kumpul-tugas', [TugasDiklatController::class, 'kumpul_tugas'])->name('karir.admin.tugas_kumpul');
+
+        Route::get('/nilai', [NilaiDiklatController::class, 'index'])->name('karir.admin.nilai');
+        Route::get('/nilai/create', [NilaiDiklatController::class, 'create'])->name('admin.create_nilai');
+        Route::post('/nilai/create', [NilaiDiklatController::class, 'store'])->name('admin.store_nilai');
+        Route::get('/nilai/{id}', [NilaiDiklatController::class, 'edit'])->name('admin.edit_nilai');
+        Route::put('/nilai/{id}', [NilaiDiklatController::class, 'update'])->name('admin.update_nilai');
+        Route::delete('/nilai/{id}', [NilaiDiklatController::class, 'destroy'])->name('admin.delete_nilai');
+        Route::post('/nilai/upload', [NilaiDiklatController::class, 'upload_nilai'])->name('upload_nilai');
 
 
         Route::get('/csdm', [CsdmController::class, 'index'])->name('karir.admin.csdm');

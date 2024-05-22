@@ -15,6 +15,7 @@ class ModulDiklat extends Model
         'deskripsi_modul',
         'file_modul',
         'status_modul',
+        'kelas_diklat_id'
     ];
 
     public function kelas()

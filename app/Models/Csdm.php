@@ -26,6 +26,12 @@ class Csdm extends Model
         return $this->hasOne(User::class, 'id_profile_csdm', 'id');
     }
 
+    public function nilai_diklat () 
+    {
+        return $this->hasOne(NilaiDiklat::class, 'id_profile_csdm', 'id');
+
+    }
+
     public static function get_all()
     {
         $data = static::with('user')->get();

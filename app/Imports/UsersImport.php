@@ -4,10 +4,15 @@ namespace App\Imports;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
+use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\WithValidation;
 
-class UsersImport implements ToModel
+class UsersImport implements ToModel, WithHeadingRow
 {
+    use Importable;
     /**
     * @param array $row
     *
@@ -16,10 +21,26 @@ class UsersImport implements ToModel
     public function model(array $row)
     {
         return new User([
-            'kode_csdm' => $row[1],
-            'name'     => $row[2],
-            'email'    => $row[3], 
-            'password' => Hash::make($row[4]),
+            'kode_csdm' => $row['kode_csdm'],
+            'name'     => $row['name'],
+            'email'    => $row['email'], 
+            'password' => Hash::make($row['password']),
+            'id_role'    => $row['id_role'], 
+
         ]);
     }
+
+    // public function rules(): array
+    // {
+    //     return [
+    //         'kode_csdm' => 'unique:users,kode_csdm', // Table name, field in your db
+    //     ];
+    // }
+
+    // public function customValidationMessages()
+    // {
+    //     return [
+    //         'kode_csdm.unique' => 'Terdapat duplikasi data, mohon cek kembali',
+    //     ];
+    // }
 }

@@ -8,6 +8,7 @@
                <a class="nav-link" href="{{route('karir.admin.kelas')}}">Kelas</a>
                <a class="nav-link" href="{{route('karir.admin.csdm')}}">CSDM</a>
                <a class="nav-link" href="{{route('karir.admin.tugas_kumpul')}}">Kumpul Tugas</a>
+               <a class="nav-link" href="{{route('karir.admin.nilai')}}">Nilai Diklat</a>
             </nav>
         </div>
     </div>

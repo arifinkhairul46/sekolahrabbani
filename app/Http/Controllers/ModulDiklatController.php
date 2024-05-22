@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\KelasDiklat;
 use App\Models\ModulDiklat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -86,7 +87,8 @@ class ModulDiklatController extends Controller
     public function edit(ModulDiklat $modulDiklat, $id)
     {
         $modulDiklat = ModulDiklat::find($id);
-        return view('karir.admin.modul.edit', compact('modulDiklat'));
+        $kelasDiklat = KelasDiklat::all();
+        return view('karir.admin.modul.edit', compact('modulDiklat', 'kelasDiklat'));
     }
 
     /**
@@ -100,7 +102,8 @@ class ModulDiklatController extends Controller
     {
         $request->validate([
             'judul_modul' => 'required',
-            'file_modul' => 'required'
+            'file_modul' => 'required',
+            'kelas_diklat_id' => 'required'
         ]);
 
         $file = null;
@@ -118,7 +121,10 @@ class ModulDiklatController extends Controller
         ModulDiklat::find($id)->update([
             'judul_modul' => $request->judul_modul,
             'deskripsi_modul' => $request->deskripsi_modul,
-            'file_modul' => $file_url
+            'file_modul' => $file_url,
+            'kelas_diklat_id' => $request->kelas_diklat_id,
+            'status_modul' => $request->status_modul
+
         ]);
 
         return redirect()->route('karir.admin.modul')

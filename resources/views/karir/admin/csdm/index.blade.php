@@ -10,7 +10,7 @@
                         <div class="card-body mb-3">
                             <h3 class="card-title">Calon SDM</h3>
                             <div class="mb-2" style="text-align: right">
-                                <a href="{{route('admin.create_csdm')}}" class="btn btn-info">Tambah CSDM</a>
+                                <a href="{{route('admin.create_csdm')}}" class="btn btn-secondary"><i class="fa-solid fa-plus"></i> Tambah CSDM</a>
                                 <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#importExcel"><i class="fa-solid fa-file-excel"></i>
                                     IMPORT CSDM
                                 </button>
@@ -20,7 +20,6 @@
                                     <thead>
                                         <tr>
                                             <th scope="col">No</th>
-                                            <th scope="col">ID CSDM</th>
                                             <th scope="col">Nama Lengkap</th>
                                             <th scope="col">Jenis Kelamin</th>
                                             <th scope="col">Tempat, Tanggal Lahir</th>
@@ -34,9 +33,8 @@
                                         @foreach ($csdm as $item)
                                             <tr>
                                                 <th scope="row">{{$loop->iteration}}</th>
-                                                <td>{{$item->id_csdm}}</td>
                                                 <td>{{$item->nama_lengkap}}</td>
-                                                <td>{{$item->jenis_kelamin}}</td>
+                                                <td>{{$item->jenis_kelamin == 1 ? 'Ikhwan' : 'Akhwat'}}</td>
                                                 <td>{{$item->tempat_lahir}}, {{$item->tgl_lahir}} </td>
                                                 <td>{{$item->domisili_sekarang}}</td>
                                                 <td>{{$item->posisi_lamaran}}</td>
