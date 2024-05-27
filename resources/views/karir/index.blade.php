@@ -18,7 +18,7 @@
                         </p>
                     </div>
                     <div class="d-flex justify-content-center">
-                        <a href="#" class="btn btn-primary mx-3">Apply Now</a>
+                        <a href="https://bit.ly/DaftarYRA" target="_blank" class="btn btn-primary mx-3">Apply Now</a>
                         <a href="{{route('karir.login')}}" class="btn btn-primary">Login CSDM</a>
                     </div>
                 </div>
