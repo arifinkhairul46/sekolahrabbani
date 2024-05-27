@@ -107,6 +107,7 @@ Route::prefix('karir')->group(function () {
 
         Route::get('/kumpul-tugas', [TugasDiklatController::class, 'kumpul_tugas'])->name('karir.admin.tugas_kumpul');
         Route::get('/kumpul-tugas/download/{id}', [TugasDiklatController::class, 'download_kumpulan_tugas'])->name('download_kumpulan_tugas');
+        Route::get('/kumpul-tugas/download-all/', [TugasDiklatController::class, 'multiple_download_kumpulan_tugas'])->name('multiple_download');
 
 
         Route::get('/nilai', [NilaiDiklatController::class, 'index'])->name('karir.admin.nilai');

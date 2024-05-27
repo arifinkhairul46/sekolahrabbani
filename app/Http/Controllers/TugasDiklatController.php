@@ -8,6 +8,7 @@ use App\Models\TugasDiklat;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use ZipArchive;
 
 class TugasDiklatController extends Controller
 {
@@ -172,5 +173,34 @@ class TugasDiklatController extends Controller
 
         return response()->download($file, $name, $headers);
         // return Storage::disk('public')->download($path, $name);
+    }
+
+    public function multiple_download_kumpulan_tugas()
+    {
+        $pengumpulan_tugas = PengumpulanTugas::all();
+
+        $files = [];
+
+        foreach ($pengumpulan_tugas as $item) {
+            $files[$item->id] = public_path('storage/'.$item->file);
+        }
+        
+        // dd($files);
+        $zip = new ZipArchive;
+        $zipFile = 'kumpulan_tugas.zip';
+
+        if ($zip->open(public_path($zipFile), \ZipArchive::CREATE) === TRUE)
+        {
+            foreach ($files as $key => $value) {
+                $relativeName = basename($value);
+                $zip->addFile($value, $relativeName);
+            }
+
+            $zip->close();
+        }
+
+        return response()->download(public_path($zipFile));
+
+
     }
 }

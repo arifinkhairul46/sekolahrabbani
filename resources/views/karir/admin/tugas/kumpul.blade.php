@@ -9,7 +9,9 @@
                     <div class="card">
                         <div class="card-body mb-3">
                             <h3 class="card-title">Kumpulan Tugas CSDM</h3>
-                           
+                            <div class="mb-2" style="text-align: right">
+                                <a href="{{route('multiple_download')}}" class="btn btn-success">Download All</a>
+                            </div>
                             <div class="table-responsive">
                                 <table id="kumpul_tugas" class="table table-striped">
                                     <thead>
