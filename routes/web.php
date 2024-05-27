@@ -54,12 +54,6 @@ Route::controller(GoogleController::class)->group(function () {
 
 Route::prefix('karir')->group(function () {
     Route::get('/', [KarirController::class, 'index'])->name('karir');
-    Route::get('/login', [KarirController::class, 'login'])->name('karir.login');
-    Route::get('/verifikasi', [KarirController::class, 'verifikasi'])->name('karir.verifikasi');
-    Route::post('/login', [KarirController::class, 'store_login'])->name('karir.store_login');
-    Route::post('/verifikasi', [KarirController::class, 'store_verifikasi'])->name('karir.store_verifikasi');
-    Route::post('logout', [KarirController::class, 'logout'])->name('karir.logout');
-
     Route::get('/profile', [KarirController::class, 'profile'])->name('karir.profile');
     Route::get('/profile/{id}', [KarirController::class, 'profile_by_id'])->name('karir.profile_by_id');
     Route::post('profile/{id}', [KarirController::class, 'store_profile'])->name('karir.store_profile');
@@ -74,66 +68,68 @@ Route::prefix('karir')->group(function () {
     Route::get('/nilai/{id}', [KarirController::class, 'get_nilai'])->name('karir.nilai');
     Route::get('/nilai/download/{id}', [KarirController::class, 'download_nilai'])->name('download_nilai');
     
-    Route::prefix('admin')->group(function () {
-        Route::get('/', [KarirController::class, 'admin'])->name('karir.admin');
-        Route::get('/kelas', [KelasDiklatController::class, 'admin_kelas'])->name('karir.admin.kelas');
-        Route::get('/kelas/create', [KelasDiklatController::class, 'admin_create_kelas'])->name('admin.create_kelas');
-        Route::post('/kelas/create', [KelasDiklatController::class, 'admin_store_kelas'])->name('admin.store_kelas');
-        Route::get('/kelas/{id}', [KelasDiklatController::class, 'admin_edit_kelas'])->name('admin.edit_kelas');
-        Route::put('/kelas/{id}', [KelasDiklatController::class, 'admin_update_kelas'])->name('admin.update_kelas');
-        Route::delete('/kelas/{id}', [KelasDiklatController::class, 'admin_delete_kelas'])->name('admin.delete_kelas');
-
-        Route::get('/posisi', [PosisiLamaranController::class, 'index'])->name('karir.admin.posisi');
-        Route::get('/posisi/create', [PosisiLamaranController::class, 'create'])->name('admin.create_posisi');
-        Route::post('/posisi/create', [PosisiLamaranController::class, 'store'])->name('admin.store_posisi');
-        Route::get('/posisi/{id}', [PosisiLamaranController::class, 'edit'])->name('admin.edit_posisi');
-        Route::put('/posisi/{id}', [PosisiLamaranController::class, 'update'])->name('admin.update_posisi');
-        Route::delete('/posisi/{id}', [PosisiLamaranController::class, 'destroy'])->name('admin.delete_posisi');
-
-
-        Route::get('/modul', [ModulDiklatController::class, 'index'])->name('karir.admin.modul');
-        Route::get('/modul/create', [ModulDiklatController::class, 'create'])->name('admin.create_modul');
-        Route::post('/modul/create', [ModulDiklatController::class, 'store'])->name('admin.store_modul');
-        Route::get('/modul/{id}', [ModulDiklatController::class, 'edit'])->name('admin.edit_modul');
-        Route::put('/modul/{id}', [ModulDiklatController::class, 'update'])->name('admin.update_modul');
-        Route::delete('/modul/{id}', [ModulDiklatController::class, 'destroy'])->name('admin.delete_modul');
-
-        Route::get('/tugas', [TugasDiklatController::class, 'index'])->name('karir.admin.tugas');
-        Route::get('/tugas/create', [TugasDiklatController::class, 'create'])->name('admin.create_tugas');
-        Route::post('/tugas/create', [TugasDiklatController::class, 'store'])->name('admin.store_tugas');
-        Route::get('/tugas/{id}', [TugasDiklatController::class, 'edit'])->name('admin.edit_tugas');
-        Route::put('/tugas/{id}', [TugasDiklatController::class, 'update'])->name('admin.update_tugas');
-        Route::delete('/tugas/{id}', [TugasDiklatController::class, 'destroy'])->name('admin.delete_tugas');
-
-        Route::get('/kumpul-tugas', [TugasDiklatController::class, 'kumpul_tugas'])->name('karir.admin.tugas_kumpul');
-        Route::get('/kumpul-tugas/download/{id}', [TugasDiklatController::class, 'download_kumpulan_tugas'])->name('download_kumpulan_tugas');
-        Route::get('/kumpul-tugas/download-all/', [TugasDiklatController::class, 'multiple_download_kumpulan_tugas'])->name('multiple_download');
-
-
-        Route::get('/nilai', [NilaiDiklatController::class, 'index'])->name('karir.admin.nilai');
-        Route::get('/nilai/create', [NilaiDiklatController::class, 'create'])->name('admin.create_nilai');
-        Route::post('/nilai/create', [NilaiDiklatController::class, 'store'])->name('admin.store_nilai');
-        Route::get('/nilai/{id}', [NilaiDiklatController::class, 'edit'])->name('admin.edit_nilai');
-        Route::put('/nilai/{id}', [NilaiDiklatController::class, 'update'])->name('admin.update_nilai');
-        Route::delete('/nilai/{id}', [NilaiDiklatController::class, 'destroy'])->name('admin.delete_nilai');
-        Route::post('/nilai/upload', [NilaiDiklatController::class, 'upload_nilai'])->name('upload_nilai');
-
-
-        Route::get('/csdm', [CsdmController::class, 'index'])->name('karir.admin.csdm');
-        Route::get('/csdm/create', [CsdmController::class, 'create'])->name('admin.create_csdm');
-        Route::post('/csdm/create', [CsdmController::class, 'store'])->name('admin.store_csdm');
-        Route::post('/csdm/import', [CsdmController::class, 'import_excel'])->name('admin.import_csdm');
-        Route::get('/csdm/{id}', [CsdmController::class, 'edit'])->name('admin.edit_csdm');
-        Route::put('/csdm/{id}', [CsdmController::class, 'update'])->name('admin.update_csdm');
-        Route::delete('/csdm/{id}', [CsdmController::class, 'destroy'])->name('admin.delete_csdm');
-
-        Route::get('/kelas/pertemuan/{pertemuan}', [KelasDiklatController::class, 'admin_kelas_by_pertemuan_id'])->name('karir.admin.kelas_pertemuan');
-        Route::get('/kelas/pertemuan/{pertemuan}/tugas', [KelasDiklatController::class, 'admin_kelas_tugas'])->name('karir.admin.kelas_tugas');
-        Route::get('/kelas/pertemuan/{pertemuan}/tugas/{id}', [KelasDiklatController::class, 'admin_kelas_tugas_by_id'])->name('karir.admin.kelas_tugas_by_id');
-        Route::get('/kelas/pertemuan/{pertemuan}/tugas/{id}/edit', [KelasDiklatController::class, 'admin_kelas_tugas_edit'])->name('karir.admin.kelas_tugas_edit');
-        Route::put('/kelas/pertemuan/{pertemuan}/tugas/{id}', [KelasDiklatController::class, 'admin_kelas_tugas_update'])->name('karir.admin.kelas_tugas_update');
-        Route::get('/kelas/pertemuan/{pertemuan}/tugas/{id}/delete', [KelasDiklatController::class, 'admin_kelas_tugas_delete'])->name('karir.admin.kelas_tugas_delete');
-        Route::get('/kelas/pertemuan/{pertemuan}/tugas/create', [KelasDiklatController::class, 'admin_kelas_tugas_create'])->name('karir.admin.kelas_tugas_create');
+    Route::group(['middleware' =>['auth', 'admin']], function () {
+        Route::prefix('admin')->group(function () {
+            Route::get('/', [KarirController::class, 'admin'])->name('karir.admin');
+            Route::get('/kelas', [KelasDiklatController::class, 'admin_kelas'])->name('karir.admin.kelas');
+            Route::get('/kelas/create', [KelasDiklatController::class, 'admin_create_kelas'])->name('admin.create_kelas');
+            Route::post('/kelas/create', [KelasDiklatController::class, 'admin_store_kelas'])->name('admin.store_kelas');
+            Route::get('/kelas/{id}', [KelasDiklatController::class, 'admin_edit_kelas'])->name('admin.edit_kelas');
+            Route::put('/kelas/{id}', [KelasDiklatController::class, 'admin_update_kelas'])->name('admin.update_kelas');
+            Route::delete('/kelas/{id}', [KelasDiklatController::class, 'admin_delete_kelas'])->name('admin.delete_kelas');
+    
+            Route::get('/posisi', [PosisiLamaranController::class, 'index'])->name('karir.admin.posisi');
+            Route::get('/posisi/create', [PosisiLamaranController::class, 'create'])->name('admin.create_posisi');
+            Route::post('/posisi/create', [PosisiLamaranController::class, 'store'])->name('admin.store_posisi');
+            Route::get('/posisi/{id}', [PosisiLamaranController::class, 'edit'])->name('admin.edit_posisi');
+            Route::put('/posisi/{id}', [PosisiLamaranController::class, 'update'])->name('admin.update_posisi');
+            Route::delete('/posisi/{id}', [PosisiLamaranController::class, 'destroy'])->name('admin.delete_posisi');
+    
+    
+            Route::get('/modul', [ModulDiklatController::class, 'index'])->name('karir.admin.modul');
+            Route::get('/modul/create', [ModulDiklatController::class, 'create'])->name('admin.create_modul');
+            Route::post('/modul/create', [ModulDiklatController::class, 'store'])->name('admin.store_modul');
+            Route::get('/modul/{id}', [ModulDiklatController::class, 'edit'])->name('admin.edit_modul');
+            Route::put('/modul/{id}', [ModulDiklatController::class, 'update'])->name('admin.update_modul');
+            Route::delete('/modul/{id}', [ModulDiklatController::class, 'destroy'])->name('admin.delete_modul');
+    
+            Route::get('/tugas', [TugasDiklatController::class, 'index'])->name('karir.admin.tugas');
+            Route::get('/tugas/create', [TugasDiklatController::class, 'create'])->name('admin.create_tugas');
+            Route::post('/tugas/create', [TugasDiklatController::class, 'store'])->name('admin.store_tugas');
+            Route::get('/tugas/{id}', [TugasDiklatController::class, 'edit'])->name('admin.edit_tugas');
+            Route::put('/tugas/{id}', [TugasDiklatController::class, 'update'])->name('admin.update_tugas');
+            Route::delete('/tugas/{id}', [TugasDiklatController::class, 'destroy'])->name('admin.delete_tugas');
+    
+            Route::get('/kumpul-tugas', [TugasDiklatController::class, 'kumpul_tugas'])->name('karir.admin.tugas_kumpul');
+            Route::get('/kumpul-tugas/download/{id}', [TugasDiklatController::class, 'download_kumpulan_tugas'])->name('download_kumpulan_tugas');
+            Route::get('/kumpul-tugas/download-all/', [TugasDiklatController::class, 'multiple_download_kumpulan_tugas'])->name('multiple_download');
+    
+    
+            Route::get('/nilai', [NilaiDiklatController::class, 'index'])->name('karir.admin.nilai');
+            Route::get('/nilai/create', [NilaiDiklatController::class, 'create'])->name('admin.create_nilai');
+            Route::post('/nilai/create', [NilaiDiklatController::class, 'store'])->name('admin.store_nilai');
+            Route::get('/nilai/{id}', [NilaiDiklatController::class, 'edit'])->name('admin.edit_nilai');
+            Route::put('/nilai/{id}', [NilaiDiklatController::class, 'update'])->name('admin.update_nilai');
+            Route::delete('/nilai/{id}', [NilaiDiklatController::class, 'destroy'])->name('admin.delete_nilai');
+            Route::post('/nilai/upload', [NilaiDiklatController::class, 'upload_nilai'])->name('upload_nilai');
+    
+    
+            Route::get('/csdm', [CsdmController::class, 'index'])->name('karir.admin.csdm');
+            Route::get('/csdm/create', [CsdmController::class, 'create'])->name('admin.create_csdm');
+            Route::post('/csdm/create', [CsdmController::class, 'store'])->name('admin.store_csdm');
+            Route::post('/csdm/import', [CsdmController::class, 'import_excel'])->name('admin.import_csdm');
+            Route::get('/csdm/{id}', [CsdmController::class, 'edit'])->name('admin.edit_csdm');
+            Route::put('/csdm/{id}', [CsdmController::class, 'update'])->name('admin.update_csdm');
+            Route::delete('/csdm/{id}', [CsdmController::class, 'destroy'])->name('admin.delete_csdm');
+    
+            Route::get('/kelas/pertemuan/{pertemuan}', [KelasDiklatController::class, 'admin_kelas_by_pertemuan_id'])->name('karir.admin.kelas_pertemuan');
+            Route::get('/kelas/pertemuan/{pertemuan}/tugas', [KelasDiklatController::class, 'admin_kelas_tugas'])->name('karir.admin.kelas_tugas');
+            Route::get('/kelas/pertemuan/{pertemuan}/tugas/{id}', [KelasDiklatController::class, 'admin_kelas_tugas_by_id'])->name('karir.admin.kelas_tugas_by_id');
+            Route::get('/kelas/pertemuan/{pertemuan}/tugas/{id}/edit', [KelasDiklatController::class, 'admin_kelas_tugas_edit'])->name('karir.admin.kelas_tugas_edit');
+            Route::put('/kelas/pertemuan/{pertemuan}/tugas/{id}', [KelasDiklatController::class, 'admin_kelas_tugas_update'])->name('karir.admin.kelas_tugas_update');
+            Route::get('/kelas/pertemuan/{pertemuan}/tugas/{id}/delete', [KelasDiklatController::class, 'admin_kelas_tugas_delete'])->name('karir.admin.kelas_tugas_delete');
+            Route::get('/kelas/pertemuan/{pertemuan}/tugas/create', [KelasDiklatController::class, 'admin_kelas_tugas_create'])->name('karir.admin.kelas_tugas_create');
+        });
     });
 
 });
