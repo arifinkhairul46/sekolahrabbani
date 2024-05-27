@@ -19,7 +19,7 @@ class KelasDiklatController extends Controller
      */
     public function index()
     {
-        $kelasDiklat = KelasDiklat::all();
+        $kelasDiklat = KelasDiklat::get_kelas_aktif();
 
         return view('karir.kelas-diklat.index', compact('kelasDiklat'));
     }
@@ -92,7 +92,7 @@ class KelasDiklatController extends Controller
 
     public function get_kelas_by_pertemuan_id($pertemuan)
     {
-        $kelasDiklat = KelasDiklat::all();
+        $kelasDiklat = KelasDiklat::get_kelas_aktif();
         $kelas_pertemuan = KelasDiklat::get_kelas_per_pertemuan($pertemuan);
         $tugasDiklat = TugasDiklat::all();
         $kelas_with_modul = KelasDiklat::get_kelas_with_modul($pertemuan);
@@ -104,7 +104,6 @@ class KelasDiklatController extends Controller
     public function admin_kelas()
     {
         $kelasDiklat = KelasDiklat::all();
-
         return view('karir.admin.kelas.index', compact('kelasDiklat'));
     }
 

@@ -17,9 +17,10 @@
   
     <div>
         <header>
-            @if (Route::currentRouteName() == 'karir.profile' || Route::currentRouteName() == 'karir.kelas'  || Route::currentRouteName() == 'karir.edit_profile' || Route::currentRouteName() =='karir.profile_by_id'
-                || Route::currentRouteName() == 'karir.kelas_pertemuan' || Route::currentRouteName() == 'karir.admin' || Route::currentRouteName() == 'karir.admin.kelas'
+            @if (Route::currentRouteName() == 'karir.profile' || Route::currentRouteName() == 'karir.kelas'  || Route::currentRouteName() == 'karir.edit_profile' 
+                || Route::currentRouteName() == 'karir.kelas_pertemuan' || Route::currentRouteName() == 'karir.admin' || Route::currentRouteName() =='karir.profile_by_id'
                 || Route::currentRouteName() == 'karir.admin.modul' || Route::currentRouteName() == 'admin.create_modul' || Route::currentRouteName() == 'admin.edit_modul'
+                || Route::currentRouteName() == 'karir.admin.kelas' || Route::currentRouteName() == 'admin.create_kelas' || Route::currentRouteName() == 'admin.edit_kelas'
                 || Route::currentRouteName() == 'karir.admin.tugas' || Route::currentRouteName() == 'admin.create_tugas' || Route::currentRouteName() == 'admin.edit_tugas'
                 || Route::currentRouteName() == 'karir.admin.csdm' || Route::currentRouteName() == 'admin.create_csdm' || Route::currentRouteName() == 'admin.edit_csdm'
                 || Route::currentRouteName() == 'karir.admin.posisi' || Route::currentRouteName() == 'admin.create_posisi' || Route::currentRouteName() == 'admin.edit_posisi'

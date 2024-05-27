@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ModulDiklat;
 use App\Models\PengumpulanTugas;
 use App\Models\TugasDiklat;
 use App\Models\User;
@@ -29,7 +30,8 @@ class TugasDiklatController extends Controller
      */
     public function create()
     {
-        return view('karir.admin.tugas.create');
+        $modulDiklat = ModulDiklat::all();
+        return view('karir.admin.tugas.create', compact('modulDiklat'));
         
     }
 
@@ -60,7 +62,10 @@ class TugasDiklatController extends Controller
         TugasDiklat::create([
             'judul_tugas' => $request->judul_tugas,
             'deskripsi_tugas' => $request->deskripsi_tugas,
-            'file_tugas' => $file_url
+            'deadline_tugas' => $request->deadline_tugas,
+            'modul_id' => $request->modul_id,
+            'status_tugas' => $request->status_tugas,
+            'file_tugas' => $file_url, 
         ]);
 
         return redirect()->route('karir.admin.tugas')
@@ -87,7 +92,9 @@ class TugasDiklatController extends Controller
     public function edit(TugasDiklat $tugasDiklat, $id)
     {
         $tugasDiklat = TugasDiklat::find($id);
-        return view('karir.admin.tugas.edit', compact('tugasDiklat'));
+        $modulDiklat = ModulDiklat::all();
+
+        return view('karir.admin.tugas.edit', compact('tugasDiklat', 'modulDiklat'));
     }
 
     /**
@@ -118,7 +125,10 @@ class TugasDiklatController extends Controller
         TugasDiklat::find($id)->update([
             'judul_tugas' => $request->judul_tugas,
             'deskripsi_tugas' => $request->deskripsi_tugas,
-            'file_tugas' => $file_url
+            'file_tugas' => $file_url,
+            'modul_id' => $request->modul_id,
+            'status_tugas' => $request->status_tugas,
+            'deadline_tugas' => $request->deadline_tugas,
         ]
 
         );

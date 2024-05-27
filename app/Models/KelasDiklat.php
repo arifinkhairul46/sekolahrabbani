@@ -38,4 +38,10 @@ class KelasDiklat extends Model
 
         return $data;
     }
+
+    public static function get_kelas_aktif () {
+        $data = static::where('status_kelas', 1)->get();
+
+        return $data;
+    }
 }

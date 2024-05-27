@@ -15,12 +15,9 @@ class TugasDiklat extends Model
         'deskripsi_tugas',
         'file_tugas',
         'status_tugas',
+        'modul_id',
+        'deadline_tugas'
     ];
-
-    // public function kelas()
-    // {
-    //     return $this->hasMany(KelasDiklat::class, 'id_tugas');
-    // }
 
     public function modul() {
         return $this->belongsTo(ModulDiklat::class, 'modul_id');

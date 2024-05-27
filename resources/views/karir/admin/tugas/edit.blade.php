@@ -22,6 +22,27 @@
                                     <input type="text" class="form-control" id="deskripsi_tugas" name="deskripsi_tugas" value="{{$tugasDiklat->deskripsi_tugas}}" required>
                                 </div>
                                 <div class="mb-3">
+                                    <label for="deadline_tugas" class="form-label">Tanggal Buka Kelas</label>
+                                    <input type="date" class="form-control" id="deadline_tugas" name="deadline_tugas" value="{{$tugasDiklat->deadline_tugas}}" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="modul_id" class="form-label">Tugas Modul Ke</label>
+                                    <select name="modul_id" id="modul_id" class="form-control" required>
+                                        <option value="" disabled selected>-- Pilih Modul --</option>
+                                        @foreach ($modulDiklat as $item)
+                                            <option value="{{ $item->id }}" {{$tugasDiklat->modul_id == $item->id ? 'selected' : ''}}>{{ $item->judul_modul }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="status_tugas" class="form-label">Status Tugas</label>
+                                    <select name="status_tugas" id="status_tugas" class="form-control" required>
+                                        <option value="" disabled selected>-- Pilih Status --</option>
+                                        <option value="1" {{$tugasDiklat->status_tugas == 1 ? 'selected' : ''}}> Aktif</option>
+                                        <option value="0" {{$tugasDiklat->status_tugas == 0 ? 'selected' : ''}}> Non Aktif</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
                                     <label for="file_tugas" class="form-label">File tugas</label>
                                     <input type="file" class="form-control" id="file_tugas" name="file_tugas" value="{{$tugasDiklat->file_tugas}}">
                                 </div>

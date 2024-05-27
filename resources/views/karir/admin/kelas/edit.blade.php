@@ -25,6 +25,18 @@
                                     <label for="deskripsi_kelas" class="form-label">Deskripsi</label>
                                     <input type="text" class="form-control" id="deskripsi_kelas" name="deskripsi_kelas" value="{{$kelasDiklat->deskripsi_kelas}}" required>
                                 </div>
+                                <div class="mb-3">
+                                    <label for="status_kelas" class="form-label">Status Kelas</label>
+                                    <select name="status_kelas" id="status_kelas" class="form-control" required>
+                                        <option value="" disabled selected>-- Pilih Status --</option>
+                                        <option value="1" {{$kelasDiklat->status_kelas == 1 ? 'selected' : ''}}> Aktif</option>
+                                        <option value="0" {{$kelasDiklat->status_kelas == 0 ? 'selected' : ''}}> Non Aktif</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="tgl_buka_kelas" class="form-label">Tanggal Buka Kelas</label>
+                                    <input type="date" class="form-control" id="tgl_buka_kelas" name="tgl_buka_kelas" value="{{$kelasDiklat->tgl_buka_kelas}}" required>
+                                </div>
                                 <button type="submit" class="btn btn-primary">Submit</button>
                             </form>
                         </div>

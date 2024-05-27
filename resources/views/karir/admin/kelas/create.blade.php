@@ -13,17 +13,29 @@
                         <div class="card-body">
                             <form action="{{route('admin.store_kelas')}}" method="POST">
                                 @csrf
-                                <div class="mb-3">
-                                    <label for="pertemuan" class="form-label">Pertemuan</label>
+                                <div class="d-flex mb-3">
+                                    <label for="pertemuan" class="col-3 mt-2 form-label">Pertemuan</label>
                                     <input type="number" class="form-control" id="pertemuan" name="pertemuan" required>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="forum_link" class="form-label">Link</label>
+                                <div class="d-flex mb-3">
+                                    <label for="forum_link" class="col-3 mt-2 form-label">Link</label>
                                     <input type="text" class="form-control" id="forum_link" name="forum_link" required>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="deskripsi_kelas" class="form-label">Deskripsi</label>
+                                <div class="d-flex mb-3">
+                                    <label for="deskripsi_kelas" class="col-3 mt-2 form-label">Deskripsi</label>
                                     <input type="text" class="form-control" id="deskripsi_kelas" name="deskripsi_kelas" required>
+                                </div>
+                                <div class="d-flex mb-3">
+                                    <label for="status_kelas" class="col-3 mt-2 form-label">Status Kelas</label>
+                                    <select name="status_kelas" id="status_kelas" class="form-control" required>
+                                        <option value="" disabled selected>-- Pilih Status --</option>
+                                        <option value="1"> Aktif</option>
+                                        <option value="0"> Non Aktif</option>
+                                    </select>
+                                </div>
+                                <div class="d-flex mb-3">
+                                    <label for="tgl_buka_kelas" class="col-3 mt-2 form-label">Tanggal Buka Kelas</label>
+                                    <input type="date" class="form-control" id="tgl_buka_kelas" name="tgl_buka_kelas" required>
                                 </div>
                                 <button type="submit" class="btn btn-primary">Submit</button>
                             </form>

@@ -22,6 +22,27 @@
                                     <input type="text" class="form-control" id="deskripsi_tugas" name="deskripsi_tugas" required>
                                 </div>
                                 <div class="mb-3">
+                                    <label for="modul_id" class="form-label">Tugas dari Modul Ke</label>
+                                    <select name="modul_id" id="modul_id" class="form-control" required>
+                                        <option value="" disabled selected>-- Pilih Modul --</option>
+                                        @foreach ($modulDiklat as $item)
+                                            <option value="{{ $item->id }}">{{ $item->judul_modul }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="deadline_tugas" class="form-label">Batas Tanggal Pengumpulan</label>
+                                    <input type="date" class="form-control" id="deadline_tugas" name="deadline_tugas" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="status_tugas" class="form-label">Status tugas</label>
+                                    <select name="status_tugas" id="status_tugas" class="form-control" required>
+                                        <option value="" disabled selected>-- Pilih Status --</option>
+                                        <option value="1"> Aktif</option>
+                                        <option value="0"> Non Aktif</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
                                     <label for="file_tugas" class="form-label">File tugas</label>
                                     <input type="file" class="form-control" id="file_tugas" name="file_tugas" required>
                                 </div>
