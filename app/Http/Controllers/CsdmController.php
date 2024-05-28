@@ -18,7 +18,7 @@ class CsdmController extends Controller
      */
     public function index()
     {
-        $csdm = User::all();
+        $csdm = User::get_user_csdm();
         return view('karir.admin.csdm.index', compact('csdm'));
     }
 

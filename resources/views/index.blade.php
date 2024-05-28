@@ -313,7 +313,7 @@
                 <img src="{{ asset('assets/images/icon-jenjang.png') }}" class="center" alt="logo program" width="3%">
                 <h6 class="mt-1" style="color: #ED145B">Media Sosial Sekolah Rabbani</h6>
                 <h4 class="mb-3">Follow us</h4>
-                <img src="{{ asset('assets/images/instagram-2.png') }}" class="icon-sosial" alt="logo ig" width="5%">
+                <a href="https://www.instagram.com/sekolahrabbani/" target="_blank" ><img src="{{ asset('assets/images/instagram-2.png') }}" class="icon-sosial" alt="logo ig" width="5%"></a>
             </div>
         </div>
     </div>

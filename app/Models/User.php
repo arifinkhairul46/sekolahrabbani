@@ -92,4 +92,11 @@ class User extends Authenticatable
 
         return $data;
     }
+
+    public static function get_user_csdm () {
+        $data = static::whereIn('id_role', [1,2,3])   
+                ->get();
+
+        return $data;
+    }
 }
