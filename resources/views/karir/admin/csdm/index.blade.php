@@ -20,12 +20,9 @@
                                     <thead>
                                         <tr>
                                             <th scope="col">No</th>
-                                            <th scope="col">Nama Lengkap</th>
-                                            <th scope="col">Jenis Kelamin</th>
-                                            <th scope="col">Tempat, Tanggal Lahir</th>
-                                            <th scope="col">Domisili saat ini</th>
-                                            <th scope="col">Posisi lamaran</th>
-                                            <th scope="col">Foto Profile</th>
+                                            <th scope="col">Kode CSDM</th>
+                                            <th scope="col">Nama</th>
+                                            <th scope="col">Email</th>
                                             <th scope="col">Aksi</th>
                                         </tr>
                                     </thead>
@@ -33,12 +30,9 @@
                                         @foreach ($csdm as $item)
                                             <tr>
                                                 <th scope="row">{{$loop->iteration}}</th>
-                                                <td>{{$item->nama_lengkap}}</td>
-                                                <td>{{$item->jenis_kelamin == 1 ? 'Ikhwan' : 'Akhwat'}}</td>
-                                                <td>{{$item->tempat_lahir}}, {{$item->tgl_lahir}} </td>
-                                                <td>{{$item->domisili_sekarang}}</td>
-                                                <td>{{$item->posisi_lamaran}}</td>
-                                                <td>{{$item->foto_profile}}</td>
+                                                <td>{{$item->kode_csdm}}</td>
+                                                <td>{{$item->name}}</td>
+                                                <td>{{$item->email}}</td>
                                                 <td class="d-flex">
                                                     <a href="{{route('admin.edit_csdm', $item->id)}}" class="btn btn-sm btn-warning" title="edit"><i class="fa-solid fa-pencil"></i></a>
                                                     <form action="{{route('admin.delete_csdm', $item->id)}}" method="post">

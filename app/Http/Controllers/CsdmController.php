@@ -18,7 +18,7 @@ class CsdmController extends Controller
      */
     public function index()
     {
-        $csdm = csdm::all();
+        $csdm = User::all();
         return view('karir.admin.csdm.index', compact('csdm'));
     }
 
@@ -76,9 +76,10 @@ class CsdmController extends Controller
      * @param  \App\Models\Csdm  $csdm
      * @return \Illuminate\Http\Response
      */
-    public function edit(Csdm $csdm)
+    public function edit(Csdm $csdm, $id)
     {
-        //
+        $user_csdm = User::find($id);
+        return view('karir.admin.csdm.edit', compact('user_csdm'));
     }
 
     /**
@@ -88,9 +89,24 @@ class CsdmController extends Controller
      * @param  \App\Models\Csdm  $csdm
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Csdm $csdm)
+    public function update(Request $request, Csdm $csdm, $id)
     {
-        //
+        $request->validate([
+            'kode_csdm' => 'required',
+            'name' => 'required',
+            'email' => 'required',
+            'password' => 'required',
+        ]);
+
+        User::find($id)->update([
+            'kode_csdm' => $request->kode_csdm,
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+
+        return redirect()->route('karir.admin.csdm')
+            ->with('success', 'User Csdm updated successfully.');
     }
 
     /**
