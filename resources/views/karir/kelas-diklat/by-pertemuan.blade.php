@@ -30,13 +30,17 @@
                                 <div class="tab-pane fade show active" id="nav-forum" role="tabpanel" aria-labelledby="nav-forum-tab" tabindex="0">
                                     <p class="mt-3">Tanggal mulai sesi ini : {{$item->tgl_buka_kelas}} </p>
                                     <p class="mt-3">Deskripsi : {{$item->deskripsi_kelas}} </p>
-                                    <p class="mt-3">Link sesi ini : <a href="{{$item->forum_link}}" target="_blank"> {{$item->forum_link}} </a></p>
+                                    @if ($item->tgl_buka_kelas < date('Y-m-d'))
+                                        <p class="mt-3">Link sesi ini : <a href="#" style="text-decoration: none"> Kelas sudah terlewati </a></p>
+                                    @else 
+                                        <p class="mt-3">Link sesi ini : <a href="{{$item->forum_link}}" target="_blank"> {{$item->forum_link}} </a></p>
+                                    @endif
                                 </div>
                                 <div class="tab-pane fade" id="nav-modul" role="tabpanel" aria-labelledby="nav-modul-tab" tabindex="0">
                                     <h5 class="mt-3">Judul Modul</h5>
                                     <p class="mt-3">Deskripsi Modul {{$item->modul[0]->id}} </p>
                                     <p> Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quidem vitae soluta quod. Odit eius ipsum dicta iste, autem blanditiis fugit quaerat dolore accusamus error quos dolorum sed. Hic, vel ipsam?</p>
-                                    <a href="{{route('download_modul', $item->id)}}" class="btn btn-primary">Download Modul</a>
+                                    <a href="{{route('download_modul', $item->id)}}" class="btn btn-primary btn-modul">Download Modul</a>
                                     
                                 </div>
                                 <div class="tab-pane fade" id="nav-tugas" role="tabpanel" aria-labelledby="nav-tugas-tab" tabindex="0">
@@ -48,8 +52,13 @@
                                     <p> Terakhir diupload : <i> {{$item->updated_at}} </i> </p>
 
                                     <div class="d-flex">
-                                        <a href="{{route('download_tugas', $item->id)}}" class="btn btn-primary mx-2">Download Tugas</a>
-                                        <button type="button" class="btn btn-warning" style="border-radius: 1rem" data-bs-toggle="modal" data-bs-target="#upload_tugas">Upload Tugas</button>
+                                        @if($item->modul[0]->tugas->deadline_tugas < date('Y-m-d'))
+                                            <a href="/" class="btn btn-primary mx-2" onclick="return false" >Download Tugas</a>                                                
+                                            <button type="button" class="btn btn-warning" style="border-radius: 1rem" data-bs-toggle="modal" data-bs-target="#upload_tugas" disabled>Upload Tugas</button>
+                                        @else
+                                            <a href="{{route('download_tugas', $item->id)}}" class="btn btn-primary mx-2">Download Tugas</a>
+                                            <button type="button" class="btn btn-warning" style="border-radius: 1rem" data-bs-toggle="modal" data-bs-target="#upload_tugas">Upload Tugas</button>
+                                        @endif
                                     </div>
                                 </div>
                                 </div>
