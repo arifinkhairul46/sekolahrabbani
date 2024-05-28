@@ -189,7 +189,7 @@ class TugasDiklatController extends Controller
         $zip = new ZipArchive;
         $zipFile = 'kumpulan_tugas.zip';
 
-        if ($zip->open(public_path($zipFile), \ZipArchive::CREATE) === TRUE)
+        if ($zip->open(public_path('storage/'.$zipFile), \ZipArchive::CREATE) === TRUE)
         {
             foreach ($files as $key => $value) {
                 $relativeName = basename($value);
@@ -199,7 +199,7 @@ class TugasDiklatController extends Controller
             $zip->close();
         }
 
-        return response()->download(public_path($zipFile));
+        return response()->download(public_path('storage/'.$zipFile));
 
 
     }
