@@ -75,9 +75,14 @@
                                     </div>
                                 </div>
                                 <div class="form-group row mb-3">
-                                    <label for ="foto_profile" class="col-sm-2 col-form-label">Foto Profile</label>
+                                    <label for ="foto_profile" class="col-sm-2 col-form-label mt-3">Foto Profile</label>
                                     <div class="col-sm-8">
-                                        <input type="file" class="form-control" id="foto_profile" name="foto_profile" value="{{$user->csdm != null ? $user->csdm->foto_profile : ''}}" >
+                                        @if ($user->csdm->foto_profile)
+                                            <img src="{{asset('storage/'. $user->csdm->foto_profile)}}" class="img-preview img-fluid mb-3" style="width: 20%">
+                                        @else
+                                            <img class="img-preview img-fluid mb-3 col-sm-5">
+                                        @endif
+                                        <input type="file" class="form-control" id="foto_profile" name="foto_profile" onchange="previewImage()" >
                                     </div>
                                 </div>
                                 <div class="d-flex" style="justify-content: flex-end">
@@ -91,4 +96,23 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function previewImage() {
+            const image = document.querySelector('#foto_profile');
+            const imgPreview = document.querySelector('.img-preview');
+
+            imgPreview.style.display = 'block';
+            imgPreview.style.width = '20%';
+
+
+            const ofReader = new FileReader();
+            ofReader.readAsDataURL(image.files[0]);
+
+            ofReader.onload = function(oFREvent) {
+                imgPreview.src = oFREvent.target.result
+            }
+        }
+    </script>
+    
 @endsection
