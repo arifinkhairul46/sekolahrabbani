@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Csdm;
+use App\Models\JadwalKontrak;
 use App\Models\Karir;
 use App\Models\NilaiDiklat;
 use App\Models\User;
@@ -170,6 +171,13 @@ class KarirController extends Controller
         $nilai_diklat = NilaiDiklat::where('id_profile_csdm', $id)->first();
         // dd($nilai_diklat);
         return view('karir.profile.nilai', compact('nilai_diklat'));
+        
+    }
+
+    public function jadwal_kontrak() {
+        $jadwal_kontrak = JadwalKontrak::all();
+        // dd($jadwal_kontrak);
+        return view('karir.profile.jadwal', compact('jadwal_kontrak'));
         
     }
 

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CsdmController;
 use App\Http\Controllers\GoogleController;
+use App\Http\Controllers\JadwalKontrakController;
 use App\Http\Controllers\KarirController;
 use App\Http\Controllers\KelasDiklatController;
 use App\Http\Controllers\ModulDiklatController;
@@ -9,6 +10,7 @@ use App\Http\Controllers\NilaiDiklatController;
 use App\Http\Controllers\PendaftaranController;
 use App\Http\Controllers\PosisiLamaranController;
 use App\Http\Controllers\TugasDiklatController;
+use App\Models\JadwalKontrak;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 
@@ -67,6 +69,9 @@ Route::prefix('karir')->group(function () {
 
     Route::get('/nilai/{id}', [KarirController::class, 'get_nilai'])->name('karir.nilai');
     Route::get('/nilai/download/{id}', [KarirController::class, 'download_nilai'])->name('download_nilai');
+
+    Route::get('/jadwal-kontrak', [KarirController::class, 'jadwal_kontrak'])->name('karir.jadwal');
+
     
     Route::group(['middleware' =>['auth', 'admin']], function () {
         Route::prefix('admin')->group(function () {
@@ -113,7 +118,9 @@ Route::prefix('karir')->group(function () {
             Route::delete('/nilai/{id}', [NilaiDiklatController::class, 'destroy'])->name('admin.delete_nilai');
             Route::post('/nilai/upload', [NilaiDiklatController::class, 'upload_nilai'])->name('upload_nilai');
     
-    
+            Route::get('/jadwal-kontrak', [JadwalKontrakController::class, 'index'])->name('karir.admin.jadwal');
+            Route::post('/jadwal-kontrak/upload', [JadwalKontrakController::class, 'upload_jadwal_kontrak'])->name('upload_jadwal_kontrak');
+
             Route::get('/csdm', [CsdmController::class, 'index'])->name('karir.admin.csdm');
             Route::get('/csdm/create', [CsdmController::class, 'create'])->name('admin.create_csdm');
             Route::post('/csdm/create', [CsdmController::class, 'store'])->name('admin.store_csdm');

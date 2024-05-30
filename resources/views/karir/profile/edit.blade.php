@@ -77,6 +77,7 @@
                                 <div class="form-group row mb-3">
                                     <label for ="foto_profile" class="col-sm-2 col-form-label mt-3">Foto Profile</label>
                                     <div class="col-sm-8">
+                                        <input type="hidden" name="oldImage" value="{{$user->csdm->foto_profile}}">
                                         @if ($user->csdm->foto_profile)
                                             <img src="{{asset('storage/'. $user->csdm->foto_profile)}}" class="img-preview img-fluid mb-3" style="width: 20%">
                                         @else

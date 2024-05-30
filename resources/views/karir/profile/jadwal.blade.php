@@ -9,13 +9,9 @@
                     <div class="card">
                         <div class="card-body mb-3">
                             <div class="d-flex">
-                                <h3 >Hasil Nilai</h3>
-                            </div>
-                            @if ($nilai_diklat == null)
-                            <p> Anda Belum Memiliki Hasil Penilaian, Silahkan Hubungi Tim HCD </p>
-                            @else 
-                            <p> Lihat Disini: <a href="{{route('download_nilai', $nilai_diklat->id_profile_csdm)}}" target="_blank"> Hasil Diklat - {{$nilai_diklat->kode_csdm}} </a> </p>
-                            @endif
+                                <h3 >Jadwal Kontrak</h3>
+                            </div>                          
+                            <p> Lihat Disini: <a href="#" target="_blank"> Jadwal Kontrak </a> </p>
                         </div>
                     </div>
                 </div>
