@@ -53,6 +53,7 @@ class CsdmController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'id_role' => 3
         ]);
 
         return redirect()->route('karir.admin.csdm')
