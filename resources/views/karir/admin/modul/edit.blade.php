@@ -40,6 +40,10 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="file_modul" class="form-label">File Modul</label>
+                                    @if($modulDiklat->file_modul)
+                                        <a href="{{route('download_modul_master', $modulDiklat->id)}}" class="btn btn-sm btn-warning" title="download"><i class="fa-solid fa-download"></i> {{$modulDiklat->file_modul}}</a>
+                                        <input type="hidden" class="form-control" id="file_modul_prev" name="file_modul_prev" value="{{$modulDiklat->file_modul}}">
+                                    @endif
                                     <input type="file" class="form-control" id="file_modul" name="file_modul" value="{{$modulDiklat->file_modul}}">
                                 </div>
                                 <button type="submit" class="btn btn-primary">Submit</button>
