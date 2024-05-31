@@ -60,7 +60,7 @@
                                     @endif
 
                                     <div class="d-flex">
-                                        @if($item->modul[0]->tugas->deadline_tugas < date('Y-m-d'))
+                                        @if($item->modul[0]->tugas->deadline_tugas < date('Y-m-d') || $item->modul[0]->tugas->status_tugas == 0)
                                             <a href="/" class="btn btn-primary mx-2" onclick="return false" >Download Tugas</a>                                          
                                             <button type="button" class="btn btn-warning" style="border-radius: 1rem" data-bs-toggle="modal" data-bs-target="#upload_tugas" disabled>Upload Tugas</button>
                                         @else
