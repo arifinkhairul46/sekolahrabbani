@@ -97,6 +97,7 @@ Route::prefix('karir')->group(function () {
             Route::get('/modul/{id}', [ModulDiklatController::class, 'edit'])->name('admin.edit_modul');
             Route::put('/modul/{id}', [ModulDiklatController::class, 'update'])->name('admin.update_modul');
             Route::delete('/modul/{id}', [ModulDiklatController::class, 'destroy'])->name('admin.delete_modul');
+            Route::get('/modul/download/{id}', [ModulDiklatController::class, 'download_modul_master'])->name('download_modul_master');
     
             Route::get('/tugas', [TugasDiklatController::class, 'index'])->name('karir.admin.tugas');
             Route::get('/tugas/create', [TugasDiklatController::class, 'create'])->name('admin.create_tugas');

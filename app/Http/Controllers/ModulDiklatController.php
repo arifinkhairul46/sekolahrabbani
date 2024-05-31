@@ -106,19 +106,18 @@ class ModulDiklatController extends Controller
     {
         $request->validate([
             'judul_modul' => 'required',
-            'file_modul' => 'required',
             'kelas_diklat_id' => 'required'
         ]);
 
         $file = null;
-        $file_url = null;
+        $file_url = $request->file_modul_prev;
         $path = 'modul';
         if ($request->has('file_modul')) {
             $file = $request->file('file_modul')->store($path);
             $file_name = $request->file('file_modul')->getClientOriginalName();
             $file_url = $path . '/' . $file_name;
             Storage::disk('public')->put($file_url, file_get_contents($request->file('file_modul')->getRealPath()));
-        } else {
+        } else if ($request->file_modul_prev == null) {
             return redirect()->back()->with('failed', 'File tidak boleh kosong');
         }
 
@@ -147,5 +146,19 @@ class ModulDiklatController extends Controller
 
         return redirect()->route('karir.admin.modul')
             ->with('success', 'Modul Diklat deleted successfully');
+    }
+
+    public function download_modul_master($id)
+    {   
+        $modul = ModulDiklat::find($id);
+        
+        $file = public_path('storage/'.$modul->file_modul);
+        $name = 'modul-'.$modul->judul_modul.'.pdf';
+        
+        $headers = [
+            'Content-Type' => 'application/pdf',
+         ];
+
+        return response()->download($file, $name, $headers);
     }
 }
