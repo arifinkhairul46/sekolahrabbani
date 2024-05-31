@@ -45,6 +45,7 @@ class CsdmController extends Controller
             'kode_csdm' => 'required',
             'name' => 'required',
             'email' => 'required',
+            'no_hp' => 'required',
             'password' => 'required',
         ]);
 
@@ -52,6 +53,7 @@ class CsdmController extends Controller
             'kode_csdm' => $request->kode_csdm,
             'name' => $request->name,
             'email' => $request->email,
+            'no_hp' => $request->no_hp,
             'password' => Hash::make($request->password),
             'id_role' => 3
         ]);
@@ -96,6 +98,7 @@ class CsdmController extends Controller
             'kode_csdm' => 'required',
             'name' => 'required',
             'email' => 'required',
+            'no_hp' => 'required',
             'password' => 'required',
         ]);
 
@@ -103,6 +106,7 @@ class CsdmController extends Controller
             'kode_csdm' => $request->kode_csdm,
             'name' => $request->name,
             'email' => $request->email,
+            'no_hp' => $request->no_hp,
             'password' => Hash::make($request->password),
         ]);
 

@@ -26,6 +26,10 @@
                                     <input type="email" class="form-control" id="email" name="email" required>
                                 </div>
                                 <div class="mb-3">
+                                    <label for="no_hp" class="form-label">No Hp</label>
+                                    <input type="text" class="form-control" id="no_hp" name="no_hp" required>
+                                </div>
+                                <div class="mb-3">
                                     <label for="password" class="form-label">Password</label>
                                     <input type="text" class="form-control" id="password" name="password" required>
                                 </div>

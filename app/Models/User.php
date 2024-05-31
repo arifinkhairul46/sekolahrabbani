@@ -25,6 +25,7 @@ class User extends Authenticatable
         'google_id',
         'kode_csdm',
         'id_role',
+        'no_hp',
         'id_profile_csdm',
     ];
 

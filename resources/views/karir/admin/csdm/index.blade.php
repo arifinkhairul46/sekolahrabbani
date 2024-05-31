@@ -23,6 +23,7 @@
                                             <th scope="col">Kode CSDM</th>
                                             <th scope="col">Nama</th>
                                             <th scope="col">Email</th>
+                                            <th scope="col">No Hp</th>
                                             <th scope="col">Aksi</th>
                                         </tr>
                                     </thead>
@@ -33,6 +34,7 @@
                                                 <td>{{$item->kode_csdm}}</td>
                                                 <td>{{$item->name}}</td>
                                                 <td>{{$item->email}}</td>
+                                                <td>{{$item->no_hp}}</td>
                                                 <td class="d-flex">
                                                     <a href="{{route('admin.edit_csdm', $item->id)}}" class="btn btn-sm btn-warning" title="edit"><i class="fa-solid fa-pencil"></i></a>
                                                     <form action="{{route('admin.delete_csdm', $item->id)}}" method="post">
