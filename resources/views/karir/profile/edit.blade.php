@@ -53,25 +53,25 @@
                                 <div class="form-group row mb-3">
                                     <label for ="tempat_lahir" class="col-sm-2 col-form-label">Tempat Lahir</label>
                                     <div class="col-sm-8">
-                                        <input type="text" class="form-control" id="tempat_lahir" name="tempat_lahir" value="{{$user->csdm != null ? $user->csdm->tempat_lahir : ''}}" >
+                                        <input type="text" class="form-control" id="tempat_lahir" name="tempat_lahir" value="{{$user->csdm != null ? $user->csdm->tempat_lahir : ''}}" required >
                                     </div>
                                 </div>
                                 <div class="form-group row mb-3">
                                     <label for ="tgl_lahir" class="col-sm-2 col-form-label">Tanggal Lahir</label>
                                     <div class="col-sm-8">
-                                        <input type="date" class="form-control" id="tgl_lahir" name="tgl_lahir" value="{{$user->csdm != null ? $user->csdm->tgl_lahir : ''}}" >
+                                        <input type="date" class="form-control" id="tgl_lahir" name="tgl_lahir" value="{{$user->csdm != null ? $user->csdm->tgl_lahir : ''}}" required>
                                     </div>
                                 </div>
                                 <div class="form-group row mb-3">
                                     <label for ="posisi_dilamar" class="col-sm-2 col-form-label">Posisi Dilamar</label>
                                     <div class="col-sm-8">
-                                        <input type="text" class="form-control" id="posisi_dilamar" name="posisi_dilamar" value="{{$user->csdm != null ? $user->csdm->posisi_dilamar : ''}}" >
+                                        <input type="text" class="form-control" id="posisi_dilamar" name="posisi_dilamar" value="{{$user->csdm != null ? $user->csdm->posisi_dilamar : ''}}" required>
                                     </div>
                                 </div>
                                 <div class="form-group row mb-3">
                                     <label for ="domisili_sekarang" class="col-sm-2 col-form-label">Domisili Saat Ini</label>
                                     <div class="col-sm-8">
-                                        <input type="text" class="form-control" id="domisili_sekarang" name="domisili_sekarang" value="{{$user->csdm != null ? $user->csdm->domisili_sekarang:''}}" >
+                                        <input type="text" class="form-control" id="domisili_sekarang" name="domisili_sekarang" value="{{$user->csdm != null ? $user->csdm->domisili_sekarang:''}}" required>
                                     </div>
                                 </div>
                                 <div class="form-group row mb-3">
@@ -83,7 +83,7 @@
                                         @else
                                             <img class="img-preview img-fluid mb-3 col-sm-5">
                                         @endif
-                                        <input type="file" class="form-control" id="foto_profile" name="foto_profile" onchange="previewImage()" >
+                                        <input type="file" class="form-control" id="foto_profile" name="foto_profile" onchange="previewImage()" required>
                                     </div>
                                 </div>
                                 <div class="d-flex" style="justify-content: flex-end">
