@@ -9,7 +9,7 @@
                         <div class="card-body">
                             <nav class="nav flex-column nav-menu">
                                @foreach ($kelasDiklat as $item)
-                                    <a class="nav-link" href="{{route('karir.kelas_pertemuan', $item->pertemuan)}}">Pertemuan {{$item->pertemuan}}</a>
+                                    <a class="nav-link" href="{{route('karir.kelas_pertemuan', $item->id)}}">Pertemuan {{$item->pertemuan}}</a>
                                @endforeach
                             </nav>
                         </div>
