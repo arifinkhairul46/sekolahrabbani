@@ -194,6 +194,19 @@ class KarirController extends Controller
         return response()->download($file, $file_name, $headers);
     }
 
+    public function download_jadwal() {
+        $jadwal_kontrak = JadwalKontrak::where('status', 1)->first();
+        // dd($jadwal_kontrak);
+        $file = public_path('storage/'.$jadwal_kontrak->file);
+        $file_name = 'jadwal-'.$jadwal_kontrak->nama.'.pdf';
+        
+        $headers = [
+            'Content-Type' => 'application/pdf',
+         ];
+
+        return response()->download($file, $file_name, $headers);
+    }
+
     public function profile_by_id($id) {
         $user = Auth::user();
 

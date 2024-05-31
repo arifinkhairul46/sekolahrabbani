@@ -11,7 +11,7 @@
                             <div class="d-flex">
                                 <h3 >Jadwal Kontrak</h3>
                             </div>                          
-                            <p> Lihat Disini: <a href="#" target="_blank"> Jadwal Kontrak </a> </p>
+                            <p> Lihat Disini: <a href="{{route('download_jadwal')}}" target="_blank"> Jadwal Kontrak </a> </p>
                         </div>
                     </div>
                 </div>

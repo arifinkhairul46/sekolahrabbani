@@ -71,6 +71,7 @@ Route::prefix('karir')->group(function () {
     Route::get('/nilai/download/{id}', [KarirController::class, 'download_nilai'])->name('download_nilai');
 
     Route::get('/jadwal-kontrak', [KarirController::class, 'jadwal_kontrak'])->name('karir.jadwal');
+    Route::get('/jadwal-kontrak/download', [KarirController::class, 'download_jadwal'])->name('download_jadwal');
 
     
     Route::group(['middleware' =>['auth', 'admin']], function () {
