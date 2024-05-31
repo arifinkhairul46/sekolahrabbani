@@ -28,7 +28,7 @@
                             @foreach ($kelas_with_modul as $item)
                                 <div class="tab-content" id="nav-tabContent">
                                 <div class="tab-pane fade show active" id="nav-forum" role="tabpanel" aria-labelledby="nav-forum-tab" tabindex="0">
-                                    <p class="mt-3">Tanggal mulai sesi ini : {{$item->tgl_buka_kelas}} </p>
+                                    <p class="mt-3">Waktu mulai sesi ini : {{$item->tgl_buka_kelas}}, {{$item->jam_buka_kelas}} - {{$item->jam_selesai}} </p>
                                     <p class="mt-3">Deskripsi : {{$item->deskripsi_kelas}} </p>
                                     @if ($item->tgl_buka_kelas < date('Y-m-d'))
                                         <p class="mt-3">Link sesi ini : <a href="#" style="text-decoration: none"> Kelas sudah terlewati </a></p>
@@ -61,7 +61,7 @@
 
                                     <div class="d-flex">
                                         @if($item->modul[0]->tugas->deadline_tugas < date('Y-m-d'))
-                                            <a href="/" class="btn btn-primary mx-2" onclick="return false" >Download Tugas</a>                                                
+                                            <a href="/" class="btn btn-primary mx-2" onclick="return false" >Download Tugas</a>                                          
                                             <button type="button" class="btn btn-warning" style="border-radius: 1rem" data-bs-toggle="modal" data-bs-target="#upload_tugas" disabled>Upload Tugas</button>
                                         @else
                                             <a href="{{route('download_tugas', $item->id)}}" class="btn btn-primary mx-2">Download Tugas</a>

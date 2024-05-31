@@ -20,6 +20,7 @@
                                             <th scope="col">Pertemuan</th>
                                             <th scope="col">Link</th>
                                             <th scope="col">Deskripsi</th>
+                                            <th scope="col">Tanggal dan Jam</th>
                                             <th scope="col">Aksi</th>
                                         </tr>
                                     </thead>
@@ -30,6 +31,7 @@
                                                 <td>Pertemuan {{$item->pertemuan}}</td>
                                                 <td><a href="{{$item->forum_link}}" target="_blank"> {{$item->forum_link}} </a></td>
                                                 <td>{{$item->deskripsi_kelas}}</td>
+                                                <td>{{$item->tgl_buka_kelas}}, Jam : {{$item->jam_buka_kelas}} - {{$item->jam_selesai}}</td>
                                                 <td class="d-flex">
                                                     <a href="{{route('admin.edit_kelas', $item->id)}}" class="btn btn-sm btn-warning" title="edit"><i class="fa-solid fa-pencil"></i></a>
                                                     <form action="{{route('admin.delete_kelas', $item->id)}}" method="post">

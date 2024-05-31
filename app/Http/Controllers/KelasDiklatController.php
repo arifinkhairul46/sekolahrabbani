@@ -159,8 +159,8 @@ class KelasDiklatController extends Controller
 
     public function getDownloadTugas($id)
     {   
-        $tugasDiklat = TugasDiklat::find($id);
-        
+        $tugasDiklat = TugasDiklat::where('modul_id', $id)->where('status_tugas', 1)->first();
+        // dd($tugasDiklat);
         $file = public_path('storage/'.$tugasDiklat->file_tugas);
         
         $headers = [

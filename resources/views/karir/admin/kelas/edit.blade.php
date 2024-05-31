@@ -37,6 +37,14 @@
                                     <label for="tgl_buka_kelas" class="form-label">Tanggal Buka Kelas</label>
                                     <input type="date" class="form-control" id="tgl_buka_kelas" name="tgl_buka_kelas" value="{{$kelasDiklat->tgl_buka_kelas}}" required>
                                 </div>
+                                <div class="mb-3">
+                                    <label for="jam_buka_kelas" class="form-label">Jam Buka Kelas</label>
+                                    <input type="time" class="form-control" id="jam_buka_kelas" name="jam_buka_kelas"  value="{{$kelasDiklat->jam_buka_kelas}}" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="jam_selesai" class="form-label">Jam Selesai Kelas</label>
+                                    <input type="time" class="form-control" id="jam_selesai" name="jam_selesai"  value="{{$kelasDiklat->jam_selesai}}" required>
+                                </div>
                                 <button type="submit" class="btn btn-primary">Submit</button>
                             </form>
                         </div>

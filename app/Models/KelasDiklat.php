@@ -17,6 +17,7 @@ class KelasDiklat extends Model
         'deskripsi_kelas',
         'tgl_buka_kelas',
         'jam_buka_kelas',
+        'jam_selesai'
     ];
 
     public function modul()
