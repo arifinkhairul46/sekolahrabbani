@@ -131,8 +131,8 @@ class CsdmController extends Controller
 		// menangkap file excel
 		$file = $request->file('file');
 		$nama_file = rand().$file->getClientOriginalName();
-		$file->move('assets/file/user_csdm',$nama_file);
-		Excel::import(new UsersImport, public_path('assets/file/user_csdm/'.$nama_file));
+		$file->move('user_csdm',$nama_file);
+		Excel::import(new UsersImport, public_path('/user_csdm/'.$nama_file));
  
 		// alihkan halaman kembali
 		return redirect()->route('karir.admin.csdm');
