@@ -39,8 +39,11 @@
                                 <div class="tab-pane fade" id="nav-modul" role="tabpanel" aria-labelledby="nav-modul-tab" tabindex="0">
                                     <h5 class="mt-3">Judul Modul: {{$item->modul[0]->judul_modul}}</h5>
                                     <p class="mt-3">Deskripsi Modul : {{$item->modul[0]->deskripsi_modul}} </p>
-                                    <a href="{{route('download_modul', $item->modul[0]->kelas_diklat_id)}}" class="btn btn-primary btn-modul">Download Modul</a>
-                                    
+                                    @if ($item->modul[0]->status_modul == 1)
+                                        <a href="{{route('download_modul', $item->modul[0]->kelas_diklat_id)}}" class="btn btn-primary btn-modul">Download Modul</a>
+                                    @else
+                                        <a href="" onclick="return false" class="btn btn-primary btn-modul">Download Modul</a>
+                                    @endif
                                 </div>
                                 <div class="tab-pane fade" id="nav-tugas" role="tabpanel" aria-labelledby="nav-tugas-tab" tabindex="0">
                                     <h5 class="mt-3">Judul Tugas: {{$item->modul[0]->tugas->judul_tugas}} </h5>
