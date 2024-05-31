@@ -169,8 +169,8 @@ class KelasDiklatController extends Controller
 
     public function getDownloadModul($id)
     {
-        $modulDiklat = ModulDiklat::where('kelas_diklat_id', $id);
-        
+        $modulDiklat = ModulDiklat::where('kelas_diklat_id', $id)->first();
+        // dd($modulDiklat);
         $file = public_path('storage/'.$modulDiklat->file_modul);
         
         $headers = [

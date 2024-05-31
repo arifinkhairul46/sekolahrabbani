@@ -44,6 +44,10 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="file_tugas" class="form-label">File tugas</label>
+                                    @if($tugasDiklat->file_tugas)
+                                        <a href="{{route('download_modul_master', $tugasDiklat->id)}}" class="btn btn-sm btn-warning" title="download"><i class="fa-solid fa-download"></i> {{$tugasDiklat->file_tugas}}</a>
+                                        <input type="hidden" class="form-control" id="file_tugas_prev" name="file_tugas_prev" value="{{$tugasDiklat->file_tugas}}">
+                                    @endif
                                     <input type="file" class="form-control" id="file_tugas" name="file_tugas" value="{{$tugasDiklat->file_tugas}}">
                                 </div>
                                 <button type="submit" class="btn btn-primary">Submit</button>

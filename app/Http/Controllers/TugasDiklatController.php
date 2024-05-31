@@ -112,14 +112,14 @@ class TugasDiklatController extends Controller
         ]);
 
         $file = null;
-        $file_url = null;
+        $file_url = $request->file_tugas_prev;
         $path = 'tugas';
         if ($request->has('file_tugas')) {
             $file = $request->file('file_tugas')->store($path);
             $file_name = $request->file('file_tugas')->getClientOriginalName();
             $file_url = $path . '/' . $file_name;
             Storage::disk('public')->put($file_url, file_get_contents($request->file('file_tugas')->getRealPath()));
-        } else {
+        } else if ($request->file_tugas_prev == null) {
             return redirect()->back()->with('failed', 'File tidak boleh kosong');
         }
 
