@@ -87,9 +87,12 @@ class NilaiDiklatController extends Controller
      * @param  \App\Models\NilaiDiklat  $nilaiDiklat
      * @return \Illuminate\Http\Response
      */
-    public function destroy(NilaiDiklat $nilaiDiklat)
+    public function destroy(NilaiDiklat $nilaiDiklat, $id)
     {
-        //
+        NilaiDiklat::find($id)->delete();
+
+        return redirect()->route('karir.admin.nilai')
+            ->with('success', 'Nilai Diklat deleted successfully');
     }
 
     public function upload_nilai (Request $request) {

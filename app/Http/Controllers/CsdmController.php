@@ -116,10 +116,14 @@ class CsdmController extends Controller
      * @param  \App\Models\Csdm  $csdm
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Csdm $csdm)
+    public function destroy($id)
     {
-        //
+        User::where('id', $id)->delete();
+
+        return redirect()->route('karir.admin.csdm')
+            ->with('success', 'CSDM Diklat deleted successfully');
     }
+
 
     public function import_excel(Request $request) 
 	{
