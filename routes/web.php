@@ -64,6 +64,7 @@ Route::prefix('karir')->group(function () {
     Route::get('/kelas', [KelasDiklatController::class, 'index'])->name('karir.kelas');
     Route::get('/kelas/pertemuan/{pertemuan}', [KelasDiklatController::class, 'get_kelas_by_pertemuan_id'])->name('karir.kelas_pertemuan');
     Route::get('/kelas/tugas/download/{id}', [KelasDiklatController::class, 'getDownloadTugas'])->name('download_tugas');
+    Route::get('/kelas/tugas/download-upload/{id}', [KelasDiklatController::class, 'download_tugas_uploaded'])->name('download_tugas_uploaded');
     Route::post('/kelas/tugas/upload', [KelasDiklatController::class, 'upload_tugas'])->name('upload_tugas');
     Route::get('/kelas/modul/download/{id}', [KelasDiklatController::class, 'getDownloadModul'])->name('download_modul');
 
@@ -106,6 +107,8 @@ Route::prefix('karir')->group(function () {
             Route::get('/tugas/{id}', [TugasDiklatController::class, 'edit'])->name('admin.edit_tugas');
             Route::put('/tugas/{id}', [TugasDiklatController::class, 'update'])->name('admin.update_tugas');
             Route::delete('/tugas/{id}', [TugasDiklatController::class, 'destroy'])->name('admin.delete_tugas');
+            Route::get('/tugas/download/{id}', [TugasDiklatController::class, 'download_tugas_master'])->name('download_tugas_master');
+
     
             Route::get('/kumpul-tugas', [TugasDiklatController::class, 'kumpul_tugas'])->name('karir.admin.tugas_kumpul');
             Route::get('/kumpul-tugas/download/{id}', [TugasDiklatController::class, 'download_kumpulan_tugas'])->name('download_kumpulan_tugas');

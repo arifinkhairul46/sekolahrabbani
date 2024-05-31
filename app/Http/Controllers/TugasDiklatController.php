@@ -203,4 +203,18 @@ class TugasDiklatController extends Controller
 
 
     }
+
+    public function download_modul_master($id)
+    {   
+        $tugas = TugasDiklat::find($id);
+        
+        $file = public_path('storage/'.$tugas->file_tugas);
+        $name = 'tugas-'.$tugas->judul_tugas.'.pdf';
+        
+        $headers = [
+            'Content-Type' => 'application/pdf',
+         ];
+
+        return response()->download($file, $name, $headers);
+    }
 }

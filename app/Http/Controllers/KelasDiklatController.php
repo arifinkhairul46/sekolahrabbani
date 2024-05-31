@@ -92,13 +92,17 @@ class KelasDiklatController extends Controller
 
     public function get_kelas_by_pertemuan_id($pertemuan)
     {
+        $user = auth()->user();
         $kelasDiklat = KelasDiklat::get_kelas_aktif();
         $kelas_pertemuan = KelasDiklat::get_kelas_per_pertemuan($pertemuan);
         $tugasDiklat = TugasDiklat::all();
         $kelas_with_modul = KelasDiklat::get_kelas_with_modul($pertemuan);
-        // dd($kelas_with_modul);
+        $kumpul_tugas_by_id = PengumpulanTugas::where('tugas_id', $pertemuan)
+                                ->where('user_id', $user->id)
+                                ->first();
+        // dd($kumpul_tugas_by_id);
 
-        return view('karir.kelas-diklat.by-pertemuan', compact('kelas_pertemuan', 'kelasDiklat', 'tugasDiklat', 'kelas_with_modul'));
+        return view('karir.kelas-diklat.by-pertemuan', compact('kelas_pertemuan', 'kelasDiklat', 'tugasDiklat', 'kelas_with_modul', 'kumpul_tugas_by_id'));
     }
 
     public function admin_kelas()
@@ -226,5 +230,19 @@ class KelasDiklatController extends Controller
          ];
 
         return response()->download($file, 'modul_diklat.pdf', $headers);
+    }
+
+    public function download_tugas_uploaded($id)
+    {   
+        $kumpulan_tugas = PengumpulanTugas::where('tugas_id', $id)->first();
+        
+        $file = public_path('storage/'.$kumpulan_tugas->file);
+        $name = 'tugas-'.$kumpulan_tugas->kode_csdm.'.pdf';
+        
+        $headers = [
+            'Content-Type' => 'application/pdf',
+         ];
+
+        return response()->download($file, $name, $headers);
     }
 }

@@ -61,9 +61,12 @@ class NilaiDiklatController extends Controller
      * @param  \App\Models\NilaiDiklat  $nilaiDiklat
      * @return \Illuminate\Http\Response
      */
-    public function edit(NilaiDiklat $nilaiDiklat)
+    public function edit(NilaiDiklat $nilaiDiklat, $id)
     {
-        //
+        $nilaiDiklat = NilaiDiklat::where('id_profile_csdm', $id)->first();
+
+        return view('karir.admin.nilai.index', compact('nilaiDiklat'));
+
     }
 
     /**

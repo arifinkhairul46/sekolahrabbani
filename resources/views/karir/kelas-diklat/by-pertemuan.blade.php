@@ -47,7 +47,14 @@
                                     <p class="mt-3">Deskripsi Tugas: {{$item->modul[0]->tugas->deskripsi_tugas}} </p>
                                     <h6 class="mt-3"> Status Tugas </h6>
                                     <p> Waktu Pengumpulan : {{$item->modul[0]->tugas->deadline_tugas}} </p>
-                                    <p> Terakhir diupload : <i> {{$item->updated_at}} </i> </p>
+
+                                    @if ($kumpul_tugas_by_id != null)
+                                    <a href="{{route('download_tugas_uploaded', $kumpul_tugas_by_id->id)}}" class="btn btn-sm btn-warning" title="download"><i class="fa-solid fa-download"></i> {{$kumpul_tugas_by_id->file}}</a>
+                                    <input type="hidden" class="form-control" id="file_modul_prev" name="file_modul_prev" value="{{$kumpul_tugas_by_id->file}}">
+                                    <p> Terakhir diupload : <i> {{$kumpul_tugas_by_id->updated_at}} </i> </p>
+                                    @else
+                                    <p> Terakhir diupload : <i> - </i> </p>
+                                    @endif
 
                                     <div class="d-flex">
                                         @if($item->modul[0]->tugas->deadline_tugas < date('Y-m-d'))
