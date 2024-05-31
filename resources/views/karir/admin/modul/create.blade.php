@@ -26,7 +26,7 @@
                                     <select name="kelas_diklat_id" id="kelas_diklat_id" class="form-control" required>
                                         <option value="" disabled selected>-- Pilih Pertemuan --</option>
                                         @foreach ($kelasDiklat as $item)
-                                            <option value="{{ $item->pertemuan }}"> Pertemuan ke-{{ $item->pertemuan }}</option>
+                                            <option value="{{ $item->id }}"> Pertemuan ke-{{ $item->pertemuan }}</option>
                                         @endforeach
                                     </select>
                                 </div>

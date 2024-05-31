@@ -37,16 +37,14 @@
                                     @endif
                                 </div>
                                 <div class="tab-pane fade" id="nav-modul" role="tabpanel" aria-labelledby="nav-modul-tab" tabindex="0">
-                                    <h5 class="mt-3">Judul Modul</h5>
-                                    <p class="mt-3">Deskripsi Modul {{$item->modul[0]->id}} </p>
-                                    <p> Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quidem vitae soluta quod. Odit eius ipsum dicta iste, autem blanditiis fugit quaerat dolore accusamus error quos dolorum sed. Hic, vel ipsam?</p>
-                                    <a href="{{route('download_modul', $item->id)}}" class="btn btn-primary btn-modul">Download Modul</a>
+                                    <h5 class="mt-3">Judul Modul: {{$item->modul[0]->judul_modul}}</h5>
+                                    <p class="mt-3">Deskripsi Modul : {{$item->modul[0]->deskripsi_modul}} </p>
+                                    <a href="{{route('download_modul', $item->modul[0]->kelas_diklat_id)}}" class="btn btn-primary btn-modul">Download Modul</a>
                                     
                                 </div>
                                 <div class="tab-pane fade" id="nav-tugas" role="tabpanel" aria-labelledby="nav-tugas-tab" tabindex="0">
-                                    <h5 class="mt-3">Judul Tugas</h5>
-                                    <p class="mt-3">Deskripsi Tugas</p>
-                                    <p> Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quidem vitae soluta quod. Odit eius ipsum dicta iste, autem blanditiis fugit quaerat dolore accusamus error quos dolorum sed. Hic, vel ipsam?</p>
+                                    <h5 class="mt-3">Judul Tugas: {{$item->modul[0]->tugas->judul_tugas}} </h5>
+                                    <p class="mt-3">Deskripsi Tugas: {{$item->modul[0]->tugas->deskripsi_tugas}} </p>
                                     <h6 class="mt-3"> Status Tugas </h6>
                                     <p> Waktu Pengumpulan : {{$item->modul[0]->tugas->deadline_tugas}} </p>
                                     <p> Terakhir diupload : <i> {{$item->updated_at}} </i> </p>

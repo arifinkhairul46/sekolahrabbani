@@ -62,7 +62,9 @@ class ModulDiklatController extends Controller
         ModulDiklat::create([
             'judul_modul' => $request->judul_modul,
             'deskripsi_modul' => $request->deskripsi_modul,
-            'file_modul' => $file_url
+            'file_modul' => $file_url,
+            'kelas_diklat_id' => $request->kelas_diklat_id,
+            'status_modul' => $request->status_modul
         ]);
 
         return redirect()->route('karir.admin.modul')

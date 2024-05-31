@@ -21,7 +21,7 @@ class KelasDiklat extends Model
 
     public function modul()
     {
-        return $this->hasMany(ModulDiklat::class, 'id');
+        return $this->hasMany(ModulDiklat::class, 'kelas_diklat_id');
     }
 
     
