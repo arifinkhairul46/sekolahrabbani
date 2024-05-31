@@ -68,7 +68,7 @@
                         <select class="form-select" name="id_profile_csdm" aria-label="Default select example">
                             <option value="" selected disabled>--Pilih CSDM--</option>
                             @foreach($csdm as $item)
-                                <option value="{{$item->id}}"> {{$item->nama_lengkap}} </option>
+                                <option value="{{$item->id}}"> {{$item->name}} </option>
                             @endforeach
                         </select>
                         <br>
@@ -87,7 +87,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="edit_nilai" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    {{-- <div class="modal fade" id="edit_nilai" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <form method="post" action="{{route('upload_nilai')}}" enctype="multipart/form-data">
                 <div class="modal-content">
@@ -101,8 +101,8 @@
                         <label>Pilih CSDM</label>
                         <select class="form-select" name="id_profile_csdm" aria-label="Default select example">
                             <option value="" selected disabled>--Pilih CSDM--</option>
-                            @foreach($csdm as $item)
-                                <option value="{{$item->id}}"> {{$item->nama_lengkap}} </option>
+                            @foreach($user as $item)
+                                <option value="{{$item->id}}"> {{$item->name}} </option>
                             @endforeach
                         </select>
                         <br>
@@ -119,7 +119,7 @@
                 </div>
             </form>
         </div>
-    </div>
+    </div> --}}
 
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script>

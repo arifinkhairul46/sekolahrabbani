@@ -19,7 +19,8 @@ class NilaiDiklatController extends Controller
     {
         $nilaiDiklat = NilaiDiklat::get_nilai_with_profile();
         // dd($nilaiDiklat);
-        $csdm = Csdm::all();
+        $csdm = User::all();
+        // dd($csdm);
         return view('karir.admin.nilai.index', compact('nilaiDiklat', 'csdm'));
     }
 

@@ -9,7 +9,7 @@
                         <img src="{{ asset('assets/images/logo.png') }}" alt="logo" height="60px">
                     </div>
                     <div class="card-body">
-                        <h5 class="card-title my-4">Login CSDM</h5>
+                        <h5 class="card-title my-4">SIR YRA</h5>
                         <form action="{{ route('karir.login') }}" method="post">
                             @csrf
                             <div class="mb-3">
