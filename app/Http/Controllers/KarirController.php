@@ -143,9 +143,9 @@ class KarirController extends Controller
                         ->first();
 
             if ($user_csdm) {
-                $message = "Halo $user_csdm->nama Silahkan masuk ke https://sekolahrabbani.sch.id/karir/login dengan 
+                $message = "Halo $user_csdm->nama Silahkan masuk ke https://karir.sekolahrabbani.sch.id/karir dengan 
         ID : " . $user_csdm->email . "  
-        password : " . $user_csdm->password . "
+        password : " . $user_csdm->kode_csdm . "
                 
 *Mohon untuk tidak menyebarkan ID dan password ini kepada siapapun. Terima kasih.*";
                 $no_wha = $request->no_hp;
