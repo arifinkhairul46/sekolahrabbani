@@ -167,7 +167,7 @@ class KelasDiklatController extends Controller
             'Content-Type' => 'application/pdf',
          ];
 
-        return response()->download($file, 'tugas_diklat.pdf', $headers);
+        return response()->download($file);
         // return Storage::disk('public')->download($path, $name);
     }
 
@@ -181,7 +181,7 @@ class KelasDiklatController extends Controller
             'Content-Type' => 'application/pdf',
          ];
 
-        return response()->download($file, 'modul_diklat.pdf', $headers);
+        return response()->download($file);
     }
 
     public function upload_tugas (Request $request) {

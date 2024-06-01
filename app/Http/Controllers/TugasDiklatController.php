@@ -204,7 +204,7 @@ class TugasDiklatController extends Controller
 
     }
 
-    public function download_modul_master($id)
+    public function download_tugas_master($id)
     {   
         $tugas = TugasDiklat::find($id);
         
