@@ -165,13 +165,13 @@ class TugasDiklatController extends Controller
         $pengumpulan_tugas = PengumpulanTugas::find($id);
         // dd($pengumpulan_tugas);
         $file = public_path('storage/'.$pengumpulan_tugas->file);
-        $name = 'hasil-tugas-'.$pengumpulan_tugas->tugas_id.'-'.$pengumpulan_tugas->kode_csdm.'.pdf';
+        // $name = 'hasil-tugas-'.$pengumpulan_tugas->tugas_id.'-'.$pengumpulan_tugas->kode_csdm.'.pdf';
         
         $headers = [
             'Content-Type' => 'application/pdf',
          ];
 
-        return response()->download($file, $name, $headers);
+        return response()->download($file);
         // return Storage::disk('public')->download($path, $name);
     }
 

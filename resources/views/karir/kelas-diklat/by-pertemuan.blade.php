@@ -68,6 +68,7 @@
                                             <button type="button" class="btn btn-warning" style="border-radius: 1rem" data-bs-toggle="modal" data-bs-target="#upload_tugas">Upload Tugas</button>
                                         @endif
                                     </div>
+                                    <p class="mt-3 mr-3" style="font-size: 12px;"><i>notes: maksimal upload file 1 MB </i></p>
                                 </div>
                                 </div>
                             @endforeach
