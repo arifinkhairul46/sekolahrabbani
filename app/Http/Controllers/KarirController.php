@@ -127,7 +127,9 @@ class KarirController extends Controller
             } else {
                 return redirect()->route('karir.login')->with('error', 'ID atau password salah');
             }
-        } 
+        } else {
+            return redirect()->route('karir.login')->with('error', 'ID atau password salah');
+        }
     }
 
     public function store_verifikasi(Request $request) {
