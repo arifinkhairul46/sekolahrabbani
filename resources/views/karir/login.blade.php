@@ -15,8 +15,11 @@
                             <div class="mb-3">
                                 <input type="text" class="form-control" id="email" name="email" placeholder="ID">
                             </div>
-                            <div class="mb-3">
+                            <div class="">
                                 <input type="password" class="form-control" id="password" name="password" placeholder="password">
+                            </div>
+                            <div class="mb-3" style="text-align: left;">
+                                <input class="mt-3" type="checkbox" onclick="myFunction()"> Show Password
                             </div>
                             <div class="mb-3">
                                 {!! NoCaptcha::renderJs() !!}
@@ -38,4 +41,16 @@
             <br>
         </div>
     </div>
+
+    <script>
+        function myFunction() {
+            var x = document.getElementById("password");
+            if (x.type === "password") {
+                x.type = "text";
+            } else {
+                x.type = "password";
+            }
+        }
+    </script>
+
 @endsection
