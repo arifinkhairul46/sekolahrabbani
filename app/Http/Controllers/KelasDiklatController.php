@@ -99,6 +99,7 @@ class KelasDiklatController extends Controller
         $kelas_with_modul = KelasDiklat::get_kelas_with_modul($pertemuan);
         $kumpul_tugas_by_id = PengumpulanTugas::where('tugas_id', $pertemuan)
                                 ->where('user_id', $user->id)
+                                ->orderby('created_at', 'DESC')
                                 ->first();
         // dd($kumpul_tugas_by_id);
 
