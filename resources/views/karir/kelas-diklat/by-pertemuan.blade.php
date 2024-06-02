@@ -64,7 +64,7 @@
                                             <a href="/" class="btn btn-primary mx-2" onclick="return false" >Download Tugas</a>                                          
                                             <button type="button" class="btn btn-warning" style="border-radius: 1rem" data-bs-toggle="modal" data-bs-target="#upload_tugas" disabled>Upload Tugas</button>
                                         @else
-                                            <a href="{{route('download_tugas', $item->id)}}" class="btn btn-primary mx-2">Download Tugas</a>
+                                            <a href="{{route('download_tugas', $item->modul[0]->tugas->modul_id)}}" class="btn btn-primary mx-2">Download Tugas</a>
                                             <button type="button" class="btn btn-warning" style="border-radius: 1rem" data-bs-toggle="modal" data-bs-target="#upload_tugas">Upload Tugas</button>
                                         @endif
                                     </div>
