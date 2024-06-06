@@ -124,10 +124,22 @@ main {
     position: relative;
 }
 
+
 .cloud {
     position: absolute;
-    top: 10%;
+    top: 15.5%;
+    z-index: 1000;
+    width: 100%;
 }
+
+@media only screen and (max-width: 600px) {
+    .cloud {
+        position: absolute;
+        top: 2.5%;
+        z-index: 1000;
+        width: 100%;
+    }
+  }
 
 .bg-kb {
     background-color: #FCB415;
@@ -165,73 +177,113 @@ main {
 .star-1 {
     position: absolute;
     left: 25%;
-    bottom: 58%;
+    top: 46%;
 }
 
 .star-2 {
     position: absolute;
     right: 25%;
-    bottom: 58%;
+    top: 46%;
 }
 
 .star-3 {
     position: absolute;
     right: 10%;
-    bottom: 59%;
+    top: 46%;
 }
 
 .star-4 {
     position: absolute;
     left: 12%;
-    bottom: 59%;
+    top: 46%;
+}
+
+.star-1-profile {
+    position: absolute;
+    left: 25%;
+    bottom: 30%;
+}
+
+.star-2-profile {
+    position: absolute;
+    right: 25%;
+    bottom: 30%;
+}
+
+.star-3-profile {
+    position: absolute;
+    right: 10%;
+    bottom: 30%;
+}
+
+.star-4-profile {
+    position: absolute;
+    left: 12%;
+    bottom: 30%;
 }
 
 .star-5 {
     position: absolute;
     left: 20%;
-    bottom: 28%;
+    bottom: 20%;
 }
 
 .rocket {
     position: absolute;
     left: 15%;
-    bottom: 54%;
+    top: 48%;
 }
 
 .ufo {
     position: absolute;
     right: 15%;
-    bottom: 55%;
+    top: 48%;
+}
+
+.plane {
+    position: absolute;
+    left: 8%;
+}
+
+.puzzle {
+    position: absolute;
+    left: 45%;
+}
+
+.lamp {
+    position: absolute;
+    right: 8%;
+    top: -5%;
 }
 
 .bumi {
     position: absolute;
     left: 20%;
-    bottom: 39%;
+    bottom: 32%;
 }
 
 .komet {
     position: absolute;
     right: 14%;
-    bottom: 33%;
+    bottom: 26%;
 }
 
 .planet {
     position: absolute;
     right: 21%;
-    bottom: 28%;
+    bottom: 20%;
 }
 
 .perahu {
     position: absolute;
     left: 21%;
-    bottom: 10%;
+    bottom: 3%;
 }
 
 .ufo-2 {
     position: absolute;
     right: 21%;
-    bottom: 11%;
+    bottom: 4%;
 }
 
 .card-program {

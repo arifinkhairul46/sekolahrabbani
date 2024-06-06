@@ -35,8 +35,8 @@ Route::get('/home', function () {
     return view('index');
 });
 
-Route::get('/visi-misi', function () {
-    return view('profile.visi-misi');
+Route::get('/profile', function () {
+    return view('profile.index');
 });
 
 Route::get('/kurikulum', function () {

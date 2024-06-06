@@ -70,6 +70,6 @@
       
         <script src="{{ asset('assets/js/script.js') }}"></script>
     </div>
-    {{-- @include('layouts.footer.footer') --}}
+    @include('layouts.footer.footer')
 </body>
 </html>

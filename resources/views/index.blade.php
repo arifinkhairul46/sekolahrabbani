@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-
     <div class="container-fluid p-0 mb-5">
         <div id="header-carousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
             <div class="carousel-indicators">
@@ -46,34 +45,41 @@
                 <span class="visually-hidden">Next</span>
             </button>
         </div>
-        {{-- <div>
+        <div>
+            <img src="{{ asset('assets/images/awan1.png') }}" class="cloud"  alt="cloud">
             <img src="{{ asset('assets/images/awan2.png') }}" class="cloud"  alt="cloud">
-        </div> --}}
+        </div>
     </div>
-    <div class="container">
+    <div class="container-fluid" style="position: relative; z-index: 1000">
+        <div class="vector">
+            <img src="{{ asset('assets/images/plane.png') }}" class="plane" alt="icon plane" width="4%">
+            <img src="{{ asset('assets/images/puzzle.png') }}" class="puzzle" alt="icon plane" width="4%">
+            <img src="{{ asset('assets/images/lamp.png') }}" class="lamp" alt="icon plane" width="3%">
+        </div>
         <div class="row">
+            <div class="col-md-6">
+                <img src="{{ asset('assets/images/siswa_profile.png') }}" class="center dynamic" alt="logo" width="70%">
+            </div>
             <div class="col-md-5">
                 <div class="row">
-                    <h6>Kober - TK - SD - SMP</h6>
+                <h6 class="mt-1" style="color: #ED145B">Profil Sekolah Rabbani</h6>
                 </div>
                 <div class="row">
                     <h1> School of Qur'anic Leaderpreneur.</h1>
                 </div>
                 <div class="row">
-                    <p> Sekolah Rabbani dengan kurikulum khas Quranic Leaderpreneur (QLP) dirancang sebagai sekolah pencetak peserta didik yang mampu menjadi teladan dan memiliki jiwa pengusaha yang berbasis Al-Qur’an dan As-Sunnah. </p>
+                    <p style="text-align: justify"> Sekolah Rabbani dengan kurikulum khas Quranic Leaderpreneur (QLP) dirancang sebagai sekolah pencetak 
+                        peserta didik yang mampu menjadi teladan dan memiliki jiwa pengusaha yang berbasis Al-Qur’an dan As-Sunnah. </p>
                 </div>
-                <div class="row">
-                    <a href="#" class="btn btn-grad text-white">Daftar Sekarang</a>
+                <div>
+                    <a href="#" class="btn btn-primary text-white">Lanjut Baca</a>
                 </div>
-            </div>
-            <div class="col-md">
-                {{-- <img src="{{ asset('assets/images/siswa.png') }}" class="center dynamic" alt="logo" width="70%"> --}}
             </div>
         </div>
     </div>
 
     {{-- Jenjang --}}
-    <div class="jenjang-program ">
+    <div class="jenjang-program mt-5">
         <div class="container ">
             <div class="center">
                 <img src="{{ asset('assets/images/icon-jenjang.png') }}" class="center" alt="logo jenjang" width="3%">
@@ -315,51 +321,6 @@
                 <h4 class="mb-3">Follow us</h4>
                 <a href="https://www.instagram.com/sekolahrabbani/" target="_blank" ><img src="{{ asset('assets/images/instagram-2.png') }}" class="icon-sosial" alt="logo ig" width="5%"></a>
             </div>
-        </div>
-    </div>
-
-    {{-- Footer --}}
-    <div class="footer">
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <div class="container mt-5">
-            <div class="row">
-                <div class="col-md-3">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md">
-                    <div class="bg-logo mt-4" style="width: 25%">
-                        <img src="{{ asset('assets/images/logo.png') }}" class="center" alt="logo" width="100%">
-                    </div>
-                    <h6 class="text-white mt-3"> Yayasan Rabbani Asysa </h6>
-                    <p class="text-white text-sm"> Jl. Jati No. 5 RT 06 RW 01 Kelurahan Cisaranten Kulon Kec. Arcamanik, Bandung </p>
-                </div>
-                <div class="col-md-2 text-white mt-3">
-                    <h6> Halaman </h6>
-                    <a href="#" class="text-white" style="text-decoration: none"> Tentang Sekolah </a> <br>
-                    <a href="#" class="text-white" style="text-decoration: none"> Guru Karyawan </a> <br>
-                    <a href="#" class="text-white" style="text-decoration: none"> Sarana </a> <br>
-                    <a href="#" class="text-white" style="text-decoration: none"> Karir </a> <br>
-                </div>
-                <div class="col-md-2 text-white mt-3">
-                    <h6> Bantuan </h6>
-                    <a href="#" class="text-white" style="text-decoration: none"> Kebijakan Sekolah </a> <br>
-                    <a href="#" class="text-white" style="text-decoration: none"> FAQ </a> <br>
-                    <a href="#" class="text-white" style="text-decoration: none"> Kontak Kami </a> <br>
-                </div>
-                <div class="col-md text-white mt-3">
-                    <h6> Galeri </h6>
-                    <a href="#" class="text-white" style="text-decoration: none"> Tentang Sekolah </a> <br>
-                    <a href="#" class="text-white" style="text-decoration: none"> Guru Karyawan </a> <br>
-                    <a href="#" class="text-white" style="text-decoration: none"> Sarana </a> <br>
-                    <a href="#" class="text-white" style="text-decoration: none"> Karir </a> <br>
-                </div>
-            </div>
-           
         </div>
     </div>
 @endsection
