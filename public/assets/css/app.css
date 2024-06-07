@@ -125,19 +125,37 @@ main {
 }
 
 
-.cloud {
+.cloud-1 {
     position: absolute;
     top: 15.5%;
     z-index: 1000;
     width: 100%;
+    animation:
+    4s linear 0s infinite alternate toright;
+    
+}
+
+.cloud-2 {
+    position: absolute;
+    top: 15.5%;
+    z-index: 1000;
+    width: 100%;
+    
 }
 
 @media only screen and (max-width: 600px) {
-    .cloud {
+    .cloud-1 {
         position: absolute;
         top: 2.5%;
         z-index: 1000;
         width: 100%;
+    }
+
+    .cloud-2 {
+        position: absolute;
+        top: 2.5%;
+        z-index: 1000;
+        width: 102%;
     }
   }
 
@@ -201,31 +219,37 @@ main {
 .star-1-profile {
     position: absolute;
     left: 25%;
-    bottom: 30%;
+    top: 24%;
 }
 
 .star-2-profile {
     position: absolute;
     right: 25%;
-    bottom: 30%;
+    top: 24%;
 }
 
 .star-3-profile {
     position: absolute;
     right: 10%;
-    bottom: 30%;
+    top: 24%;
 }
 
 .star-4-profile {
     position: absolute;
     left: 12%;
-    bottom: 30%;
+    top: 24%;
 }
 
 .star-5 {
     position: absolute;
     left: 20%;
     bottom: 20%;
+}
+
+.star-5-profile {
+    position: absolute;
+    left: 20%;
+    bottom: 11%;
 }
 
 .rocket {
@@ -238,6 +262,24 @@ main {
     position: absolute;
     right: 15%;
     top: 48%;
+}
+
+.rocket-profile {
+    position: absolute;
+    left: 15%;
+    bottom: 22%;
+}
+
+.ufo-profile {
+    position: absolute;
+    right: 15%;
+    top: 33%;
+}
+
+.panah-profile {
+    position: absolute;
+    right: 20%;
+    top: 16%;
 }
 
 .plane {
@@ -272,6 +314,12 @@ main {
     position: absolute;
     right: 21%;
     bottom: 20%;
+}
+
+.planet-profile {
+    position: absolute;
+    right: 21%;
+    bottom: 11%;
 }
 
 .perahu {
@@ -351,3 +399,12 @@ main {
     height: 120px;
     width: 90px;
 }
+
+@keyframes toright {
+    from {
+      transform: translateX(1vw);
+    }
+    to {
+      transform: translateX(-1vw);
+    }
+  }

@@ -46,8 +46,8 @@
             </button>
         </div>
         <div>
-            <img src="{{ asset('assets/images/awan1.png') }}" class="cloud"  alt="cloud">
-            <img src="{{ asset('assets/images/awan2.png') }}" class="cloud"  alt="cloud">
+            <img src="{{ asset('assets/images/awan1.png') }}" class="cloud-1"  alt="cloud">
+            <img src="{{ asset('assets/images/awan2.png') }}" class="cloud-2"  alt="cloud">
         </div>
     </div>
     <div class="container-fluid" style="position: relative; z-index: 1000">
