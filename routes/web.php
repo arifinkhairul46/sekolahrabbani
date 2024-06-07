@@ -43,6 +43,10 @@ Route::get('/kurikulum', function () {
     return view('kurikulum.index');
 });
 
+Route::get('/humas', function () {
+    return view('humas.index');
+});
+
 Route::get('/clear-cache', function() {
     $exitCode = Artisan::call('cache:clear');
     // return what you want

@@ -22,7 +22,7 @@
                     <a class="nav-link" href="#">Kesiswaan</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Humas</a>
+                    <a class="nav-link" href="/humas">Humas</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{route('karir')}}">Karir</a>
