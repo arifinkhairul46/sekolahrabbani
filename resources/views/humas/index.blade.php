@@ -16,7 +16,7 @@
             <div class="col-md-6">
                 <h6 class="mt-1" style="color: #ED145B">Tanya Kami</h6>
                 <h4 class="mb-3">Formulir Pertanyaan</h4>
-                <span> Mohon Pertanyaan tidak mengandung unsur SARA terimakasih </span>
+                <span class="small"> Mohon Pertanyaan tidak mengandung unsur SARA terimakasih </span>
                 <div class="form-group mt-4">
                     <input class="form-control" id="nama" name="nama" placeholder="Nama Ayah/Bunda">
                 </div>

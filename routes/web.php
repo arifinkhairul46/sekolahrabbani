@@ -152,6 +152,10 @@ Route::prefix('karir')->group(function () {
 
 Route::prefix('pendaftaran')->group(function () {
     Route::get('/', [PendaftaranController::class, 'index'])->name('pendaftaran');
+    Route::get('/formulir', [PendaftaranController::class, 'form_pendaftaran'])->name('form.pendaftaran');
+    Route::post('/formulir', [PendaftaranController::class, 'store'])->name('store.pendaftaran');
+    Route::post('/get-jenjang', [PendaftaranController::class, 'get_jenjang'])->name('get_jenjang');
+    Route::post('/get-kelas', [PendaftaranController::class, 'get_kelas'])->name('get_kelas');
 });
 // Route::get('/login', function () {
 //     return view('auth.login');

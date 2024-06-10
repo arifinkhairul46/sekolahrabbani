@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="karir">
+    <div class="fasilitas">
         <div class="container">
             <div class="center my-3">
                <h1 style="color: #704996">Informasi Pendaftaran Sekolah Rabbani</h1>
@@ -18,8 +18,8 @@
                         </p>
                     </div>
                     <div class="d-flex justify-content-center">
-                        <a href="#" class="btn btn-primary">Pendaftaran Kober - TK - SD</a>
-                        <a href="http://smp.sekolahrabbani.sch.id" target="_blank" class="btn btn-blue mx-3">Pendaftaran SMP</a>
+                        <a href="{{route('form.pendaftaran')}}" class="btn btn-primary">Daftar Kober - TK - SD</a>
+                        <a href="http://smp.sekolahrabbani.sch.id" target="_blank" class="btn btn-blue mx-3">Daftar SMP</a>
                     </div>
                 </div>
             </div>

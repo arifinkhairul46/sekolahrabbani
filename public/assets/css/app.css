@@ -6,6 +6,7 @@ body {
     line-height: 1.5;
 }
 
+
 .dynamic {
     width: 100%;
     height: auto;
@@ -189,6 +190,14 @@ main {
         top: 2.5%;
         z-index: 1000;
         width: 102%;
+    }
+
+    .centered {
+        position: absolute;
+        top: 6%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-shadow: 4px 4px #624F8F;
     }
   }
 
