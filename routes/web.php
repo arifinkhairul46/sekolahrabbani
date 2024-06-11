@@ -9,6 +9,7 @@ use App\Http\Controllers\ModulDiklatController;
 use App\Http\Controllers\NilaiDiklatController;
 use App\Http\Controllers\PendaftaranController;
 use App\Http\Controllers\PosisiLamaranController;
+use App\Http\Controllers\TagihanController;
 use App\Http\Controllers\TugasDiklatController;
 use App\Models\JadwalKontrak;
 use Illuminate\Support\Facades\Route;
@@ -156,6 +157,10 @@ Route::prefix('pendaftaran')->group(function () {
     Route::post('/formulir', [PendaftaranController::class, 'store'])->name('store.pendaftaran');
     Route::post('/get-jenjang', [PendaftaranController::class, 'get_jenjang'])->name('get_jenjang');
     Route::post('/get-kelas', [PendaftaranController::class, 'get_kelas'])->name('get_kelas');
+});
+
+Route::prefix('api')->group(function () {
+    Route::post('/tagihan', [TagihanController::class, 'post_tagihan_siswa'])->name('post_tagihan_siswa');
 });
 // Route::get('/login', function () {
 //     return view('auth.login');
