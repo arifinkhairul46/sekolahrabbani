@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Tagihan;
 use Illuminate\Http\Request;
 
-class TagihanController extends Controller
+class DashboardController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +13,7 @@ class TagihanController extends Controller
      */
     public function index()
     {
-        //
+        return view('admin.dashboard');
     }
 
     /**
@@ -41,10 +40,10 @@ class TagihanController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Tagihan  $tagihan
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Tagihan $tagihan)
+    public function show($id)
     {
         //
     }
@@ -52,10 +51,10 @@ class TagihanController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Tagihan  $tagihan
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Tagihan $tagihan)
+    public function edit($id)
     {
         //
     }
@@ -64,10 +63,10 @@ class TagihanController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Tagihan  $tagihan
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Tagihan $tagihan)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -75,33 +74,11 @@ class TagihanController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Tagihan  $tagihan
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Tagihan $tagihan)
+    public function destroy($id)
     {
         //
-    }
-
-    public function get_tagihan_siswa (Request $request) {
-       $tagihan = $request->id_tagihan;
-    //    dd($tagihan);
-
-        return csrf_token();
-
-    }
-
-    public function post_tagihan_siswa (Request $request) {
-        $request->validate([
-            'id' => 'required',
-        ]);
-
-        Tagihan::create([
-            'id' => 12345,
-            'nis' => $request->nis,
-        ]);
-
-        return redirect()->back()->with('success', 'berhasil menambah api tagihan');
-
     }
 }

@@ -15,9 +15,9 @@
 <body>
     <div>
         <header>
-            @if (Route::currentRouteName() == 'login' || Route::currentRouteName() == 'karir' )
+            @if ( Route::currentRouteName() == 'karir' )
                 @include('layouts.navbars.no_menu')
-            @elseif (Route::currentRouteName() == 'karir.login' || Route::currentRouteName() == 'karir.verifikasi')
+            @elseif (Route::currentRouteName() == 'karir.login' || Route::currentRouteName() == 'karir.verifikasi' || Route::currentRouteName() == 'login' || Route::currentRouteName() == 'register')
                 @include('layouts.navbars.no_content')
             @else 
                 @include('layouts.navbars.navbar')
@@ -70,6 +70,10 @@
       
         <script src="{{ asset('assets/js/script.js') }}"></script>
     </div>
-    @include('layouts.footer.footer')
+    @if (Route::currentRouteName() == 'login' || Route::currentRouteName() == 'karir' || Route::currentRouteName() == 'register' )
+        @include('layouts.footer.no_footer')
+    @else
+        @include('layouts.footer.footer')
+    @endif
 </body>
 </html>

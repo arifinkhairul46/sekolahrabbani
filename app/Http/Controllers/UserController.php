@@ -18,12 +18,12 @@ class UserController extends Controller
     {
         try {
             $request->validate([
-                'username' => 'required',
+                'email' => 'required',
                 'password' => 'required',
             ]);
 
 
-            $user  = User::where('username', $request->username)->first();
+            $user  = User::where('email', $request->email)->first();
 
             if ($user) {
                 if (Hash::check($request->password, $user->password)) {
@@ -31,7 +31,7 @@ class UserController extends Controller
 
                     Auth::login($user);
 
-                    return redirect()->intended('home');
+                    return redirect()->route('dashboard');
                 }
             }
 

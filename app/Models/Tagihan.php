@@ -10,4 +10,13 @@ class Tagihan extends Model
     use HasFactory;
     protected $table = 't_tagihan';
     protected $primaryKey = 'id';
+
+    protected $fillable = [
+       'id', 
+       'nis',
+       'jenis_penerimaan',
+       'tahun',
+       'tgl_tagihan',
+       'nilai_tagihan'
+    ];
 }

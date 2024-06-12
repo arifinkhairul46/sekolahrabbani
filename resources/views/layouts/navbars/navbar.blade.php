@@ -31,7 +31,7 @@
                     <a class="nav-link text-white" style="background-color: #624F8F; border-radius: 1rem" href="{{route('pendaftaran')}}">Info Pendaftaran</a>
                 </li>
             </ul>
-            <ul class="navbar-nav mt-2 mt-lg-0" style="margin-left: auto; display:none">
+            <ul class="navbar-nav mt-2 mt-lg-0" style="margin-left: auto;">
                 <li class="nav-item mr-2 mb-3 mb-lg-0">
                     <a class="nav-link" href="/login">Login</a>
                 </li>

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CsdmController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\JadwalKontrakController;
 use App\Http\Controllers\KarirController;
@@ -58,6 +59,12 @@ Route::controller(GoogleController::class)->group(function () {
     Route::get('/auth/google', 'redirectToGoogle')->name('auth.google');
     Route::get('/auth/google/callback', 'handleGoogleCallback');
 });
+
+Route::group(['middleware' =>['auth', 'admin']], function () {
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+});
+
 
 Route::prefix('karir')->group(function () {
     Route::get('/', [KarirController::class, 'index'])->name('karir');
@@ -160,12 +167,6 @@ Route::prefix('pendaftaran')->group(function () {
 });
 
 Route::prefix('api')->group(function () {
+    Route::get('/tagihan', [TagihanController::class, 'get_tagihan_siswa'])->name('get_tagihan_siswa');
     Route::post('/tagihan', [TagihanController::class, 'post_tagihan_siswa'])->name('post_tagihan_siswa');
 });
-// Route::get('/login', function () {
-//     return view('auth.login');
-// });
-
-// Route::get('/register', function () {
-//     return view('auth.register');
-// });
