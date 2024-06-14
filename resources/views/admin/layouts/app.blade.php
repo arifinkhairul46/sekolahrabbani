@@ -10,13 +10,12 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script> --}}
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet"  type='text/css'>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css"  />
-    <link rel="shortcut icon" href="../assets/images/favicon.ico">
       
     <!-- Library / Plugin Css Build -->
     <link rel="stylesheet" href="{{ asset('assets/css/core/libs.min.css')}}">
     
     <!-- Aos Animation Css -->
-    <link rel="stylesheet" href="{{ asset('assets/vendor/aos/dist/aos.css')}}">
+    {{-- <link rel="stylesheet" href="{{ asset('assets/vendor/aos/dist/aos.css')}}"> --}}
     
     <!-- Hope Ui Design System Css -->
     <link rel="stylesheet" href="{{ asset('assets/css/hope-ui.min.css?v=4.0.0')}}">
@@ -29,22 +28,11 @@
     
     <!-- Customizer Css -->
     <link rel="stylesheet" href="{{ asset('assets/css/customizer.min.css')}}">
-    
-    <!-- RTL Css -->
-    <link rel="stylesheet" href="{{ asset('assets/css/rtl.min.css')}}">
-
 </head>
 
 <body>
   
     @include('layouts.navbars.sidebar')
-    <div>
-        {{-- @auth() --}}
-        {{-- @endauth --}}
-
-        <header>
-         
-        </header>
 
         <main class="main-content">
             @yield('content')
@@ -55,9 +43,6 @@
         
         <!-- External Library Bundle Script -->
         <script src="{{ asset('assets/js/core/external.min.js')}}"></script>
-        
-        <!-- Widgetchart Script -->
-        <script src="{{ asset('assets/js/charts/widgetcharts.js')}}"></script>
         
         <!-- fslightbox Script -->
         <script src="{{ asset('assets/js/plugins/fslightbox.js')}}"></script>
@@ -72,13 +57,19 @@
         <script src="{{ asset('assets/js/plugins/form-wizard.js')}}"></script>
         
         <!-- AOS Animation Plugin-->
-        <script src="{{ asset('assets/vendor/aos/dist/aos.js')}}"></script>
+        {{-- <script src="{{ asset('assets/vendor/aos/dist/aos.js')}}"></script> --}}
         
         <!-- App Script -->
         <script src="{{ asset('assets/js/hope-ui.js')}}" defer ></script>
         <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+        <script>
+            document.querySelectorAll(".nav-link").forEach((link) => {
+                if (link.href === window.location.href) {
+                    link.classList.add("active");
+                    link.setAttribute("aria-current", "page");
+                }
+            });
+        </script>
        
-
-    </div>
 </body>
 </html>

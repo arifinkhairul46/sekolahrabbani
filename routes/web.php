@@ -62,6 +62,10 @@ Route::controller(GoogleController::class)->group(function () {
 
 Route::group(['middleware' =>['auth', 'admin']], function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    
+    Route::prefix('keuangan')->group(function () {
+        Route::get('tagihan', [TagihanController::class, 'index'])->name('tagihan.index');
+    });
 
 });
 
