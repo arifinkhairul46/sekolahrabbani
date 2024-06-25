@@ -17,10 +17,10 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::user() &&  Auth::user()->id_role == 1) {
-            return $next($request);
+        if (Auth::user() &&  Auth::user()->id_role == 3) {
+            return redirect('/karir/profile')->with('error', 'You are not Admin!');
         }
-
-        return redirect('/karir/profile')->with('error', 'You are not Admin!');
+        
+        return $next($request);
     }
 }

@@ -23,7 +23,6 @@
             <a class="py-0 nav-link d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 <i class="fa-solid fa-user"></i>
                 <div class="caption ms-3 d-none d-md-block ">
-                    <h6 class="mb-1 caption-title">{{ auth()->user()->name }}</h6>
                     @if ( auth()->user()->id_role == 1)
                     <span class="mb-1 caption-sub-title">Superadmin</span>
                     @elseif ( auth()->user()->id_role == 4)
@@ -31,6 +30,7 @@
                     @else
                     <p class="mb-0 caption-sub-title">Orang Tua Siswa</p>
                     @endif
+                    <h6 class="mb-1 caption-title">{{ auth()->user()->name }}</h6>
                 </div>
             </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">

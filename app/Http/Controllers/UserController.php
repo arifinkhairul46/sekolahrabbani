@@ -35,6 +35,8 @@ class UserController extends Controller
                     Auth::login($user);
 
                     return redirect()->route('dashboard');
+                } else {
+                    return redirect()->route('login')->with('error', 'No Hp atau password salah');
                 }
             }
 
