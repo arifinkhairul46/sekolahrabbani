@@ -14,7 +14,9 @@ class TagihanController extends Controller
      */
     public function index()
     {
-        return view('admin.tagihan.index');
+        $tagihan = Tagihan::all();
+        // dd($tagihan);
+        return view('admin.tagihan.index', compact('tagihan'));
     }
 
     /**
@@ -84,24 +86,12 @@ class TagihanController extends Controller
     }
 
     public function get_tagihan_siswa (Request $request) {
-       $tagihan = $request->id_tagihan;
-    //    dd($tagihan);
+       $token = csrf_token();
 
-        return csrf_token();
 
     }
 
     public function post_tagihan_siswa (Request $request) {
-        $request->validate([
-            'id' => 'required',
-        ]);
-
-        Tagihan::create([
-            'id' => 12345,
-            'nis' => $request->nis,
-        ]);
-
-        return redirect()->back()->with('success', 'berhasil menambah api tagihan');
 
     }
 }

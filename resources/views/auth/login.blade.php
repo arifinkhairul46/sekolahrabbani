@@ -22,15 +22,15 @@
                         <p class="login-box-msg">Silahkan masuk dengan akun anda</p>            
                             <form role="form" method="POST" action="{{route('login')}}">
                                 @csrf
-                                <div class="form-group{{ $errors->has('email') ? ' has-danger' : '' }} mb-3">
+                                <div class="form-group{{ $errors->has('no_hp') ? ' has-danger' : '' }} mb-3">
                                     <div class="input-group">
-                                        <span class="input-group-text"><i class="fa fa-envelope"></i></span>
+                                        <span class="input-group-text"><i class="fa fa-mobile"></i></span>
                                         
-                                        <input class="form-control form-control-login" placeholder="{{ __('email') }}" type="email" name="email" value="{{ old('email') }}" required autofocus>
+                                        <input class="form-control form-control-login" placeholder="No Hp" type="text" name="no_hp" value="{{ old('no_hp') }}" required autofocus>
                                     </div>
-                                    @if ($errors->has('email'))
+                                    @if ($errors->has('no_hp'))
                                         <span class="invalid-feedback" style="display: block;" role="alert">
-                                            <strong>{{ $errors->first('email') }}</strong>
+                                            <strong>{{ $errors->first('no_hp') }}</strong>
                                         </span>
                                     @endif
                                 </div>
@@ -51,14 +51,14 @@
                                 </div>
                             </form>                           
                         <p class="mb-3">
-                            <a href="{{route('register')}}" class="text-center">Register a new membership</a>
+                            <a href="{{route('verifikasi')}}" class="text-center">Verify your account</a>
                         </p>
-                        <p> Or login with </p>
+                        {{-- <p> Or login with </p>
                         <div class="social-auth-links text-center">
                             <a href="{{route ('auth.google')}}">
                                 <i class="fa-brands fa-google" style="color: red"></i>
                             </a>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>            
             </div>

@@ -36,7 +36,13 @@
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                 <li><a class="dropdown-item" href="#">Profile</a></li>
                 <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="{{route('logout')}}">Logout</a></li>
+                <form role="form" method="POST" action="{{ route('logout') }}" id="logout-form">
+                    @csrf
+                    <div
+                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        <span class="dropdown-item">Logout</span>
+                    </div>
+                </form>
             </ul>
             </li>
         </ul>

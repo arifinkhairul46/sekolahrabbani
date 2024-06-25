@@ -17,7 +17,8 @@
         <header>
             @if ( Route::currentRouteName() == 'karir' )
                 @include('layouts.navbars.no_menu')
-            @elseif (Route::currentRouteName() == 'karir.login' || Route::currentRouteName() == 'karir.verifikasi' || Route::currentRouteName() == 'login' || Route::currentRouteName() == 'register')
+            @elseif (Route::currentRouteName() == 'karir.login' || Route::currentRouteName() == 'karir.verifikasi' || 
+            Route::currentRouteName() == 'login' || Route::currentRouteName() == 'register' || Route::currentRouteName() == 'verifikasi')
                 @include('layouts.navbars.no_content')
             @else 
                 @include('layouts.navbars.navbar')

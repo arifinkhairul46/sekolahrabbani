@@ -218,28 +218,24 @@ main {
 
 .bg-kb {
     background-color: #FCB415;
-    /* border-radius: 50%; */
     width: 100%;
     height: 100%;
 }
 
 .bg-sd {
     background-color: #704996;
-    /* border-radius: 50%; */
     width: 100%;
     height: 100%;
 }
 
 .bg-tk {
-    background-color: #3a57e8;
-    /* border-radius: 50%; */
+    background-color: #EB3C97;
     width: 100%;
     height: 100%;
 }
 
 .bg-smp {
     background-color: #3152A4;
-    /* border-radius: 50%; */
     width: 100%;
     height: 100%;
 }
@@ -401,7 +397,7 @@ main {
 }
 
 .btn-primary {
-    background-color: #3a57e8 !important;
+    background-color: #EB3C97 !important;
     border: none !important;
     padding: 0.5rem 1rem;
     border-radius: 1rem !important;

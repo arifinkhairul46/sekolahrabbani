@@ -85,7 +85,7 @@
                             </div>
                         </form>
                         <p class="my-3">
-                            <a href="{{route('login')}}" class="text-center">I have already account</a>
+                            <a href="{{route('login')}}" class="text-center">I already have an account</a>
                         </p>
                     </div>
                     <!-- /.login-card-body -->

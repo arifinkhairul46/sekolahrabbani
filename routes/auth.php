@@ -9,6 +9,8 @@ Route::middleware(['guest'])->group(function () {
     Route::post('login', [UserController::class, 'customLogin'])->name('login.post');
     Route::get('register', [UserController::class, 'register'])->name('register');
     Route::post('register', [UserController::class, 'customRegistration'])->name('register.post');
+    Route::get('verifikasi', [UserController::class, 'verifikasi'])->name('verifikasi');
+    Route::post('verifikasi', [UserController::class, 'store_verifikasi'])->name('verifikasi.post');
     Route::get('/karir/login', [KarirController::class, 'login'])->name('karir.login');
     Route::get('/karir/verifikasi', [KarirController::class, 'verifikasi'])->name('karir.verifikasi');
     Route::post('/karir/login', [KarirController::class, 'store_login'])->name('karir.store_login');
