@@ -11,6 +11,7 @@ use App\Http\Controllers\ModulDiklatController;
 use App\Http\Controllers\NilaiDiklatController;
 use App\Http\Controllers\PendaftaranController;
 use App\Http\Controllers\PosisiLamaranController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TagihanController;
 use App\Http\Controllers\TugasDiklatController;
 use App\Models\JadwalKontrak;
@@ -63,6 +64,7 @@ Route::controller(GoogleController::class)->group(function () {
 
 Route::group(['middleware' =>['auth', 'admin']], function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('profile-diri', [ProfileController::class, 'index'])->name('profile-diri');
     
     Route::prefix('keuangan')->group(function () {
         Route::get('tagihan', [TagihanController::class, 'index'])->name('tagihan.index');

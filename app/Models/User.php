@@ -26,6 +26,7 @@ class User extends Authenticatable
         'kode_csdm',
         'id_role',
         'no_hp',
+        'no_hp_2',
         'id_profile_csdm',
     ];
 
@@ -67,6 +68,10 @@ class User extends Authenticatable
     public function kumpul_tugas() {
         return $this->hasMany(PengumpulanTugas::class, 'user_id');
 
+    }
+
+    public function profile() {
+        return $this->hasMany(Profile::class, 'user_id');
     }
 
     public static function get_profile_csdm($id)

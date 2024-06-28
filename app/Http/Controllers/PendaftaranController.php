@@ -6,6 +6,8 @@ use App\Models\JenjangSekolah;
 use App\Models\KelasJenjangSekolah;
 use App\Models\Lokasi;
 use App\Models\Pendaftaran;
+use App\Models\PendaftaranAyah;
+use App\Models\PendaftaranIbu;
 use Illuminate\Http\Request;
 
 class PendaftaranController extends Controller
@@ -67,25 +69,48 @@ class PendaftaranController extends Controller
 
         $jenjang = $request->jenjang;
         if ($request->jenjang == '1') {
-            $jenjang = 'KB';
+            $tingkat = 'KB';
         } else if ($request->jenjang == '2') {
-            $jenjang = 'TK';
-        } else if ($request->jenjang == '1') {
-            $jenjang = 'SD';
+            $tingkat = 'TK';
+        } else if ($request->jenjang == '3') {
+            $tingkat = 'SD';
         }
         $lokasi = $request->lokasi;
+        $nama_lengkap = $request->nama;
+        $kelas = $request->kelas;
+        $asal_sekolah = $request->asal_sekolah;
+        $nama_ayah = $request->nama_ayah;
+        $nama_ibu = $request->nama_ibu;
+        $no_hp_ayah = $request->no_hp_ayah;
+        $no_hp_ibu = $request->no_hp_ibu;
         $now = date('YmdHis');
-        $id_anak = "PPDB-$jenjang-$lokasi-$now";
+        $id_anak = "PPDB-$tingkat-$lokasi-$now";
 
         Pendaftaran::create([
             'id_anak' => $id_anak,
-            'nama_lengkap' => $request->nama,
+            'nama_lengkap' => $nama_lengkap,
             'lokasi' => $lokasi,
-            'tingkat' => $jenjang,
-            'kelas' => $request->kelas,
-            'no_hp_ayah' => $request->no_hp_ayah,
-            'no_hp_ibu' => $request->no_hp_ibu,
+            'jenjang' => $jenjang,
+            'tingkat' => $tingkat,
+            'kelas' => $kelas,
+            'no_hp_ayah' => $no_hp_ayah,
+            'no_hp_ibu' => $no_hp_ibu,
+            'sd_sebelumnya' => $asal_sekolah
         ]);
+
+        PendaftaranAyah::create([
+            'id_ayah' => $id_anak,
+            'nama' => $nama_ayah,
+
+        ]);
+
+        PendaftaranIbu::create([
+            'id_ibu' => $id_anak,
+            'nama' => $nama_ibu,
+
+        ]);
+
+        $this->send_pendaftaran($id_anak, $nama_lengkap, $lokasi, $kelas, $jenjang, $tingkat, $asal_sekolah, $no_hp_ayah, $no_hp_ibu, $nama_ayah, $nama_ibu);
 
         return redirect()->route('form.pendaftaran')
             ->with('success', 'Pendaftaran Berhasil.');
@@ -135,4 +160,42 @@ class PendaftaranController extends Controller
     {
         //
     }
+
+
+    function send_pendaftaran($id_anak, $nama_lengkap, $lokasi, $kelas, $jenjang, $tingkat, $asal_sekolah, $no_hp_ayah, $no_hp_ibu, $nama_ayah, $nama_ibu){
+	    $curl = curl_init();
+
+		curl_setopt_array($curl, array(
+		  CURLOPT_URL => 'http://103.135.214.11:81/qlp_system/api_regist/simpan_pendaftaran_baru.php',
+		  CURLOPT_RETURNTRANSFER => 1,
+		  CURLOPT_ENCODING => '',
+		  CURLOPT_MAXREDIRS => 10,
+		  CURLOPT_TIMEOUT => 0,
+		  CURLOPT_FOLLOWLOCATION => true,
+		  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+		  CURLOPT_CUSTOMREQUEST => 'POST',
+		  // CURLOPT_SSL_VERIFYPEER => false,
+		  // CURLOPT_SSL_VERIFYHOST => false,
+		  CURLOPT_POSTFIELDS => array(
+		  	'id_anak' => $id_anak,
+		  	'nama_lengkap' => $nama_lengkap,
+		  	'lokasi' => $lokasi,
+		  	'kelas' => $kelas,
+            'jenjang' => $jenjang,
+			'tingkat' => $tingkat,
+			'asal_sekolah' => $asal_sekolah,
+			'no_hp_ayah' => $no_hp_ayah,
+			'nama_ayah' => $nama_ayah,
+			'nama_ibu' => $nama_ibu,
+			'no_hp_ibu' => $no_hp_ibu)
+
+		));
+
+		$response = curl_exec($curl);
+
+		// echo $response;
+		curl_close($curl);
+	    // return ($response);
+	}
+
 }

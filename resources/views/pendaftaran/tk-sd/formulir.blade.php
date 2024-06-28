@@ -22,6 +22,18 @@
                         <label for="nama" class="form-label">Nama Lengkap</label>
                         <input class="form-control" id="nama" name="nama" placeholder="Nama Lengkap" required>
                     </div>
+
+                    <div class="row mt-3">
+                        <div class="form-group col-md-6">
+                            <label for="tempat_lahir" class="form-label">Tempat Lahir</label>
+                            <input class="form-control" id="tempat_lahir" name="tempat_lahir" placeholder="Tempat Lahir" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="tgl_lahir" class="form-label">Tanggal Lahir</label>
+                            <input type="date" class="form-control" id="tgl_lahir" name="tgl_lahir" placeholder="Tanggal Lahir" required>
+                        </div>
+                    </div>
+
                     <div class="form-group mt-3">
                         <label for="lokasi" class="form-label">Lokasi</label>
                         <select name="lokasi" id="lokasi" class="form-control" onchange="getJenjang()" required>
@@ -31,26 +43,46 @@
                             @endforeach
                         </select>
                     </div>
+
                     <div class="form-group mt-3">
                         <label for="jenjang" class="form-label">Jenjang</label>
                         <select name="jenjang" id="jenjang" class="form-control" onchange="getKelas()" required>
                             <option value="" disabled selected>-- Pilih Jenjang --</option>
                         </select>
                     </div>
+
                     <div class="form-group mt-3">
                         <label for="kelas" class="form-label">Kelas</label>
                         <select name="kelas" id="kelas" class="form-control" required>
                             <option value="" disabled selected>-- Pilih Kelas --</option>
                         </select>
                     </div>
+
+                    <div class="form-group mt-3">
+                        <label for="asal_sekolah" class="form-label">Asal Sekolah</label>
+                        <input class="form-control" id="asal_sekolah" name="asal_sekolah" placeholder="Sekolah Sebelumnya" required>
+                    </div>
+
+                    <div class="form-group mt-3">
+                        <label for="nama_ayah" class="form-label">Nama Ayah</label>
+                        <input class="form-control" id="nama_ayah" name="nama_ayah" placeholder="Nama Ayah" required>
+                    </div>
+
+                    <div class="form-group mt-3">
+                        <label for="nama_ibu" class="form-label">Nama Ibu</label>
+                        <input class="form-control" id="nama_ibu" name="nama_ibu" placeholder="Nama Ibu" required>
+                    </div>
+
                     <div class="form-group mt-3">
                         <label for="no_hp_ayah" class="form-label">No HP Ayah</label>
                         <input class="form-control" id="no_hp_ayah" name="no_hp_ayah" placeholder="No HP Ayah" required>
                     </div>
+
                     <div class="form-group mt-3">
                         <label for="no_hp_ibu" class="form-label">No HP Ibu</label>
                         <input class="form-control" id="no_hp_ibu" name="no_hp_ibu" placeholder="No HP Ibu" required>
                     </div>
+
                     <div class="mt-3 center">
                         <button type="submit" class="btn btn-primary"> Submit </button>
                     </div>
