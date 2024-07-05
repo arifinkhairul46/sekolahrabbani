@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Profile;
+use App\Models\Tagihan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
@@ -13,7 +16,25 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        return view('admin.dashboard');
+        $user_id = Auth::user()->id;
+        $get_nis = Profile::select('nis')->where('user_id', $user_id)->get();
+        // dd($get_nis);
+
+        $nis = $get_nis->toArray();
+        // dd($nis);
+            $tagihan_bdu = Tagihan::get_tagihan_bdu_by_nis($nis);
+            // $tagihan_bdu = Tagihan::get_tagihan_bdu_by_nis($nis);
+            // dd($tagihan_bdu);
+            $tagihan_spp = Tagihan::get_tagihan_spp_by_nis($nis);
+            $spp_last_month = Tagihan::get_tunggakan_spp_by_nis($nis);
+            $spp_lunas = Tagihan::get_spp_lunas_by_nis($nis);
+            $tunggakan_spp = Tagihan::total_tunggakan_spp_by_nis($nis);
+       
+        return view('admin.dashboard', compact('tagihan_spp', 'tagihan_bdu', 'tunggakan_spp', 'spp_last_month', 'spp_lunas'));
+        
+        // $detail_tunggakan =
+        // dd($spp_lunas);
+        
     }
 
     /**

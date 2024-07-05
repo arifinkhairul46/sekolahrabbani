@@ -1,10 +1,15 @@
 @extends('admin.layouts.app')
 
 @section('content')
-    <div class="container iq-container">
-        <div class="title mt-3">
-            <h1>Tagihan </h1>
+    <div class="iq-navbar-header">
+        <div style="position: absolute; z-index:-1; top:0; height: 263px">
+            <img src="{{asset('assets/images/top-header.png')}} " alt="header" class="theme-color-default-img img-fluid w-100 h-100">
         </div>
+        <div class="title mt-3">
+            <h1 class="text-white" style="margin-left: 1rem">Tagihan </h1>
+        </div>
+    </div>
+    <div class="container iq-container px-3">
         <div class="row mt-3">
             <div class="col-sm-4">
                 <div class="card">

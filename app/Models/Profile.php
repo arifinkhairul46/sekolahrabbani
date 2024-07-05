@@ -29,16 +29,16 @@ class Profile extends Model
     public static function get_user_profile_byphone($phone) {
         $data = static::with(['user'])
             ->where('no_hp_ibu', $phone)
-            ->first();
+            ->get();
 
         return $data;
 
     }
 
      public static function get_nis($id) {
-        $data = static::select('nis')
+        $data = static::select('nis', 'nama_lengkap')
             ->where('user_id', $id)
-            ->first();
+            ->get();
 
         return $data;
 
