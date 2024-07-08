@@ -83,7 +83,7 @@ main {
 
 .centered {
     position: absolute;
-    top: 20%;
+    top: 14%;
     left: 50%;
     transform: translate(-50%, -50%);
     text-shadow: 4px 4px #624F8F;
@@ -159,7 +159,7 @@ main {
 
 .cloud-1 {
     position: absolute;
-    top: 15.5%;
+    top: 16%;
     z-index: 1000;
     width: 100%;
     animation:
@@ -169,7 +169,7 @@ main {
 
 .cloud-2 {
     position: absolute;
-    top: 15.5%;
+    top: 16%;
     z-index: 1000;
     width: 100%;
     
@@ -177,7 +177,7 @@ main {
 
 .cloud-3 {
     position: absolute;
-    top: 18%;
+    top: 16%;
     z-index: 1000;
     width: 100%;
     animation:
@@ -186,11 +186,28 @@ main {
 
 .cloud-4 {
     position: absolute;
-    top: 18%;
+    top: 16%;
+    z-index: 1000;
+    width: 100%; 
+}
+
+.cloud-hms {
+    position: absolute;
+    top: 21%;
     z-index: 1000;
     width: 100%;
-    
+    animation:
+    4s linear 0s infinite alternate toright;
 }
+
+.cloud-hms2 {
+    position: absolute;
+    top: 21%;
+    z-index: 1000;
+    width: 100%; 
+}
+
+
 
 @media only screen and (max-width: 600px) {
     .cloud-1 {
@@ -204,12 +221,40 @@ main {
         position: absolute;
         top: 2.5%;
         z-index: 1000;
-        width: 102%;
+        width: 100%;
+    }
+
+    .cloud-3 {
+        position: absolute;
+        top: 5%;
+        z-index: 1000;
+        width: 100%;
+    }
+
+    .cloud-4 {
+        position: absolute;
+        top: 5%;
+        z-index: 1000;
+        width: 100%;
+    }
+
+    .cloud-hms {
+        position: absolute;
+        top: 5.8%;
+        z-index: 1000;
+        width: 100%;
+    }
+
+    .cloud-hms2 {
+        position: absolute;
+        top: 5.8%;
+        z-index: 1000;
+        width: 100%;
     }
 
     .centered {
         position: absolute;
-        top: 6%;
+        top: 4%;
         left: 50%;
         transform: translate(-50%, -50%);
         text-shadow: 4px 4px #624F8F;

@@ -123,7 +123,7 @@
                                         <td>{{$item->nis}}</td>
                                         <td>{{$item->bulan_pendapatan}} </td>
                                         <td>{{$item->jenis_penerimaan}}</td>
-                                        <td>{{$item->nilai_tagihan}}</td>
+                                        <td>{{number_format($item->nilai_tagihan)}}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -162,7 +162,7 @@
                                         <td>{{$item->no_tagihan}}</td>
                                         <td>{{$item->bulan_pendapatan}} </td>
                                         <td>{{$item->jenis_penerimaan}}</td>
-                                        <td>{{$item->nilai_tagihan}}</td>
+                                        <td>{{number_format($item->nilai_tagihan)}}</td>
                                     </tr>
                                 @endforeach
                             </tbody>

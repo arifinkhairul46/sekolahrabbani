@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\JenisPenerimaan;
 use App\Models\Profile;
 use App\Models\Tagihan;
 use Illuminate\Http\Request;
@@ -14,16 +15,58 @@ class TagihanController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $user_id = Auth::user()->id;
-        $get_nis = Profile::get_nis($user_id)->nis;
+        $get_nis =  Profile::select('nis')->where('user_id', $user_id)->get();
 
-        $tagihan_bdu = Tagihan::get_tagihan_bdu_by_nis($get_nis);
-        $tagihan_spp = Tagihan::get_tagihan_spp_by_nis($get_nis);
-        $tunggakan_spp = Tagihan::total_tunggakan_spp_by_nis($get_nis);
-        // dd($get_nis);
-        return view('admin.tagihan.index', compact('tagihan_bdu', 'tagihan_spp', 'tunggakan_spp'));
+        $nis = $get_nis->toArray();
+
+
+        $tagihan_bdu = Tagihan::get_tagihan_bdu_by_nis($nis);
+        $tagihan_spp = Tagihan::get_tagihan_spp_by_nis($nis);
+        $tunggakan_spp = Tagihan::total_tunggakan_spp_by_nis($nis);
+        $spp_lunas = Tagihan::get_spp_lunas_by_nis($nis);
+        // dd($tagihan_tunggak);
+
+        $jenis_penerimaan = JenisPenerimaan::where('status', 1)->get();
+
+        $getMonth = [];
+        foreach (range(1, 12) as $m) {
+            $getMonth[] = date('F', mktime(0, 0, 0, $m, 1));
+        }
+
+        $bulan_periode = $request->bulan_periode ?? null;
+        $tahun_periode = $request->tahun_periode ?? null;
+        $jenis = $request->jenis_penerimaan ?? null;
+
+        if ($request->has('bulan_periode') || $request->has('tahun_periode') || $request->has('jenis_penerimaan')) {
+            $tagihan = Tagihan::query();
+            $lunas = Tagihan::query();
+
+            if ($request->has('bulan_periode')) 
+            $tagihan = $tagihan->selectRaw('id as no_tagihan, nis, jenis_penerimaan, nilai_tagihan, bulan_pendapatan')->where('bulan_pendapatan', 'like', '%' .$request->bulan_periode)->whereIn('nis', $nis)->where('status', 1);
+            $lunas = $lunas->selectRaw('id as no_tagihan, nis, jenis_penerimaan, nilai_tagihan, bulan_pendapatan')->where('bulan_pendapatan', 'like', '%' .$request->bulan_periode)->whereIn('nis', $nis)->where('status', 2);
+            
+            if ($request->has('tahun_periode')) 
+            $tagihan = $tagihan->selectRaw('id as no_tagihan, nis, jenis_penerimaan, nilai_tagihan, bulan_pendapatan')->where('bulan_pendapatan', 'like', '%' .$request->tahun_periode.'%')->whereIn('nis', $nis)->where('status', 1);
+            $lunas = $lunas->selectRaw('id as no_tagihan, nis, jenis_penerimaan, nilai_tagihan, bulan_pendapatan')->where('bulan_pendapatan', 'like', '%' .$request->tahun_periode.'%')->whereIn('nis', $nis)->where('status', 2);
+            
+            if ($request->has('jenis_penerimaan')) 
+            $tagihan = $tagihan->selectRaw('id as no_tagihan, nis, jenis_penerimaan, nilai_tagihan, bulan_pendapatan')->where('jenis_penerimaan', 'like', '%' .$request->jenis_penerimaan.'%')->whereIn('nis', $nis)->where('status', 1);
+            $lunas = $lunas->selectRaw('id as no_tagihan, nis, jenis_penerimaan, nilai_tagihan, bulan_pendapatan')->where('jenis_penerimaan', 'like', '%' .$request->jenis_penerimaan.'%')->whereIn('nis', $nis)->where('status', 2);
+            
+            $tagihan = $tagihan->get();
+            $lunas = $lunas->get();
+            // dd($lunas, $tagihan);
+        } else {
+            $tagihan = Tagihan::get_tunggakan_by_nis($nis);
+            $lunas = Tagihan::get_lunas_by_nis($nis);
+
+        }
+
+        return view('admin.tagihan.index', compact('tagihan_bdu', 'tagihan_spp', 'tunggakan_spp', 'spp_lunas', 
+                    'getMonth', 'tagihan', 'lunas', 'bulan_periode', 'tahun_periode', 'jenis_penerimaan', 'jenis'));
     }
 
     /**

@@ -13,6 +13,9 @@ class Pendaftaran extends Model
     protected $fillable = [
         'id_anak',
         'nama_lengkap',
+        'tempat_lahir',
+        'tgl_lahir',
+        'jenis_kelamin',
         'no_hp_ayah',
         'no_hp_ibu',
         'lokasi',

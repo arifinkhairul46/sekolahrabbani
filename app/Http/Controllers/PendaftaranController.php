@@ -78,6 +78,9 @@ class PendaftaranController extends Controller
         $lokasi = $request->lokasi;
         $nama_lengkap = $request->nama;
         $kelas = $request->kelas;
+        $jenis_kelamin = $request->jenis_kelamin;
+        $tempat_lahir = $request->tempat_lahir;
+        $tgl_lahir = $request->tgl_lahir;
         $asal_sekolah = $request->asal_sekolah;
         $nama_ayah = $request->nama_ayah;
         $nama_ibu = $request->nama_ibu;
@@ -89,6 +92,9 @@ class PendaftaranController extends Controller
         Pendaftaran::create([
             'id_anak' => $id_anak,
             'nama_lengkap' => $nama_lengkap,
+            'tempat_lahir' => $tempat_lahir,
+            'tgl_lahir' => $tgl_lahir,
+            'jenis_kelamin' => $jenis_kelamin,
             'lokasi' => $lokasi,
             'jenjang' => $jenjang,
             'tingkat' => $tingkat,
@@ -110,7 +116,7 @@ class PendaftaranController extends Controller
 
         ]);
 
-        $this->send_pendaftaran($id_anak, $nama_lengkap, $lokasi, $kelas, $jenjang, $tingkat, $asal_sekolah, $no_hp_ayah, $no_hp_ibu, $nama_ayah, $nama_ibu);
+        $this->send_pendaftaran($id_anak, $nama_lengkap, $jenis_kelamin, $tempat_lahir, $tgl_lahir, $lokasi, $kelas, $jenjang, $tingkat, $asal_sekolah, $no_hp_ayah, $no_hp_ibu, $nama_ayah, $nama_ibu);
 
         return redirect()->route('form.pendaftaran')
             ->with('success', 'Pendaftaran Berhasil.');
@@ -162,7 +168,7 @@ class PendaftaranController extends Controller
     }
 
 
-    function send_pendaftaran($id_anak, $nama_lengkap, $lokasi, $kelas, $jenjang, $tingkat, $asal_sekolah, $no_hp_ayah, $no_hp_ibu, $nama_ayah, $nama_ibu){
+    function send_pendaftaran($id_anak, $nama_lengkap, $jenis_kelamin, $tempat_lahir, $tgl_lahir, $lokasi, $kelas, $jenjang, $tingkat, $asal_sekolah, $no_hp_ayah, $no_hp_ibu, $nama_ayah, $nama_ibu){
 	    $curl = curl_init();
 
 		curl_setopt_array($curl, array(
@@ -179,6 +185,9 @@ class PendaftaranController extends Controller
 		  CURLOPT_POSTFIELDS => array(
 		  	'id_anak' => $id_anak,
 		  	'nama_lengkap' => $nama_lengkap,
+		  	'jenis_kelamin' => $jenis_kelamin,
+		  	'tempat_lahir' => $tempat_lahir,
+		  	'tgl_lahir' => $tgl_lahir,
 		  	'lokasi' => $lokasi,
 		  	'kelas' => $kelas,
             'jenjang' => $jenjang,

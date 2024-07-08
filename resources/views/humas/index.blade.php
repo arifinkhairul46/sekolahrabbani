@@ -8,8 +8,8 @@
         </div>
     </div>
     <div>
-        <img src="{{ asset('assets/images/awan1.png') }}" class="cloud-3"  alt="cloud">
-        <img src="{{ asset('assets/images/awan2.png') }}" class="cloud-4"  alt="cloud">
+        <img src="{{ asset('assets/images/awan1.png') }}" class="cloud-hms"  alt="cloud">
+        <img src="{{ asset('assets/images/awan2.png') }}" class="cloud-hms2"  alt="cloud">
     </div>
     <div class="container" style="position: relative; z-index:1000">
         <div class="row">

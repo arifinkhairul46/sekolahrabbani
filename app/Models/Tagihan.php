@@ -18,7 +18,9 @@ class Tagihan extends Model
        'jenis_penerimaan',
        'tahun',
        'tgl_tagihan',
-       'nilai_tagihan'
+       'status',
+       'nilai_tagihan',
+       'bulan_pendapatan'
     ];
 
     public static function get_tagihan_bdu_by_nis($nis) {
@@ -70,6 +72,27 @@ class Tagihan extends Model
                 ->where('status', 1)
                 ->orderBy('bulan_pendapatan', 'DESC')
                 ->first();
+
+        return $data;
+    }
+    
+    public static function get_tunggakan_by_nis($nis) {
+        $data = static::selectRaw('id as no_tagihan, nis, jenis_penerimaan, nilai_tagihan, bulan_pendapatan')
+                ->where('status', 1)
+                ->whereIn('nis', $nis)
+                ->orderBy('bulan_pendapatan', 'DESC')
+                ->get();
+
+        return $data;
+    }
+
+
+    public static function get_lunas_by_nis($nis) {
+        $data = static::selectRaw('id as no_tagihan, nis, jenis_penerimaan, nilai_tagihan, bulan_pendapatan')
+                ->where('status', 2)
+                ->whereIn('nis', $nis)
+                ->orderBy('bulan_pendapatan', 'DESC')
+                ->get();
 
         return $data;
     }

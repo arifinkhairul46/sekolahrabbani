@@ -35,6 +35,15 @@
                     </div>
 
                     <div class="form-group mt-3">
+                        <label for="jenis_kelamin" class="form-label">Jenis Kelamin</label>
+                        <select name="jenis_kelamin" id="jenis_kelamin" class="form-control" required>
+                            <option value="" disabled selected>-- Pilih Jenis Kelamin --</option>
+                            <option value="L" >Laki Laki</option>
+                            <option value="P" >Perempuan</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group mt-3">
                         <label for="lokasi" class="form-label">Lokasi</label>
                         <select name="lokasi" id="lokasi" class="form-control" onchange="getJenjang()" required>
                             <option value="" disabled selected>-- Pilih Lokasi --</option>
