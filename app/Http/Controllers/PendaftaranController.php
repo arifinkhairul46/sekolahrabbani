@@ -24,7 +24,7 @@ class PendaftaranController extends Controller
 
     public function form_pendaftaran()
     {
-        $lokasi = Lokasi::where('kode_sekolah', '!=', 'UBR')->get();
+        $lokasi = Lokasi::where('kode_sekolah', '!=', 'UBR')->where('status', 1)->get();
         $jenjang_per_sekolah = JenjangSekolah::all();
         // dd($jenjang_per_sekolah);
         return view('pendaftaran.tk-sd.formulir', compact('lokasi', 'jenjang_per_sekolah'));
