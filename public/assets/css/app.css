@@ -207,6 +207,21 @@ main {
     width: 100%; 
 }
 
+.cloud-pmnh {
+    position: absolute;
+    top: 35%;
+    z-index: 1000;
+    width: 100%;
+    animation:
+    4s linear 0s infinite alternate toright;
+}
+
+.cloud-pmnhn {
+    position: absolute;
+    top: 35%;
+    z-index: 1000;
+    width: 100%; 
+}
 
 
 @media only screen and (max-width: 600px) {

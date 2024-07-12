@@ -3,11 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\JenjangSekolah;
+use App\Models\Kecamatan;
 use App\Models\KelasJenjangSekolah;
+use App\Models\Kelurahan;
+use App\Models\Kota;
 use App\Models\Lokasi;
 use App\Models\Pendaftaran;
 use App\Models\PendaftaranAyah;
 use App\Models\PendaftaranIbu;
+use App\Models\Provinsi;
 use Illuminate\Http\Request;
 
 class PendaftaranController extends Controller
@@ -40,6 +44,27 @@ class PendaftaranController extends Controller
     public function get_kelas(Request $request) {
 
         $data['kelas'] = KelasJenjangSekolah::get_kelas_jenjang($request->id_lokasi, $request->id_jenjang);
+
+        return response()->json($data);
+    }
+
+    public function get_kota(Request $request) {
+
+        $data['kota'] = Kota::where('provinsi_id', $request->id_provinsi)->get();
+
+        return response()->json($data);
+    }
+
+    public function get_kecamatan(Request $request) {
+
+        $data['kecamatan'] = Kecamatan::where('kabkot_id', $request->id_kota)->get();
+
+        return response()->json($data);
+    }
+
+    public function get_kelurahan(Request $request) {
+
+        $data['kelurahan'] = Kelurahan::where('kecamatan_id', $request->id_kecamatan)->get();
 
         return response()->json($data);
     }
@@ -141,7 +166,12 @@ class PendaftaranController extends Controller
      */
     public function edit(Pendaftaran $pendaftaran)
     {
-        //
+        $provinsi = Provinsi::all();
+        $kota = Kota::all();
+        $kecamatan = Kecamatan::all();
+        $kelurahan = Kelurahan::all();
+
+        return view('pendaftaran.tk-sd.pemenuhan-data', compact('provinsi', 'kecamatan', 'kelurahan', 'kota'));
     }
 
     /**
@@ -165,6 +195,36 @@ class PendaftaranController extends Controller
     public function destroy(Pendaftaran $pendaftaran)
     {
         //
+    }
+
+    public function forget_no_regis (Request $request) {
+        try {
+            $request->validate([
+                'no_hp' => 'required'
+            ]);
+
+            $get_no_regis = Pendaftaran::where('no_hp_ibu', $request->no_hp)
+                            ->orWhere('no_hp_ayah', $request->no_hp)
+                            ->where('nama_lengkap', $request->nama_lengkap)
+                            ->first();
+
+            if ($get_no_regis) {
+                $message = "No Registrasi / Pendaftaran an. $get_no_regis->nama_lengkap adalah " . $get_no_regis->id_anak . "";
+                $no_wha = $request->no_hp;
+
+                $this->send_notif($message, $no_wha);
+                return redirect()->route('form.update')->with('success', 'No Registrasi telah dikirim ke nomor whatsapp anda');
+
+            } else {
+                return redirect()->route('form.update')->with('error', 'Nomor whatsapp tidak terdaftar');
+            }
+        } catch (\Throwable $th) {
+            return redirect()->route('form.update')->with('error', 'Terjadi kesalahan');
+        }
+    }
+
+    public function get_profile_by_no_regist () {
+        
     }
 
 
@@ -206,5 +266,41 @@ class PendaftaranController extends Controller
 		curl_close($curl);
 	    // return ($response);
 	}
+
+    function send_notif($message,$no_wha){
+        $curl = curl_init();
+        $token = "Q2mvYXDH5NP14owSabnbFCp4pCv6x6W7qjszwV1gNp86ZXkvv32ErAbDi9gOrwmH";
+    
+        $payload = [
+            "data" => [
+                [
+                    'phone' => $no_wha,
+                    'message' => $message,
+                    // 'secret' => false, // or true
+                    // 'priority' => false,
+                    // 'retry' => false, // or true
+                    // 'isGroup' => false, // or true
+                ],
+                
+            ]
+        ];
+    
+        curl_setopt($curl, CURLOPT_HTTPHEADER,
+            array(
+                "Authorization: $token",
+                "Content-Type: application/json"
+            )
+        );
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($payload) );
+        curl_setopt($curl, CURLOPT_URL, "https://pati.wablas.com/api/v2/send-message");
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
+        $result = curl_exec($curl);
+        curl_close($curl);
+    
+        return ($result);
+    }
 
 }

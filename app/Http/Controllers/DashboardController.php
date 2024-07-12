@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PenerimaanDetail;
 use App\Models\Profile;
 use App\Models\Tagihan;
 use Illuminate\Http\Request;
@@ -22,15 +23,18 @@ class DashboardController extends Controller
 
         $nis = $get_nis->toArray();
         // dd($nis);
+            $tagihan = Tagihan::get_tagihan_by_nis($nis);
+            $tunggakan = Tagihan::get_tunggakan_by_nis($nis);
+            $penerimaan = PenerimaanDetail::get_bayar_by_nis($nis);
+            // dd($tagihan);
             $tagihan_bdu = Tagihan::get_tagihan_bdu_by_nis($nis);
-            // $tagihan_bdu = Tagihan::get_tagihan_bdu_by_nis($nis);
-            // dd($tagihan_bdu);
             $tagihan_spp = Tagihan::get_tagihan_spp_by_nis($nis);
-            $spp_last_month = Tagihan::get_tunggakan_spp_by_nis($nis);
+            $lunas_spp = Tagihan::get_tunggakan_spp_by_nis($nis);
             $spp_lunas = Tagihan::get_spp_lunas_by_nis($nis);
-            $tunggakan_spp = Tagihan::total_tunggakan_spp_by_nis($nis);
+            $tot_tunggakan = Tagihan::total_tunggakan_by_nis($nis);
+            $tot_tagihan = Tagihan::total_tagihan_by_nis($nis);
        
-        return view('admin.dashboard', compact('tagihan_spp', 'tagihan_bdu', 'tunggakan_spp', 'spp_last_month', 'spp_lunas'));
+        return view('admin.dashboard', compact('tagihan_spp', 'tagihan_bdu', 'tot_tunggakan', 'lunas_spp', 'spp_lunas', 'tagihan', 'tunggakan', 'penerimaan', 'tot_tagihan', 'get_nis'));
         
         // $detail_tunggakan =
         // dd($spp_lunas);

@@ -22,13 +22,6 @@ class TagihanController extends Controller
 
         $nis = $get_nis->toArray();
 
-
-        $tagihan_bdu = Tagihan::get_tagihan_bdu_by_nis($nis);
-        $tagihan_spp = Tagihan::get_tagihan_spp_by_nis($nis);
-        $tunggakan_spp = Tagihan::total_tunggakan_spp_by_nis($nis);
-        $spp_lunas = Tagihan::get_spp_lunas_by_nis($nis);
-        // dd($tagihan_tunggak);
-
         $jenis_penerimaan = JenisPenerimaan::where('status', 1)->get();
 
         $getMonth = [];
@@ -65,8 +58,7 @@ class TagihanController extends Controller
 
         }
 
-        return view('admin.tagihan.index', compact('tagihan_bdu', 'tagihan_spp', 'tunggakan_spp', 'spp_lunas', 
-                    'getMonth', 'tagihan', 'lunas', 'bulan_periode', 'tahun_periode', 'jenis_penerimaan', 'jenis'));
+        return view('admin.tagihan.index', compact( 'getMonth', 'tagihan', 'lunas', 'bulan_periode', 'tahun_periode', 'jenis_penerimaan', 'jenis'));
     }
 
     /**

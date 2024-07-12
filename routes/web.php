@@ -169,6 +169,13 @@ Route::prefix('pendaftaran')->group(function () {
     Route::get('/', [PendaftaranController::class, 'index'])->name('pendaftaran');
     Route::get('/formulir', [PendaftaranController::class, 'form_pendaftaran'])->name('form.pendaftaran');
     Route::post('/formulir', [PendaftaranController::class, 'store'])->name('store.pendaftaran');
+    Route::get('/formulir/update', [PendaftaranController::class, 'edit'])->name('form.update');
+    Route::post('/formulir/update', [PendaftaranController::class, 'forget_no_regis'])->name('forget_no_regis');
+    Route::get('/formulir/update/{id}', [PendaftaranController::class, 'get_profile_by_no_regist'])->name('form.edit');
+    Route::put('/formulir/update/{id}', [PendaftaranController::class, 'update'])->name('form.update.id');
     Route::post('/get-jenjang', [PendaftaranController::class, 'get_jenjang'])->name('get_jenjang');
     Route::post('/get-kelas', [PendaftaranController::class, 'get_kelas'])->name('get_kelas');
+    Route::post('/get-kota', [PendaftaranController::class, 'get_kota'])->name('get_kota');
+    Route::post('/get-kecamatan', [PendaftaranController::class, 'get_kecamatan'])->name('get_kecamatan');
+    Route::post('/get-kelurahan', [PendaftaranController::class, 'get_kelurahan'])->name('get_kelurahan');
 });

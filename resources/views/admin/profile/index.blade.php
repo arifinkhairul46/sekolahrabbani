@@ -7,9 +7,7 @@
         </div>
         <div class="d-flex title mt-3" style="justify-content: space-between">
             <h1 class="text-white" style="margin-left: 1rem">Profile </h1>
-            <form action="#">
-                <button type="submit" class="btn btn-success"> <i class="fa-regular fa-square-plus fa-xl"></i> Tambah Data Anak</button>
-            </form>
+            <button type="submit" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#member"> <i class="fa-regular fa-id-card"></i> Member</button>
         </div>
     </div>
     <div class="container iq-container px-3">
@@ -54,5 +52,20 @@
             @endforeach
         </div>
     </div>
-
 @endsection
+
+<div class="modal fade" id="member" tabindex="-1" role="dialog" aria-labelledby="member_rbn" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="member_rbn">Anggota Member Rabbani</h5>
+            </div>
+            <div class="modal-body">
+                <small > Gunakan Kartu Member ini untuk berbelanja di Toko Rabbani kesayangan Anda. <b> Dapatkan Diskon Speial !! </b> </small>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
