@@ -82,38 +82,11 @@
                 <p> Sekolah Rabbani mempunyai sekolah yang tersebar di beberapa Kota di Indonesia </p>
             </div>
             <div class="d-flex row center">
+                @foreach ($lokasi as $item)
                 <div class="col-md-4">
-                    <img src="{{ asset('assets/images/sr_bandung.png') }}" alt="sr_bandung" width="100%">
+                    <img src="{{ asset($item->image) }}" alt="sr_{{$item->lokasi}}" width="100%">
                 </div>
-                <div class="col-md-4">
-                    <img src="{{ asset('assets/images/sr_cmh.png') }}" alt="sr_cmh" width="100%">
-                </div>
-                <div class="col-md-4">
-                    <img src="{{ asset('assets/images/sr_pwk.png') }}" alt="sr_pwk" width="100%">
-                </div>
-            </div>
-            <div class="d-flex row center">
-                <div class="col-md-4">
-                    <img src="{{ asset('assets/images/sr_jkt.png') }}" alt="sr_jkt" width="100%">
-
-                </div>
-                <div class="col-md-4">
-                    <img src="{{ asset('assets/images/sr_depok.png') }}" alt="sr_depok" width="100%">
-                </div>
-                <div class="col-md-4">
-                    <img src="{{ asset('assets/images/sr_crb.png') }}" alt="sr_crb" width="100%">
-                </div>
-            </div>
-            <div class="d-flex row center">
-                <div class="col-md-4">
-                    <img src="{{ asset('assets/images/sr_sbg.png') }}" alt="sr_sbg" width="100%">
-                </div>
-                <div class="col-md-4">
-                    <img src="{{ asset('assets/images/sr_smd.png') }}" alt="sr_smd" width="100%">
-                </div>
-                <div class="col-md-4">
-                    <img src="{{ asset('assets/images/sr_qlp.png') }}" alt="sr_qlp" width="100%">
-                </div>
+                @endforeach
             </div>
             <br>
 

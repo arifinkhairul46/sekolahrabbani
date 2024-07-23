@@ -18,4 +18,13 @@ class PendaftaranIbu extends Model
         'pekerjaan_jabatan',
         'pendidikan_ibu'
     ];
+
+    public static function get_profile($id)
+    {
+        $data = static::where('id_ibu', $id)
+            ->first();
+
+        return $data;
+
+    }
 }

@@ -18,4 +18,13 @@ class PendaftaranAyah extends Model
         'pekerjaan_jabatan',
         'pendidikan_ayah'
     ];
+
+    public static function get_profile($id)
+    {
+        $data = static::where('id_ayah', $id)
+            ->first();
+
+        return $data;
+
+    }
 }

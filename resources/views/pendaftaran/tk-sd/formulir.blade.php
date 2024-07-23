@@ -53,43 +53,70 @@
                         </select>
                     </div>
 
-                    <div class="form-group mt-3">
+                    <div class="form-group mt-3" id="form_jenjang">
                         <label for="jenjang" class="form-label">Jenjang</label>
-                        <select name="jenjang" id="jenjang" class="form-control" onchange="getKelas()" required>
+                        <select name="jenjang" id="jenjang" class="form-control" onchange="getKelas()">
                             <option value="" disabled selected>-- Pilih Jenjang --</option>
                         </select>
                     </div>
 
-                    <div class="form-group mt-3">
+                    <div class="form-group mt-3" id="form_kelas">
                         <label for="kelas" class="form-label">Kelas</label>
-                        <select name="kelas" id="kelas" class="form-control" required>
+                        <select name="kelas" id="kelas" class="form-control">
                             <option value="" disabled selected>-- Pilih Kelas --</option>
                         </select>
                     </div>
 
-                    <div class="form-group mt-3">
-                        <label for="asal_sekolah" class="form-label">Asal Sekolah</label>
-                        <input class="form-control" id="asal_sekolah" name="asal_sekolah" placeholder="Sekolah Sebelumnya" required>
+                    <div class="form-group mt-3" id="form_boarding" style="display: none">
+                        <label for="jenis_pendidikan" class="form-label">Jenis Pendidikan</label>
+                        <select name="jenis_pendidikan" id="jenis_pendidikan" class="form-control">
+                            <option value="" disabled selected>-- Pilih Jenis Pendidikan --</option>
+                            <option value="1">Reguler</option>
+                            <option value="2">Boarding</option>
+                        </select>
                     </div>
 
                     <div class="form-group mt-3">
-                        <label for="nama_ayah" class="form-label">Nama Ayah</label>
+                        <label for="nama_ayah" class="form-label">Nama Ayah Kandung</label>
                         <input class="form-control" id="nama_ayah" name="nama_ayah" placeholder="Nama Ayah" required>
                     </div>
 
                     <div class="form-group mt-3">
-                        <label for="nama_ibu" class="form-label">Nama Ibu</label>
+                        <label for="nama_ibu" class="form-label">Nama Ibu Kandung</label>
                         <input class="form-control" id="nama_ibu" name="nama_ibu" placeholder="Nama Ibu" required>
                     </div>
 
                     <div class="form-group mt-3">
-                        <label for="no_hp_ayah" class="form-label">No HP Ayah</label>
-                        <input class="form-control" id="no_hp_ayah" name="no_hp_ayah" placeholder="No HP Ayah" required>
+                        <label for="no_hp_ayah" class="form-label">No Whatsapp Ayah</label>
+                        <input class="form-control" id="no_hp_ayah" type="text" name="no_hp_ayah" placeholder="08123xxx" minlength="10" max="12" onkeypress="return /[0-9]/i.test(event.key)" required>
                     </div>
 
                     <div class="form-group mt-3">
-                        <label for="no_hp_ibu" class="form-label">No HP Ibu</label>
-                        <input class="form-control" id="no_hp_ibu" name="no_hp_ibu" placeholder="No HP Ibu" required>
+                        <label for="no_hp_ibu" class="form-label">No Whatsapp Ibu</label>
+                        <input class="form-control" id="no_hp_ibu" name="no_hp_ibu" placeholder="08213xxx" type="text" minlength="10" max="12" onkeypress="return /[0-9]/i.test(event.key)" required>
+                    </div>
+
+                    <div class="mt-3">
+                        <span for="info_ppdb" class="form-label">Informasi PPDB</span>
+                        <div class="form-check">
+                            <input type="radio" name="radios" class="form-check-input" value="spanduk/baliho" id="spanduk_baliho" onclick="close_info()">
+                            <label class="form-check-label" for="spanduk_baliho">Spanduk / Baliho</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="radio" name="radios" class="form-check-input" value="flyer" id="flyer" onclick="close_info()">
+                            <label class="form-check-label" for="flyer">Flyer</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="radio" name="radios" class="form-check-input" value="instagram" id="instagram" onclick="close_info()">
+                            <label class="form-check-label" for="instagram">Instagram</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="radio" name="radios" class="form-check-input" value="lainnya" onclick="open_info()" id="lainnya">
+                            <label class="form-check-label" for="lainnya">Rekomendasi Orang Lain</label>
+                        </div>
+                        <div class="mb-3 form-check show_rekom" id="show_rekom">
+                            <input type="text" style="display: none" name="radios2" id="input_rekomen" placeholder="Sebutkan" class="form-control form-control-sm"><br>
+                        </div>
                     </div>
 
                     <div class="mt-3 center">
@@ -102,23 +129,61 @@
           
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
+        function open_info() {
+            $('#input_rekomen').show()
+        }
+
+        function close_info() {
+            $('#input_rekomen').hide()
+        }
+
         function getJenjang() {
             var id_lokasi = document.getElementById("lokasi").value
-            $.ajax({
-                url: "{{route('get_jenjang')}}",
-                type: 'POST',
-                data: {
-                    id_lokasi: id_lokasi,
-                     _token: '{{csrf_token()}}'
-                },
-                success: function (result) {
-                    $('#jenjang').html('<option value="">-- Pilih Jenjang --</option>');
-                    $.each(result.jenjang, function (key, item) {
-                        $("#jenjang").append('<option value="' + item
-                            .jenjang_id + '">' + item.jenjang.nama_jenjang + '</option>');
-                    });
-                }
-            });
+
+            if (id_lokasi == 'UBR') {
+                $('#form_boarding').show();
+                $('#form_jenjang').hide();
+                // $('#form_kelas').hide();
+                $.ajax({
+                    url: "{{route('get_kelas_smp')}}",
+                    type: 'POST',
+                    data: {
+                        id_lokasi: id_lokasi,
+                         _token: '{{csrf_token()}}'
+                    },
+                    success: function (result) {
+                        // console.log(result);
+                        $('#kelas').html('<option value="" disabled selected>-- Pilih Kelas --</option>');
+                        $.each(result.kelas_smp, function (key, item) {
+                            // console.log(item);
+                            $("#kelas").append('<option value="' + item
+                                .kelas.value + '">' + item.kelas.nama_kelas + '</option>');
+                        });
+                    }
+                });
+            } else {
+                $('#form_boarding').hide();
+                $('#form_jenjang').show();
+                // $('#form_kelas').show();
+                $.ajax({
+                    url: "{{route('get_jenjang')}}",
+                    type: 'POST',
+                    data: {
+                        id_lokasi: id_lokasi,
+                         _token: '{{csrf_token()}}'
+                    },
+                    success: function (result) {
+                        console.log(result);
+                        $('#jenjang').html('<option value="" disabled selected>-- Pilih Jenjang --</option>');
+                        $.each(result.jenjang, function (key, item) {
+                            // console.log(item);
+                            $("#jenjang").append('<option value="' + item
+                                .jenjang_id + '">' + item.jenjang.nama_jenjang + '</option>');
+                        });
+                    }
+                });
+               
+            }
         }
         
         function getKelas() {
@@ -135,10 +200,10 @@
                      _token: '{{csrf_token()}}'
                 },
                 success: function (result) {
-                    $('#kelas').html('<option value="">-- Pilih Kelas --</option>');
+                    $('#kelas').html('<option value="" disabled selected>-- Pilih Kelas --</option>');
                     $.each(result.kelas, function (key, item) {
                         $("#kelas").append('<option value="' + item
-                            .id + '">' + item.kelas.nama_kelas + '</option>');
+                            .kelas.value + '">' + item.kelas.nama_kelas + '</option>');
                     });
                 }
             });

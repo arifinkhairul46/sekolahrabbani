@@ -12,6 +12,7 @@ use App\Http\Controllers\NilaiDiklatController;
 use App\Http\Controllers\PendaftaranController;
 use App\Http\Controllers\PosisiLamaranController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProfileSekolahController;
 use App\Http\Controllers\TagihanController;
 use App\Http\Controllers\TugasDiklatController;
 use App\Models\JadwalKontrak;
@@ -39,10 +40,6 @@ Route::get('/home', function () {
     return view('index');
 });
 
-Route::get('/profile', function () {
-    return view('profile.index');
-});
-
 Route::get('/kurikulum', function () {
     return view('kurikulum.index');
 });
@@ -68,6 +65,7 @@ Route::group(['middleware' =>['auth', 'admin']], function () {
     
     Route::prefix('keuangan')->group(function () {
         Route::get('tagihan', [TagihanController::class, 'index'])->name('tagihan.index');
+        Route::get('bukti-bayar/{id}', [TagihanController::class, 'bukti_bayar'])->name('bukti_bayar');
     });
 
 });
@@ -171,11 +169,14 @@ Route::prefix('pendaftaran')->group(function () {
     Route::post('/formulir', [PendaftaranController::class, 'store'])->name('store.pendaftaran');
     Route::get('/formulir/update', [PendaftaranController::class, 'edit'])->name('form.update');
     Route::post('/formulir/update', [PendaftaranController::class, 'forget_no_regis'])->name('forget_no_regis');
-    Route::get('/formulir/update/{id}', [PendaftaranController::class, 'get_profile_by_no_regist'])->name('form.edit');
     Route::put('/formulir/update/{id}', [PendaftaranController::class, 'update'])->name('form.update.id');
+    // Route::get('/formulir/update/{find}', [PendaftaranController::class, 'get_profile_by_no_regist'])->name('form.edit');
     Route::post('/get-jenjang', [PendaftaranController::class, 'get_jenjang'])->name('get_jenjang');
     Route::post('/get-kelas', [PendaftaranController::class, 'get_kelas'])->name('get_kelas');
+    Route::post('/get-kelas-smp', [PendaftaranController::class, 'get_kelas_smp'])->name('get_kelas_smp');
     Route::post('/get-kota', [PendaftaranController::class, 'get_kota'])->name('get_kota');
     Route::post('/get-kecamatan', [PendaftaranController::class, 'get_kecamatan'])->name('get_kecamatan');
     Route::post('/get-kelurahan', [PendaftaranController::class, 'get_kelurahan'])->name('get_kelurahan');
 });
+
+Route::get('/profile', [ProfileSekolahController::class, 'index'])->name('profile.sekolah');

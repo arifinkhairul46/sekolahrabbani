@@ -27,4 +27,12 @@ class KelasJenjangSekolah extends Model
 
         return $data;
     }
+
+    public static function get_kelas_smp ($kode) {
+        $data = static::with('kelas')
+                        ->where('kode_sekolah', $kode)
+                        ->get();
+
+        return $data;
+    }
 }

@@ -20,6 +20,25 @@ class Pendaftaran extends Model
         'no_hp_ibu',
         'lokasi',
         'kelas',
-        'tingkat'
+        'tingkat',
+        'info_ppdb',
+        'jenis_pendidikan',
+        'asal_sekolah',
+        'alamat',
+        'provinsi',
+        'kota',
+        'kecamatan',
+        'kelurahan',
+        'jenjang',
+        'riwayat_penyakit'
     ];
+
+    public static function get_profile($id)
+    {
+        $data = static::where('id_anak', $id)
+            ->first();
+
+        return $data;
+
+    }
 }

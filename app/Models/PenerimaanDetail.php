@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class PenerimaanDetail extends Model
 {
@@ -18,6 +19,16 @@ class PenerimaanDetail extends Model
         ->whereIn('t_penerimaan_detail.nis', $nis)
         ->get();
 
-return $data;
+        return $data;
+    }
+
+    public static function grup_detail($id) {
+        $data = PenerimaanDetail::select('t_penerimaan_detail.*', 'm_profile.nama_lengkap',  DB::raw('sum(nilai_bayar) as total_bayar'))
+                ->leftJoin('m_profile', 't_penerimaan_detail.nis', 'm_profile.nis')
+                ->where('no_penerimaan', $id)
+                ->groupBy('no_penerimaan')
+                ->get();
+
+        return $data;
     }
 }

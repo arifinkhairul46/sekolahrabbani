@@ -10,7 +10,7 @@
                 <a class="nav-link" aria-current="page" href="/">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="/profile">Profil</a>
+                    <a class="nav-link" aria-current="page" href="{{route('profile.sekolah')}}">Profil</a>
                     </li>
                 <li class="nav-item">
                 <a class="nav-link" href="kurikulum">Kurikulum</a>

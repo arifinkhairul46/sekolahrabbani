@@ -269,7 +269,7 @@
                                         <td>{{number_format($item->nilai_bayar)}}</td>
                                         <td>{{$item->tanggal_bayar}}</td>
                                         <td class="d-flex">
-                                            <a href="#" class="btn btn-sm btn-warning" title="lihat"><i class="fa-solid fa-eye"></i></a>
+                                            <a href="{{route('bukti_bayar', $item->no_penerimaan)}}" target="_blank" class="btn btn-sm btn-warning" title="lihat"><i class="fa-solid fa-eye"></i></a>
                                             <a href="#" class="btn btn-sm btn-success mx-1" title="download"><i class="fa-solid fa-download"></i></a>
                                         </td>
                                     </tr>

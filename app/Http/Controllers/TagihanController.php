@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\JenisPenerimaan;
+use App\Models\Lokasi;
+use App\Models\PenerimaanDetail;
 use App\Models\Profile;
 use App\Models\Tagihan;
 use Illuminate\Http\Request;
@@ -127,13 +129,14 @@ class TagihanController extends Controller
         //
     }
 
-    public function get_tagihan_siswa (Request $request) {
-       $token = csrf_token();
+    public function bukti_bayar (Request $request, $id) 
+    {
+        $lokasi = PenerimaanDetail::where('no_penerimaan', $id)->first();
+        $profil_sekolah = Lokasi::get_sekolah_by_code($lokasi->id_lokasi);
+        // dd($profil_sekolah);
+        $grup_data = PenerimaanDetail::grup_detail($id);
+        // dd($grup_data);
 
-
-    }
-
-    public function post_tagihan_siswa (Request $request) {
-
+        return view('admin.tagihan.bukti-bayar', compact('profil_sekolah', 'grup_data'));
     }
 }

@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ContactPerson;
 use App\Models\JenjangSekolah;
 use App\Models\Kecamatan;
 use App\Models\KelasJenjangSekolah;
 use App\Models\Kelurahan;
 use App\Models\Kota;
 use App\Models\Lokasi;
+use App\Models\LokasiSub;
 use App\Models\Pendaftaran;
 use App\Models\PendaftaranAyah;
 use App\Models\PendaftaranIbu;
@@ -23,12 +25,14 @@ class PendaftaranController extends Controller
      */
     public function index()
     {
-        return view('pendaftaran.index');
+        $contact_person = ContactPerson::where('is_aktif', 1)->get();
+
+        return view('pendaftaran.index', compact('contact_person'));
     }
 
     public function form_pendaftaran()
     {
-        $lokasi = Lokasi::where('kode_sekolah', '!=', 'UBR')->where('status', 1)->get();
+        $lokasi = Lokasi::where('status', 1)->get();
         $jenjang_per_sekolah = JenjangSekolah::all();
         // dd($jenjang_per_sekolah);
         return view('pendaftaran.tk-sd.formulir', compact('lokasi', 'jenjang_per_sekolah'));
@@ -44,6 +48,13 @@ class PendaftaranController extends Controller
     public function get_kelas(Request $request) {
 
         $data['kelas'] = KelasJenjangSekolah::get_kelas_jenjang($request->id_lokasi, $request->id_jenjang);
+
+        return response()->json($data);
+    }
+
+    public function get_kelas_smp(Request $request) {
+
+        $data['kelas_smp'] = KelasJenjangSekolah::get_kelas_smp($request->id_lokasi);
 
         return response()->json($data);
     }
@@ -99,18 +110,27 @@ class PendaftaranController extends Controller
             $tingkat = 'TK';
         } else if ($request->jenjang == '3') {
             $tingkat = 'SD';
+        } else {
+            $tingkat = 'SMP';
         }
+
+        if ($request->radios == 'lainnya') {
+            $sumber_ppdb = $request->radios2;
+        } else {
+            $sumber_ppdb = $request->radios;
+        }
+
         $lokasi = $request->lokasi;
         $nama_lengkap = $request->nama;
         $kelas = $request->kelas;
         $jenis_kelamin = $request->jenis_kelamin;
         $tempat_lahir = $request->tempat_lahir;
         $tgl_lahir = $request->tgl_lahir;
-        $asal_sekolah = $request->asal_sekolah;
         $nama_ayah = $request->nama_ayah;
         $nama_ibu = $request->nama_ibu;
         $no_hp_ayah = $request->no_hp_ayah;
         $no_hp_ibu = $request->no_hp_ibu;
+        $jenis_pendidikan = $request->jenis_pendidikan;
         $now = date('YmdHis');
         $id_anak = "PPDB-$tingkat-$lokasi-$now";
 
@@ -126,7 +146,8 @@ class PendaftaranController extends Controller
             'kelas' => $kelas,
             'no_hp_ayah' => $no_hp_ayah,
             'no_hp_ibu' => $no_hp_ibu,
-            'sd_sebelumnya' => $asal_sekolah
+            'info_ppdb' => $sumber_ppdb,
+            'jenis_pendidikan' => $jenis_pendidikan
         ]);
 
         PendaftaranAyah::create([
@@ -138,10 +159,9 @@ class PendaftaranController extends Controller
         PendaftaranIbu::create([
             'id_ibu' => $id_anak,
             'nama' => $nama_ibu,
-
         ]);
 
-        $this->send_pendaftaran($id_anak, $nama_lengkap, $jenis_kelamin, $tempat_lahir, $tgl_lahir, $lokasi, $kelas, $jenjang, $tingkat, $asal_sekolah, $no_hp_ayah, $no_hp_ibu, $nama_ayah, $nama_ibu);
+        // $this->send_pendaftaran($id_anak, $nama_lengkap, $jenis_kelamin, $tempat_lahir, $tgl_lahir, $lokasi, $kelas, $jenjang, $tingkat, $asal_sekolah, $no_hp_ayah, $no_hp_ibu, $nama_ayah, $nama_ibu);
 
         return redirect()->route('form.pendaftaran')
             ->with('success', 'Pendaftaran Berhasil.');
@@ -164,14 +184,29 @@ class PendaftaranController extends Controller
      * @param  \App\Models\Pendaftaran  $pendaftaran
      * @return \Illuminate\Http\Response
      */
-    public function edit(Pendaftaran $pendaftaran)
+    public function edit(Request $request, Pendaftaran $pendaftaran)
     {
         $provinsi = Provinsi::all();
         $kota = Kota::all();
         $kecamatan = Kecamatan::all();
         $kelurahan = Kelurahan::all();
 
-        return view('pendaftaran.tk-sd.pemenuhan-data', compact('provinsi', 'kecamatan', 'kelurahan', 'kota'));
+        // $id = $request->no_registrasi;
+        $no_registrasi = $request->no_registrasi ?? null;
+
+        if ($request->has('no_registrasi')) {
+            $get_profile = Pendaftaran::get_profile($no_registrasi);
+            $get_profile_ibu = PendaftaranIbu::get_profile($no_registrasi);
+            $get_profile_ayah = PendaftaranAyah::get_profile($no_registrasi);
+        }
+        
+        $get_profile = Pendaftaran::get_profile($no_registrasi);
+        $get_profile_ibu = PendaftaranIbu::get_profile($no_registrasi);
+        $get_profile_ayah = PendaftaranAyah::get_profile($no_registrasi);
+        // dd($get_profile);
+
+
+        return view('pendaftaran.tk-sd.pemenuhan-data', compact('provinsi', 'kecamatan', 'kelurahan', 'kota', 'get_profile',  'get_profile_ibu',  'get_profile_ayah'));
     }
 
     /**
@@ -181,9 +216,31 @@ class PendaftaranController extends Controller
      * @param  \App\Models\Pendaftaran  $pendaftaran
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Pendaftaran $pendaftaran)
+    public function update(Request $request, $id)
     {
-        //
+        try {
+    
+            $no_registrasi = $request->no_registrasi ?? null;
+
+            $get_profile = Pendaftaran::get_profile($no_registrasi);
+            $get_profile_ibu = PendaftaranIbu::get_profile($no_registrasi);
+            $get_profile_ayah = PendaftaranAyah::get_profile($no_registrasi);
+
+    
+            $update_data_anak = Pendaftaran::where('id_anak', $id)->update([
+                'alamat' => $request->alamat,
+                'provinsi' => $request->provinsi,
+                'kota' => $request->kota,
+                'kecamatan' => $request->kecamatan,
+                'kelurahan' => $request->kelurahan,
+
+                
+            ]);
+    
+            return redirect()->back()->with('success', 'Data berhasil diupdate');
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
     /**
@@ -223,8 +280,18 @@ class PendaftaranController extends Controller
         }
     }
 
-    public function get_profile_by_no_regist () {
-        
+    public function get_profile_by_no_regist (Request $request) 
+    {
+        $provinsi = Provinsi::all();
+        $kota = Kota::all();
+        $kecamatan = Kecamatan::all();
+        $kelurahan = Kelurahan::all();
+
+        $id = $request->no_registrasi;
+        $get_profile = Pendaftaran::get_profile($id);
+        // dd($get_profile);
+
+        return view('pendaftaran.tk-sd.pemenuhan-data', compact('get_profile', 'provinsi', 'kecamatan', 'kelurahan', 'kota'));
     }
 
 
