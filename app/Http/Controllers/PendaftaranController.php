@@ -13,6 +13,7 @@ use App\Models\LokasiSub;
 use App\Models\Pendaftaran;
 use App\Models\PendaftaranAyah;
 use App\Models\PendaftaranIbu;
+use App\Models\PendaftaranWali;
 use App\Models\Provinsi;
 use Illuminate\Http\Request;
 
@@ -189,6 +190,8 @@ class PendaftaranController extends Controller
         $provinsi = Provinsi::all();
         $kota = Kota::all();
         $kecamatan = Kecamatan::all();
+        $kecamatan_asal_sekolah = Kecamatan::kecamatan_with_kota();
+        // dd($kecamatan);
         $kelurahan = Kelurahan::all();
 
         // $id = $request->no_registrasi;
@@ -198,15 +201,17 @@ class PendaftaranController extends Controller
             $get_profile = Pendaftaran::get_profile($no_registrasi);
             $get_profile_ibu = PendaftaranIbu::get_profile($no_registrasi);
             $get_profile_ayah = PendaftaranAyah::get_profile($no_registrasi);
+            $get_profile_wali = PendaftaranWali::get_profile($no_registrasi);
         }
         
         $get_profile = Pendaftaran::get_profile($no_registrasi);
         $get_profile_ibu = PendaftaranIbu::get_profile($no_registrasi);
         $get_profile_ayah = PendaftaranAyah::get_profile($no_registrasi);
+        $get_profile_wali = PendaftaranWali::get_profile($no_registrasi);
         // dd($get_profile);
 
 
-        return view('pendaftaran.tk-sd.pemenuhan-data', compact('provinsi', 'kecamatan', 'kelurahan', 'kota', 'get_profile',  'get_profile_ibu',  'get_profile_ayah'));
+        return view('pendaftaran.tk-sd.pemenuhan-data', compact('provinsi', 'kecamatan', 'kecamatan_asal_sekolah', 'kelurahan', 'kota', 'get_profile',  'get_profile_ibu',  'get_profile_ayah', 'get_profile_wali'));
     }
 
     /**
@@ -220,21 +225,51 @@ class PendaftaranController extends Controller
     {
         try {
     
-            $no_registrasi = $request->no_registrasi ?? null;
-
-            $get_profile = Pendaftaran::get_profile($no_registrasi);
-            $get_profile_ibu = PendaftaranIbu::get_profile($no_registrasi);
-            $get_profile_ayah = PendaftaranAyah::get_profile($no_registrasi);
-
-    
             $update_data_anak = Pendaftaran::where('id_anak', $id)->update([
+                'no_nik' => $request->nik,
                 'alamat' => $request->alamat,
                 'provinsi' => $request->provinsi,
                 'kota' => $request->kota,
                 'kecamatan' => $request->kecamatan,
                 'kelurahan' => $request->kelurahan,
+                'agama' => $request->agama,
+                'anak_ke' => $request->anak_ke,
+                'jml_sdr' => $request->jumlah_saudara,
+                'asal_sekolah' => $request->asal_sekolah,
+                'tinggi_badan' => $request->tinggi_badan,
+                'berat_badan' => $request->berat_badan,
+                'gol_darah' => $request->gol_darah,
+                'riwayat_penyakit' => $request->riwayat_penyakit,
+                'hafalan' => $request->hafalan,
+                'kec_asal_sekolah' => $request->kec_asal_sekolah,
+                    
+            ]);
 
-                
+          
+
+            $update_data_ibu = PendaftaranIbu::where('id_ibu', $id)->update([
+                'tptlahir_ibu' => $request->tempat_lahir_ibu,
+                'tgllahir_ibu' => $request->tgl_lahir_ibu,
+                'pekerjaan_jabatan' => $request->pekerjaan_ibu,
+                'penghasilan' => $request->penghasilan_ibu,
+                'pendidikan_ibu' => $request->pendidikan_ibu,
+            ]);
+
+            $update_data_ayah = PendaftaranAyah::where('id_ayah', $id)->update([
+                'tptlahir_ayah' => $request->tempat_lahir_ayah,
+                'tgllahir_ayah' => $request->tgl_lahir_ayah,
+                'pekerjaan_jabatan' => $request->pekerjaan_ayah,
+                'penghasilan' => $request->penghasilan_ayah,
+                'pendidikan_ayah' => $request->pendidikan_ayah,
+            ]);
+
+            $update_data_wali = PendaftaranWali::where('id_wali', $id)->update([
+                'nama' => $request->nama_wali,
+                'tptlahir_wali' => $request->tempat_lahir_wali,
+                'tgllahir_wali' => $request->tgl_lahir_wali,
+                'pekerjaan_jabatan' => $request->pekerjaan_wali,
+                'penghasilan' => $request->penghasilan_wali,
+                'pendidikan_wali' => $request->pendidikan_wali,
             ]);
     
             return redirect()->back()->with('success', 'Data berhasil diupdate');

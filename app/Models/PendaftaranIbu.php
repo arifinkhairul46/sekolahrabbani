@@ -16,7 +16,8 @@ class PendaftaranIbu extends Model
         'tptlahir_ibu',
         'tgllahir_ibu',
         'pekerjaan_jabatan',
-        'pendidikan_ibu'
+        'pendidikan_ibu',
+        'penghasilan'
     ];
 
     public static function get_profile($id)

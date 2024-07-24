@@ -5,24 +5,23 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PendaftaranAyah extends Model
+class PendaftaranWali extends Model
 {
     use HasFactory;
-    protected $table = 'tbl_ayah';
+    protected $table = 'tbl_wali';
 
     protected $fillable = [
-        'id_ayah',
+        'id_wali',
         'nama',
-        'tptlahir_ayah',
-        'tgllahir_ayah',
+        'tptlahir_wali',
+        'tgllahir_wali',
         'pekerjaan_jabatan',
-        'pendidikan_ayah',
-        'penghasilan'
+        'pendidikan_wali'
     ];
 
     public static function get_profile($id)
     {
-        $data = static::where('id_ayah', $id)
+        $data = static::where('id_wali', $id)
             ->first();
 
         return $data;

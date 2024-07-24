@@ -30,7 +30,14 @@ class Pendaftaran extends Model
         'kecamatan',
         'kelurahan',
         'jenjang',
-        'riwayat_penyakit'
+        'riwayat_penyakit',
+        'tinggi_badan',
+        'berat_badan',
+        'anak_ke',
+        'jml_saudara',
+        'kec_asal_sekolah',
+        'gol_darah',
+        'hafalan',
     ];
 
     public static function get_profile($id)

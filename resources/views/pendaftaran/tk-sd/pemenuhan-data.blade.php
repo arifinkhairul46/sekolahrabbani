@@ -45,7 +45,7 @@
         
                             <div class="mb-3">
                                 <span for="tempat_tanggal_lahir" class="form-label">Tempat, Tanggal Lahir</span>
-                                <input type="text" name="tempat_tanggal_lahir" id="tempat_tanggal_lahir" class="form-control form-control-sm px-3" value="{{$get_profile != null ? $get_profile->tempat_lahir : ''}}, {{$get_profile != null ? date('d-F-Y', strtotime($get_profile->tgl_lahir)) : ''}}"  readonly>
+                                <input type="text" name="tempat_tanggal_lahir" id="tempat_tanggal_lahir" class="form-control form-control-sm px-3" value="{{$get_profile != null ? $get_profile->tempat_lahir : ''}} {{$get_profile != null ? date('d-F-Y', strtotime($get_profile->tgl_lahir)) : ''}}"  readonly>
                             </div>
         
                             <div class="mb-3">
@@ -63,7 +63,7 @@
                                 <select id="provinsi" name="provinsi" class="select form-control form-control-sm px-3"  onchange="getKota()">
                                     <option value="" disabled selected>-- Pilih Provinsi--</option>
                                     @foreach ($provinsi as $item)
-                                        <option value="{{ $item->id }}">{{ $item->provinsi }}</option>
+                                        <option value="{{ $item->id }}" >{{ $item->provinsi }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -71,6 +71,7 @@
                             <div class="mb-3">
                                 <span for="kota" class="form-label">Kabupaten/Kota</span>
                                 <select id="kota" name="kota" class="select form-control form-control-sm px-3" onchange="getKecamatan()">
+                                    
                                 </select>
                             </div>
 
@@ -121,9 +122,19 @@
                                 <input type="number" name="berat_badan" class="form-control form-control-sm px-3" id="berat_badan" placeholder="xx">
                             </div>
 
-                            <div class="form-group mt-3">
-                                <label for="asal_sekolah" class="form-label">Asal Sekolah</label>
-                                <input class="form-control" id="asal_sekolah" name="asal_sekolah" placeholder="Sekolah Sebelumnya"  >
+                            <div class="mb-3">
+                                <span for="asal_sekolah" class="form-label">Asal Sekolah</span>
+                                <input class="form-control form-control-sm px-3" id="asal_sekolah" name="asal_sekolah" placeholder="Sekolah Sebelumnya"  >
+                            </div>
+
+                            <div class="mb-3">
+                                <span for="kec_asal_sekolah" class="form-label">Kecamatan Asal Sekolah</span>
+                                <select id="kec_asal_sekolah" name="kec_asal_sekolah" class="select2 form-control form-control-sm px-3">
+                                    <option value="" disabled selected>-- Pilih Kecamatan Asal Sekolah--</option>
+                                    @foreach ($kecamatan_asal_sekolah as $item)
+                                        <option value="{{ $item->id_kecamatan }}" >{{ $item->kecamatan }} - {{ $item->kabupaten_kota }} </option>
+                                    @endforeach
+                                </select>
                             </div>
         
                             <div class="mb-3">
@@ -132,8 +143,8 @@
                             </div>
         
                             <div class="mb-3">
-                                <span for="gol_dar" class="form-label">Golongan Darah</span>
-                                <select id="gol_dar" name="gol_dar" class="select form-control form-control-sm px-3">
+                                <span for="gol_darah" class="form-label">Golongan Darah</span>
+                                <select id="gol_darah" name="gol_darah" class="select form-control form-control-sm px-3">
                                     <option value="" disabled selected>-- Pilih Golongan Darah --</option>
                                     <option value="A" >A</option>
                                     <option value="B" >B</option>
@@ -153,8 +164,8 @@
                             </div>
 
                             
-                            {{-- <button class="btn btn-primary btn-sm" onclick="next_ibu()"> Next </button> --}}
-                            {{-- <button class="nav-link" id="nav-data-ibu-tab" data-bs-toggle="tab" data-bs-target="#nav-data-ibu" type="button" role="tab" aria-controls="nav-data-ibu" aria-selected="false">Data Ibu</button> --}}
+                            {{-- <button type="button" class="btn btn-primary btn-sm px-3" onclick="next_ibu()"> Next </button> --}}
+                            <a style="float: right" id="next-ibu" class="btn btn-primary btn-sm px-3">Next</a>
 
                         </div>
 
@@ -216,6 +227,8 @@
                                 </select>
                             </div>
 
+                            <a style="float: right" id="next-ayah" class="btn btn-primary btn-sm px-3">Next</a>
+
                         </div>
 
                         <div class="tab-pane fade" id="nav-data-ayah" role="tabpanel" aria-labelledby="nav-data-ayah-tab" tabindex="0">
@@ -274,12 +287,15 @@
                                     <option value="S3" >S3</option>
                                 </select>
                             </div>
+
+                            <a style="float: right" id="next-wali" class="btn btn-primary btn-sm px-3">Next</a>
+
                         </div>
 
                         <div class="tab-pane fade" id="nav-data-wali" role="tabpanel" aria-labelledby="nav-data-wali-tab" tabindex="0">
                             <div class="my-3">
                                 <span for="nama_wali" class="form-label">Nama Lengkap Wali</span>
-                                <input type="text" name="nama_wali" class="form-control form-control-sm px-3" id="nama_wali" placeholder="Nama wali">
+                                <input type="text" name="nama_wali" class="form-control form-control-sm px-3" id="nama_wali" value="{{$get_profile_wali != null ? $get_profile_wali->nama : ''}}" placeholder="Nama wali">
                             </div>
         
                             <div class="row mb-3">
@@ -344,13 +360,78 @@
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js" defer></script>
     <script>
+        $(document).ready(function() {
+            $('#kec_asal_sekolah').select2();
+        });
+      
+         $("#next-ibu").click(function() {
+            $('#nav-tab button:eq(1) ').tab('show');
+        });
 
-        function next_ibu() {
-            // alert('nect')
-            moveTab("Next");
-        }
+        $("#next-ayah").click(function() {
+            $('#nav-tab button:eq(2) ').tab('show');
+        });
+
+        $('#next-wali').click(function(){
+            $('#nav-tab button:eq(3) ').tab('show');
+           
+        })
     
+
+        var id_prov = document.getElementById("provinsi").value
+        // $.ajax({
+        //     url: "{{route('get_kota')}}",
+        //     type: 'POST',
+        //     data: {
+        //         id_provinsi: id_prov,
+        //             _token: '{{csrf_token()}}'
+        //     },
+        //     success: function (result) {
+        //         $.each(result.kota, function (key, item) {
+        //             // console.log('ini', item.id, get_profile.kota);
+
+        //             if (item.id == get_profile.kota) {
+        //                 $("#kota").append('<option value="' + item
+        //                     .id + '" selected >' + item.kabupaten_kota + '</option>');
+        //             } else {
+        //                 $("#kota").append('<option value="' + item
+        //                     .id + '" >' + item.kabupaten_kota + '</option>');
+        //             }
+        //         });
+        //     }
+        // });
+
+        var id_city = document.getElementById("kota").value
+        console.log('ci', id_city, get_profile.kecamatan);
+        // var id_kota = document.getElementById("kota").value
+
+
+        $.ajax({
+                url: "{{route('get_kecamatan')}}",
+                type: 'POST',
+                data: {
+                    id_kota: id_city,
+                     _token: '{{csrf_token()}}'
+                },
+                success: function (result) {
+                    console.log('itu', result);
+                    $.each(result.kecamatan, function (key, item) {
+                        console.log('ini', item.id, get_profile.kecamatan);
+                        if (item.id == get_profile.kecamatan) {
+                        $("#kecamatan").append('<option value="' + item
+                            .id + '" selected >' + item.kecamatan + '</option>');
+                    } else {
+                        $("#kecamatan").append('<option value="' + item
+                            .id + '" >' + item.kecamatan + '</option>');
+                    }
+                    });
+                }
+            });
+        
+
         function getKota() {
             var id_provinsi = document.getElementById("provinsi").value
             $.ajax({
@@ -361,10 +442,12 @@
                      _token: '{{csrf_token()}}'
                 },
                 success: function (result) {
+                    
                     $('#kota').html('<option value="">-- Pilih kota --</option>');
                     $.each(result.kota, function (key, item) {
+                    //    console.log('ini', item.id , get_profile.kota);
                         $("#kota").append('<option value="' + item
-                            .id + '">' + item.kabupaten_kota + '</option>');
+                            .id + '" >' + item.kabupaten_kota + '</option>');
                     });
                 }
             });
