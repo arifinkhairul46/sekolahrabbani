@@ -4,6 +4,7 @@ use App\Http\Controllers\ApiController;
 use App\Http\Controllers\CsdmController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GoogleController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\JadwalKontrakController;
 use App\Http\Controllers\KarirController;
 use App\Http\Controllers\KelasDiklatController;
@@ -32,13 +33,6 @@ use Illuminate\Support\Facades\Artisan;
 
 require __DIR__ . '/auth.php';
 
-Route::get('/', function () {
-    return view('index');
-});
-
-Route::get('/home', function () {
-    return view('index');
-});
 
 Route::get('/kurikulum', function () {
     return view('kurikulum.index');
@@ -179,4 +173,7 @@ Route::prefix('pendaftaran')->group(function () {
     Route::post('/get-kelurahan', [PendaftaranController::class, 'get_kelurahan'])->name('get_kelurahan');
 });
 
+Route::get('/', [HomeController::class, 'index'])->name('home.index');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/jenjang/{jenjang}', [HomeController::class, 'jenjang'])->name('jenjang.sekolah');
 Route::get('/profile', [ProfileSekolahController::class, 'index'])->name('profile.sekolah');

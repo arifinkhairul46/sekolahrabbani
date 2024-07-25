@@ -87,54 +87,21 @@
                 <h4 class="mb-3">Berbagai Jenjang Pilihan</h4>
             </div>
             <div class="row mb-4">
-                <div class="col-md-3">
-                    <div class="card shadow">
-                        <div class="bg-kb">
-                            <img src="{{ asset('assets/images/KB_1.png') }}" class="card-img-top" alt="kober">
+                @foreach ($jenjang as $item)
+                    <div class="col-md-3">
+                        <a href="{{route('jenjang.sekolah', $item->nama_jenjang)}}" style="text-decoration: none">
+                        <div class="card shadow">
+                            <div class="bg-{{$item->kode_jenjang}}">
+                                <img src="{{ asset($item->image_1) }}" class="card-img-top" alt="kober">
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title text-center"> {{$item->nama_jenjang}} </h5>
+                                <p class="card-text mb-5">{{$item->deskripsi}}</p>
+                            </div>
                         </div>
-                        <div class="card-body">
-                            <h5 class="card-title">Kober</h5>
-                            <p class="card-text">Pendidikan Pra Sekolah yang berbasis Al-Qur'an dan As-Sunnah.</p>
-                            <a href="#" class="btn btn-grad text-white">Daftar Sekarang</a>
-                        </div>
+                        </a>
                     </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card shadow">
-                        <div class="bg-tk">
-                            <img src="{{ asset('assets/images/TK_1.png') }}" class="card-img-top" alt="kober">
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title">Kober</h5>
-                            <p class="card-text">Pendidikan Pra Sekolah yang berbasis Al-Qur'an dan As-Sunnah.</p>
-                            <a href="#" class="btn btn-grad text-white">Daftar Sekarang</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card shadow">
-                        <div class="bg-sd">
-                            <img src="{{ asset('assets/images/SD_1.png') }}" class="card-img-top" alt="kober">
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title">Kober</h5>
-                            <p class="card-text">Pendidikan Pra Sekolah yang berbasis Al-Qur'an dan As-Sunnah.</p>
-                            <a href="#" class="btn btn-grad text-white">Daftar Sekarang</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card shadow">
-                        <div class="bg-smp">
-                            <img src="{{ asset('assets/images/SMP_1.png') }}" class="card-img-top" alt="kober">
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title">Kober</h5>
-                            <p class="card-text">Pendidikan Pra Sekolah yang berbasis Al-Qur'an dan As-Sunnah.</p>
-                            <a href="#" class="btn btn-grad text-white">Daftar Sekarang</a>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
             <br>
             <br>
