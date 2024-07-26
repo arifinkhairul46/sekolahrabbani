@@ -12,6 +12,7 @@ class Pendaftaran extends Model
 
     protected $fillable = [
         'id_anak',
+        'no_nik',
         'nama_lengkap',
         'tempat_lahir',
         'tgl_lahir',
@@ -42,7 +43,8 @@ class Pendaftaran extends Model
         'email_ayah',
         'email_ibu',
         'id_ibu',
-        'id_ayah'
+        'id_ayah',
+        'status_tinggal'
     ];
 
     public static function get_profile($id)

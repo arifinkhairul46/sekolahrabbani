@@ -16,7 +16,8 @@ class PendaftaranWali extends Model
         'tptlahir_wali',
         'tgllahir_wali',
         'pekerjaan_jabatan',
-        'pendidikan_wali'
+        'pendidikan_wali',
+        'hubungan_wali'
     ];
 
     public static function get_profile($id)

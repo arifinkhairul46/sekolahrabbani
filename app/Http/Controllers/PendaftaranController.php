@@ -165,7 +165,11 @@ class PendaftaranController extends Controller
             'nama' => $nama_ibu,
         ]);
 
-        $this->send_pendaftaran($id_anak, $nama_lengkap, $jenis_kelamin, $tempat_lahir, $tgl_lahir, $lokasi, $kelas, $jenjang, $tingkat, $no_hp_ayah, $no_hp_ibu, $nama_ayah, $nama_ibu);
+        PendaftaranWali::create([
+            'id_wali' => $id_anak,
+        ]);
+
+        // $this->send_pendaftaran($id_anak, $nama_lengkap, $jenis_kelamin, $tempat_lahir, $tgl_lahir, $lokasi, $kelas, $jenjang, $tingkat, $no_hp_ayah, $no_hp_ibu, $nama_ayah, $nama_ibu);
 
         return redirect()->route('form.pendaftaran')
             ->with('success', 'Pendaftaran Berhasil.');
@@ -246,7 +250,8 @@ class PendaftaranController extends Controller
                 'hafalan' => $request->hafalan,
                 'kec_asal_sekolah' => $request->kec_asal_sekolah,
                 'email_ibu' => $request->email_ibu,
-                'email_ayah' => $request->email_ayah
+                'email_ayah' => $request->email_ayah,
+                'status_tinggal' => $request->status_tinggal
             ]);
 
           
@@ -274,6 +279,7 @@ class PendaftaranController extends Controller
                 'pekerjaan_jabatan' => $request->pekerjaan_wali,
                 'penghasilan' => $request->penghasilan_wali,
                 'pendidikan_wali' => $request->pendidikan_wali,
+                'hubungan_wali' => $request->hubungan_wali,
             ]);
     
             return redirect()->back()->with('success', 'Data berhasil diupdate');

@@ -120,7 +120,7 @@
                     </div>
 
                     <div class="mt-3 center">
-                        <button type="submit" class="btn btn-primary"> Submit </button>
+                        <button type="submit" class="btn btn-primary px-3"> Submit </button>
                     </div>
                 </form>
             </div>
