@@ -22,7 +22,7 @@ class KelasJenjangSekolah extends Model
     public static function get_kelas_jenjang ($kode, $jenjang_id) {
         $data = static::with('kelas')
                         ->where('kode_sekolah', $kode)
-                        ->where('jenjang_id', $jenjang_id)
+                        ->where('jenjang_value', $jenjang_id)
                         ->get();
 
         return $data;

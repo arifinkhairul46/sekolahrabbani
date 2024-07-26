@@ -174,6 +174,11 @@
                                 <span for="nama_ibu" class="form-label">Nama Lengkap Ibu</span>
                                 <input type="text" name="nama_ibu" class="form-control form-control-sm px-3" id="nama_ibu" placeholder="Nama Ibu"  value="{{$get_profile_ibu != null ? $get_profile_ibu->nama : ''}}" readonly>
                             </div>
+
+                            <div class="mb-3">
+                                <span for="email_ibu" class="form-label">Email Ibu</span>
+                                <input type="email" name="email_ibu" class="form-control form-control-sm px-3" id="email_ibu" placeholder="Email Ibu" >
+                            </div>
         
                             <div class="row mb-3">
                                 <div class=" col-md-6">
@@ -235,6 +240,11 @@
                             <div class="my-3">
                                 <span for="nama_ayah" class="form-label">Nama Lengkap ayah</span>
                                 <input type="text" name="nama_ayah" class="form-control form-control-sm px-3" id="nama_ayah" value="{{$get_profile_ayah != null ? $get_profile_ayah->nama : ''}}" readonly>
+                            </div>
+
+                            <div class="mb-3">
+                                <span for="email_ayah" class="form-label">Email Ayah</span>
+                                <input type="email" name="email_ayah" class="form-control form-control-sm px-3" id="email_ayah" placeholder="Email Ayah" >
                             </div>
         
                             <div class="row mb-3">

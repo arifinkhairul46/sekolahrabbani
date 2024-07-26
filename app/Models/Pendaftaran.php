@@ -38,6 +38,11 @@ class Pendaftaran extends Model
         'kec_asal_sekolah',
         'gol_darah',
         'hafalan',
+        'tahun_ajaran',
+        'email_ayah',
+        'email_ibu',
+        'id_ibu',
+        'id_ayah'
     ];
 
     public static function get_profile($id)

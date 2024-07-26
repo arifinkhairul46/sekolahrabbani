@@ -15,6 +15,7 @@ use App\Models\PendaftaranAyah;
 use App\Models\PendaftaranIbu;
 use App\Models\PendaftaranWali;
 use App\Models\Provinsi;
+use App\Models\TahunAjaranAktif;
 use Illuminate\Http\Request;
 
 class PendaftaranController extends Controller
@@ -35,7 +36,7 @@ class PendaftaranController extends Controller
     {
         $lokasi = Lokasi::where('status', 1)->get();
         $jenjang_per_sekolah = JenjangSekolah::all();
-        // dd($jenjang_per_sekolah);
+        // dd($tahun_ajaran_aktif);
         return view('pendaftaran.tk-sd.formulir', compact('lokasi', 'jenjang_per_sekolah'));
     }
 
@@ -107,9 +108,9 @@ class PendaftaranController extends Controller
         $jenjang = $request->jenjang;
         if ($request->jenjang == '1') {
             $tingkat = 'KB';
-        } else if ($request->jenjang == '2') {
-            $tingkat = 'TK';
         } else if ($request->jenjang == '3') {
+            $tingkat = 'TK';
+        } else if ($request->jenjang == '4') {
             $tingkat = 'SD';
         } else {
             $tingkat = 'SMP';
@@ -120,6 +121,8 @@ class PendaftaranController extends Controller
         } else {
             $sumber_ppdb = $request->radios;
         }
+
+        $tahun_ajaran_aktif = TahunAjaranAktif::where('status', 1)->where('status_tampil', 1)->first();
 
         $lokasi = $request->lokasi;
         $nama_lengkap = $request->nama;
@@ -148,13 +151,13 @@ class PendaftaranController extends Controller
             'no_hp_ayah' => $no_hp_ayah,
             'no_hp_ibu' => $no_hp_ibu,
             'info_ppdb' => $sumber_ppdb,
-            'jenis_pendidikan' => $jenis_pendidikan
+            'jenis_pendidikan' => $jenis_pendidikan,
+            'tahun_ajaran' => $tahun_ajaran_aktif->id
         ]);
 
         PendaftaranAyah::create([
             'id_ayah' => $id_anak,
             'nama' => $nama_ayah,
-
         ]);
 
         PendaftaranIbu::create([
@@ -162,7 +165,7 @@ class PendaftaranController extends Controller
             'nama' => $nama_ibu,
         ]);
 
-        // $this->send_pendaftaran($id_anak, $nama_lengkap, $jenis_kelamin, $tempat_lahir, $tgl_lahir, $lokasi, $kelas, $jenjang, $tingkat, $asal_sekolah, $no_hp_ayah, $no_hp_ibu, $nama_ayah, $nama_ibu);
+        $this->send_pendaftaran($id_anak, $nama_lengkap, $jenis_kelamin, $tempat_lahir, $tgl_lahir, $lokasi, $kelas, $jenjang, $tingkat, $no_hp_ayah, $no_hp_ibu, $nama_ayah, $nama_ibu);
 
         return redirect()->route('form.pendaftaran')
             ->with('success', 'Pendaftaran Berhasil.');
@@ -242,7 +245,8 @@ class PendaftaranController extends Controller
                 'riwayat_penyakit' => $request->riwayat_penyakit,
                 'hafalan' => $request->hafalan,
                 'kec_asal_sekolah' => $request->kec_asal_sekolah,
-                    
+                'email_ibu' => $request->email_ibu,
+                'email_ayah' => $request->email_ayah
             ]);
 
           
@@ -330,7 +334,7 @@ class PendaftaranController extends Controller
     }
 
 
-    function send_pendaftaran($id_anak, $nama_lengkap, $jenis_kelamin, $tempat_lahir, $tgl_lahir, $lokasi, $kelas, $jenjang, $tingkat, $asal_sekolah, $no_hp_ayah, $no_hp_ibu, $nama_ayah, $nama_ibu){
+    function send_pendaftaran($id_anak, $nama_lengkap, $jenis_kelamin, $tempat_lahir, $tgl_lahir, $lokasi, $kelas, $jenjang, $tingkat, $no_hp_ayah, $no_hp_ibu, $nama_ayah, $nama_ibu){
 	    $curl = curl_init();
 
 		curl_setopt_array($curl, array(
@@ -346,6 +350,8 @@ class PendaftaranController extends Controller
 		  // CURLOPT_SSL_VERIFYHOST => false,
 		  CURLOPT_POSTFIELDS => array(
 		  	'id_anak' => $id_anak,
+		  	'id_ibu' => $id_anak,
+		  	'id_ayah' => $id_anak,
 		  	'nama_lengkap' => $nama_lengkap,
 		  	'jenis_kelamin' => $jenis_kelamin,
 		  	'tempat_lahir' => $tempat_lahir,
@@ -354,7 +360,6 @@ class PendaftaranController extends Controller
 		  	'kelas' => $kelas,
             'jenjang' => $jenjang,
 			'tingkat' => $tingkat,
-			'asal_sekolah' => $asal_sekolah,
 			'no_hp_ayah' => $no_hp_ayah,
 			'nama_ayah' => $nama_ayah,
 			'nama_ibu' => $nama_ibu,

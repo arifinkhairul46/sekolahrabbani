@@ -173,12 +173,12 @@
                          _token: '{{csrf_token()}}'
                     },
                     success: function (result) {
-                        console.log(result);
+                        // console.log(result);
                         $('#jenjang').html('<option value="" disabled selected>-- Pilih Jenjang --</option>');
                         $.each(result.jenjang, function (key, item) {
-                            // console.log(item);
+                            // console.log(item.jenjang.value);
                             $("#jenjang").append('<option value="' + item
-                                .jenjang_id + '">' + item.jenjang.nama_jenjang + '</option>');
+                                .jenjang.value + '">' + item.jenjang.nama_jenjang + '</option>');
                         });
                     }
                 });
