@@ -16,7 +16,7 @@
             <div class="col-md">
                 <h6 class="mt-1" style="color: #ED145B">Pendaftaran</h6>
                 <h4 class="mb-3">Data Calon Siswa</h4>
-                <form action="{{route('store.pendaftaran')}}"  method="POST">
+                <form action="{{route('store.pendaftaran')}}"  method="POST" id="form_pendaftaran">
                     @csrf
                     <div class="form-group">
                         <label for="nama" class="form-label">Nama Lengkap</label>
@@ -120,7 +120,7 @@
                     </div>
 
                     <div class="mt-3 center">
-                        <button type="submit" class="btn btn-primary px-3"> Submit </button>
+                        <button type="submit" class="btn btn-primary px-3" id="btn-submit"> Submit </button>
                     </div>
                 </form>
             </div>
@@ -129,6 +129,18 @@
           
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
+        $(document).ready(function() {
+            $("#btn-submit").click(function() {
+                // disable button
+                $(this).prop("disabled", true);
+                // add spinner to button
+                $(this).html(
+                    `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...`
+                );
+                $("#form_pendaftaran").submit();
+            });
+        });
+
         function open_info() {
             $('#input_rekomen').show()
         }

@@ -169,9 +169,18 @@ class PendaftaranController extends Controller
             'id_wali' => $id_anak,
         ]);
 
+        // send ke qlp
         $this->send_pendaftaran($id_anak, $nama_lengkap, $jenis_kelamin, $tempat_lahir, $tgl_lahir, $lokasi, $kelas, $jenjang, $tingkat, $no_hp_ayah, $no_hp_ibu, $nama_ayah, $nama_ibu);
 
-        return redirect()->route('form.pendaftaran')
+        //send notif ke ortu
+        $message = "Terimakasih *Ayah/Bunda $nama_lengkap* telah mendaftar ke Sekolah Rabbani. No Registrasi / Pendaftaran adalah *$id_anak* mohon disimpan untuk selanjutnya pemenuhan data saat psikotest. ";
+
+        $this->send_notif($message, $no_hp_ayah);
+        $this->send_notif($message, $no_hp_ibu);
+
+        
+
+        return redirect()->route('pendaftaran')
             ->with('success', 'Pendaftaran Berhasil.');
     }
 
