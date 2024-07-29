@@ -169,7 +169,7 @@ class PendaftaranController extends Controller
             'id_wali' => $id_anak,
         ]);
 
-        // $this->send_pendaftaran($id_anak, $nama_lengkap, $jenis_kelamin, $tempat_lahir, $tgl_lahir, $lokasi, $kelas, $jenjang, $tingkat, $no_hp_ayah, $no_hp_ibu, $nama_ayah, $nama_ibu);
+        $this->send_pendaftaran($id_anak, $nama_lengkap, $jenis_kelamin, $tempat_lahir, $tgl_lahir, $lokasi, $kelas, $jenjang, $tingkat, $no_hp_ayah, $no_hp_ibu, $nama_ayah, $nama_ibu);
 
         return redirect()->route('form.pendaftaran')
             ->with('success', 'Pendaftaran Berhasil.');
