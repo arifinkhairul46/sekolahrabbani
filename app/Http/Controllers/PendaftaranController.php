@@ -123,6 +123,7 @@ class PendaftaranController extends Controller
         }
 
         $tahun_ajaran_aktif = TahunAjaranAktif::where('status', 1)->where('status_tampil', 1)->first();
+        $ta_aktif = $tahun_ajaran_aktif->id;
 
         $lokasi = $request->lokasi;
         $nama_lengkap = $request->nama;
@@ -170,7 +171,7 @@ class PendaftaranController extends Controller
         ]);
 
         // send ke qlp
-        $this->send_pendaftaran($id_anak, $nama_lengkap, $jenis_kelamin, $tempat_lahir, $tgl_lahir, $lokasi, $kelas, $jenjang, $tingkat, $no_hp_ayah, $no_hp_ibu, $nama_ayah, $nama_ibu);
+        $this->send_pendaftaran($id_anak, $nama_lengkap, $jenis_kelamin, $tempat_lahir, $tgl_lahir, $lokasi, $kelas, $jenjang, $tingkat, $no_hp_ayah, $no_hp_ibu, $nama_ayah, $nama_ibu, $ta_aktif);
 
         //send notif ke ortu
         $message = "Terimakasih *Ayah/Bunda $nama_lengkap* telah mendaftar ke Sekolah Rabbani. No Registrasi / Pendaftaran adalah *$id_anak* mohon disimpan untuk selanjutnya pemenuhan data saat psikotest. ";
@@ -178,7 +179,9 @@ class PendaftaranController extends Controller
         $this->send_notif($message, $no_hp_ayah);
         $this->send_notif($message, $no_hp_ibu);
 
-        
+        // $contact_person =  ContactPerson::where('is_aktif', 1)->where('kode_sekolah', $lokasi)->where('jenjang', $tingkat)->get();
+
+
 
         return redirect()->route('pendaftaran')
             ->with('success', 'Pendaftaran Berhasil.');
@@ -349,7 +352,7 @@ class PendaftaranController extends Controller
     }
 
 
-    function send_pendaftaran($id_anak, $nama_lengkap, $jenis_kelamin, $tempat_lahir, $tgl_lahir, $lokasi, $kelas, $jenjang, $tingkat, $no_hp_ayah, $no_hp_ibu, $nama_ayah, $nama_ibu){
+    function send_pendaftaran($id_anak, $nama_lengkap, $jenis_kelamin, $tempat_lahir, $tgl_lahir, $lokasi, $kelas, $jenjang, $tingkat, $no_hp_ayah, $no_hp_ibu, $nama_ayah, $nama_ibu, $tahun_ajaran){
 	    $curl = curl_init();
 
 		curl_setopt_array($curl, array(
@@ -378,7 +381,9 @@ class PendaftaranController extends Controller
 			'no_hp_ayah' => $no_hp_ayah,
 			'nama_ayah' => $nama_ayah,
 			'nama_ibu' => $nama_ibu,
-			'no_hp_ibu' => $no_hp_ibu)
+			'no_hp_ibu' => $no_hp_ibu,
+			'tahun_ajaran' => $tahun_ajaran
+            )
 
 		));
 
