@@ -16,8 +16,7 @@
             <div class="col-md">
                 <h6 class="mt-1" style="color: #ED145B">Pemenuhan Data</h6>
                 <h4 class="mb-3">Data Calon Siswa</h4>
-                <form action="{{route('form.edit', 'id')}}"  method="GET">
-                    {{-- @csrf --}}
+                <form action="{{route('form.update')}}"  method="GET">
                     <div class="form-group">
                     <div class="d-flex">
                         <input type="text" name="no_registrasi" id="no_registrasi" class="form-control form-control-sm px-3" aria-label=".form-control-sm px-3 example" placeholder="Masukkan No Registrasi/Pendaftaran">
@@ -30,3 +29,30 @@
         </div>
     </div>
 @endsection
+
+<div class="modal fade" id="lupa_no_regis" tabindex="-1" role="dialog" aria-labelledby="lupa_regis" aria-hidden="true">
+    <div class="modal-dialog">
+        <form role="form" method="POST" action="{{route('forget_no_regis')}}">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="lupa_regis">Lupa No Pendaftaran / Registrasi</h5>
+                </div>
+                <div class="modal-body">
+                    {{ csrf_field() }}
+                    <div class="form-group">
+                        <label>Masukkan No HP Anda</label>
+                        <input type="text" name="no_hp" class="form-control form-control-sm px-3" placeholder="08xx"  >
+                    </div>
+                    <div class="form-group mt-2">
+                        <label>Nama Lengkap</label>
+                        <input type="text" name="nama_lengkap" class="form-control form-control-sm px-3" placeholder="Masukkan Nama Anak Anda"  >
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary btn-sm my-4 px-3 text-white">Kirim</button>
+                    <button type="button" class="btn btn-secondary btn-sm px-3" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </form> 
+    </div>
+</div>

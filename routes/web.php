@@ -161,6 +161,7 @@ Route::prefix('pendaftaran')->group(function () {
     Route::get('/', [PendaftaranController::class, 'index'])->name('pendaftaran');
     Route::get('/formulir', [PendaftaranController::class, 'form_pendaftaran'])->name('form.pendaftaran');
     Route::post('/formulir', [PendaftaranController::class, 'store'])->name('store.pendaftaran');
+    Route::get('/formulir/find', [PendaftaranController::class, 'find'])->name('form.find');
     Route::get('/formulir/update', [PendaftaranController::class, 'edit'])->name('form.update');
     Route::post('/formulir/update', [PendaftaranController::class, 'forget_no_regis'])->name('forget_no_regis');
     Route::put('/formulir/update/{id}', [PendaftaranController::class, 'update'])->name('form.update.id');
