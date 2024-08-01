@@ -32,8 +32,12 @@
 
 <body>
   
-    @include('layouts.navbars.sidebar')
-
+    @if ( Route::currentRouteName() == 'login' )
+        @include('layouts.navbars.no_content')
+    @else 
+        @include('layouts.navbars.sidebar')
+    @endif
+    
         <main class="main-content">
             @yield('content')
         </main>

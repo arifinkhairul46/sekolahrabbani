@@ -12,7 +12,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        return view('auth.login');
+        return view('auth.login_v2');
     }
 
     public function customLogin(Request $request)
