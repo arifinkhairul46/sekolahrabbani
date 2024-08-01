@@ -36,8 +36,10 @@ class PendaftaranController extends Controller
     {
         $lokasi = Lokasi::where('status', 1)->get();
         $jenjang_per_sekolah = JenjangSekolah::all();
-        // dd($tahun_ajaran_aktif);
-        return view('pendaftaran.tk-sd.formulir', compact('lokasi', 'jenjang_per_sekolah'));
+        $tahun_ajaran = TahunAjaranAktif::where('status', 1)->where('status_tampil', 1)->orderBy('id', 'asc')->get();
+
+        // dd($tahun_ajaran);
+        return view('pendaftaran.tk-sd.formulir', compact('lokasi', 'jenjang_per_sekolah', 'tahun_ajaran'));
     }
 
     public function get_jenjang(Request $request) {
@@ -118,15 +120,11 @@ class PendaftaranController extends Controller
         }
 
         
-
         if ($request->radios == 'lainnya') {
             $sumber_ppdb = $request->radios2;
         } else {
             $sumber_ppdb = $request->radios;
         }
-
-        $tahun_ajaran_aktif = TahunAjaranAktif::where('status', 1)->where('status_tampil', 1)->first();
-        $ta_aktif = $tahun_ajaran_aktif->id;
 
         $lokasi = $request->lokasi;
         $nama_lengkap = $request->nama;
@@ -139,6 +137,7 @@ class PendaftaranController extends Controller
         $no_hp_ayah = $request->no_hp_ayah;
         $no_hp_ibu = $request->no_hp_ibu;
         $jenis_pendidikan = $request->jenis_pendidikan;
+        $tahun_ajaran = $request->tahun_ajaran;
         $now = date('YmdHis');
         $id_anak = "PPDB-$tingkat-$lokasi-$now";
 
@@ -156,7 +155,7 @@ class PendaftaranController extends Controller
             'no_hp_ibu' => $no_hp_ibu,
             'info_ppdb' => $sumber_ppdb,
             'jenis_pendidikan' => $jenis_pendidikan,
-            'tahun_ajaran' => $tahun_ajaran_aktif->id
+            'tahun_ajaran' => $tahun_ajaran
         ]);
 
         PendaftaranAyah::create([
@@ -174,7 +173,7 @@ class PendaftaranController extends Controller
         ]);
 
         // send ke qlp
-        $this->send_pendaftaran($id_anak, $nama_lengkap, $jenis_kelamin, $tempat_lahir, $tgl_lahir, $lokasi, $kelas, $jenjang, $tingkat, $no_hp_ayah, $no_hp_ibu, $nama_ayah, $nama_ibu, $sumber_ppdb, $ta_aktif);
+        $this->send_pendaftaran($id_anak, $nama_lengkap, $jenis_kelamin, $tempat_lahir, $tgl_lahir, $lokasi, $kelas, $jenjang, $tingkat, $no_hp_ayah, $no_hp_ibu, $nama_ayah, $nama_ibu, $sumber_ppdb, $tahun_ajaran);
 
         $contact_person =  ContactPerson::where('is_aktif', '1')->where('kode_sekolah', $lokasi)->where('id_jenjang', $jenjang)->first();
         $no_admin = $contact_person->telp;

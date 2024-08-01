@@ -62,11 +62,11 @@
                     </li>
                 @else
                     <li class="nav-item mr-2 mb-3 mb-lg-0">
-                        <a class="nav-link" href="/login">Login</a>
+                        <a class="nav-link" href="{{route('login')}}">Login</a>
                     </li>
-                    <li class="nav-item mr-2 mb-3 mb-lg-0">
+                    {{-- <li class="nav-item mr-2 mb-3 mb-lg-0">
                         <a class="nav-link" href="/register">Register</a>
-                    </li>
+                    </li> --}}
                 @endif
             </ul>
         </div>

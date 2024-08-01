@@ -77,6 +77,16 @@
                     </div>
 
                     <div class="form-group mt-3">
+                        <label for="tahun_ajaran" class="form-label">Tahun Ajaran</label>
+                        <select name="tahun_ajaran" id="tahun_ajaran" class="form-control" required>
+                            <option value="" disabled>-- Pilih Tahun Ajaran --</option>
+                            @foreach ($tahun_ajaran as $item)
+                                <option value="{{ $item->id }}" selected > {{ $item->tahun_ajaran }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="form-group mt-3">
                         <label for="nama_ayah" class="form-label">Nama Ayah Kandung</label>
                         <input class="form-control" id="nama_ayah" name="nama_ayah" placeholder="Nama Ayah" required>
                     </div>
