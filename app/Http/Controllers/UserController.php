@@ -40,7 +40,7 @@ class UserController extends Controller
                 }
             }
 
-            return redirect("login")->withSuccess('Login details are not valid');
+            return redirect("login")->with('error', 'Login details are not valid');
         } catch (\Exception $th) {
             // dd($th);
             return redirect("login")->withError($th->getMessage());
@@ -122,7 +122,7 @@ class UserController extends Controller
             if ($user) {
                 $message = "Password anda adalah " . $get_pass->pass_akun . "
 
-Silahkan masuk ke https://karir.sekolahrabbani.sch.id/login
+Silahkan masuk ke https://sekolahrabbani.sch.id/login
 
 *Mohon untuk tidak menyebarkan password ini kepada siapapun. Terima kasih.*";
                 $no_wha = $request->no_hp;
