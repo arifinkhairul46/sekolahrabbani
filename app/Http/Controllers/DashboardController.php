@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\MenuMobile;
 use App\Models\PenerimaanDetail;
 use App\Models\Profile;
 use App\Models\Tagihan;
@@ -39,6 +40,27 @@ class DashboardController extends Controller
         // $detail_tunggakan =
         // dd($spp_lunas);
         
+    }
+
+    public function dashboard() 
+    {
+        $user_id = Auth::user()->id;
+
+        $main_menu = MenuMobile::where('is_footer', 0)->get();
+        $menubar = MenuMobile::where('is_footer', 1)->get();
+
+        
+
+        return view('ortu.dashboard', compact('main_menu', 'menubar'));
+    }
+
+    public function footer() 
+    {
+
+        $menubar = MenuMobile::where('is_footer', 1)->get();
+        dd($menubar);
+
+        return view('ortu.footer.index', compact('menubar'));
     }
 
     /**

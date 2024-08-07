@@ -15,6 +15,13 @@ class UserController extends Controller
         return view('auth.login_v2');
     }
 
+    public function list_user()
+    {
+        $list_user = User::all();
+        // dd($list_user);
+        return view('admin.master.index', compact('list_user'));
+    }
+
     public function customLogin(Request $request)
     {
         try {

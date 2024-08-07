@@ -19,6 +19,8 @@ class AdminMiddleware
     {
         if (Auth::user() &&  Auth::user()->id_role == 3) {
             return redirect('/karir/profile')->with('error', 'You are not Admin!');
+        } else if (Auth::user() &&  Auth::user()->id_role == 5) {
+            return redirect()->route('profile-diri')->with('error', 'You are not Admin!');
         }
         
         return $next($request);

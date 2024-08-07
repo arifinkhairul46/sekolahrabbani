@@ -14,8 +14,10 @@ use App\Http\Controllers\PendaftaranController;
 use App\Http\Controllers\PosisiLamaranController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProfileSekolahController;
+use App\Http\Controllers\SeragamController;
 use App\Http\Controllers\TagihanController;
 use App\Http\Controllers\TugasDiklatController;
+use App\Http\Controllers\UserController;
 use App\Models\JadwalKontrak;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
@@ -53,9 +55,17 @@ Route::controller(GoogleController::class)->group(function () {
     Route::get('/auth/google/callback', 'handleGoogleCallback');
 });
 
-Route::group(['middleware' =>['auth', 'admin']], function () {
-    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::group(['middleware' =>['admin']], function () {
+    Route::prefix('master')->group(function () {
+        Route::get('list-user', [UserController::class, 'list_user'])->name('list-user');
+    });
+});
+
+Route::group(['middleware' =>['auth']], function () {
+    Route::get('dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
     Route::get('profile-diri', [ProfileController::class, 'index'])->name('profile-diri');
+    Route::get('seragam', [SeragamController::class, 'index'])->name('sergam');
+    Route::get('seragam/{id}', [SeragamController::class, 'index'])->name('seragam.detail');
     
     Route::prefix('keuangan')->group(function () {
         Route::get('tagihan', [TagihanController::class, 'index'])->name('tagihan.index');
