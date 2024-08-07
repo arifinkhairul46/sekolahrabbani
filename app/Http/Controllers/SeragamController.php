@@ -21,14 +21,12 @@ class SeragamController extends Controller
         return view('ortu.seragam.index', compact('lokasi', 'produk_seragam', 'search_produk'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function detail_produk(Request $request, $id)
     {
-        //
+        $produk = ProdukSeragam::find($id);
+        // dd($produk);
+
+        return view('ortu.seragam.detail', compact('produk'));
     }
 
     /**

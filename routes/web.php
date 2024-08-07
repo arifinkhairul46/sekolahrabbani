@@ -65,7 +65,7 @@ Route::group(['middleware' =>['auth']], function () {
     Route::get('dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
     Route::get('profile-diri', [ProfileController::class, 'index'])->name('profile-diri');
     Route::get('seragam', [SeragamController::class, 'index'])->name('sergam');
-    Route::get('seragam/{id}', [SeragamController::class, 'index'])->name('seragam.detail');
+    Route::get('seragam/{id}', [SeragamController::class, 'detail_produk'])->name('seragam.detail');
     
     Route::prefix('keuangan')->group(function () {
         Route::get('tagihan', [TagihanController::class, 'index'])->name('tagihan.index');
