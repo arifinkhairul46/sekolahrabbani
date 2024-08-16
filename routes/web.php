@@ -64,8 +64,14 @@ Route::group(['middleware' =>['admin']], function () {
 Route::group(['middleware' =>['auth']], function () {
     Route::get('dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
     Route::get('profile-diri', [ProfileController::class, 'index'])->name('profile-diri');
-    Route::get('seragam', [SeragamController::class, 'index'])->name('sergam');
+    Route::get('seragam', [SeragamController::class, 'index'])->name('seragam');
     Route::get('seragam/{id}', [SeragamController::class, 'detail_produk'])->name('seragam.detail');
+    Route::get('cart', [SeragamController::class, 'cart'])->name('seragam.cart');
+    Route::post('cart', [SeragamController::class, 'add_to_cart'])->name('cart_post');
+    Route::delete('cart/{id}', [SeragamController::class, 'remove_cart'])->name('cart.delete');
+    Route::get('pembayaran', [SeragamController::class, 'pembayaran'])->name('seragam.bayar');
+
+
     
     Route::prefix('keuangan')->group(function () {
         Route::get('tagihan', [TagihanController::class, 'index'])->name('tagihan.index');

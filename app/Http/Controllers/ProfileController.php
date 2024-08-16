@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\MenuMobile;
 use App\Models\Profile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,9 +18,10 @@ class ProfileController extends Controller
     {
         $user = Auth::user();
         $profile = Profile::get_user_profile_byphone($user->no_hp);
-        // dd($profile);
+        $menu_profile = MenuMobile::where('is_profile', 1)->orderby('no', 'asc')->get();
+        // dd($menu_profile);
 
-        return view('admin.profile.index', compact('profile'));
+        return view('ortu.profile.index', compact('profile', 'menu_profile'));
     }
 
     /**

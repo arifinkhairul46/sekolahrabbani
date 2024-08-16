@@ -4,7 +4,7 @@
 body {
     font-family: 'Nunito', sans-serif;
     line-height: 1.5;
-    max-width: 520px;
+    max-width: 500px;
     margin: auto !important;
 }
 
@@ -168,6 +168,7 @@ main {
     width: 100%;
     height: 375px;
     object-fit: cover;
+    position: relative;
 }
 
 .kegiatan {
@@ -184,6 +185,15 @@ main {
 
 .btn-blue {
     background-color: #3152A4 !important;
+    color: #FFF !important;
+    border: none !important;
+    padding: 0.5rem 1rem;
+    border-radius: 1rem !important;
+    cursor: pointer;
+}
+
+.btn-purple {
+    background-color: #624F8F !important;
     color: #FFF !important;
     border: none !important;
     padding: 0.5rem 1rem;
@@ -330,8 +340,210 @@ main {
 }
 
 .bottom-navigate {
-    position: sticky;
+    position: fixed;
     bottom: 0;
+    width: 100%;
+    max-width: 500px;
     background-color: white;
-    padding: 0.8rem;
+    padding: 0.4rem;
 }
+
+
+.custom-radios input[type="radio"] {
+    display: none;
+  }
+  .custom-radios input[type="radio"] + label {
+    color: #333;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+  }
+  .custom-radios input[type="radio"] + label span {
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    margin: -1px 4px 0 0;
+    vertical-align: middle;
+    cursor: pointer;
+    border: 2px solid #fff;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.33);
+    background-repeat: no-repeat;
+    background-position: center;
+    text-align: center;
+    line-height: 25px;
+  }
+
+  .custom-radios input[type="radio"] + label span img {
+    opacity: 0;
+    transition: all 0.3s ease;
+  }
+  .custom-radios input[type="radio"]#color-3 + label span {
+    background-color: #f1c40f;
+  }
+  .custom-radios input[type="radio"]#color-4 + label span {
+    background-color: #e74c3c;
+  }
+  .custom-radios input[type="radio"]:checked + label span img {
+    opacity: 1;
+  }
+
+.button-ukuran {
+    float: left;
+    background-color: #F0F0F0;
+    margin: 0 5px 0 0;
+    width: 45px;
+    height: 30px;
+    position: relative;
+    text-align: center;
+}
+
+.button-ukuran label,
+    .button-ukuran input {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    }
+
+    .button-ukuran input[type="radio"] {
+    opacity: 0.011;
+    z-index: 100;
+    }
+
+    .button-ukuran input[type="radio"]:checked + label {
+    background: #20b8be;
+    border-radius: 4px;
+    }
+
+    .button-ukuran label {
+    cursor: pointer;
+    z-index: 90;
+    line-height: 1.8em;
+    }
+
+.produk-jumlah {
+    display: flex;
+    justify-content: start;
+}
+
+.input-number {
+    background-color: #F8F0FF;
+    border: none;
+    border-radius: 1rem !important;
+	width: 20%;
+	text-align: center;
+	height: 25px;
+	overflow: hidden;
+}
+
+.btn-outline-plus-minus {
+    border: none !important;
+    margin: 0 !important;
+    padding-top: 0.1rem !important;
+    padding-bottom: 0.1rem !important;
+}
+
+.count-cart{
+    background-color: red;
+    color: white;
+    border-radius: 1rem;
+    font-size: 9px;
+    padding-right: 6px;
+    padding-left: 6px;
+}
+
+.total_cart {
+    background-color: #F8F0FF;
+    border-radius: 50%
+
+}
+
+.frame {
+    width: 150px;
+    height: 150px;
+    border-radius: 1rem;
+    background-color: rgb(255, 255, 244);
+    padding: 5px;
+    object-fit: cover;
+}
+
+.frame-detail {
+    width: 120px;
+    height: 120px;
+    border-radius: 1rem;
+    background-color: rgb(255, 255, 244);
+    padding: 3px;
+    object-fit: cover;
+}
+
+.frame-bayar {
+    width: 90px;
+    height: 90px;
+    border-radius: 1rem;
+    background-color: rgb(255, 255, 244);
+    padding: 3px;
+    object-fit: cover;
+}
+
+.row-card{
+    display: flex;
+    padding: 0.2rem;
+}
+
+
+ .animate-bottom {
+    top: 100%;
+    transform: translateY(20px);
+    animation: animatebottom 0.4s;
+  }
+  
+  @keyframes animatebottom {
+    from {
+      bottom: -300px;
+      opacity: 0;
+    }
+  
+    to {
+      bottom: 0;
+      opacity: 1;
+    }
+  }
+
+  .modal-fade {
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s;
+  }
+
+  @keyframes animatetop {
+    from {
+      top: 0;
+      opacity: 1;
+    }
+    to {
+      top: 300px;
+      opacity: 0;
+    }
+  }
+
+  .rincian-bayar {
+    display: flex;
+    justify-content: space-between;
+    background-color: #f5f5f5;
+    font-size: 12px;
+  }
+
+  .accordion {
+    --bs-accordion-btn-padding-y: 0.5rem !important;
+    --bs-accordion-btn-icon: url("data:image/svg+xml,%3csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"%3e%3cpath d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/%3e%3c/svg%3e") !important;
+  }
+
+  .center-cart {
+    position: fixed;
+     top: 50%;
+     left: 50%;
+     transform: translate(-50%, -50%);
+     text-align: center;
+  }
