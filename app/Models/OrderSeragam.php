@@ -14,6 +14,21 @@ class OrderSeragam extends Model
     protected $fillable = [
         'no_pemesanan',
         'no_hp',
-        'nama_pemesan'
+        'nama_pemesan',
+        'status',
+        'total_harga',
+        'snap_token'
     ];
+
+    public function order_detail() {
+        return $this->hasMany(OrderDetailSeragam::class, 'id', 'no_pemesanan');
+    }
+
+    public static function get_order_with_detail ($user_id) {
+        $data = static::with('order_detail')
+                    ->where('user_id', $user_id)
+                    ->get();
+
+        return $data;
+    }
 }

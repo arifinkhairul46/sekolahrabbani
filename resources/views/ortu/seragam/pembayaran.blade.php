@@ -37,10 +37,10 @@
         @endforeach
     </div>
 
-    <div class="d-flex p-2 mb-3" style="justify-content: space-between; background-color:#f5f5f5; font-size: 12px">
+    {{-- <div class="d-flex p-2 mb-3" style="justify-content: space-between; background-color:#f5f5f5; font-size: 12px">
         <span > <i class="fa-solid fa-wallet" style="color: #624F8F"></i> &nbsp; <b> Metode Pembayaran </b> </span>
         <a href="#" style="text-decoration: none; color:#FF419C"> Pilih Metode Pembayaran </a>
-    </div>
+    </div> --}}
 
     <div class="">
         <p class="px-2 mb-0" style="background-color:#f5f5f5; font-size: 12px" > 
@@ -62,84 +62,57 @@
     </div>
 
     <div class="bottom-navigate mt-3 p-3 d-flex" style="justify-content: space-between; background-color: #f5f5f5">
-        <h6> Total Pembayaran <br> <b> Rp. {{number_format($total_akhir)}} </b> </h6>
-        <button class="btn btn-purple btn-sm px-4" style="letter-spacing: 2px"> <b>Bayar</b> </button>
+        <h6> Total Pembayaran <br> <b> Rp. <span id="total_bayar"> {{number_format($total_akhir)}} </span> </b> </h6>
+        {{-- <form action="{{route('seragam.store')}}" method="POST" enctype="multipart/form-data">
+            @csrf --}}
+            <button id="pay-button" type="submit" class="btn btn-purple btn-sm px-4" onclick="bayar_seragam()" style="letter-spacing: 1px"> <b>Bayar</b> </button>
+        {{-- </form> --}}
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script>
 
-        $('.btn-number').click(function(e){
-            e.preventDefault();
+    <script src="https://app.sandbox.midtrans.com/snap/snap.js"  data-client-key='{{env('MIDTRANS_CLIENT_KEY')}}'></script>
+    <script type="text/javascript">
+    // var clientKey = "{{env('MIDTRANS_CLIENT_KEY')}}"
+    // console.log('tes', clientKey);
+        function bayar_seragam() {
+            $(this).prop("disabled", true);
+                // add spinner to button
+                $(this).html(
+                    `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...`
+            );
             
-            fieldName = $(this).attr('data-field');
-            type      = $(this).attr('data-type');
-            var input = $("input[name='"+fieldName+"']");
-            var currentVal = parseInt(input.val());
-            if (!isNaN(currentVal)) {
-                if(type == 'minus') {
-                    
-                    if(currentVal > input.attr('min')) {
-                        input.val(currentVal - 1).change();
-                    } 
-                    if(parseInt(input.val()) == 1) {
-                        $(this).attr('disabled', true);
+            $.ajax({
+                url: "{{route('seragam.store')}}",
+                type: 'POST',
+                data: {
+                    _token: '{{csrf_token()}}'
+                },
+                success: function (res) {
+                    console.log(res.snap_token);
+                    // SnapToken acquired from previous step
+                    snap.pay(res.snap_token, {
+                    // Optional
+                    onSuccess: function(result){
+                        window.location.href = '{{route('checkout.success')}}'
+                        /* You may add your own js here, this is just example */ /*document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);*/
+                    },
+                    // Optional
+                    onPending: function(result){
+                        /* You may add your own js here, this is just example */ document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+                    },
+                    // Optional
+                    onError: function(result){
+                        /* You may add your own js here, this is just example */ document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
                     }
-
-                } else if(type == 'plus') {
-
-                    if(currentVal < input.attr('max')) {
-                        input.val(currentVal + 1).change();
-                    }
-                    if(parseInt(input.val()) == input.attr('max')) {
-                        $(this).attr('disabled', true);
-                    }
-
+                    });
                 }
-            } else {
-                input.val(1);
-            }
-        });
-        $('.input-number').focusin(function(){
-        $(this).data('oldValue', $(this).val());
-        });
-        $('.input-number').change(function() {
-            
-            minValue =  parseInt($(this).attr('min'));
-            maxValue =  parseInt($(this).attr('max'));
-            valueCurrent = parseInt($(this).val());
-            
-            name = $(this).attr('name');
-            if(valueCurrent >= minValue) {
-                $(".btn-number[data-type='minus'][data-field='"+name+"']").removeAttr('disabled')
-            } else {
-                alert('Sorry, the minimum value was reached');
-                $(this).val($(this).data('oldValue'));
-            }
-            if(valueCurrent <= maxValue) {
-                $(".btn-number[data-type='plus'][data-field='"+name+"']").removeAttr('disabled')
-            } else {
-                alert('Sorry, the maximum value was reached');
-                $(this).val($(this).data('oldValue'));
-            }
-            
-            
-        });
-        $(".input-number").keydown(function (e) {
-                // Allow: backspace, delete, tab, escape, enter and .
-                if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 190]) !== -1 ||
-                    // Allow: Ctrl+A
-                    (e.keyCode == 65 && e.ctrlKey === true) || 
-                    // Allow: home, end, left, right
-                    (e.keyCode >= 35 && e.keyCode <= 39)) {
-                        // let it happen, don't do anything
-                        return;
-                }
-                // Ensure that it is a number and stop the keypress
-                if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
-                    e.preventDefault();
-                }
-        });
+            });
+        }
     </script>
 
+@endsection
+
+@section('scripts')
+    
 @endsection

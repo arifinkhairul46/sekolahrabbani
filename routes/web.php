@@ -70,6 +70,10 @@ Route::group(['middleware' =>['auth']], function () {
     Route::post('cart', [SeragamController::class, 'add_to_cart'])->name('cart_post');
     Route::delete('cart/{id}', [SeragamController::class, 'remove_cart'])->name('cart.delete');
     Route::get('pembayaran', [SeragamController::class, 'pembayaran'])->name('seragam.bayar');
+    Route::post('pembayaran', [SeragamController::class, 'store'])->name('seragam.store');
+    Route::get('checkout/success/', [SeragamController::class, 'success'])->name('checkout.success');
+
+    Route::get('riwayat-transaksi', [SeragamController::class, 'history'])->name('seragam.history');
 
 
     

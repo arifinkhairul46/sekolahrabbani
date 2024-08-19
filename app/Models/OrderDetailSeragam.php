@@ -21,8 +21,15 @@ class OrderDetailSeragam extends Model
         'ukuran',
         'quantity',
         'harga',
-        'diskon'
+        'diskon',
+        'status', 
+        'snap_token'
     ];
+
+    public function order_seragam()
+    {
+        return $this->belongsTo(OrderSeragam::class, 'no_pemesanan', 'id');
+    }
 
     public static function get_detail_produk ($id) {
         $data = OrderDetailSeragam::select('t_pesan_seragam_detail.*', 'm_produk_seragam.*' )
