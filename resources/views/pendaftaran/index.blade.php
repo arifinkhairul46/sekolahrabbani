@@ -56,10 +56,14 @@
                         </thead>
                         <tbody>
                             @foreach ($contact_person as $item)
+                            <?php $message = 'Assalamualaikum, saya mau daftar sekolah rabbani, boleh minta informasi/surat pernyataan?' ?>
                                 <tr>
                                     <td>{{$loop->iteration}}</td>
                                     <td>{{$item->nama}} </td>
-                                    <td><a href="https://wa.me/{{$item->telp}}">{{$item->telp}} </a></td>
+                                    <td>
+                                        <a target="_blank" href="https://wa.me/{{$item->telp}}?text={{$message}}">
+                                        {{$item->telp}} </a>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
