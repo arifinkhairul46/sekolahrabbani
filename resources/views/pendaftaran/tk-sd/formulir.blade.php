@@ -18,7 +18,18 @@
                 <h4 class="mb-3">Data Calon Siswa</h4>
                 <form action="{{route('store.pendaftaran')}}"  method="POST" id="form_pendaftaran">
                     @csrf
-                    <div class="form-group">
+                    
+                    <div class="form-group mt-3">
+                        <label for="tahun_ajaran" class="form-label">Tahun Ajaran</label>
+                        <select name="tahun_ajaran" id="tahun_ajaran" class="form-control" required>
+                            <option value="" disabled>-- Pilih Tahun Ajaran --</option>
+                            @foreach ($tahun_ajaran as $item)
+                                <option value="{{ $item->id }}" selected > {{ $item->tahun_ajaran }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="form-group mt-3">
                         <label for="nama" class="form-label">Nama Lengkap</label>
                         <input class="form-control" id="nama" name="nama" placeholder="Nama Lengkap" required>
                     </div>
@@ -73,16 +84,6 @@
                             <option value="" disabled selected>-- Pilih Jenis Pendidikan --</option>
                             <option value="1">Reguler</option>
                             <option value="2">Boarding</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group mt-3">
-                        <label for="tahun_ajaran" class="form-label">Tahun Ajaran</label>
-                        <select name="tahun_ajaran" id="tahun_ajaran" class="form-control" required>
-                            <option value="" disabled>-- Pilih Tahun Ajaran --</option>
-                            @foreach ($tahun_ajaran as $item)
-                                <option value="{{ $item->id }}" selected > {{ $item->tahun_ajaran }}</option>
-                            @endforeach
                         </select>
                     </div>
 
