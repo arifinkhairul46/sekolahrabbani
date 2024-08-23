@@ -23,16 +23,16 @@
                 <div class="d-flex mx-2">
                     <div class="" style="width: 200px">
                         <p class="mb-0" style="font-size: 14px;"> {{$item->nama_produk}} </p>
-                        <p class="mb-0 price-diskon"> <b> Rp. {{number_format((($item['harga_awal']) - ($item['diskon_persen']/100 * $item['harga_awal'])) * $item['quantity']) }} </b> </p>
-                        <p class="mb-0" style="color: gray; font-size: 10px"> <s> Rp. {{number_format($item->harga_awal * $item['quantity'])}} </s> </p>     
+                        <p class="mb-0 price-diskon"> <b> Rp. {{number_format((($item['harga']) - ($item['diskon']/100 * $item['harga'])) * $item['quantity']) }} </b> </p>
+                        <p class="mb-0" style="color: gray; font-size: 10px"> <s> Rp. {{number_format($item->harga * $item['quantity'])}} </s> </p>     
                         <p class="mb-0" style="font-size: 10px">Quantity: {{$item['quantity']}}, Size: {{$item['ukuran']}} </p>
                         <p class="mb-1" style="font-size: 10px">Sekolah: {{$item['sekolah']}}, Kelas: {{$item['nama_kelas']}} </p>
 
                     </div>
                 </div>
             </div>
-        <?php $total_awal += (($item['harga_awal'] * $item['quantity']) ); ?>
-        <?php $total_diskon += ($item['diskon_persen']/100 * $item['harga_awal'] * $item['quantity']); ?>
+        <?php $total_awal += (($item['harga'] * $item['quantity']) ); ?>
+        <?php $total_diskon += ($item['diskon']/100 * $item['harga'] * $item['quantity']); ?>
         <?php $total_akhir = $total_awal - $total_diskon; ?>
         @endforeach
     </div>
@@ -71,7 +71,7 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-    <script src="https://app.sandbox.midtrans.com/snap/snap.js"  data-client-key='{{env('MIDTRANS_CLIENT_KEY')}}'></script>
+    <script src="https://app.sandbox.midtrans.com/snap/snap.js"  data-client-key="{{env('MIDTRANS_CLIENT_KEY')}}"></script>
     <script type="text/javascript">
     // var clientKey = "{{env('MIDTRANS_CLIENT_KEY')}}"
     // console.log('tes', clientKey);

@@ -26,22 +26,24 @@
                         <img src="{{asset('assets/images/'.$item->image)}}" width="100%" style="height: 100%; object-fit:cover; border-radius:1rem">
                     </div>
 
-                    <div class="d-flex mx-2 mt-2">
+                    <div class="d-flex mx-2 mt-1">
                         <div class="" style="width: 200px">
                             <p class="mb-0" style="font-size: 14px"><b> {{$item->nama_produk}} </b>, Size: {{$item['ukuran']}} </p>
-                            <p class="mb-1 price-diskon"> <b> Rp. {{number_format((($item['harga_awal']) - ($item['diskon_persen']/100 * $item['harga_awal'])) * $item['quantity']) }} </b> </p>
+                            <p class="mb-1 price-diskon"> <b> Rp. {{number_format((($item['harga']) - ($item['diskon']/100 * $item['harga'])) * $item['quantity']) }} </b> </p>
+                            <p class="mb-0" style="font-size: 11px"> Jenis: {{$item['jenis_produk']}} </p>
                             <p class="mb-0" style="font-size: 11px"> Nama: {{$item['nama_siswa']}} </p>
                             <p class="mb-1" style="font-size: 11px"> Sekolah: {{$item['sekolah']}}, Kelas: {{$item['nama_kelas']}} </p>
                             
                             <div class="input-group" style="border: none;">
                                 <div class="button minus">
-                                    <button type="button" class="btn btn-outline-plus-minus btn-number" data-type="minus" data-field="quant[{{$item->id}}]">
+                                    <button type="button" class="btn btn-outline-plus-minus btn-number" data-type="minus" data-id="{{$item->id}}" data-field="quant[{{$item->id}}]">
                                         <i class="fas fa-minus-circle"></i>
                                     </button>
                                 </div>
-                                <input type="text" name="quant[{{$item->id}}]" style="font-size: 12px" id="quant_{{$item->id}}" class="input-number mt-1" value="{{$item['quantity']}}" min="1" max="10">
+                                <input type="text" name="quant[{{$item->id}}]" style="font-size: 12px" id="quant_{{$item->id}}" class="input-number" value="{{$item['quantity']}}" min="1" max="10">
+                                {{-- <input type="hidden" id="produk_id_{{$item->id}}" value="{{$item->id}}" > --}}
                                 <div class="button plus">
-                                    <button type="button" class="btn btn-outline-plus-minus btn-number" data-type="plus" data-field="quant[{{$item->id}}]">
+                                    <button type="button" class="btn btn-outline-plus-minus btn-number" data-type="plus" data-id="{{$item->id}}" data-field="quant[{{$item->id}}]">
                                         <i class="fas fa-plus-circle"></i>
                                     </button>
                                 </div>
@@ -57,7 +59,7 @@
                         </div>
                     </div>
                 </div>
-            <?php $total += (($item['harga_awal'] * $item['quantity']) - ($item['diskon_persen']/100 * $item['harga_awal'] * $item['quantity'])); ?>
+            <?php $total += (($item['harga'] * $item['quantity']) - ($item['diskon']/100 * $item['harga'] * $item['quantity'])); ?>
             @endforeach
 
             <div class="bottom-navigate sticky-bottom p-3 d-flex" style="justify-content: space-between; background-color: #f5f5f5">
@@ -86,13 +88,31 @@
             
             fieldName = $(this).attr('data-field');
             type      = $(this).attr('data-type');
+            id      = $(this).attr('data-id');
             var input = $("input[name='"+fieldName+"']");
             var currentVal = parseInt(input.val());
+            var url = "{{ route('cart.update', ":id") }}";
+            url = url.replace(':id', id);
             if (!isNaN(currentVal)) {
                 if(type == 'minus') {
                     
                     if(currentVal > input.attr('min')) {
                         input.val(currentVal - 1).change();
+                        console.log('m', id, currentVal);
+
+                        $.ajax({
+                            url: url,
+                            type: 'PUT',
+                            contentType: "application/x-www-form-urlencoded",
+                            data: {
+                                quantity: currentVal - 1,
+                                 _token: '{{csrf_token()}}'
+                            },
+                            success: function (result) {
+                               window.location.reload()
+                            }
+                        })
+                        
                     } 
                     if(parseInt(input.val()) == 1) {
                         $(this).attr('disabled', true);
@@ -102,6 +122,23 @@
 
                     if(currentVal < input.attr('max')) {
                         input.val(currentVal + 1).change();
+                        console.log('p', id, currentVal);
+
+                        $.ajax({
+                            url: url,
+                            type: 'PUT',
+                             contentType: "application/x-www-form-urlencoded",
+                            data: {
+                                quantity: currentVal + 1,
+                                _token: '{{csrf_token()}}'
+
+                            },
+                            success: function (result) {
+                               window.location.reload()
+
+                            }
+                        })
+
                     }
                     if(parseInt(input.val()) == input.attr('max')) {
                         $(this).attr('disabled', true);
@@ -120,7 +157,7 @@
             minValue =  parseInt($(this).attr('min'));
             maxValue =  parseInt($(this).attr('max'));
             valueCurrent = parseInt($(this).val());
-            
+
             name = $(this).attr('name');
             if(valueCurrent >= minValue) {
                 $(".btn-number[data-type='minus'][data-field='"+name+"']").removeAttr('disabled')
@@ -152,12 +189,6 @@
                     e.preventDefault();
                 }
         });
-
-        
-        // function remove_cart (item_id) {
-        //     pesanan = pesanan.filter(data => data.produk_id !== item_id);
-
-        // }
 
     </script>
 

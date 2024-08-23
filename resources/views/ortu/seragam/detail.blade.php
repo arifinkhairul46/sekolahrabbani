@@ -41,12 +41,13 @@
 
     <div class="container">
         <div class="produk-detail">
+            <input type="hidden" id="produk_id" value="{{$produk->id}}">
             <div class="produk-title mt-3">
                 <h5 class="card-title mb-0">{{$produk->nama_produk}}</h5>
-                <p class="mb-1 price-diskon-detail" ><b> Rp. {{number_format($produk->harga_awal * 80/100)}}/set </b> </p>
+                <p class="mb-1 price-diskon-detail" ><b> Rp. {{number_format($produk->harga * 80/100)}}/set </b> </p>
                 <p class="mb-0" style="font-size: 16px"> Discount 
-                    <span class="bg-danger py-1 px-2"> {{($produk->diskon_persen)}}% </span>
-                    <span class="mx-2" style="color: gray"> <s> Rp. {{number_format($produk->harga_awal)}} </s> </span>
+                    <span class="bg-danger py-1 px-2"> {{($produk->diskon_)}}% </span>
+                    <span class="mx-2" style="color: gray"> <s> Rp. {{number_format($produk->harga)}} </s> </span>
                 </p>
             </div>
 
@@ -65,8 +66,8 @@
     </div>
     <div class="bottom-navigate sticky-bottom">
         <div class="d-flex" style="justify-content: end">
-            <a href="#" class="btn btn-primary px-3 pb-2" data-bs-toggle="modal" data-bs-target="#buy_now" > <i class="fa-solid fa-plus"></i> Keranjang </a>
-            <a href="#" class="btn btn-purple mx-2 px-3 pb-2" data-bs-toggle="modal" data-bs-target="#buy_now" > Beli Sekarang </a>
+            <a href="#" class="btn btn-primary px-3" data-bs-toggle="modal" data-bs-target="#buy_now" > <i class="fa-solid fa-plus"></i> Keranjang </a>
+            <a href="#" class="btn btn-purple mx-2 px-3" data-bs-toggle="modal" data-bs-target="#buy_now" > Beli Sekarang </a>
         </div>
     </div>
 
@@ -81,10 +82,10 @@
                         <div class="mx-2 mt-2" style="width: 255px">
                             <div class="titel">
                                 <p class="card-title mb-0"> <b> {{$produk->nama_produk}} </b> </p>
-                                <p class="mb-1 price-diskon" style="font-size: 24px"> <b> Rp. {{number_format(($produk['harga_awal']) - ($produk['diskon_persen']/100 * $produk['harga_awal'])) }} </b> </p>
+                                <p class="mb-1 price-diskon" style="font-size: 24px"> <b> Rp. <span id="harga_diskon"> {{number_format(($produk['harga']) - ($produk['diskon']/100 * $produk['harga'])) }} </span> </b> </p>
                                 <p class="mb-0" style="font-size: 13px"> Discount 
-                                    <span class="bg-danger py-1 px-2"> {{($produk->diskon_persen)}}% </span>
-                                    <span class="mx-2" style="color: gray"> <s> Rp. {{number_format($produk->harga_awal)}} </s> </span>
+                                    <span class="bg-danger py-1 px-2" id="diskon_persen"> {{($produk->diskon)}}% </span>
+                                    <span class="mx-2" style="color: gray"> <s> Rp. <span id="harga_awal"> {{number_format($produk->harga)}} </span> </s> </span>
                                 </p>
                             </div>
                         </div>
@@ -103,6 +104,21 @@
                         <div class="frame-detail">
                             <img src="{{asset('assets/images/'.$produk->image_4)}}" width="100%" style="height: 100%; object-fit:cover; border-radius:1rem">
                         </div>
+                    </div>
+
+                    <div class="produk-jenis mt-3">
+                        <div class="d-flex">
+                            @foreach ($jenis_produk as $item)
+                                <div class="button-jenis">
+                                    <input class="form-check-input" type="radio" name="jenis_{{$produk->id}}" id="jenis_{{$produk->id}}_{{$item->id}}" value="{{$item->id}} {{$item->id == 1 ? 'checked' : ''}}">
+                                    <label class="form-check-label" for="jenis_{{$produk->id}}_{{$item->id}}">
+                                    <span> {{$item->jenis_produk}} </span>
+                                    </label>
+                                </div>
+                            @endforeach
+                        </div>
+                        <span class="mb-0 text-danger" style="font-size: 10px; display: none" id="valid_jenis_{{$produk->id}}" > Pilih jenis seragam terlebih dahulu! </span>
+
                     </div>
                     
                     <div class="produk-ukuran mt-3">
@@ -163,8 +179,8 @@
                     </div>
 
                     <div class="d-flex mt-3" style="justify-content: end">
-                        <button type="button" class="btn btn-primary px-3 pb-2" onclick="addToCart('{{$produk->id}}', '{{auth()->user()->name}}')" > <i class="fa-solid fa-plus"></i> Keranjang </button>
-                        <a href="#" class="btn btn-purple mx-2 px-3 pb-2" > Beli Sekarang </a>
+                        <button type="button" class="btn btn-primary px-3 " onclick="addToCart('{{$produk->id}}', '{{auth()->user()->name}}')" > <i class="fa-solid fa-plus"></i> Keranjang </button>
+                        <a href="#" class="btn btn-purple mx-2 px-3 " > Beli Sekarang </a>
                     </div>
                 </div>
             </div>
@@ -246,21 +262,54 @@
                 }
         });
 
-        var pesanan = [];
-        var cart_now = $('#count_cart').html();
-        // console.log('jml',cart_now);
+        var item_id = $('#produk_id').val();
+        // console.log(item_id);
+
+        $('input[name="jenis_'+item_id+'"]').change(function(){
+            // Do something interesting here
+          
+            var jenis_id = $('input[name="jenis_'+item_id+'"]:checked').val();
+
+            $.ajax({
+                url: "{{route('harga_per_jenis')}}",
+                type: 'POST',
+                data: {
+                    jenis_id: jenis_id,
+                    produk_id : item_id,
+                    _token: '{{csrf_token()}}'
+
+                },
+                success: function (result) {
+                    $.each(result, function (key, item) {
+                        var harga = parseInt(item.harga);
+                        var diskon = parseInt(item.diskon);
+                        var harga_diskon = (harga - diskon/100*harga);
+                        var formatter = new Intl.NumberFormat("en-US");
+                        var format_harga = formatter.format(harga);
+                        var format_harga_diskon = formatter.format(harga_diskon);
+                        $("#harga_awal").html(format_harga);
+                        $("#harga_diskon").html(format_harga_diskon)
+                    });
+                }
+            })
+        });
+        
 
         function addToCart(id, nama_anak) {
             var item_id = id;
             var ukuran = $('input[name="ukuran_'+item_id+'"]:checked').val();
+            var jenis = $('input[name="jenis_'+item_id+'"]:checked').val();
             var quantity = $('.input-number').val();
             var nama_siswa = $('#nama_siswa').val();
             
 
             if (ukuran == '' || ukuran == null || ukuran == undefined) {
                 $('#valid_ukuran_'+item_id).show();
+            } else if (jenis == '' || jenis == null || jenis == undefined)  {
+                $('#valid_jenis_'+item_id).show();
             } else {
                 $('#valid_ukuran_'+item_id).hide(); 
+                $('#valid_jenis_'+item_id).hide();
 
                 $.ajax({
                     url: "{{route('cart_post')}}",
@@ -269,11 +318,12 @@
                         produk_id : item_id,
                         ukuran : ukuran,
                         quantity : quantity,
+                        jenis: jenis,
                         nama_siswa: nama_siswa,
                         _token: '{{csrf_token()}}'
                     },
                     success: function (result) {
-                        // $('#count_cart').html(parseInt(cart_now+1))
+                        $('#count_cart').html(parseInt(cart_now+1))
                     }
                 })
 

@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Cart;
 use App\Models\CartDetail;
+use App\Models\HargaSeragam;
+use App\Models\JenisSeragam;
 use App\Models\LokasiSub;
 use App\Models\OrderDetailSeragam;
 use App\Models\OrderSeragam;
 use App\Models\ProdukSeragam;
 use App\Models\Profile;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class SeragamController extends Controller
 {
@@ -32,17 +35,31 @@ class SeragamController extends Controller
 
     public function detail_produk(Request $request, $id)
     {
-        $produk = ProdukSeragam::find($id);
+        $produk = ProdukSeragam::select('m_produk_seragam.id','m_produk_seragam.nama_produk', 'm_produk_seragam.deskripsi', 'm_produk_seragam.image', 'm_produk_seragam.image_2',
+        'm_produk_seragam.image_3', 'm_produk_seragam.image_4', 'm_produk_seragam.image_5', 'm_produk_seragam.material', 'mhs.harga', 'mhs.diskon', 'mjps.jenis_produk')
+                                ->leftJoin('m_harga_seragam as mhs', 'mhs.produk_id', 'm_produk_seragam.id')
+                                ->leftJoin('m_ukuran_seragam as mus', 'mus.grup_ukuran', 'mhs.ukuran_id')
+                                ->leftJoin('m_jenis_produk_seragam as mjps', 'mjps.id', 'mhs.jenis_produk_id')
+                                ->where('m_produk_seragam.id', $id)
+                                ->first();
 
         $user_id = auth()->user()->id;
+
+        $jenis_produk = JenisSeragam::select('m_jenis_produk_seragam.id','m_jenis_produk_seragam.jenis_produk')
+                                    ->leftJoin('m_harga_seragam as mhs', 'mhs.jenis_produk_id', 'm_jenis_produk_seragam.id')
+                                    ->leftJoin('m_produk_seragam as mps', 'mps.id', 'mhs.produk_id')
+                                    ->where('mps.id', $id)                          
+                                    ->get();
 
         $profile = Profile::where('user_id', $user_id)->get();
 
         $cart_detail = CartDetail::leftJoin('m_produk_seragam', 'm_produk_seragam.id', 't_cart_detail.produk_id')
-        ->where('user_id', $user_id)->get();
-        // dd($profile);
+                                ->where('user_id', $user_id)
+                                ->where('t_cart_detail.status_cart', 0)
+                                ->get();
+        // dd($jenis_produk);
 
-        return view('ortu.seragam.detail', compact('produk', 'cart_detail', 'profile'));
+        return view('ortu.seragam.detail', compact('produk', 'cart_detail', 'profile', 'jenis_produk'));
     }
 
     public function cart(Request $request)
@@ -51,11 +68,18 @@ class SeragamController extends Controller
         $user_id = auth()->user()->id;
 
         $profile = Profile::where('user_id', $user_id)->get();
-        // $cart = Cart::where('user_id', $user_id)->get();
-        $cart_detail = CartDetail::select('m_produk_seragam.*', 't_cart_detail.*', 'mp.nama_lengkap as nama_siswa', 'mp.nama_kelas as nama_kelas', 'mls.sublokasi as sekolah')
+
+        $cart_detail = CartDetail::select('t_cart_detail.id', 'm_produk_seragam.id as id_produk','m_produk_seragam.nama_produk', 'm_produk_seragam.deskripsi', 'm_produk_seragam.image', 
+                    'm_produk_seragam.material', 'mhs.harga', 'mhs.diskon', 'mjps.id as jenis_id', 'mp.nama_lengkap as nama_siswa', 'mp.nama_kelas as nama_kelas', 
+                    'mls.sublokasi as sekolah', 'mjps.jenis_produk', 't_cart_detail.quantity', 't_cart_detail.ukuran')
                     ->leftJoin('m_produk_seragam', 'm_produk_seragam.id', 't_cart_detail.produk_id')
                     ->leftJoin('m_profile as mp' , 'mp.nis', 't_cart_detail.nis')
                     ->leftJoin('mst_lokasi_sub as mls', 'mls.id', 'mp.sekolah_id')
+                    ->leftJoin('m_jenis_produk_seragam as mjps', 'mjps.id', 't_cart_detail.jenis')
+                    ->leftJoin('m_harga_seragam as mhs', function($join)
+                    { $join->on('mhs.produk_id', '=', 'm_produk_seragam.id') 
+                        ->on('mhs.jenis_produk_id', '=', 'mjps.id'); 
+                    })
                     ->where('t_cart_detail.user_id', $user_id)
                     ->where('t_cart_detail.status_cart', 0)
                     ->get();
@@ -64,45 +88,56 @@ class SeragamController extends Controller
         return view('ortu.seragam.cart', compact('profile', 'cart_detail'));
     }
 
+    public function harga(Request $request) {
+        $user_id = auth()->user()->id;
+        $jenis = $request->jenis_id;
+        $produk_id = $request->produk_id;
+
+        // $harga = JenisSeragam::where('produk_id', $produk_id)->where('jenis_produk', $jenis)->get();
+        $harga = HargaSeragam::where('jenis_produk_id', $jenis)->where('produk_id', $produk_id)->get();
+     
+        return response()->json($harga);
+    }
+
+
     public function add_to_cart(Request $request)
     {
         $produk_id = $request->produk_id;
         $quantity = $request->quantity;
         $ukuran = $request->ukuran;
         $nis = $request->nama_siswa;
+        $jenis = $request->jenis;
 
         $user_id = auth()->user()->id;
         $profile = Profile::where('nis', $nis)->first();
 
-        $add_cart = Cart::create([
-            'user_id' => $user_id,
-        ]);
-
         $add_cart_detail =  CartDetail::create([
             'produk_id' => $produk_id,
             'user_id' => $user_id,
-            'cart_id' => $user_id,
             'nis' => $nis,
             'quantity' => $quantity,
             'ukuran' => $ukuran,
+            'jenis' => $jenis,
+            
         ]);
-        
-        // $data = $request->data;
-        // // return $data;
-        // $data = json_decode($data, true);
-        // foreach ($data as $k=> $item) {
-        //     $produk = ProdukSeragam::where('id', $item['produk_id'])->get();
-        //     // return $produk;
-        // }
+    
         return response()->json($add_cart_detail);
-        // return view('ortu.seragam.cart', compact('profile'));
+
+    }
+
+    public function update_cart(Request $request, $id) 
+    {
+        $quantity = $request->quantity;
+        $cart_detail = CartDetail::where('id', $id)->update([
+            'quantity' => $quantity
+        ]);
 
 
+        return response()->json($cart_detail);
     }
 
     public function remove_cart($id) 
     {
-        Cart::find($id)->delete();
         CartDetail::find($id)->delete();
 
         return redirect()->route('seragam.cart')
@@ -235,13 +270,20 @@ Terima kasih atas kepercayaan *Ayah/Bunda $nama_siswa*.🙏☺";
         $user_id = auth()->user()->id;
 
         $profile = Profile::where('user_id', $user_id)->get();
-        $cart_detail = CartDetail::select('m_produk_seragam.*', 't_cart_detail.*', 'mp.nama_lengkap as nama_siswa', 'mp.nama_kelas as nama_kelas', 'mls.sublokasi as sekolah')
-                    ->leftJoin('m_produk_seragam', 'm_produk_seragam.id', 't_cart_detail.produk_id')
-                    ->leftJoin('m_profile as mp' , 'mp.nis', 't_cart_detail.nis')
-                    ->leftJoin('mst_lokasi_sub as mls', 'mls.id', 'mp.sekolah_id')
-                    ->where('t_cart_detail.user_id', $user_id)
-                    ->where('t_cart_detail.status_cart', 0)
-                    ->get();
+        $cart_detail =  CartDetail::select('t_cart_detail.id', 'm_produk_seragam.id as id_produk','m_produk_seragam.nama_produk', 'm_produk_seragam.deskripsi', 'm_produk_seragam.image', 
+                        'm_produk_seragam.material', 'mhs.harga', 'mhs.diskon', 'mjps.id as jenis_id', 'mp.nama_lengkap as nama_siswa', 'mp.nama_kelas as nama_kelas', 
+                        'mls.sublokasi as sekolah', 'mjps.jenis_produk', 't_cart_detail.quantity', 't_cart_detail.ukuran')
+                        ->leftJoin('m_produk_seragam', 'm_produk_seragam.id', 't_cart_detail.produk_id')
+                        ->leftJoin('m_profile as mp' , 'mp.nis', 't_cart_detail.nis')
+                        ->leftJoin('mst_lokasi_sub as mls', 'mls.id', 'mp.sekolah_id')
+                        ->leftJoin('m_jenis_produk_seragam as mjps', 'mjps.id', 't_cart_detail.jenis')
+                        ->leftJoin('m_harga_seragam as mhs', function($join)
+                        { $join->on('mhs.produk_id', '=', 'm_produk_seragam.id') 
+                            ->on('mhs.jenis_produk_id', '=', 'mjps.id'); 
+                        })
+                        ->where('t_cart_detail.user_id', $user_id)
+                        ->where('t_cart_detail.status_cart', 0)
+                        ->get();
         // dd($cart_detail);
 
         return view('ortu.seragam.pembayaran', compact('profile', 'cart_detail', 'order_seragam'));
@@ -254,7 +296,6 @@ Terima kasih atas kepercayaan *Ayah/Bunda $nama_siswa*.🙏☺";
      
         return view('ortu.seragam.success');
     }
-
 
     public function callback(Request $request) {
         
@@ -310,16 +351,29 @@ Terima kasih atas kepercayaan *Ayah/Bunda $nama_siswa*.🙏☺";
     public function history(Request $request) {
         $user_id = auth()->user()->id;
 
-        $order = OrderSeragam::where('user_id', $user_id)->get();
-        $order_detail = OrderSeragam::select('t_pesan_seragam.*', 'psd.*')
-                            ->leftJoin('t_pesan_seragam_detail as psd', 'psd.no_pemesanan', 't_pesan_seragam.no_pemesanan')
-                            ->where('user_id', $user_id)->get();
+        $order = OrderSeragam::select('t_pesan_seragam.*', 'psd.*', 'mps.image', 'mps.nama_produk', 't_pesan_seragam.status')
+                                ->leftJoin('t_pesan_seragam_detail as psd', 'psd.no_pemesanan', 't_pesan_seragam.no_pemesanan')
+                                ->leftJoin('m_produk_seragam as mps', 'psd.produk_id', 'mps.id')
+                                ->where('user_id', $user_id)
+                                ->groupby('t_pesan_seragam.no_pemesanan', 't_pesan_seragam.total_harga')
+                                ->get();
 
-        // $order = OrderSeragam::get_order_with_detail($user_id);
         // dd($order);
         
      
-        return view('ortu.seragam.history', compact('order', 'order_detail'));
+        return view('ortu.seragam.history', compact('order'));
+    }
+
+    public function rincian_pesanan (Request $request, $id) {
+        $user_id = auth()->user()->id;
+
+        $order_detail = OrderDetailSeragam::leftJoin('m_produk_seragam as mps', 't_pesan_seragam_detail.produk_id', 'mps.id')
+                                            ->where('no_pemesanan', $id)->get();
+
+        // dd($order);
+        
+     
+        return view('ortu.seragam.rincian-pesan', compact( 'order_detail'));
     }
 
     public function invoice(Request $request, $id) {

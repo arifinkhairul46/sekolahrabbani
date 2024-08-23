@@ -2,7 +2,7 @@
 
 /* Global styles */
 body {
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Nunito' !important;
     line-height: 1.5;
     max-width: 500px;
     margin: auto !important;
@@ -417,6 +417,42 @@ main {
     }
 
     .button-ukuran label {
+    cursor: pointer;
+    z-index: 90;
+    line-height: 1.8em;
+    }
+
+.button-jenis {
+    float: left;
+    background-color: #f5f5f5;
+    margin: 0 5px 0 0;
+    width: 80px;
+    height: 30px;
+    position: relative;
+    text-align: center;
+}
+
+.button-jenis label,
+    .button-jenis input {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    }
+
+    .button-jenis input[type="radio"] {
+    opacity: 0.011;
+    z-index: 100;
+    }
+
+    .button-jenis input[type="radio"]:checked + label {
+    background: #20b8be;
+    border-radius: 4px;
+    }
+
+    .button-jenis label {
     cursor: pointer;
     z-index: 90;
     line-height: 1.8em;
