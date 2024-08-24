@@ -239,7 +239,7 @@ Terima kasih atas kepercayaan *Ayah/Bunda $nama_siswa*.🙏☺";
           // Set your Merchant Server Key
           \Midtrans\Config::$serverKey = config('midtrans.serverKey');
           // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
-          \Midtrans\Config::$isProduction = false;
+          \Midtrans\Config::$isProduction = true;
           // Set sanitization on (default)
           \Midtrans\Config::$isSanitized = true;
           // Set 3DS transaction for credit card to true
@@ -367,13 +367,15 @@ Terima kasih atas kepercayaan *Ayah/Bunda $nama_siswa*.🙏☺";
     public function rincian_pesanan (Request $request, $id) {
         $user_id = auth()->user()->id;
 
+        $order = OrderSeragam::where('no_pemesanan', $id)->first();
+
         $order_detail = OrderDetailSeragam::leftJoin('m_produk_seragam as mps', 't_pesan_seragam_detail.produk_id', 'mps.id')
                                             ->where('no_pemesanan', $id)->get();
 
-        // dd($order);
+        // dd($order_detail);
         
      
-        return view('ortu.seragam.rincian-pesan', compact( 'order_detail'));
+        return view('ortu.seragam.rincian-pesan', compact( 'order', 'order_detail'));
     }
 
     public function invoice(Request $request, $id) {

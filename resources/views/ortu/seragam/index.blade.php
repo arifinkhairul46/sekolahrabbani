@@ -17,7 +17,7 @@
                                 <img src="{{ asset('assets/images/'.$item->image) }}" class="card-img-top" alt="{{$item->image}}">
                                 <div class="card-body pt-1" style="padding-left: 0.8rem; padding-right: 0">
                                     <h6 class="card-title mb-0">{{$item->nama_produk}}</h6>
-                                    <p class="mb-0 price-diskon" ><b> Rp. {{number_format($item->harga_awal * 80/100)}}/set </b> </p>
+                                    <p class="mb-0 price-diskon" ><b> Rp. {{number_format($item->harga_awal * 80/100)}} </b> </p>
                                     <p class="mb-1 price-normal"><s> Rp. {{number_format($item->harga_awal)}} </s> </p>
                                     <p class="mb-0" style="font-size: 10px"> Disc. 
                                         <span class="bg-danger p-1"> {{($item->diskon_persen)}}% </span> 
@@ -42,7 +42,7 @@
                                 <img src="{{ asset('assets/images/'.$item->image) }}" class="card-img-top" alt="{{$item->image}}">
                                 <div class="card-body pt-1 px-2">
                                     <h6 class="card-title mb-0">{{$item->nama_produk}}</h6>
-                                    <p class="mb-0 price-diskon" ><b> Rp. {{number_format($item->harga_awal * 80/100)}}/set </b> </p>
+                                    <p class="mb-0 price-diskon" ><b> Rp. {{number_format($item->harga_awal * 80/100)}} </b> </p>
                                     <p class="mb-1 price-normal"><s> Rp. {{number_format($item->harga_awal)}} </s> </p>
                                     <p class="mb-0" style="font-size: 9px"> Disc. 
                                         <span class="bg-danger p-1"> {{($item->diskon_persen)}}% </span> 
@@ -67,7 +67,7 @@
                                 <img src="{{ asset('assets/images/'.$item->image) }}" class="card-img-top" alt="{{$item->image}}">
                                 <div class="card-body pt-1 px-2">
                                     <h6 class="card-title mb-0">{{$item->nama_produk}}</h6>
-                                    <p class="mb-0 price-diskon" ><b> Rp. {{number_format($item->harga_awal * 80/100)}}/set </b> </p>
+                                    <p class="mb-0 price-diskon" ><b> Rp. {{number_format($item->harga_awal * 80/100)}} </b> </p>
                                     <p class="mb-1 price-normal"><s> Rp. {{number_format($item->harga_awal)}} </s> </p>
                                     <p class="mb-0" style="font-size: 9px"> Disc. 
                                         <span class="bg-danger p-1"> {{($item->diskon_persen)}}% </span> 
@@ -92,7 +92,7 @@
                                 <img src="{{ asset('assets/images/'.$item->image) }}" class="card-img-top" alt="{{$item->image}}">
                                 <div class="card-body pt-1 px-2">
                                     <h6 class="card-title mb-0">{{$item->nama_produk}}</h6>
-                                    <p class="mb-0 price-diskon" ><b> Rp. {{number_format(($item->harga_awal) - ($item->diskon_persen/100 * $item->harga_awal))}}/set </b> </p>
+                                    <p class="mb-0 price-diskon" ><b> Rp. {{number_format(($item->harga_awal) - ($item->diskon_persen/100 * $item->harga_awal))}} </b> </p>
                                     <p class="mb-1 price-normal"><s> Rp. {{number_format($item->harga_awal)}} </s> </p>
                                     <p class="mb-0" style="font-size: 9px"> Disc. 
                                         <span class="bg-danger p-1"> {{($item->diskon_persen)}}% </span> 
