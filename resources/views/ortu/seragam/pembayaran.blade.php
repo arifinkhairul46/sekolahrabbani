@@ -100,10 +100,12 @@
                     },
                     // Optional
                     onPending: function(result){
+                        window.location.href = '{{route('seragam.history')}}'
                         /* You may add your own js here, this is just example */ document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
                     },
                     // Optional
                     onError: function(result){
+                        window.location.href = '{{route('seragam.history')}}'
                         /* You may add your own js here, this is just example */ document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
                     }
                     });
@@ -112,8 +114,4 @@
         }
     </script>
 
-@endsection
-
-@section('scripts')
-    
 @endsection

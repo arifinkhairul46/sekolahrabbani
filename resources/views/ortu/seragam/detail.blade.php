@@ -46,7 +46,7 @@
                 <h5 class="card-title mb-0">{{$produk->nama_produk}}</h5>
                 <p class="mb-1 price-diskon-detail" ><b> Rp. {{number_format($produk->harga * 80/100)}}/set </b> </p>
                 <p class="mb-0" style="font-size: 16px"> Discount 
-                    <span class="bg-danger py-1 px-2"> {{($produk->diskon_)}}% </span>
+                    <span class="bg-danger py-1 px-2"> {{($produk->diskon)}}% </span>
                     <span class="mx-2" style="color: gray"> <s> Rp. {{number_format($produk->harga)}} </s> </span>
                 </p>
             </div>
@@ -110,7 +110,7 @@
                         <div class="d-flex">
                             @foreach ($jenis_produk as $item)
                                 <div class="button-jenis">
-                                    <input class="form-check-input" type="radio" name="jenis_{{$produk->id}}" id="jenis_{{$produk->id}}_{{$item->id}}" value="{{$item->id}} {{$item->id == 1 ? 'checked' : ''}}">
+                                    <input class="form-check-input" type="radio" name="jenis_{{$produk->id}}" id="jenis_{{$produk->id}}_{{$item->id}}" value="{{$item->id}}" {{$item->id == 1 ? 'checked' : ''}}>
                                     <label class="form-check-label" for="jenis_{{$produk->id}}_{{$item->id}}">
                                     <span> {{$item->jenis_produk}} </span>
                                     </label>

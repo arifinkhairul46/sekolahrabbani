@@ -158,10 +158,17 @@ class SeragamController extends Controller
         $nama_pemesan = auth()->user()->name;
         $no_pesanan = 'INV-RSU-'. date('YmdHis');
 
-        $order = CartDetail::select('m_produk_seragam.*', 't_cart_detail.*', 'mp.nama_lengkap as nama_siswa', 'mp.nama_kelas as nama_kelas', 'mls.sublokasi as sekolah')
+        $order = CartDetail::select('t_cart_detail.id', 'm_produk_seragam.id as id_produk','m_produk_seragam.nama_produk', 'm_produk_seragam.deskripsi', 'm_produk_seragam.image', 
+                            'm_produk_seragam.material', 'mhs.harga', 'mhs.diskon', 'mjps.id as jenis_id', 'mp.nama_lengkap as nama_siswa', 'mp.nama_kelas as nama_kelas', 
+                            'mls.sublokasi as sekolah', 'mjps.jenis_produk', 't_cart_detail.quantity', 't_cart_detail.ukuran')
                             ->leftJoin('m_produk_seragam', 'm_produk_seragam.id', 't_cart_detail.produk_id')
                             ->leftJoin('m_profile as mp' , 'mp.nis', 't_cart_detail.nis')
                             ->leftJoin('mst_lokasi_sub as mls', 'mls.id', 'mp.sekolah_id')
+                            ->leftJoin('m_jenis_produk_seragam as mjps', 'mjps.id', 't_cart_detail.jenis')
+                            ->leftJoin('m_harga_seragam as mhs', function($join)
+                            { $join->on('mhs.produk_id', '=', 'm_produk_seragam.id') 
+                                ->on('mhs.jenis_produk_id', '=', 'mjps.id'); 
+                            })
                             ->where('t_cart_detail.user_id', $user_id)
                             ->where('t_cart_detail.status_cart', 0)
                             ->get();
@@ -172,11 +179,12 @@ class SeragamController extends Controller
            $nama_siswa = $item['nama_siswa'];
            $lokasi = $item['sekolah'];
            $nama_kelas = $item['nama_kelas'];
-           $produk_id = $item['produk_id'];
+           $produk_id = $item['id_produk'];
            $ukuran = $item['ukuran'];
            $quantity = $item['quantity'];
-           $harga_awal = $item['harga_awal'];
-           $diskon = $item['diskon_persen'];
+           $harga_awal = $item['harga'];
+           $diskon = $item['diskon'];
+           $jenis_produk = $item['jenis_produk'];
 
             $order_detail = OrderDetailSeragam::create([
                 'no_pemesanan' => $no_pesanan,
@@ -188,6 +196,8 @@ class SeragamController extends Controller
                 'quantity' => $quantity,
                 'harga' => $harga_awal,
                 'diskon' => $diskon/100 * $harga_awal,
+                'jenis_produk_id' => $jenis_produk,
+                
             ]);
 
             $total_harga += $harga_awal * $quantity;
@@ -200,11 +210,13 @@ class SeragamController extends Controller
         }
 
        $order_seragam = OrderSeragam::create([
+
         'no_pemesanan' => $no_pesanan,
         'no_hp' => $no_hp,
         'nama_pemesan' => $nama_pemesan,
         'status' => 'pending',
-        'total_harga' => $harga_akhir
+        'total_harga' => $harga_akhir,
+        'user_id' => $user_id
         ]);
 
         $message = "Informasi Pemesanan Seragam Sekolah Rabbani
@@ -232,14 +244,14 @@ Jika Anda memiliki pertanyaan atau membutuhkan bantuan lebih lanjut, silahkan bi
 
 Terima kasih atas kepercayaan *Ayah/Bunda $nama_siswa*.🙏☺";
 
-        $send_notif = $this->send_notif($no_hp, $message);
+        // $send_notif = $this->send_notif($no_hp, $message);
 
         // $this->send_pesan_seragam($no_pesanan, $nama_pemesan, $no_hp);
 
           // Set your Merchant Server Key
           \Midtrans\Config::$serverKey = config('midtrans.serverKey');
           // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
-          \Midtrans\Config::$isProduction = true;
+          \Midtrans\Config::$isProduction = config('midtrans.isProduction');;
           // Set sanitization on (default)
           \Midtrans\Config::$isSanitized = true;
           // Set 3DS transaction for credit card to true
@@ -259,6 +271,11 @@ Terima kasih atas kepercayaan *Ayah/Bunda $nama_siswa*.🙏☺";
           $snapToken = \Midtrans\Snap::getSnapToken($params);
           $order_seragam->snap_token = $snapToken;
           $order_seragam->save();
+
+        //   $update_cart = CartDetail::where('user_id', $user_id)->where('status_cart', 0)->get();
+        //   $update_cart->update([
+        //       'status_cart' => 1
+        //   ]);
 
         return response()->json($order_seragam);
 
@@ -307,6 +324,19 @@ Terima kasih atas kepercayaan *Ayah/Bunda $nama_siswa*.🙏☺";
         }
 
         $transactionStatus = $request->transaction_status;
+        $va_number = $request->va_numbers[0]['va_number'];
+        $bank = $request->va_numbers[0]['bank'];
+        $mtd_pembayaran = null;
+        $paymentType = $request->payment_type;
+
+        if ($paymentType == 'shopeepay' || $paymentType == 'gopay') {
+            $mtd_pembayaran == $paymentType;
+            $no_va = 0;
+        } else if ($paymentType == 'bank_transfer') {
+            $mtd_pembayaran = $bank;
+            $no_va = $va_number;
+        }
+
         $orderId = $request->order_id;
         $order = OrderSeragam::where('no_pemesanan', $orderId)->first();
 
@@ -318,29 +348,61 @@ Terima kasih atas kepercayaan *Ayah/Bunda $nama_siswa*.🙏☺";
             case 'capture':
                 if ($request->payment_type == 'credit_card') {
                     if ($request->fraud_status == 'challenge') {
-                        $order->update(['status' => 'pending']);
+                        $order->update([
+                            'status' => 'pending',
+                            'metode_pembayaran' => $mtd_pembayaran,
+                            'va_number' => $no_va
+                        ]);
                     } else {
-                        $order->update(['status' => 'success']);
+                        $order->update([
+                            'status' => 'success',
+                            'metode_pembayaran' => $mtd_pembayaran,
+                            'va_number' => $no_va
+                        ]);
                     }
                 }
                 break;
             case 'settlement':
-                $order->update(['status' => 'success']);
+                $order->update([
+                    'status' => 'success',
+                    'metode_pembayaran' => $mtd_pembayaran,
+                    'va_number' => $no_va,
+                ]);
                 break;
             case 'pending':
-                $order->update(['status' => 'pending']);
+                $order->update([
+                    'status' => 'pending',
+                    'metode_pembayaran' => $mtd_pembayaran,
+                    'va_number' => $no_va
+                ]);
                 break;
             case 'deny':
-                $order->update(['status' => 'failed']);
+                $order->update([
+                    'status' => 'failed',
+                    'metode_pembayaran' => $mtd_pembayaran,
+                    'va_number' => $no_va
+                ]);
                 break;
             case 'expire':
-                $order->update(['status' => 'expired']);
+                $order->update([
+                    'status' => 'expired',
+                    'metode_pembayaran' => $mtd_pembayaran,
+                    'va_number' => $no_va
+                ]);
                 break;
             case 'cancel':
-                $order->update(['status' => 'canceled']);
+                $order->update([
+                    'status' => 'canceled',
+                    'metode_pembayaran' => $mtd_pembayaran,
+                    'va_number' => $no_va
+                ]);
                 break;
             default:
-                $order->update(['status' => 'unknown']);
+                $order->update([
+                    'status' => 'unknown',
+                    'metode_pembayaran' => $mtd_pembayaran,
+                    'va_number' => $no_va
+                ]);
                 break;
         }
 
@@ -360,7 +422,6 @@ Terima kasih atas kepercayaan *Ayah/Bunda $nama_siswa*.🙏☺";
 
         // dd($order);
         
-     
         return view('ortu.seragam.history', compact('order'));
     }
 
@@ -369,8 +430,10 @@ Terima kasih atas kepercayaan *Ayah/Bunda $nama_siswa*.🙏☺";
 
         $order = OrderSeragam::where('no_pemesanan', $id)->first();
 
-        $order_detail = OrderDetailSeragam::leftJoin('m_produk_seragam as mps', 't_pesan_seragam_detail.produk_id', 'mps.id')
-                                            ->where('no_pemesanan', $id)->get();
+        $order_detail = OrderDetailSeragam::select('tps.no_pemesanan', 'tps.metode_pembayaran', 'tps.va_number', 't_pesan_seragam_detail.*', 'mps.nama_produk', 'mps.image')
+                                            ->leftJoin('m_produk_seragam as mps', 't_pesan_seragam_detail.produk_id', 'mps.id')
+                                            ->leftJoin('t_pesan_seragam as tps', 'tps.no_pemesanan', 't_pesan_seragam_detail.no_pemesanan')
+                                            ->where('tps.no_pemesanan', $id)->get();
 
         // dd($order_detail);
         

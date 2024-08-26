@@ -13,10 +13,10 @@
 
     @if ($cart_detail->count() > 0)
     
-        <div class="mx-2" style="text-align: right">
+        {{-- <div class="mx-2" style="text-align: right">
             <input class="mt-1" type="checkbox" id="check_all" name="check_all" value="All">
             <label for="check_all">All &nbsp;</label><br>
-        </div>
+        </div> --}}
     
         <?php $total = 0; ?>
         <div class="container">
@@ -55,7 +55,7 @@
                             </div>
                         </div>
                         <div style="width: 20px">
-                            <input class="mt-1" type="checkbox" id="check_list" name="check_list" value="All">
+                            {{-- <input class="mt-1" type="checkbox" id="check_list" name="check_list" value="All"> --}}
                         </div>
                     </div>
                 </div>

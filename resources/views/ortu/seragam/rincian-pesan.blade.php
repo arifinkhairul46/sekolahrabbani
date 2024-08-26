@@ -31,24 +31,25 @@
                 </div>
                 <?php $total_awal += (($item->harga * $item['quantity']) ); ?>
                 <?php $total_diskon += ($item->diskon * $item['quantity']);?>
-                <?php $total_akhir = number_format($total_awal - $total_diskon); ?>
+                <?php $total_akhir = ($total_awal - $total_diskon); ?>
             @endforeach
 
             <div class="d-flex mt-3" style="justify-content: space-between; font-size: 14px">
+                <input type="text" style="display: none" value="{{$total_akhir}}" id="nominal" >
                 <span> Total Pesanan </span>
-                <span> Rp. {{$total_akhir}} </span>
+                <span> Rp. {{number_format($total_akhir)}} <i class="fa solid fa-copy" onclick="copy_nominal()" title="salin"> </i> </span>
             </div>
             <hr>
 
             <div class="d-flex mt-3" style="justify-content: space-between; font-size: 14px">
                 <span> Metode Pembayaran </span>
-                <span> Mandiri Virtual Account </span>
+                <span> {{ strtoupper($item->metode_pembayaran) }} </span>
             </div>
 
             @if($order->status == 'pending')
                 <div class="d-flex" style="justify-content: space-between; font-size: 14px">
                     <span> No Pembayaran </span>
-                    <span> Mandiri Virtual Account </span>
+                    <span id="va_number">{{$item->va_number}}<i class="fa solid fa-copy" onclick="copy_number()" title="salin"> </i> </span>
                 </div>
             @endif
             <hr>
@@ -57,14 +58,41 @@
                 <span> No Pesanan </span>
                 <span> {{$order->no_pemesanan}} </span>
             </div>
-            <div class="d-flex" style="justify-content: space-between; font-size: 14px">
-                <span> Waktu Pembayaran </span>
-                <span> {{$order->updated_at}} </span>
-            </div>
+
+            @if($order->status == 'success')
+                <div class="d-flex" style="justify-content: space-between; font-size: 14px">
+                    <span> Waktu Pembayaran </span>
+                    <span> {{$order->updated_at}} </span>
+                </div>
+            @endif
 
         </div>
     </div>
     <div class="d-grid gap-2 mt-3 bottom-navigate">
         <button class="btn btn-purple btn-block py-2" > Download Invoice </button>
     </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        function copy_number() {
+            var copyText = document.getElementById("va_number");
+            var textArea = document.createElement("textarea");
+            textArea.value = copyText.textContent;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand("Copy");
+            alert("No VA berhasil disalin");
+            textArea.remove();
+        }
+
+        function copy_nominal() {
+            var hidden = document.getElementById("nominal");
+            hidden.style.display = 'block';
+            hidden.select();
+            hidden.setSelectionRange(0, 99999)
+            document.execCommand("copy");
+            alert("Nominal berhasil disalin");
+            hidden.style.display = 'none';
+        }
+    </script>
 @endsection

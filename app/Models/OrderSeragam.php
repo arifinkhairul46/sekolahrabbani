@@ -17,7 +17,11 @@ class OrderSeragam extends Model
         'nama_pemesan',
         'status',
         'total_harga',
-        'snap_token'
+        'snap_token',
+        'user_id',
+        'metode_pembayaran',
+        'va_number',
+        'updated_at'
     ];
 
     public function order_detail() {

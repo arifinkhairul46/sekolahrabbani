@@ -18,6 +18,7 @@ class OrderDetailSeragam extends Model
         'lokasi_sekolah',
         'nama_kelas',
         'produk_id',
+        'jenis_produk_id',
         'ukuran',
         'quantity',
         'harga',

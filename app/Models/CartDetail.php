@@ -18,6 +18,7 @@ class CartDetail extends Model
         'quantity',
         'nis',
         'ukuran',
-        'jenis'
+        'jenis',
+        'status_cart'
     ];
 }
