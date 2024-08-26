@@ -337,7 +337,7 @@ Terima kasih atas kepercayaan *Ayah/Bunda $nama_siswa*.🙏☺";
             $mtd_pembayaran = $bank;
             $no_va = $va_number;
         } else if($paymentType == 'echannel') {
-            $va_number = $request->bill_key;
+            $no_va = $request->bill_key;
             $mtd_pembayaran = 'Mandiri';
         }
         $orderId = $request->order_id;
