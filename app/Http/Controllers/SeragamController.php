@@ -324,8 +324,6 @@ Terima kasih atas kepercayaan *Ayah/Bunda $nama_siswa*.🙏☺";
         }
 
         $transactionStatus = $request->transaction_status;
-        $va_number = $request->va_numbers[0]['va_number'];
-        $bank = $request->va_numbers[0]['bank'];
         $mtd_pembayaran = null;
         $paymentType = $request->payment_type;
 
@@ -333,10 +331,15 @@ Terima kasih atas kepercayaan *Ayah/Bunda $nama_siswa*.🙏☺";
             $mtd_pembayaran == $paymentType;
             $no_va = 0;
         } else if ($paymentType == 'bank_transfer') {
+            $va_number = $request->va_numbers[0]['va_number'];
+            $bank = $request->va_numbers[0]['bank'];
+
             $mtd_pembayaran = $bank;
             $no_va = $va_number;
+        } else if($paymentType == 'echannel') {
+            $va_number = $request->bill_key;
+            $mtd_pembayaran = 'Mandiri';
         }
-
         $orderId = $request->order_id;
         $order = OrderSeragam::where('no_pemesanan', $orderId)->first();
 
