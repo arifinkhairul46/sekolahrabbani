@@ -98,7 +98,6 @@
                     
                     if(currentVal > input.attr('min')) {
                         input.val(currentVal - 1).change();
-                        console.log('m', id, currentVal);
 
                         $.ajax({
                             url: url,
@@ -122,7 +121,6 @@
 
                     if(currentVal < input.attr('max')) {
                         input.val(currentVal + 1).change();
-                        console.log('p', id, currentVal);
 
                         $.ajax({
                             url: url,

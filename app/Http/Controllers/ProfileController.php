@@ -20,8 +20,10 @@ class ProfileController extends Controller
         $profile = Profile::get_user_profile_byphone($user->no_hp);
         $menu_profile = MenuMobile::where('is_profile', 1)->orderby('no', 'asc')->get();
         // dd($menu_profile);
+        $menubar = MenuMobile::where('is_footer', 1)->get();
+        
 
-        return view('ortu.profile.index', compact('profile', 'menu_profile'));
+        return view('ortu.profile.index', compact('profile', 'menu_profile', 'menubar'));
     }
 
     /**

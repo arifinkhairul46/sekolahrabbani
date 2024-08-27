@@ -48,4 +48,7 @@
             </a>
         @endforeach
     </div>
+    @include('ortu.footer.index')
+    
 @endsection
+{{-- @include('ortu.footer.index') --}}

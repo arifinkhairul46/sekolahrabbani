@@ -180,7 +180,10 @@
 
                     <div class="d-flex mt-3" style="justify-content: end">
                         <button type="button" class="btn btn-primary px-3 " onclick="addToCart('{{$produk->id}}', '{{auth()->user()->name}}')" > <i class="fa-solid fa-plus"></i> Keranjang </button>
-                        <a href="#" class="btn btn-purple mx-2 px-3 " > Beli Sekarang </a>
+                        <form action="{{route('seragam.bayar')}}">
+                            <input type="hidden" name="data" id="data" value="">
+                            <button type="submit" class="btn btn-purple mx-2 px-3" > Beli Sekarang </button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -295,6 +298,9 @@
         });
         
 
+        var cart_now = $('#count_cart').html();
+        var cart_num = parseInt(cart_now);
+
         function addToCart(id, nama_anak) {
             var item_id = id;
             var ukuran = $('input[name="ukuran_'+item_id+'"]:checked').val();
@@ -323,7 +329,8 @@
                         _token: '{{csrf_token()}}'
                     },
                     success: function (result) {
-                        $('#count_cart').html(parseInt(cart_now+1))
+                        var qty_now = cart_num + 1
+                        $('#count_cart').html(qty_now)
                     }
                 })
 
@@ -331,6 +338,36 @@
                 
             }
             
+        }
+
+        var pesanan = []
+        function buy_now(id) {
+            var new_pesanan = {};
+            var item_id = id;
+            var ukuran = $('input[name="ukuran_'+item_id+'"]:checked').val();
+            var jenis = $('input[name="jenis_'+item_id+'"]:checked').val();
+            var quantity = $('.input-number').val();
+            var nama_siswa = $('#nama_siswa').val();
+
+            if (ukuran == '' || ukuran == null || ukuran == undefined) {
+                $('#valid_ukuran_'+item_id).show();
+            } else if (jenis == '' || jenis == null || jenis == undefined)  {
+                $('#valid_jenis_'+item_id).show();
+            } else {
+                $('#valid_ukuran_'+item_id).hide(); 
+                $('#valid_jenis_'+item_id).hide();
+
+                new_pesanan['produk_id'] = item_id;
+                new_pesanan['ukuran'] = ukuran;
+                new_pesanan['jenis'] = jenis;
+                new_pesanan['quantity'] = quantity;
+                new_pesanan['nama_siswa'] = nama_siswa;
+
+                pesanan.push(new_pesanan);
+                console.log(pesanan);
+                $('#data').val(JSON.stringify(pesanan));
+
+            }
         }
 
         function submit_cart() {

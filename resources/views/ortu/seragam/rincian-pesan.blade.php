@@ -68,9 +68,12 @@
 
         </div>
     </div>
-    <div class="d-grid gap-2 mt-3 bottom-navigate">
-        <button class="btn btn-purple btn-block py-2" > Download Invoice </button>
-    </div>
+    
+    <a href="{{route('download.invoice', $order->no_pemesanan)}}">
+        <div class="d-grid gap-2 mt-3 bottom-navigate">
+            <button class="btn btn-purple btn-block py-2" > Download Invoice </button>
+        </div>
+    </a>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>

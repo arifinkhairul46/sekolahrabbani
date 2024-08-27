@@ -12,7 +12,7 @@
             <form action="{{route('seragam.cart')}}" method="GET" class="mt-1 mb-0" id="cart_submit">
                 <a href="#"  onclick="submit_cart()" style="text-decoration: none; color: black">
                     @if ($cart_detail->count() > 0)
-                        <i class="fa-solid fa-cart-shopping fa-lg"> <span id="count_cart" class="count-cart py-1" > {{$cart_detail->count()}} </span> </i>
+                        <i class="fa-solid fa-cart-shopping fa-lg"> <span id="count_cart" class="count-cart py-1" >{{$cart_detail->count()}}</span> </i>
                     @else 
                         <i class="fa-solid fa-cart-shopping fa-lg"> <span id="count_cart" style="display:none;" > {{session('data') ? count(session('data')) : ''}} </span> </i>
                     @endif

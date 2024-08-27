@@ -57,6 +57,14 @@
         </main>
       
         <script src="{{ asset('assets/js/script.js') }}"></script>
+        <script>
+            document.querySelectorAll(".menu-link").forEach((link) => {
+                if (link.href === window.location.href) {
+                    link.classList.add("active");
+                    link.setAttribute("aria-current", "page");
+                }
+            });
+        </script>
     </div>
 
     @yield('scripts')
