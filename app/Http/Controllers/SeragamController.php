@@ -311,9 +311,9 @@ Terima kasih atas kepercayaan *Ayah/Bunda $nama_siswa*.🙏☺";
 
         $user_id = auth()->user()->id;
 
-        $order = $request->all();
-        $order = json_decode($order['data'], true);
-        dd($order);
+        // $order = $request->all();
+        // $order = json_decode($order['data'], true);
+        // dd($order);
 
         $profile = Profile::where('user_id', $user_id)->get();
         $cart_detail =  CartDetail::select('t_cart_detail.id', 'm_produk_seragam.id as id_produk','m_produk_seragam.nama_produk', 'm_produk_seragam.deskripsi', 'm_produk_seragam.image', 
