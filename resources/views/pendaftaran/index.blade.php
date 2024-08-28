@@ -83,7 +83,7 @@
             <div class="modal-header">
             </div>
             <div class="modal-body">
-                <h5 class="modal-title" id="label_pendaftaran">Apakah anda sudah mengetahui dan menyetujui Surat Perjanjian ?</h5>
+                <h5 class="modal-title" id="label_pendaftaran">Apakah anda sudah mengetahui dan menyetujui Surat Pernyataan Pendaftaran ?</h5>
                 <span class="text-danger" style="font-size: 12px; display: none;" id="alert_cp">
                     Silahkan Hubungi Contact Person Sekolah <a href="#" id="klik_disini" data-bs-toggle="modal" data-bs-target="#cp_modal">Disini</a>
                 </span>
