@@ -16,7 +16,9 @@
             <div class="col-md">
                 <h6 class="mt-1" style="color: #ED145B">Pendaftaran</h6>
                 <h4 class="mb-3">Data Calon Siswa</h4>
-                <button class="btn btn-blue btn-sm px-3 d-block" style="margin-left: auto" > Pemenuhan Data </button>
+                <a href="{{route('form.update')}}" style="text-decoration: none">
+                    <button class="btn btn-blue btn-sm px-3 d-block" style="margin-left: auto" > Pemenuhan Data </button>
+                </a>
                 <form action="{{route('store.pendaftaran')}}"  method="POST" id="form_pendaftaran">
                     @csrf
                     
