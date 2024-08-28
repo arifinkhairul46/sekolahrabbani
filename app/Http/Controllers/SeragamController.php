@@ -134,22 +134,6 @@ class SeragamController extends Controller
 
     }
 
-    public function buy_now(Request $request)
-    {
-        $produk_id = $request->produk_id;
-        $quantity = $request->quantity;
-        $ukuran = $request->ukuran;
-        $nis = $request->nama_siswa;
-        $jenis = $request->jenis;
-
-        $user_id = auth()->user()->id;
-        $profile = Profile::where('nis', $nis)->first();
-        $order = $request->all();
-
-        return response()->json($order);
-
-    }
-
     public function update_cart(Request $request, $id) 
     {
         $quantity = $request->quantity;
@@ -306,33 +290,73 @@ Terima kasih atas kepercayaan *Ayah/Bunda $nama_siswa*.🙏☺";
 
     }
 
+    public function buy_now(Request $request)
+    {
+        $produk_id = $request->produk_id;
+        $quantity = $request->quantity;
+        $ukuran = $request->ukuran;
+        $nis = $request->nama_siswa;
+        $jenis = $request->jenis;
+
+        $user_id = auth()->user()->id;
+        $profile = Profile::where('nis', $nis)->first();
+        $order = $request->all();
+
+        return redirect()->route('seragam.bayar')->with($order);
+
+    }
+
     public function pembayaran(Request $request, OrderSeragam $order_seragam)
     {
 
         $user_id = auth()->user()->id;
 
-        // $order = $request->all();
-        // $order = json_decode($order['data'], true);
+        
+        $order = $request->all();
+        // dd($order);
+        
+        $profile = Profile::where('user_id', $user_id)->get();
+        if ($order) {
+            $order_dec = json_decode($order['data'], true);
+    
+            $produk_id = $order_dec[0]['produk_id'];
+            $quantity = $order_dec[0]['quantity'];
+            $ukuran = $order_dec[0]['ukuran'];
+            $jenis = $order_dec[0]['jenis'];
+            $nis = $order_dec[0]['nama_siswa'];
+
+            $produk_seragam = ProdukSeragam::select('m_produk_seragam.id', 'm_produk_seragam.nama_produk', 'm_produk_seragam.image', 'mhs.harga', 'mhs.diskon', 'mjps.jenis_produk')
+                            ->leftJoin('m_harga_seragam as mhs', 'mhs.produk_id', 'm_produk_seragam.id')
+                            ->leftJoin('m_jenis_produk_seragam as mjps', 'mjps.id', 'mhs.jenis_produk_id')
+                            ->where('m_produk_seragam.id', $produk_id)->first();
+
+            $profile = Profile::leftJoin('mst_lokasi_sub as mls', 'mls.id', 'm_profile.sekolah_id' )
+                                ->where('nis', $nis)->first();
+            // dd($profile);
+
+            return view('ortu.seragam.pembayaran', compact('profile', 'produk_seragam', 'quantity', 'ukuran', 'profile', 'order_seragam', 'order'));
+
+        } else {
+            $cart_detail =  CartDetail::select('t_cart_detail.id', 'm_produk_seragam.id as id_produk','m_produk_seragam.nama_produk', 'm_produk_seragam.deskripsi', 'm_produk_seragam.image', 
+                            'm_produk_seragam.material', 'mhs.harga', 'mhs.diskon', 'mjps.id as jenis_id', 'mp.nama_lengkap as nama_siswa', 'mp.nama_kelas as nama_kelas', 
+                            'mls.sublokasi as sekolah', 'mjps.jenis_produk', 't_cart_detail.quantity', 't_cart_detail.ukuran')
+                            ->leftJoin('m_produk_seragam', 'm_produk_seragam.id', 't_cart_detail.produk_id')
+                            ->leftJoin('m_profile as mp' , 'mp.nis', 't_cart_detail.nis')
+                            ->leftJoin('mst_lokasi_sub as mls', 'mls.id', 'mp.sekolah_id')
+                            ->leftJoin('m_jenis_produk_seragam as mjps', 'mjps.id', 't_cart_detail.jenis')
+                            ->leftJoin('m_harga_seragam as mhs', function($join)
+                            { $join->on('mhs.produk_id', '=', 'm_produk_seragam.id') 
+                                ->on('mhs.jenis_produk_id', '=', 'mjps.id'); 
+                            })
+                            ->where('t_cart_detail.user_id', $user_id)
+                            ->where('t_cart_detail.status_cart', 0)
+                            ->get();
+            // dd($cart_detail);
+            return view('ortu.seragam.pembayaran', compact('profile', 'cart_detail', 'order_seragam', 'order'));
+        }
         // dd($order);
 
-        $profile = Profile::where('user_id', $user_id)->get();
-        $cart_detail =  CartDetail::select('t_cart_detail.id', 'm_produk_seragam.id as id_produk','m_produk_seragam.nama_produk', 'm_produk_seragam.deskripsi', 'm_produk_seragam.image', 
-                        'm_produk_seragam.material', 'mhs.harga', 'mhs.diskon', 'mjps.id as jenis_id', 'mp.nama_lengkap as nama_siswa', 'mp.nama_kelas as nama_kelas', 
-                        'mls.sublokasi as sekolah', 'mjps.jenis_produk', 't_cart_detail.quantity', 't_cart_detail.ukuran')
-                        ->leftJoin('m_produk_seragam', 'm_produk_seragam.id', 't_cart_detail.produk_id')
-                        ->leftJoin('m_profile as mp' , 'mp.nis', 't_cart_detail.nis')
-                        ->leftJoin('mst_lokasi_sub as mls', 'mls.id', 'mp.sekolah_id')
-                        ->leftJoin('m_jenis_produk_seragam as mjps', 'mjps.id', 't_cart_detail.jenis')
-                        ->leftJoin('m_harga_seragam as mhs', function($join)
-                        { $join->on('mhs.produk_id', '=', 'm_produk_seragam.id') 
-                            ->on('mhs.jenis_produk_id', '=', 'mjps.id'); 
-                        })
-                        ->where('t_cart_detail.user_id', $user_id)
-                        ->where('t_cart_detail.status_cart', 0)
-                        ->get();
-        // dd($cart_detail);
 
-        return view('ortu.seragam.pembayaran', compact('profile', 'cart_detail', 'order_seragam'));
     }
 
     public function success(Request $request) {
@@ -474,10 +498,7 @@ Terima kasih atas kepercayaan *Ayah/Bunda $nama_siswa*.🙏☺";
                                             ->leftJoin('m_produk_seragam as mps', 't_pesan_seragam_detail.produk_id', 'mps.id')
                                             ->leftJoin('t_pesan_seragam as tps', 'tps.no_pemesanan', 't_pesan_seragam_detail.no_pemesanan')
                                             ->where('tps.no_pemesanan', $id)->get();
-
-        // dd($order_detail);
         
-     
         return view('ortu.seragam.rincian-pesan', compact( 'order', 'order_detail'));
     }
 
@@ -493,18 +514,16 @@ Terima kasih atas kepercayaan *Ayah/Bunda $nama_siswa*.🙏☺";
                                             ->where('tps.no_pemesanan', $id)->get();
         // dd($order);
 
-        // $data = [$order, $order_detail];
-
         // Load view dengan data yang disiapkan
-        $pdf = Pdf::loadView('ortu.seragam.invoice', [
+        $pdf = Pdf::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])->loadView('ortu.seragam.invoice', [
                         'order' => $order,
                         'order_detail' => $order_detail
                     ]);
-        
+        $pdf->setPaper('Letter');
+        $pdf->setWarnings(false);
+
         // Download file PDF
-        return $pdf->download('Invoice.pdf');
-        
-        // return view('ortu.seragam.invoice', compact('order', 'order_detail'));
+        return $pdf->download('Invoice-'.$id.'.pdf');
     }
 
     public function invoice(Request $request, $id) {

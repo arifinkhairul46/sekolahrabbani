@@ -180,9 +180,10 @@
 
                     <div class="d-flex mt-3" style="justify-content: end">
                         <button type="button" class="btn btn-primary px-3 " onclick="addToCart('{{$produk->id}}', '{{auth()->user()->name}}')" > <i class="fa-solid fa-plus"></i> Keranjang </button>
-                        <form action="{{route('seragam.bayar')}}">
+                        <form action="{{route('seragam.bayar')}}" method="GET">
+                            {{-- @csrf --}}
                             <input type="hidden" name="data" id="data" value="">
-                            <button type="submit" class="btn btn-purple mx-2 px-3" > Beli Sekarang </button>
+                            <button type="submit" class="btn btn-purple mx-2 px-3" onclick="buy_now('{{$produk->id}}')" > Beli Sekarang </button>
                         </form>
                     </div>
                 </div>
@@ -367,6 +368,39 @@
                 console.log(pesanan);
                 $('#data').val(JSON.stringify(pesanan));
 
+            }
+        }
+
+        function beli_sekarang(id) {
+            var item_id = id;
+            var ukuran = $('input[name="ukuran_'+item_id+'"]:checked').val();
+            var jenis = $('input[name="jenis_'+item_id+'"]:checked').val();
+            var quantity = $('.input-number').val();
+            var nama_siswa = $('#nama_siswa').val();
+
+            if (ukuran == '' || ukuran == null || ukuran == undefined) {
+                $('#valid_ukuran_'+item_id).show();
+            } else if (jenis == '' || jenis == null || jenis == undefined)  {
+                $('#valid_jenis_'+item_id).show();
+            } else {
+                $('#valid_ukuran_'+item_id).hide(); 
+                $('#valid_jenis_'+item_id).hide();
+
+                $.ajax({
+                    url: "{{route('buy_now')}}",
+                    type: 'POST',
+                    data: {
+                        produk_id : item_id,
+                        ukuran : ukuran,
+                        quantity : quantity,
+                        jenis: jenis,
+                        nama_siswa: nama_siswa,
+                        _token: '{{csrf_token()}}'
+                    },
+                    success: function (result) {
+                       window.location.href = '{{route('seragam.bayar')}}'
+                    }
+                })
             }
         }
 
