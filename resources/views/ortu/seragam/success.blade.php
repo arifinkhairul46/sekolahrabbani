@@ -9,7 +9,7 @@
         </div>
         <div class="center">
             <img src="{{asset('assets/images/icon-success.png')}}" alt="success" class="mt-3" width="45%">
-            <h6 class="my-3">Terimakasih telah melakukan pembayaran sebesar Rp.   Pesanan Anda akan kami segera proses</h6>
+            <h6 class="my-3">Terimakasih telah melakukan pembayaran. <br> Pesanan Anda akan kami segera proses</h6>
         </div>
         <div class="d-flex justify-content-center">
             <a href="{{route('seragam')}}" style="text-decoration: none" > <button class="btn btn-primary btn-sm mx-2 px-3"> Home </button> </a>

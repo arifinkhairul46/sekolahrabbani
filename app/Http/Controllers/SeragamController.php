@@ -169,7 +169,7 @@ class SeragamController extends Controller
 
         $order = CartDetail::select('t_cart_detail.id', 'm_produk_seragam.id as id_produk','m_produk_seragam.nama_produk', 'm_produk_seragam.deskripsi', 'm_produk_seragam.image', 
                             'm_produk_seragam.material', 'mhs.harga', 'mhs.diskon', 'mjps.id as jenis_id', 'mp.nama_lengkap as nama_siswa', 'mp.nama_kelas as nama_kelas', 
-                            'mls.sublokasi as sekolah', 'mjps.jenis_produk', 'mjps.id as jenis_id',  't_cart_detail.quantity', 't_cart_detail.ukuran')
+                            'mls.id as sekolah', 'mjps.jenis_produk', 'mjps.id as jenis_id',  't_cart_detail.quantity', 't_cart_detail.ukuran')
                             ->leftJoin('m_produk_seragam', 'm_produk_seragam.id', 't_cart_detail.produk_id')
                             ->leftJoin('m_profile as mp' , 'mp.nis', 't_cart_detail.nis')
                             ->leftJoin('mst_lokasi_sub as mls', 'mls.id', 'mp.sekolah_id')
@@ -214,7 +214,7 @@ class SeragamController extends Controller
             $harga_akhir = $total_harga - $total_diskon;
             $harga_akhir_format = number_format($harga_akhir);
 
-            // $this->send_pesan_seragam_detail($no_pesanan, $nama_siswa, $lokasi, $nama_kelas, $produk_id, $jenis_produk, $ukuran, $quantity, $harga_awal, $diskon/100 * $harga_awal);
+            $this->send_pesan_seragam_detail($no_pesanan, $nama_siswa, $lokasi, $nama_kelas, $produk_id, $jenis_produk, $ukuran, $quantity, $harga_awal, $diskon/100 * $harga_awal);
 
         }
 
@@ -228,7 +228,35 @@ class SeragamController extends Controller
         'user_id' => $user_id
         ]);
 
-        $message = "Informasi Pemesanan Seragam Sekolah Rabbani
+
+        $this->send_pesan_seragam($no_pesanan, $nama_pemesan, $no_hp);
+
+          // Set your Merchant Server Key
+          \Midtrans\Config::$serverKey = config('midtrans.serverKey');
+          // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
+          \Midtrans\Config::$isProduction = config('midtrans.isProduction');;
+          // Set sanitization on (default)
+          \Midtrans\Config::$isSanitized = true;
+          // Set 3DS transaction for credit card to true
+          \Midtrans\Config::$is3ds = true;
+
+          $params = array(
+              'transaction_details' => array(
+                  'order_id' => $no_pesanan,
+                  'gross_amount' => $harga_akhir,
+              ),
+              'customer_details' => array(
+                  'first_name' => $nama_pemesan,
+                  'phone' => $no_hp,
+              )
+          );
+
+          $snapToken = \Midtrans\Snap::getSnapToken($params);
+          $order_seragam->snap_token = $snapToken;
+          $order_seragam->save();
+
+          //kirim notif ke pemesan
+          $message = "Informasi Pemesanan Seragam Sekolah Rabbani
 
 Terima kasih Ayah/Bunda $nama_siswa telah melakukan pemesanan Seragam.🙏☺
 
@@ -254,32 +282,6 @@ Jika Anda memiliki pertanyaan atau membutuhkan bantuan lebih lanjut, silahkan bi
 Terima kasih atas kepercayaan *Ayah/Bunda $nama_siswa*.🙏☺";
 
         // $send_notif = $this->send_notif($no_hp, $message);
-
-        // $this->send_pesan_seragam($no_pesanan, $nama_pemesan, $no_hp);
-
-          // Set your Merchant Server Key
-          \Midtrans\Config::$serverKey = config('midtrans.serverKey');
-          // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
-          \Midtrans\Config::$isProduction = config('midtrans.isProduction');;
-          // Set sanitization on (default)
-          \Midtrans\Config::$isSanitized = true;
-          // Set 3DS transaction for credit card to true
-          \Midtrans\Config::$is3ds = true;
-
-          $params = array(
-              'transaction_details' => array(
-                  'order_id' => $no_pesanan,
-                  'gross_amount' => $harga_akhir,
-              ),
-              'customer_details' => array(
-                  'first_name' => $nama_pemesan,
-                  'phone' => $no_hp,
-              )
-          );
-
-          $snapToken = \Midtrans\Snap::getSnapToken($params);
-          $order_seragam->snap_token = $snapToken;
-          $order_seragam->save();
 
         //   $update_cart = CartDetail::where('user_id', $user_id)->where('status_cart', 0)->get();
         //   $update_cart->update([
@@ -360,11 +362,9 @@ Terima kasih atas kepercayaan *Ayah/Bunda $nama_siswa*.🙏☺";
     }
 
     public function success(Request $request) {
-        $user_id = auth()->user()->id;
 
-        $order = OrderSeragam::where('no_pemesanan', 'INV-RSU-20240819072435')->first();
-     
         return view('ortu.seragam.success');
+
     }
 
     public function callback(Request $request) {
@@ -384,21 +384,24 @@ Terima kasih atas kepercayaan *Ayah/Bunda $nama_siswa*.🙏☺";
         if ($paymentType == 'shopeepay' || $paymentType == 'gopay') {
             $mtd_pembayaran == $paymentType;
             $no_va = 0;
-        } else if ($paymentType == 'bank_transfer') {
+        } else if ($paymentType == 'bank_transfer' && !$request->permata_va_number) {
             $va_number = $request->va_numbers[0]['va_number'];
             
             $bank = $request->va_numbers[0]['bank'];
-            if ($request->pay_amounts != null) {
-                $paid_at = $request->pay_amounts[0]['paid_at'];
-            }
 
             $mtd_pembayaran = $bank;
             $no_va = $va_number;
             // return response()->json($no_va);
+        } else if ($paymentType == 'bank_transfer' && $request->permata_va_number) {
+            $va_number = $request->permata_va_number;
+            
+            $bank = 'Permata';
+
+            $mtd_pembayaran = $bank;
+            $no_va = $va_number;
         } else if($paymentType == 'echannel') {
             $no_va = $request->bill_key;
             $mtd_pembayaran = 'Mandiri';
-            $paid_at = $request->settlement_time;
         }
         $orderId = $request->order_id;
         $order = OrderSeragam::where('no_pemesanan', $orderId)->first();
@@ -430,8 +433,9 @@ Terima kasih atas kepercayaan *Ayah/Bunda $nama_siswa*.🙏☺";
                     'status' => 'success',
                     'metode_pembayaran' => $mtd_pembayaran,
                     'va_number' => $no_va,
-                    'updated_at' => $paid_at
+                    'updated_at' => $request->settlement_time
                 ]);
+                   $this->update_status_seragam('success', $mtd_pembayaran, $orderId);
                 break;
             case 'pending':
                 $order->update([
@@ -439,6 +443,7 @@ Terima kasih atas kepercayaan *Ayah/Bunda $nama_siswa*.🙏☺";
                     'metode_pembayaran' => $mtd_pembayaran,
                     'va_number' => $no_va
                 ]);
+                $this->update_status_seragam('pending', $mtd_pembayaran, $orderId);
                 break;
             case 'deny':
                 $order->update([
@@ -453,6 +458,7 @@ Terima kasih atas kepercayaan *Ayah/Bunda $nama_siswa*.🙏☺";
                     'metode_pembayaran' => $mtd_pembayaran,
                     'va_number' => $no_va
                 ]);
+                $this->update_status_seragam('expired', $mtd_pembayaran, $orderId);
                 break;
             case 'cancel':
                 $order->update([
@@ -477,14 +483,12 @@ Terima kasih atas kepercayaan *Ayah/Bunda $nama_siswa*.🙏☺";
         $menubar = MenuMobile::where('is_footer', 1)->get();
 
 
-        $order = OrderSeragam::select('t_pesan_seragam.*', 'psd.*', 'mps.image', 'mps.nama_produk', 't_pesan_seragam.status')
+        $order = OrderSeragam::select('psd.*', 'mps.image', 'mps.nama_produk', 't_pesan_seragam.status', 't_pesan_seragam.total_harga', 't_pesan_seragam.user_id')
                                 ->leftJoin('t_pesan_seragam_detail as psd', 'psd.no_pemesanan', 't_pesan_seragam.no_pemesanan')
                                 ->leftJoin('m_produk_seragam as mps', 'psd.produk_id', 'mps.id')
-                                ->where('user_id', $user_id)
-                                ->groupby('t_pesan_seragam.no_pemesanan', 't_pesan_seragam.total_harga')
+                                ->where('t_pesan_seragam.user_id', $user_id)
+                                ->groupby('psd.no_pemesanan', 't_pesan_seragam.total_harga')
                                 ->get();
-
-        // dd($order);
         
         return view('ortu.seragam.history', compact('order', 'menubar'));
     }
@@ -499,6 +503,7 @@ Terima kasih atas kepercayaan *Ayah/Bunda $nama_siswa*.🙏☺";
                                             ->leftJoin('t_pesan_seragam as tps', 'tps.no_pemesanan', 't_pesan_seragam_detail.no_pemesanan')
                                             ->where('tps.no_pemesanan', $id)->get();
         
+                                            // dd($order);
         return view('ortu.seragam.rincian-pesan', compact( 'order', 'order_detail'));
     }
 
@@ -629,4 +634,36 @@ Terima kasih atas kepercayaan *Ayah/Bunda $nama_siswa*.🙏☺";
 		curl_close($curl);
 	    // return ($response);
 	}
+
+    function update_status_seragam($status, $mtd_pembayaran, $no_pesanan)
+    {
+        {
+            $curl = curl_init();
+    
+            curl_setopt_array($curl, array(
+              CURLOPT_URL => 'http://103.135.214.11:81/qlp_system/api_regist/update_pesan_seragam.php',
+              CURLOPT_RETURNTRANSFER => 1,
+              CURLOPT_ENCODING => '',
+              CURLOPT_MAXREDIRS => 10,
+              CURLOPT_TIMEOUT => 0,
+              CURLOPT_FOLLOWLOCATION => true,
+              CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+              CURLOPT_CUSTOMREQUEST => 'POST',
+              // CURLOPT_SSL_VERIFYPEER => false,
+              // CURLOPT_SSL_VERIFYHOST => false,
+              CURLOPT_POSTFIELDS => array(
+                'status' => $status,
+                'mtd_pembayaran' => $mtd_pembayaran,
+                'no_pesanan' => $no_pesanan,
+                )
+    
+            ));
+    
+            $response = curl_exec($curl);
+    
+            // echo $response;
+            curl_close($curl);
+            // return ($response);
+        }
+    }
 }

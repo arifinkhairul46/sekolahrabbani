@@ -23,7 +23,7 @@
                         <div class="d-flex mx-2">
                             <div class="" style="width: 200px">
                                 <p class="mb-0" style="font-size: 14px;"> {{$item->nama_produk}} </p>
-                                <p class="mb-0 price-diskon"> <b> Rp. {{number_format((($item->total_harga)) * $item['quantity']) }} </b> </p>
+                                <p class="mb-0 price-diskon"> <b> Rp. {{number_format((($item->total_harga))) }} </b> </p>
                                 <p class="mb-0" style="font-size: 10px">Waktu Pesan: {{$item->created_at}} </p>
         
                             </div>

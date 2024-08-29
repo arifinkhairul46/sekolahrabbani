@@ -46,10 +46,10 @@
                 <span> {{ strtoupper($item->metode_pembayaran) }} </span>
             </div>
 
-            @if($order->status == 'pending')
+            @if($order->status == 'pending' && $order->metode_pembayaran != 'shopeepay' && $order->metode_pembayaran != 'gopay' )
                 <div class="d-flex" style="justify-content: space-between; font-size: 14px">
                     <span> No Pembayaran </span>
-                    <span id="va_number">{{$item->va_number}}<i class="fa solid fa-copy" onclick="copy_number()" title="salin"> </i> </span>
+                    <span id="va_number">{{$item->va_number}} <i class="fa solid fa-copy" onclick="copy_number()" title="salin"> </i> </span>
                 </div>
             @endif
             <hr>

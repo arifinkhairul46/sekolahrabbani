@@ -76,7 +76,7 @@
             </tr>
 
             <tr class="mt-3">
-                <td >
+                <td style="width:30%">
                     <span>Kepada :</span> <br>
                     <span> <b> {{$order->nama_pemesan}} </b> </span>
                     <span> <b> {{$order->no_hp}} </b> </span>
@@ -85,10 +85,10 @@
                 <td style="width:20%">
                 </td>
 
-                <td style="width:25%">
+                <td style="width:15%">
                 </td>
 
-                <td style="width: 45%" >
+                <td style="width: 35%" >
                     <span style="font-size: 14px">Invoice No: {{$order->no_pemesanan}} </span> <br>
                     <span style="font-size: 14px">Tanggal : {{date('d-m-Y', strtotime($order->created_at))}} </span>
                 </td>
