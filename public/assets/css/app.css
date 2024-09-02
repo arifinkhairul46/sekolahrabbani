@@ -387,7 +387,7 @@ main {
 .rocket-profile {
     position: absolute;
     left: 15%;
-    bottom: 28%;
+    top: 28%;
 }
 
 .ufo-profile {
@@ -399,7 +399,7 @@ main {
 .panah-profile {
     position: absolute;
     right: 20%;
-    top: 16%;
+    top: 21%;
 }
 
 .plane {
