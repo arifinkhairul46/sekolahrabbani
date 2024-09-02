@@ -8,6 +8,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\JadwalKontrakController;
 use App\Http\Controllers\KarirController;
 use App\Http\Controllers\KelasDiklatController;
+use App\Http\Controllers\KurikulumController;
 use App\Http\Controllers\ModulDiklatController;
 use App\Http\Controllers\NilaiDiklatController;
 use App\Http\Controllers\PendaftaranController;
@@ -35,11 +36,6 @@ use Illuminate\Support\Facades\Artisan;
 
 require __DIR__ . '/auth.php';
 
-
-Route::get('/kurikulum', function () {
-    return view('kurikulum.index');
-});
-
 Route::get('/humas', function () {
     return view('humas.index');
 });
@@ -58,6 +54,7 @@ Route::controller(GoogleController::class)->group(function () {
 Route::group(['middleware' =>['admin']], function () {
     Route::prefix('master')->group(function () {
         Route::get('list-user', [UserController::class, 'list_user'])->name('list-user');
+        Route::get('get-user', [UserController::class, 'get_user_api'])->name('get-user.api');
     });
 });
 
@@ -205,3 +202,4 @@ Route::get('/', [HomeController::class, 'index'])->name('home.index');
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/jenjang/{jenjang}', [HomeController::class, 'jenjang'])->name('jenjang.sekolah');
 Route::get('/profile', [ProfileSekolahController::class, 'index'])->name('profile.sekolah');
+Route::get('/kurikulum', [KurikulumController::class, 'index'])->name('kurikulum.sekolah');

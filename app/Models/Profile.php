@@ -18,7 +18,8 @@ class Profile extends Model
         'jenjang_id',
         'no_hp_ayah',
         'no_hp_ibu',
-        'pass_akun'
+        'pass_akun',
+        'user_id'
     ];
 
     public function user()

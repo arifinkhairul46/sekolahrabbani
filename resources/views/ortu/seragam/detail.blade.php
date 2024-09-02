@@ -124,30 +124,14 @@
                     <div class="produk-ukuran mt-3">
                         <h6 style="color: #3152A4"><b> Ukuran </b> </h6>
                         <div class="d-flex">
-                            <div class="button-ukuran">
-                                <input class="form-check-input" type="radio" name="ukuran_{{$produk->id}}"  id="uk_s_{{$produk->id}}" value="S">
-                                <label class="form-check-label" for="uk_s_{{$produk->id}}">
-                                <span>S </span>
-                                </label>
-                            </div>
-                            <div class="button-ukuran">
-                                <input class="form-check-input" type="radio" name="ukuran_{{$produk->id}}" id="uk_m_{{$produk->id}}" value="M">
-                                <label class="form-check-label" for="uk_m_{{$produk->id}}">
-                                <span>M </span>
-                                </label>
-                            </div>
-                            <div class="button-ukuran">
-                                <input class="form-check-input" type="radio" name="ukuran_{{$produk->id}}" id="uk_l_{{$produk->id}}" value="L">
-                                <label class="form-check-label" for="uk_l_{{$produk->id}}">
-                                <span>L </span>
-                                </label>
-                            </div>
-                            <div class="button-ukuran">
-                                <input class="form-check-input" type="radio" name="ukuran_{{$produk->id}}" id="uk_xl_{{$produk->id}}" value="XL">
-                                <label class="form-check-label" for="uk_xl_{{$produk->id}}">
-                                    <span>XL</span>
-                                </label>
-                            </div>
+                            @foreach($ukuran_seragam as $item)
+                                <div class="button-ukuran">
+                                    <input class="form-check-input" type="radio" name="ukuran_{{$produk->id}}"  id="uk_{{$item->ukuran_seragam}}_{{$produk->id}}" value="{{$item->ukuran_seragam}}">
+                                    <label class="form-check-label" for="uk_{{$item->ukuran_seragam}}_{{$produk->id}}">
+                                    <span>{{$item->ukuran_seragam}} </span>
+                                    </label>
+                                </div>
+                            @endforeach
                         </div>
                         <span class="mb-0 text-danger" style="font-size: 10px; display: none" id="valid_ukuran_{{$produk->id}}" > Pilih ukuran terlebih dahulu! </span>
                     </div>
@@ -180,10 +164,10 @@
 
                     <div class="d-flex mt-3" style="justify-content: end">
                         <button type="button" class="btn btn-primary px-3 " onclick="addToCart('{{$produk->id}}', '{{auth()->user()->name}}')" > <i class="fa-solid fa-plus"></i> Keranjang </button>
-                        <form action="{{route('seragam.bayar')}}" method="GET">
-                            {{-- @csrf --}}
+                        <form action="{{route('buy_now')}}" method="POST" id="beli_sekarang">
+                            @csrf
                             <input type="hidden" name="data" id="data" value="">
-                            <button type="submit" class="btn btn-purple mx-2 px-3" onclick="buy_now('{{$produk->id}}')" > Beli Sekarang </button>
+                            <button type="button" class="btn btn-purple mx-2 px-3" onclick="buy_now('{{$produk->id}}')" > Beli Sekarang </button>
                         </form>
                     </div>
                 </div>
@@ -219,7 +203,6 @@
                     if(parseInt(input.val()) == input.attr('max')) {
                         $(this).attr('disabled', true);
                     }
-
                 }
             } else {
                 input.val(1);
@@ -267,19 +250,35 @@
         });
 
         var item_id = $('#produk_id').val();
-        // console.log(item_id);
 
+        // pilih jenis produk
         $('input[name="jenis_'+item_id+'"]').change(function(){
-            // Do something interesting here
           
             var jenis_id = $('input[name="jenis_'+item_id+'"]:checked').val();
+            var ukuran_id = $('input[name="ukuran_'+item_id+'"]:checked').val();
+            update_price(ukuran_id, jenis_id);
 
+           
+        });
+        
+        // pilih ukuran
+        $('input[name="ukuran_'+item_id+'"]').change(function(){
+          
+            var ukuran_id = $('input[name="ukuran_'+item_id+'"]:checked').val();
+            var jenis_id = $('input[name="jenis_'+item_id+'"]:checked').val();
+            update_price(ukuran_id, jenis_id);
+
+        });
+
+        function update_price(ukuran_id, jenis_id){
+            // console.log(ukuran_id, jenis_id);
             $.ajax({
                 url: "{{route('harga_per_jenis')}}",
                 type: 'POST',
                 data: {
                     jenis_id: jenis_id,
                     produk_id : item_id,
+                    ukuran_id : ukuran_id,
                     _token: '{{csrf_token()}}'
 
                 },
@@ -296,8 +295,7 @@
                     });
                 }
             })
-        });
-        
+        }
 
         var cart_now = $('#count_cart').html();
         var cart_num = parseInt(cart_now);
@@ -367,42 +365,42 @@
                 pesanan.push(new_pesanan);
                 console.log(pesanan);
                 $('#data').val(JSON.stringify(pesanan));
+                $('#beli_sekarang').submit();
 
             }
         }
 
-        function beli_sekarang(id) {
-            var item_id = id;
-            var ukuran = $('input[name="ukuran_'+item_id+'"]:checked').val();
-            var jenis = $('input[name="jenis_'+item_id+'"]:checked').val();
-            var quantity = $('.input-number').val();
-            var nama_siswa = $('#nama_siswa').val();
+        // function beli_sekarang(id) {
+        //     var item_id = id;
+        //     var ukuran = $('input[name="ukuran_'+item_id+'"]:checked').val();
+        //     var jenis = $('input[name="jenis_'+item_id+'"]:checked').val();
+        //     var quantity = $('.input-number').val();
+        //     var nama_siswa = $('#nama_siswa').val();
 
-            if (ukuran == '' || ukuran == null || ukuran == undefined) {
-                $('#valid_ukuran_'+item_id).show();
-            } else if (jenis == '' || jenis == null || jenis == undefined)  {
-                $('#valid_jenis_'+item_id).show();
-            } else {
-                $('#valid_ukuran_'+item_id).hide(); 
-                $('#valid_jenis_'+item_id).hide();
+        //     if (ukuran == '' || ukuran == null || ukuran == undefined) {
+        //         $('#valid_ukuran_'+item_id).show();
+        //     } else if (jenis == '' || jenis == null || jenis == undefined)  {
+        //         $('#valid_jenis_'+item_id).show();
+        //     } else {
+        //         $('#valid_ukuran_'+item_id).hide(); 
+        //         $('#valid_jenis_'+item_id).hide();
 
-                $.ajax({
-                    url: "{{route('buy_now')}}",
-                    type: 'POST',
-                    data: {
-                        produk_id : item_id,
-                        ukuran : ukuran,
-                        quantity : quantity,
-                        jenis: jenis,
-                        nama_siswa: nama_siswa,
-                        _token: '{{csrf_token()}}'
-                    },
-                    success: function (result) {
-                       window.location.href = '{{route('seragam.bayar')}}'
-                    }
-                })
-            }
-        }
+        //         $.ajax({
+        //             url: "{{route('buy_now')}}",
+        //             type: 'POST',
+        //             data: {
+        //                 produk_id : item_id,
+        //                 ukuran : ukuran,
+        //                 quantity : quantity,
+        //                 jenis: jenis,
+        //                 nama_siswa: nama_siswa,
+        //                 _token: '{{csrf_token()}}'
+        //             },
+        //             success: function (result) {
+        //             }
+        //         })
+        //     }
+        // }
 
         function submit_cart() {
             $('#cart_submit').submit();

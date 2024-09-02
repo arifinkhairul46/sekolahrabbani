@@ -4,7 +4,8 @@
     <div class="container mt-3">
         <div class="row">
             <div class="col-md-6 my-auto" style="text-align: end">
-                <h3 > Berbicara tentang <span style="color: #118ECC">ilmu</span> adalah tanda kebaikan hati. Berbagi ilmu adalah <span style="color: #118ECC">amal</span> yang terus memberi manfaat.
+                <h3 >Sebagai upaya taqwa, ikhtiar menciptakan generasi yang tumbuh dalam kemandirian,
+                    kepemimpinan, dan dekat dengan Al Quran, Sekolah Rabbani hadir mewujudkan cita-citanya
                 </h3>
                 <p class="mt-3">Ustadz Nur Ihsan Jundulloh, Lc. - Pengawas Rabbani </p>
                 <div class="d-flex justify-content-end">
@@ -23,14 +24,14 @@
                 <img src="{{ asset('assets/images/ust_choi.png') }}" alt="logo program" width="65%">
             </div>
             <div class="col-md-6 my-auto">
-                <h3> Berbicara tentang <span style="color: #118ECC">ilmu</span> adalah tanda kebaikan hati. Berbagi ilmu adalah <span style="color: #118ECC">amal</span> yang terus memberi manfaat.
-                </h3>
+                <h3> “ Al-Qur’an adalah <span style="color: #118ECC"> pedoman hidup kita </span>, sengaja kami tanamkan Al-Qur’an sejak dini, agar Al-Qur’an
+                    bercampur menjadi darah daging mereka dan menjadi <span style="color: #118ECC "> bekal </span> untuk kehidupan anak-anak kedepan” </h3>
                 <p class="mt-3">Ustadz Khoiruddin Aditha Yudha - Ketua Yayasan </p>
                 <div class="d-flex justify-content-start">
-                    <img src="{{ asset('assets/images/logo_fb.png') }}" alt="logo program" style="width: 5%">
-                    <img src="{{ asset('assets/images/logo_twitter.png') }}" class="mx-1" alt="logo program" style="width: 5%">
-                    <img src="{{ asset('assets/images/logo_linkedin.png') }}" alt="logo program" style="width: 5%">
-                    <img src="{{ asset('assets/images/logo_ig.png') }}" class="mx-1" alt="logo program" style="width: 5%">
+                    <img src="{{ asset('assets/images/logo_fb.png') }}" alt="logo fb" style="width: 5%">
+                    <img src="{{ asset('assets/images/logo_twitter.png') }}" class="mx-1" alt="logo x" style="width: 5%">
+                    <img src="{{ asset('assets/images/logo_linkedin.png') }}" alt="logo linkedin" style="width: 5%">
+                    <img src="{{ asset('assets/images/logo_ig.png') }}" class="mx-1" alt="logo ig" style="width: 5%">
                 </div>
             </div>
         </div>
@@ -47,6 +48,14 @@
                 <img src="{{ asset('assets/images/rocket.png') }}" class="rocket-profile" alt="vector" width="5%">
                 <img src="{{ asset('assets/images/ufo.png') }}" class="ufo-profile" alt="vector" width="7%">
                 <img src="{{ asset('assets/images/icon_panah.png') }}" class="panah-profile" alt="vector" width="10%">
+
+                {{-- <div class="star-1-profile"> </div>
+                <div class="star-2-profile"> </div>
+                <div class="star-3-profile"> </div>
+                <div class="star-4-profile"> </div>
+                <div class="rocket-profile"> </div>
+                <div class="ufo-profile"> </div>
+                <div class="panah-profile"> </div> --}}
 
             </div>
             <div class="center">
@@ -67,7 +76,8 @@
                 <li> Memberikan layanan Pendidikan Qur’ani yang berkualitas </li>
                 <li> Mewujudkan lingkungan Pendidikan Rabbani yang terintegrasikan dengan keluarga dan masyarakat </li>
                 <li> Menjadikan nilai-nilai Al-Qur’an dan As Sunnah sebagai sumber aktivitas Pendidikan </li>
-                <li> Menyelenggarakan kegiatan belajar berbasis Home Based Learning dan Project Based Learning </li>
+                <li> Menyelenggarakan kegiatan belajar berbasis Project Based Learning, Habbit Learning, Quran Based Learning, Design Thinking, dan Contextual Learning. </li>
+                
             </ol>
             <br>
             <br>
@@ -89,7 +99,11 @@
                 @endforeach
             </div>
             <br>
-
+        </div>
+    </div>
+        
+    <div class="fasilitas">
+        <div class="container">
             {{-- core value --}}
             <div class="vector">
             </div>
@@ -126,9 +140,9 @@
             
             {{-- ekstrakurikuler --}}
             <div class="vector mt-4">
-              
+                
             </div>
-            <div class="center mt-3">
+            {{-- <div class="center mt-3">
                 <img src="{{ asset('assets/images/icon-jenjang.png') }}" class="center" alt="logo program" width="3%">
                 <h6 class="mt-1" style="color: #ED145B">Menembus Batas</h6>
                 <h4 class="mb-3">Ekstrakurikuler Sekolah</h4>
@@ -153,71 +167,9 @@
                     <span> Lorem ipsum dolor sit amet consectetur adipisicing elit. 
                     </span>
                 </div>
-            </div>
+            </div> --}}
             <br>
             <br>
-        </div>
-    </div>
-
-    {{-- struktur --}}
-    <div class="fasilitas">
-        <div class="container">
-            <div class="vector">
-                <img src="{{ asset('assets/images/star-happy.png') }}" class="star-5-profile" alt="vector" width="7%">
-                <img src="{{ asset('assets/images/planet.png') }}" class="planet-profile" alt="vector" width="7%">
-            </div>
-            <div class="center">
-                <img src="{{ asset('assets/images/icon-jenjang.png') }}" class="center" alt="logo program" width="3%">
-                <h6 class="mt-1" style="color: #ED145B">Management</h6>
-                <h4 class="mb-3">Struktur Management Yayasan</h4>
-                <p >Sekolah Rabbani memberikan fasilitas yang maksimal untuk pengalaman pendidikan <br> yang menyeluruh, memotivasi, dan mempersiapkan siswa untuk menjadi pengusaha muslim.</p>
-            </div>
-            <div class="row mt-4">
-                <div class="col-md-3">
-                    <div class="card shadow">
-                        <div class="bg-fasilitas">
-                            <img src="{{ asset('assets/images/kelas.png') }}" class="card-img-top" alt="kober">
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title mb-3">Kelas Eksekutif</h5>
-                            <p style="font-size: 12px"> Eksplorasi Ruang Kelas Interaktif, Modern dilengkapi AC dan TV untuk menunjang kenyamanan Belajar </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card shadow">
-                        <div class="bg-fasilitas">
-                            <img src="{{ asset('assets/images/lift.png') }}" class="card-img-top" alt="kober">
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title mb-3">Lift</h5>
-                            <p style="font-size: 12px"> Eksplorasi Ruang Kelas Interaktif, Modern dilengkapi AC dan TV untuk menunjang kenyamanan Belajar </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card shadow">
-                        <div class="bg-fasilitas">
-                            <img src="{{ asset('assets/images/jemputan.png') }}" class="card-img-top" alt="kober">
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title mb-3">Mobil Antar Jemput</h5>
-                            <p style="font-size: 12px"> Eksplorasi Ruang Kelas Interaktif, Modern dilengkapi AC dan TV untuk menunjang kenyamanan Belajar </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card shadow">
-                        <div class="bg-fasilitas">
-                            <img src="{{ asset('assets/images/playground.png') }}" class="card-img-top" alt="kober">
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title mb-3">Playground</h5>
-                            <p style="font-size: 12px"> Eksplorasi Ruang Kelas Interaktif, Modern dilengkapi AC dan TV untuk menunjang kenyamanan Belajar </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
                 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Profile;
 use App\Models\User;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -20,6 +21,71 @@ class UserController extends Controller
         $list_user = User::all();
         // dd($list_user);
         return view('admin.master.index', compact('list_user'));
+    }
+
+    public function get_user_api()
+    {
+        $client = new Client();
+        $api_url = "http://103.135.214.11:81/qlp_system/api_pos/api_data_ortu_siswa_aktif.php?pass=aun64268ubstun4w8nw6busrhbumunfjbuwr868w6aynerysteum7timt";
+
+        try {
+            $response = $client->get($api_url);
+
+            $data = json_decode($response->getBody(), true);
+
+            $listUser = $data['userApi'];
+
+            // return response($listUser);
+
+            foreach ($listUser as $item) {
+                $nis = $item['nis'];
+                $nama_siswa = $item['nama_siswa'];
+                $nama_ibu = $item['nama_ibu'];
+                $nohp_ibu = $item['nohp_ibu'];
+                $nohp_ayah = $item['nohp_ayah'];
+                $id_lokasi = $item['id_lokasi'];
+                $id_sekolah = $item['id_sekolah'];
+                $id_jenjang = $item['id_jenjang'];
+                $nama_kelas = $item['nama_kelas'];
+                $tahun_masuk = $item['tahun_masuk'];
+                $pass = $this->rand_pass(8);
+
+                // create user
+                User::create([
+                    'name' => $nama_ibu,
+                    'no_hp' => $nohp_ibu,
+                    'no_hp_2' => $nohp_ayah,
+                    'password' => Hash::make($pass),
+                    'id_role' => 5
+
+                ]);
+
+                // find user id 
+                $userId = User::select('id')->where('no_hp', $nohp_ibu)->where('no_hp_2', $nohp_ayah)->first();
+                
+
+                // create profile
+                Profile::create([
+                    'nis' => $nis,
+                    'nama_lengkap' => $nama_siswa,
+                    'tahun_masuk' => $tahun_masuk,
+                    'nama_kelas' => $nama_kelas,
+                    'sekolah_id' => $id_sekolah,
+                    'jenjang_id' => $id_jenjang,
+                    'no_hp_ibu' => $nohp_ibu,
+                    'no_hp_ayah' => $nohp_ayah,
+                    'user_id' => $userId->id,
+                    'pass_akun' => $pass
+                ]);
+
+
+            }
+            return redirect()->back()->with('success', 'berhasil menambah user');
+
+
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
     public function customLogin(Request $request)
@@ -180,5 +246,11 @@ Silahkan masuk ke https://sekolahrabbani.sch.id/login
         curl_close($curl);
     
         return ($result);
+    }
+
+    function rand_pass($length) {
+            $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return substr(str_shuffle($chars),0,$length);
+
     }
 }

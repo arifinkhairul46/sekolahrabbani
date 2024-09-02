@@ -13,13 +13,10 @@
                     <a class="nav-link" aria-current="page" href="{{route('profile.sekolah')}}">Profil</a>
                     </li>
                 <li class="nav-item">
-                <a class="nav-link" href="kurikulum">Kurikulum</a>
+                <a class="nav-link" href="kurikulum">Kurikulum & Kesiswaan</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Artikel</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Kesiswaan</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/humas">Humas</a>

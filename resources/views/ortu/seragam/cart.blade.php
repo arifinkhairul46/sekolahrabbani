@@ -13,10 +13,10 @@
 
     @if ($cart_detail->count() > 0)
     
-        {{-- <div class="mx-2" style="text-align: right">
+        <div class="mx-2" style="text-align: right">
             <input class="mt-1" type="checkbox" id="check_all" name="check_all" value="All">
             <label for="check_all">All &nbsp;</label><br>
-        </div> --}}
+        </div>
     
         <?php $total = 0; ?>
         <div class="container">
@@ -29,7 +29,10 @@
                     <div class="d-flex mx-2 mt-1">
                         <div class="" style="width: 200px">
                             <p class="mb-0" style="font-size: 14px"><b> {{$item->nama_produk}} </b>, Size: {{$item['ukuran']}} </p>
-                            <p class="mb-1 price-diskon"> <b> Rp. {{number_format((($item['harga']) - ($item['diskon']/100 * $item['harga'])) * $item['quantity']) }} </b> </p>
+                            <p class="mb-0 price-diskon"> <b> Rp. {{number_format((($item['harga']) - ($item['diskon']/100 * $item['harga'])) * $item['quantity']) }} </b> 
+                                <span class="bg-danger py-1 px-2" style="font-size: 11px"> {{$item['diskon']}}% </span> 
+                            </p>
+                            <p class="mb-0" style="color: gray; font-size: 12px"> <s> Rp. {{number_format($item['harga'] * $item['quantity']) }} </s> </p>
                             <p class="mb-0" style="font-size: 11px"> Jenis: {{$item['jenis_produk']}} </p>
                             <p class="mb-0" style="font-size: 11px"> Nama: {{$item['nama_siswa']}} </p>
                             <p class="mb-1" style="font-size: 11px"> Sekolah: {{$item['sekolah']}}, Kelas: {{$item['nama_kelas']}} </p>
@@ -55,7 +58,7 @@
                             </div>
                         </div>
                         <div style="width: 20px">
-                            {{-- <input class="mt-1" type="checkbox" id="check_list" name="check_list" value="All"> --}}
+                            <input class="mt-1" type="checkbox" id="check_list" name="check_list" value="All">
                         </div>
                     </div>
                 </div>

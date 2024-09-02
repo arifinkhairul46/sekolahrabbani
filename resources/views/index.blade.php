@@ -58,7 +58,7 @@
         </div>
         <div class="row">
             <div class="col-md-6">
-                <img src="{{ asset('assets/images/siswa_profile.png') }}" class="center dynamic" alt="logo" width="70%">
+                <img src="{{ asset('assets/images/siswa_profile_2.png') }}" class="center dynamic" alt="logo" width="70%">
             </div>
             <div class="col-md-5">
                 <div class="row">
@@ -69,10 +69,38 @@
                 </div>
                 <div class="row">
                     <p style="text-align: justify"> Sekolah Rabbani dengan kurikulum khas Quranic Leaderpreneur (QLP) dirancang sebagai sekolah pencetak 
-                        peserta didik yang mampu menjadi teladan dan memiliki jiwa pengusaha yang berbasis Al-Qur’an dan As-Sunnah. </p>
+                        peserta didik yang mampu menjadi teladan dan memiliki jiwa pengusaha yang berbasis Al-Qur’an dan As-Sunnah. 
+                    </p>
+                    <br>
+                    <p>
+                        Sekolah Rabbani memiliki berbagai program unggulan yang dapat meningkatkan kecakapan hidup peserta didik <i>life skills</i> sehingga mampu beradaptasi dengan perkembangan zaman.
+                    </p>
                 </div>
                 <div>
-                    <a href="#" class="btn btn-primary text-white">Lanjut Baca</a>
+                    <a href="{{route('profile.sekolah')}}" class="btn btn-primary text-white">Lanjut Baca</a>
+                </div>
+            </div>
+        </div>
+        <br>
+    </div>
+
+    {{-- Landasan --}}
+
+    <div style="background-color: #704996">
+        <div class="container" style="align-items: center">
+            <div class="row">
+                <div class="col-md-8 text-center text-white mt-3 px-4">
+                    <h3> QS. Al-Baqarah 151 </h3>
+                    <span style="font-size: 28px" > كَمَآ اَرْسَلْنَا فِيْكُمْ رَسُوْلًا مِّنْكُمْ يَتْلُوْا عَلَيْكُمْ اٰيٰتِنَا وَيُزَكِّيْكُمْ وَيُعَلِّمُكُمُ الْكِتٰبَ وَالْحِكْمَةَ وَيُعَلِّمُكُمْ مَّا لَمْ تَكُوْنُوْا تَعْلَمُوْنَۗ </span>
+                    <p> <i> “Sebagaimana (Kami telah menyempurnakan nikmat kepadamu), Kami pun mengutus kepadamu seorang Rasul (Nabi Muhammad) 
+                        dari (kalangan) kamu yang membacakan kepadamu ayat-ayat Kami, menyucikan kamu, dan mengajarkan kepadamu Kitab (Al-Qur’an) 
+                        dan hikmah (sunah), serta mengajarkan apa yang belum kamu ketahui.” </i>
+                    </p>
+                    <h4> menjadi landasan kami dalam menyusun kurikulum </h4>
+                    <span style="font-size: 11px"> <i> Ustadz Khoiruddin Aditha Yudha - Ketua Yayasan </i> </span>
+                </div>
+                <div class="col-md-4">
+                    <img src="{{asset('assets/images/img-landasan.png')}}" width="90%" >
                 </div>
             </div>
         </div>
@@ -88,15 +116,15 @@
             </div>
             <div class="row mb-4">
                 @foreach ($jenjang as $item)
-                    <div class="col-md-3">
+                    <div class="col-md-3 mb-1">
                         <a href="{{route('jenjang.sekolah', $item->nama_jenjang)}}" style="text-decoration: none">
-                        <div class="card shadow">
-                            <div class="bg-{{$item->kode_jenjang}}">
-                                <img src="{{ asset($item->image_1) }}" class="card-img-top" alt="kober">
+                        <div class="card shadow" style="height: 350px">
+                            <div class="bg-jenjang center" style="background-color: #{{$item->bg_style}}">
+                                <img src="{{ asset($item->image_1) }}" class="card-img-top card-jenjang" alt="jenjang-{{$item->nama_jenjang}}">
                             </div>
                             <div class="card-body">
                                 <h5 class="card-title text-center"> {{$item->nama_jenjang}} </h5>
-                                <p class="card-text mb-5">{{$item->deskripsi}}</p>
+                                <p style="font-size: 12px">{{$item->deskripsi}}</p>
                             </div>
                         </div>
                         </a>
@@ -123,68 +151,21 @@
             </div>
 
             <div class="row mt-4">
-                <div class="col-md-2">
-                </div>
-                <div class="col-md-4">
-                    <div class="card card-program shadow">
-                        <div class="d-flex p-3">
-                            <div style="margin-right: 1rem;">
-                                <img src="{{ asset('assets/images/img-program.png') }}" width="200" alt="img program">
-                            </div>
-                            <div style="overflow-y: auto">
-                                <h5 class="text-danger"> ZINDANI </h5>
-                                <p style="font-size: 12px"> Program Zindani adalah program yang bertujuan untuk membentuk karakter siswa agar menjadi pribadi yang berakhlak mulia dan berbudi pekerti luhur. </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card card-program shadow">
-                        <div class="d-flex p-3">
-                            <div style="margin-right: 1rem;">
-                                <img src="{{ asset('assets/images/img-program.png') }}" width="200" alt="img program">
-                            </div>
-                            <div>
-                            <h5 class="text-danger"> Tahfidz On The Stage </h5>
-                            <p style="font-size: 12px"> Program Zindani adalah program yang bertujuan untuk membentuk karakter siswa agar menjadi pribadi yang berakhlak mulia dan berbudi pekerti luhur. </p>
+                @foreach ($program as $item)
+                    <div class="col-md-4 mb-3">
+                        <div class="card card-program" style="box-shadow: 0px 6px #{{$item->style}};">
+                            <div class="d-flex p-3">
+                                <div style="margin-right: 1rem;">
+                                    <img src="{{ asset($item->image) }}" width="150" alt="img program">
+                                </div>
+                                <div style="overflow-y: auto">
+                                    <h5 style="color: #{{$item->style}}"> {{$item->nama_program}} </h5>
+                                    <p style="font-size: 11px"> {{$item->deskripsi}} </p>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-2">
-                </div>
-            </div>
-            <div class="row mt-4">
-                <div class="col-md-2">
-                </div>
-                <div class="col-md-4">
-                    <div class="card card-program shadow">
-                        <div class="d-flex p-3">
-                            <div style="margin-right: 1rem;">
-                                <img src="{{ asset('assets/images/img-program.png') }}" width="200" alt="img program">
-                            </div>
-                            <div>
-                            <h5 class="text-danger"> Businees Apprentice Training </h5>
-                            <p style="font-size: 12px"> Program Zindani adalah program yang bertujuan untuk membentuk karakter siswa agar menjadi pribadi yang berakhlak mulia dan berbudi pekerti luhur. </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card card-program shadow">
-                        <div class="d-flex p-3">
-                            <div style="margin-right: 1rem;">
-                                <img src="{{ asset('assets/images/img-program.png') }}" width="200" alt="img program">
-                            </div>
-                            <div>
-                            <h5 class="text-danger"> Tajir </h5>
-                            <p style="font-size: 12px"> Program Zindani adalah program yang bertujuan untuk membentuk karakter siswa agar menjadi pribadi yang berakhlak mulia dan berbudi pekerti luhur. </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                </div>
+                @endforeach
             </div>
             <br>
             <br>
@@ -231,50 +212,20 @@
                 <p >Sekolah Rabbani memberikan fasilitas yang maksimal untuk pengalaman pendidikan <br> yang menyeluruh, memotivasi, dan mempersiapkan siswa untuk menjadi pengusaha muslim.</p>
             </div>
             <div class="row mt-4">
-                <div class="col-md-3">
-                    <div class="card shadow">
-                        <div class="bg-fasilitas">
-                            <img src="{{ asset('assets/images/kelas.png') }}" class="card-img-top" alt="kober">
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title mb-3">Kelas Eksekutif</h5>
-                            <p style="font-size: 12px"> Eksplorasi Ruang Kelas Interaktif, Modern dilengkapi AC dan TV untuk menunjang kenyamanan Belajar </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card shadow">
-                        <div class="bg-fasilitas">
-                            <img src="{{ asset('assets/images/lift.png') }}" class="card-img-top" alt="kober">
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title mb-3">Lift</h5>
-                            <p style="font-size: 12px"> Eksplorasi Ruang Kelas Interaktif, Modern dilengkapi AC dan TV untuk menunjang kenyamanan Belajar </p>
+                @foreach ($fasilitas as $item)
+                    <div class="col-md-3 mb-2">
+                        <div class="card bg-fasilitas shadow" style="height: 450px;">
+                            <div class="">
+                                <img src="{{ asset($item->image) }}" class="card-img-top" alt="kober">
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title mb-2 center"> {{$item->nama_fasilitas}} </h5>
+                                <img class="center" src="{{asset('assets/images/vector-fasilitas.png')}}" alt="vector" width="80%">
+                                <p class="mt-3" style="font-size: 12px"> {{$item->deskripsi}} </p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card shadow">
-                        <div class="bg-fasilitas">
-                            <img src="{{ asset('assets/images/jemputan.png') }}" class="card-img-top" alt="kober">
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title mb-3">Mobil Antar Jemput</h5>
-                            <p style="font-size: 12px"> Eksplorasi Ruang Kelas Interaktif, Modern dilengkapi AC dan TV untuk menunjang kenyamanan Belajar </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card shadow">
-                        <div class="bg-fasilitas">
-                            <img src="{{ asset('assets/images/playground.png') }}" class="card-img-top" alt="kober">
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title mb-3">Playground</h5>
-                            <p style="font-size: 12px"> Eksplorasi Ruang Kelas Interaktif, Modern dilengkapi AC dan TV untuk menunjang kenyamanan Belajar </p>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
         <div class="container">
@@ -286,7 +237,9 @@
                 <img src="{{ asset('assets/images/icon-jenjang.png') }}" class="center" alt="logo program" width="3%">
                 <h6 class="mt-1" style="color: #ED145B">Media Sosial Sekolah Rabbani</h6>
                 <h4 class="mb-3">Follow us</h4>
+                <a href="https://www.tiktok.com/@SekolahRabbani" target="_blank" ><img src="{{ asset('assets/images/icon-tiktok.png') }}" class="icon-sosial" alt="logo tiktok" width="5%"></a>
                 <a href="https://www.instagram.com/sekolahrabbani/" target="_blank" ><img src="{{ asset('assets/images/instagram-2.png') }}" class="icon-sosial" alt="logo ig" width="5%"></a>
+                <a href="https://www.youtube.com/@SekolahRabbani" target="_blank" ><img src="{{ asset('assets/images/icon-youtube.png') }}" class="icon-sosial" alt="logo yutub" width="5%"></a>
             </div>
         </div>
     </div>

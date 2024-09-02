@@ -159,7 +159,7 @@ main {
 
 .cloud-1 {
     position: absolute;
-    top: 16%;
+    top: 14%;
     z-index: 1000;
     width: 100%;
     animation:
@@ -169,7 +169,7 @@ main {
 
 .cloud-2 {
     position: absolute;
-    top: 16%;
+    top: 14%;
     z-index: 1000;
     width: 100%;
     
@@ -227,14 +227,14 @@ main {
 @media only screen and (max-width: 600px) {
     .cloud-1 {
         position: absolute;
-        top: 2.5%;
+        top: 2%;
         z-index: 1000;
         width: 100%;
     }
 
     .cloud-2 {
         position: absolute;
-        top: 2.5%;
+        top: 2%;
         z-index: 1000;
         width: 100%;
     }
@@ -276,6 +276,13 @@ main {
     }
   }
 
+.bg-jenjang {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    margin-top: 1rem;
+}
+
 .bg-kb {
     background-color: #FCB415;
     width: 100%;
@@ -308,55 +315,55 @@ main {
 .star-1 {
     position: absolute;
     left: 25%;
-    top: 46%;
+    top: 49%;
 }
 
 .star-2 {
     position: absolute;
     right: 25%;
-    top: 46%;
+    top: 49%;
 }
 
 .star-3 {
     position: absolute;
     right: 10%;
-    top: 46%;
+    top: 49%;
 }
 
 .star-4 {
     position: absolute;
     left: 12%;
-    top: 46%;
+    top: 49%;
 }
 
 .star-1-profile {
     position: absolute;
     left: 25%;
-    top: 24%;
+    top: 30%;
 }
 
 .star-2-profile {
     position: absolute;
     right: 25%;
-    top: 24%;
+    top: 30%;
 }
 
 .star-3-profile {
     position: absolute;
     right: 10%;
-    top: 24%;
+    top: 30%;
 }
 
 .star-4-profile {
     position: absolute;
     left: 12%;
-    top: 24%;
+    top: 30%;
 }
 
 .star-5 {
     position: absolute;
     left: 20%;
-    bottom: 20%;
+    bottom: 18%;
 }
 
 .star-5-profile {
@@ -368,25 +375,25 @@ main {
 .rocket {
     position: absolute;
     left: 15%;
-    top: 48%;
+    top: 49%;
 }
 
 .ufo {
     position: absolute;
     right: 15%;
-    top: 48%;
+    top: 49%;
 }
 
 .rocket-profile {
     position: absolute;
     left: 15%;
-    bottom: 22%;
+    bottom: 28%;
 }
 
 .ufo-profile {
     position: absolute;
     right: 15%;
-    top: 33%;
+    top: 28%;
 }
 
 .panah-profile {
@@ -414,19 +421,19 @@ main {
 .bumi {
     position: absolute;
     left: 20%;
-    bottom: 32%;
+    bottom: 29%;
 }
 
 .komet {
     position: absolute;
     right: 14%;
-    bottom: 26%;
+    bottom: 23%;
 }
 
 .planet {
     position: absolute;
     right: 21%;
-    bottom: 20%;
+    bottom: 18%;
 }
 
 .planet-profile {
@@ -438,18 +445,25 @@ main {
 .perahu {
     position: absolute;
     left: 21%;
-    bottom: 3%;
+    bottom: 2%;
 }
 
 .ufo-2 {
     position: absolute;
     right: 21%;
-    bottom: 4%;
+    bottom: 3%;
 }
 
 .card-program {
   max-height: 250px;
   overflow-y: auto;
+  border-radius: 2rem !important;
+}
+
+.card-jenjang {
+    height: 100% !important;
+    width: 100% !important;
+    object-fit: cover !important;
 }
 
 .kegiatan {
@@ -478,8 +492,11 @@ main {
 }
 
 .bg-fasilitas {
-    background-color: #006193;
+    background-color: #006193 !important;
     padding: 1rem;
+    color: white !important;
+    border-top-left-radius: 3rem !important;
+    border-bottom-right-radius: 3rem !important;
 }
 
 .bg-logo {

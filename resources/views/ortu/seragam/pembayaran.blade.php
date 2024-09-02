@@ -28,7 +28,7 @@
                         <p class="mb-0" style="font-size: 14px;"> {{$produk_seragam->nama_produk}} </p>
                         <p class="mb-0 price-diskon"> <b> Rp. {{number_format($harga) }} </b> </p>
                         <p class="mb-0" style="color: gray; font-size: 10px"> <s> Rp. {{number_format($harga_awal)}} </s> </p>     
-                        <p class="mb-0" style="font-size: 10px">Quantity: {{$quantity}}, Size: {{$ukuran}} </p>
+                        <p class="mb-0" style="font-size: 10px">Quantity: {{$quantity}}, Size: {{$ukuran}}, Jenis: {{$produk_seragam->jenis_produk}} </p>
                         <p class="mb-1" style="font-size: 10px">Sekolah: {{$profile->sublokasi}}, Kelas: {{$profile->nama_kelas}} </p>
                     </div>
                 </div>
@@ -56,6 +56,7 @@
 
         <div class="bottom-navigate mt-3 p-3 d-flex" style="justify-content: space-between; background-color: #f5f5f5">
             <h6> Total Pembayaran <br> <b> Rp. <span id="total_bayar"> {{number_format($harga)}} </span> </b> </h6>
+            <input type="hidden" value="{{$harga}}" id="total_akhir" >
             <button id="pay-button" type="submit" class="btn btn-purple btn-sm px-4" onclick="bayar_seragam()" style="letter-spacing: 1px"> <b>Bayar</b> </button>
         </div>
     @else 
@@ -107,6 +108,7 @@
 
         <div class="bottom-navigate mt-3 p-3 d-flex" style="justify-content: space-between; background-color: #f5f5f5">
             <h6> Total Pembayaran <br> <b> Rp. <span id="total_bayar"> {{number_format($total_akhir)}} </span> </b> </h6>
+            <input type="hidden" value="{{$total_akhir}}" id="total_akhir" >
             <button id="pay-button" type="submit" class="btn btn-purple btn-sm px-4" onclick="bayar_seragam()" style="letter-spacing: 1px"> <b>Bayar</b> </button>
         </div>
     @endif
@@ -114,16 +116,13 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-    {{-- <script src="https://app.sandbox.midtrans.com/snap/snap.js"  data-client-key="{{env('MIDTRANS_CLIENT_KEY')}}"></script>  --}}
-    <script src="https://app.midtrans.com/snap/snap.js"  data-client-key="{{env('MIDTRANS_CLIENT_KEY')}}"></script>
+    <script src="https://app.sandbox.midtrans.com/snap/snap.js"  data-client-key="{{env('MIDTRANS_CLIENT_KEY')}}"></script> 
+    {{-- <script src="https://app.midtrans.com/snap/snap.js"  data-client-key="{{env('MIDTRANS_CLIENT_KEY')}}"></script> --}}
     <script type="text/javascript">
-    // var clientKey = "{{env('MIDTRANS_CLIENT_KEY')}}"
-    // console.log('tes', clientKey);
 
-    var harga_akhir = $('#harga').val();
-    var harga_awal = $('#harga_awal').val();
-    var diskon = $('#diskon').val();
+    var total_harga = $('#total_akhir').val();
 
+    console.log(total_harga);
         function bayar_seragam() {
             $(this).prop("disabled", true);
                 // add spinner to button
@@ -131,12 +130,14 @@
                     `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...`
             );
 
-           
+           var total_harga = $('#total_akhir').val();
+           var produk = 
             
             $.ajax({
                 url: "{{route('seragam.store')}}",
                 type: 'POST',
                 data: {
+                    total_harga : total_harga,
                     _token: '{{csrf_token()}}'
                 },
                 success: function (res) {

@@ -12,6 +12,14 @@
     <div class="container iq-container px-3">
         <div class="card">
             <div class="card-body">
+                <div class="d-flex" style="justify-content: flex-end">
+                    <form action="#" method="GET" class="mx-2">
+                        <button class="btn btn-primary btn-sm"> Add User </button>
+                    </form>
+                    <form action="{{route('get-user.api')}}" method="GET">
+                        <button class="btn btn-warning btn-sm"> Get User From API </button>
+                    </form>
+                </div>
                 <div class="table-responsive mt-3">
                     <table id="list_user" class="table table-striped" data-toggle="data-table">
                         <thead>
