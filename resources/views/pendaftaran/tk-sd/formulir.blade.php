@@ -102,12 +102,12 @@
 
                     <div class="form-group mt-3">
                         <label for="no_hp_ayah" class="form-label">No Whatsapp Ayah</label>
-                        <input class="form-control" id="no_hp_ayah" type="tel" name="no_hp_ayah" placeholder="08123xxx" minlength="10" max="12" onkeypress="return /[0-9]/i.test(event.key)" required>
+                        <input class="form-control" id="no_hp_ayah" type="tel" name="no_hp_ayah" placeholder="08123xxx" minlength="10" maxlength="13" onkeypress="return /[0-9]/i.test(event.key)" required>
                     </div>
 
                     <div class="form-group mt-3">
                         <label for="no_hp_ibu" class="form-label">No Whatsapp Ibu</label>
-                        <input class="form-control" id="no_hp_ibu" name="no_hp_ibu" placeholder="08213xxx" type="tel" minlength="10" max="12" onkeypress="return /[0-9]/i.test(event.key)" required>
+                        <input class="form-control" id="no_hp_ibu" name="no_hp_ibu" placeholder="08213xxx" type="tel" minlength="10" maxlength="13" onkeypress="return /[0-9]/i.test(event.key)" required>
                     </div>
 
                     <div class="mt-3">
