@@ -65,7 +65,7 @@
             </div>
             <div class="center mt-3">
                 <a class="btn btn-primary mb-3"> <h3> Visi </h3> </a>
-                <h4>"Menyiapkan peserta didik calon pengusaha muslim yang Qur’ani dalam menyosong kegemilangan Islam."
+                <h4>"Menyiapkan peserta didik calon pemimpin dan pengusaha muslim yang Berjiwa Qur’ani dalam menyosong kegemilangan Islam."
                 </h4>
             </div>
             <div class="center mt-3">
@@ -77,7 +77,6 @@
                 <li> Mewujudkan lingkungan Pendidikan Rabbani yang terintegrasikan dengan keluarga dan masyarakat </li>
                 <li> Menjadikan nilai-nilai Al-Qur’an dan As Sunnah sebagai sumber aktivitas Pendidikan </li>
                 <li> Menyelenggarakan kegiatan belajar berbasis Project Based Learning, Habbit Learning, Quran Based Learning, Design Thinking, dan Contextual Learning. </li>
-                
             </ol>
             <br>
             <br>

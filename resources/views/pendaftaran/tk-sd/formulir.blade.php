@@ -103,11 +103,17 @@
                     <div class="form-group mt-3">
                         <label for="no_hp_ayah" class="form-label">No Whatsapp Ayah</label>
                         <input class="form-control" id="no_hp_ayah" type="tel" name="no_hp_ayah" placeholder="08123xxx" minlength="10" maxlength="13" onkeypress="return /[0-9]/i.test(event.key)" required>
+                        @if ($errors->has('no_hp_ayah'))
+                            <span style="font-size: 10px" class="text-danger">{{ $errors->first('no_hp_ayah') }}</span>
+                        @endif
                     </div>
 
                     <div class="form-group mt-3">
                         <label for="no_hp_ibu" class="form-label">No Whatsapp Ibu</label>
                         <input class="form-control" id="no_hp_ibu" name="no_hp_ibu" placeholder="08213xxx" type="tel" minlength="10" maxlength="13" onkeypress="return /[0-9]/i.test(event.key)" required>
+                        @if ($errors->has('no_hp_ibu'))
+                            <span style="font-size: 10px" class="text-danger">{{ $errors->first('no_hp_ibu') }}</span>
+                        @endif
                     </div>
 
                     <div class="mt-3">
@@ -134,7 +140,7 @@
                     </div>
 
                     <div class="mt-3 center">
-                        <button type="submit" class="btn btn-primary px-3" id="btn-submit"> Submit </button>
+                        <button type="button" class="btn btn-primary px-3" id="btn-submit"> Submit </button>
                     </div>
                 </form>
             </div>
