@@ -91,7 +91,7 @@
             <div class="row">
                 <div class="col-md-8 text-center text-white mt-3 px-4">
                     <h3> QS. Al-Baqarah 151 </h3>
-                    <span style="font-size: 28px" > كَمَآ اَرْسَلْنَا فِيْكُمْ رَسُوْلًا مِّنْكُمْ يَتْلُوْا عَلَيْكُمْ اٰيٰتِنَا وَيُزَكِّيْكُمْ وَيُعَلِّمُكُمُ الْكِتٰبَ وَالْحِكْمَةَ وَيُعَلِّمُكُمْ مَّا لَمْ تَكُوْنُوْا تَعْلَمُوْنَۗ </span>
+                    <span style="font-size: 28px; text-shadow: 0 0 10px white" > كَمَآ اَرْسَلْنَا فِيْكُمْ رَسُوْلًا مِّنْكُمْ يَتْلُوْا عَلَيْكُمْ اٰيٰتِنَا وَيُزَكِّيْكُمْ وَيُعَلِّمُكُمُ الْكِتٰبَ وَالْحِكْمَةَ وَيُعَلِّمُكُمْ مَّا لَمْ تَكُوْنُوْا تَعْلَمُوْنَۗ </span>
                     <p> <i> “Sebagaimana (Kami telah menyempurnakan nikmat kepadamu), Kami pun mengutus kepadamu seorang Rasul (Nabi Muhammad) 
                         dari (kalangan) kamu yang membacakan kepadamu ayat-ayat Kami, menyucikan kamu, dan mengajarkan kepadamu Kitab (Al-Qur’an) 
                         dan hikmah (sunah), serta mengajarkan apa yang belum kamu ketahui.” </i>

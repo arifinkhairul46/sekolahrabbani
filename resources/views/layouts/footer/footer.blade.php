@@ -18,7 +18,7 @@
                     <img src="{{ asset('assets/images/logo.png') }}" class="center" alt="logo" width="100%">
                 </div>
                 <h6 class="text-white mt-3"> Yayasan Rabbani Asysa </h6>
-                <p class="text-white text-sm"> Jl. Jati No. 5 RT 06 RW 01 Kelurahan Cisaranten Kulon Kec. Arcamanik, Bandung </p>
+                <p class="text-white text-sm"> Jl. A.H. Nasution No.285, Pasanggrahan, Kec. Ujung Berung, Kota Bandung, Jawa Barat </p>
             </div>
             <div class="col-md-2 text-white mt-3">
                 <h6> Halaman </h6>
