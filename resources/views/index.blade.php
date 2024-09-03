@@ -97,7 +97,7 @@
                         dan hikmah (sunah), serta mengajarkan apa yang belum kamu ketahui.” </i>
                     </p>
                     <h4> menjadi landasan kami dalam menyusun kurikulum </h4>
-                    <span style="font-size: 11px"> <i> Ustadz Khoiruddin Aditha Yudha - Ketua Yayasan </i> </span>
+                    <h3> <i> QURANIC LEADERPRENEUR </i> </h3>
                 </div>
                 <div class="col-md-4">
                     <img src="{{asset('assets/images/img-landasan.png')}}" width="90%" >
@@ -214,7 +214,7 @@
             <div class="row mt-4">
                 @foreach ($fasilitas as $item)
                     <div class="col-md-3 mb-2">
-                        <div class="card bg-fasilitas shadow" style="height: 450px;">
+                        <div class="card bg-fasilitas shadow" style="height: 500px;">
                             <div class="">
                                 <img src="{{ asset($item->image) }}" class="card-img-top" alt="kober">
                             </div>

@@ -25,7 +25,7 @@
             </div>
             <div class="col-md-6 my-auto">
                 <h3> “ Al-Qur’an adalah <span style="color: #118ECC"> pedoman hidup kita </span>, sengaja kami tanamkan Al-Qur’an sejak dini, agar Al-Qur’an
-                    bercampur menjadi darah daging mereka dan menjadi <span style="color: #118ECC "> bekal </span> untuk kehidupan anak-anak kedepan” </h3>
+                    bercampur menjadi darah daging anak-anak dan menjadi <span style="color: #118ECC "> bekal </span> untuk kehidupan mereka kedepan” </h3>
                 <p class="mt-3">Ustadz Khoiruddin Aditha Yudha - Ketua Yayasan </p>
                 <div class="d-flex justify-content-start">
                     <img src="{{ asset('assets/images/logo_fb.png') }}" alt="logo fb" style="width: 5%">
@@ -106,7 +106,7 @@
             {{-- core value --}}
             <div class="vector">
             </div>
-            <div class="center mt-3">
+            <div class="center">
                 <img src="{{ asset('assets/images/icon-jenjang.png') }}" class="center" alt="logo program" width="3%">
                 <h6 class="mt-1" style="color: #ED145B">Value</h6>
                 <h4 class="mb-3">Core Value</h4>

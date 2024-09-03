@@ -76,7 +76,7 @@
                 @endforeach
             </div>
 
-                <div class="row">
+                <div class="row my-5">
                     <div class="col-md-6">
                         <img src="{{ asset('assets/images/siswa_sd.png') }}" class="center dynamic" alt="logo" width="70%">
                         <div class="row">
