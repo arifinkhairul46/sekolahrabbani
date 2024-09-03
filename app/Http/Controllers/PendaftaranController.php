@@ -181,7 +181,7 @@ class PendaftaranController extends Controller
         ]);
 
         // send ke qlp
-        // $this->send_pendaftaran($id_anak, $nama_lengkap, $jenis_kelamin, $tempat_lahir, $tgl_lahir, $lokasi, $kelas, $jenjang, $tingkat, $no_hp_ayah, $no_hp_ibu, $nama_ayah, $nama_ibu, $sumber_ppdb, $tahun_ajaran);
+        $this->send_pendaftaran($id_anak, $nama_lengkap, $jenis_kelamin, $tempat_lahir, $tgl_lahir, $lokasi, $kelas, $jenjang, $tingkat, $no_hp_ayah, $no_hp_ibu, $nama_ayah, $nama_ibu, $sumber_ppdb, $tahun_ajaran);
 
         $contact_person =  ContactPerson::where('is_aktif', '1')->where('kode_sekolah', $lokasi)->where('id_jenjang', $jenjang)->first();
         $no_admin = $contact_person->telp;
@@ -192,7 +192,7 @@ class PendaftaranController extends Controller
         //send notif ke admin
 		$message_for_admin='Pendaftaran telah berhasil dengan nomor registrasi "'.$id_anak.'". a/n "'.$nama_lengkap.'" ';
 
-        // $this->send_notif($message_for_admin, $no_admin);
+        $this->send_notif($message_for_admin, $no_admin);
 
         //send notif ke ortu
         $message_ortu = "Terimakasih *Ayah/Bunda $nama_lengkap* telah mendaftar ke Sekolah Rabbani. 
@@ -203,8 +203,8 @@ Silahkan lakukan pembayaran pendaftaran sebesar *Rp ".number_format($biaya)."* k
 Apabila ada pertanyaan silahkan hubungi Customer Service kami di nomor ".$no_admin.", Terima Kasih.
         ";
 
-        // $this->send_notif($message_ortu, $no_hp_ayah);
-        // $this->send_notif($message_ortu, $no_hp_ibu);
+        $this->send_notif($message_ortu, $no_hp_ayah);
+        $this->send_notif($message_ortu, $no_hp_ibu);
 
 
         return redirect()->route('pendaftaran')
@@ -383,11 +383,11 @@ Apabila ada pertanyaan silahkan hubungi Customer Service kami di nomor ".$no_adm
             ]);
 
             // update ke qlp
-            // $this->update_pendaftaran($id, $nik, $alamat, $provinsi, $kota, $kecamatan, $kelurahan, $agama, $anak_ke, $jumlah_saudara, $npsn,
-            // $asal_sekolah, $tinggi_badan, $berat_badan, $gol_darah, $riwayat_penyakit, $kec_asal_sekolah, $hafalan, $email_ayah, $email_ibu, $status_tinggal, 
-            // $tempat_lahir_ibu, $tgl_lahir_ibu, $pekerjaan_ibu, $penghasilan_ibu, $pendidikan_ibu, 
-            // $tempat_lahir_ayah, $tgl_lahir_ayah, $pekerjaan_ayah, $penghasilan_ayah, $pendidikan_ayah, 
-            // $tempat_lahir_wali, $tgl_lahir_wali, $pekerjaan_wali, $pendidikan_wali, $nama_wali, $hubungan_wali, $bhs_digunakan, $nama_panggilan);
+            $this->update_pendaftaran($id, $nik, $alamat, $provinsi, $kota, $kecamatan, $kelurahan, $agama, $anak_ke, $jumlah_saudara, $npsn,
+            $asal_sekolah, $tinggi_badan, $berat_badan, $gol_darah, $riwayat_penyakit, $kec_asal_sekolah, $hafalan, $email_ayah, $email_ibu, $status_tinggal, 
+            $tempat_lahir_ibu, $tgl_lahir_ibu, $pekerjaan_ibu, $penghasilan_ibu, $pendidikan_ibu, 
+            $tempat_lahir_ayah, $tgl_lahir_ayah, $pekerjaan_ayah, $penghasilan_ayah, $pendidikan_ayah, 
+            $tempat_lahir_wali, $tgl_lahir_wali, $pekerjaan_wali, $pendidikan_wali, $nama_wali, $hubungan_wali, $bhs_digunakan, $nama_panggilan);
     
             return redirect()->route('pendaftaran')->with('success', 'Data berhasil diupdate');
         } catch (\Throwable $th) {
@@ -421,7 +421,7 @@ Apabila ada pertanyaan silahkan hubungi Customer Service kami di nomor ".$no_adm
                 $message = "No Registrasi / Pendaftaran an. $get_no_regis->nama_lengkap adalah " . $get_no_regis->id_anak . "";
                 $no_wha = $request->no_hp;
 
-                // $this->send_notif($message, $no_wha);
+                $this->send_notif($message, $no_wha);
                 return redirect()->route('form.find')->with('success', 'No Registrasi telah dikirim ke nomor whatsapp anda');
 
             } else {
