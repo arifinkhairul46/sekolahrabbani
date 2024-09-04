@@ -116,7 +116,7 @@
                         @endif
                     </div>
 
-                    <div class="mb-3">
+                    <div class="mt-3">
                         <span for="asal_sekolah" class="form-label">Asal Sekolah</span>
                         <input class="form-control form-control-sm px-3" id="asal_sekolah" name="asal_sekolah"  placeholder="Sekolah Sebelumnya"  >
                     </div>
