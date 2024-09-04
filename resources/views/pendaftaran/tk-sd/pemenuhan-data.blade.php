@@ -151,11 +151,7 @@
                                     </select>
                                 </div>
 
-                                <div class="mb-3">
-                                    <span for="asal_sekolah" class="form-label">Asal Sekolah</span>
-                                    <input class="form-control form-control-sm px-3" id="asal_sekolah" name="asal_sekolah" value="{{$get_profile->sd_sebelumnya}}"  placeholder="Sekolah Sebelumnya"  >
-                                </div>
-
+                             
                                 <div class="mb-3">
                                     <span for="npsn" class="form-label">NPSN</span>
                                     <input class="form-control form-control-sm px-3" id="npsn" name="npsn" value="{{$get_profile->npsn}}"  placeholder="Nomor Pokok Siswa Nasional"  >

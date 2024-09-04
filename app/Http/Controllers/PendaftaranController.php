@@ -146,6 +146,7 @@ class PendaftaranController extends Controller
         $no_hp_ibu = $request->no_hp_ibu;
         $jenis_pendidikan = $request->jenis_pendidikan;
         $tahun_ajaran = $request->tahun_ajaran;
+        $asal_sekolah = $request->asal_sekolah;
         $now = date('YmdHis');
         $id_anak = "PPDB-$tingkat-$lokasi-$now";
 
@@ -163,7 +164,8 @@ class PendaftaranController extends Controller
             'no_hp_ibu' => $no_hp_ibu,
             'info_ppdb' => $sumber_ppdb,
             'jenis_pendidikan' => $jenis_pendidikan,
-            'tahun_ajaran' => $tahun_ajaran
+            'tahun_ajaran' => $tahun_ajaran,
+            'asal_sekolah' => $asal_sekolah
         ]);
 
         PendaftaranAyah::create([
@@ -181,7 +183,7 @@ class PendaftaranController extends Controller
         ]);
 
         // send ke qlp
-        $this->send_pendaftaran($id_anak, $nama_lengkap, $jenis_kelamin, $tempat_lahir, $tgl_lahir, $lokasi, $kelas, $jenjang, $tingkat, $no_hp_ayah, $no_hp_ibu, $nama_ayah, $nama_ibu, $sumber_ppdb, $tahun_ajaran);
+        $this->send_pendaftaran($id_anak, $nama_lengkap, $jenis_kelamin, $tempat_lahir, $tgl_lahir, $lokasi, $kelas, $jenjang, $tingkat, $no_hp_ayah, $no_hp_ibu, $nama_ayah, $nama_ibu, $sumber_ppdb, $tahun_ajaran, $asal_sekolah);
 
         $contact_person =  ContactPerson::where('is_aktif', '1')->where('kode_sekolah', $lokasi)->where('id_jenjang', $jenjang)->first();
         $no_admin = $contact_person->telp;
@@ -447,7 +449,7 @@ Apabila ada pertanyaan silahkan hubungi Customer Service kami di nomor ".$no_adm
     }
 
 
-    function send_pendaftaran($id_anak, $nama_lengkap, $jenis_kelamin, $tempat_lahir, $tgl_lahir, $lokasi, $kelas, $jenjang, $tingkat, $no_hp_ayah, $no_hp_ibu, $nama_ayah, $nama_ibu, $info_ppdb, $tahun_ajaran){
+    function send_pendaftaran($id_anak, $nama_lengkap, $jenis_kelamin, $tempat_lahir, $tgl_lahir, $lokasi, $kelas, $jenjang, $tingkat, $no_hp_ayah, $no_hp_ibu, $nama_ayah, $nama_ibu, $info_ppdb, $tahun_ajaran, $asal_sekolah){
 	    $curl = curl_init();
 
 		curl_setopt_array($curl, array(
@@ -478,7 +480,8 @@ Apabila ada pertanyaan silahkan hubungi Customer Service kami di nomor ".$no_adm
 			'nama_ibu' => $nama_ibu,
 			'no_hp_ibu' => $no_hp_ibu,
 			'info_ppdb' => $info_ppdb,
-			'tahun_ajaran' => $tahun_ajaran
+			'tahun_ajaran' => $tahun_ajaran,
+			'asal_sekolah' => $asal_sekolah
             )
 
 		));
