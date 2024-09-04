@@ -142,6 +142,10 @@
                         <div class="mb-3 form-check show_rekom" id="show_rekom">
                             <input type="text" style="display: none" name="radios2" id="input_rekomen" placeholder="Sebutkan" class="form-control form-control-sm"><br>
                         </div>
+
+                        @if ($errors->has('info_ppdb'))
+                            <span style="font-size: 10px" class="text-danger">{{ $errors->first('info_ppdb') }}</span>
+                        @endif
                     </div>
 
                     <div class="mt-3 center">
