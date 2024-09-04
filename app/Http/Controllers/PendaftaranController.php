@@ -334,6 +334,7 @@ Apabila ada pertanyaan silahkan hubungi Customer Service kami di nomor ".$no_adm
             $hubungan_wali = $request->hubungan_wali;
             $nama_panggilan = $request->nama_panggilan;
             $bhs_digunakan = $request->bhs_digunakan;
+            $asal_sekolah = $request->asal_sekolah;
             
     
             $update_data_anak = Pendaftaran::where('id_anak', $id)->update([
@@ -357,7 +358,8 @@ Apabila ada pertanyaan silahkan hubungi Customer Service kami di nomor ".$no_adm
                 'npsn' => $npsn,
                 'bahasa' => $bhs_digunakan,
                 'nama_panggilan' => $nama_panggilan,
-                'status_tinggal' => $status_tinggal
+                'status_tinggal' => $status_tinggal,
+                'asal_sekolah' => $asal_sekolah
             ]);
 
           
@@ -388,7 +390,7 @@ Apabila ada pertanyaan silahkan hubungi Customer Service kami di nomor ".$no_adm
 
             // update ke qlp
             $this->update_pendaftaran($id, $nik, $alamat, $provinsi, $kota, $kecamatan, $kelurahan, $agama, $anak_ke, $jumlah_saudara, $npsn,
-            $tinggi_badan, $berat_badan, $gol_darah, $riwayat_penyakit, $kec_asal_sekolah, $hafalan, $email_ayah, $email_ibu, $status_tinggal, 
+            $asal_sekolah, $tinggi_badan, $berat_badan, $gol_darah, $riwayat_penyakit, $kec_asal_sekolah, $hafalan, $email_ayah, $email_ibu, $status_tinggal, 
             $tempat_lahir_ibu, $tgl_lahir_ibu, $pekerjaan_ibu, $penghasilan_ibu, $pendidikan_ibu, 
             $tempat_lahir_ayah, $tgl_lahir_ayah, $pekerjaan_ayah, $penghasilan_ayah, $pendidikan_ayah, 
             $tempat_lahir_wali, $tgl_lahir_wali, $pekerjaan_wali, $pendidikan_wali, $nama_wali, $hubungan_wali, $bhs_digunakan, $nama_panggilan);
@@ -496,7 +498,7 @@ Apabila ada pertanyaan silahkan hubungi Customer Service kami di nomor ".$no_adm
 	}
 
     function update_pendaftaran($id, $nik, $alamat, $provinsi, $kota, $kecamatan, $kelurahan, $agama, $anak_ke, $jumlah_saudara, $npsn,
-    $tinggi_badan, $berat_badan, $gol_darah, $riwayat_penyakit, $kec_asal_sekolah, $hafalan, $email_ayah, $email_ibu, $status_tinggal, 
+    $asal_sekolah, $tinggi_badan, $berat_badan, $gol_darah, $riwayat_penyakit, $kec_asal_sekolah, $hafalan, $email_ayah, $email_ibu, $status_tinggal, 
     $tempat_lahir_ibu, $tgl_lahir_ibu, $pekerjaan_ibu, $penghasilan_ibu, $pendidikan_ibu, 
     $tempat_lahir_ayah, $tgl_lahir_ayah, $pekerjaan_ayah, $penghasilan_ayah, $pendidikan_ayah, 
     $tempat_lahir_wali, $tgl_lahir_wali, $pekerjaan_wali, $pendidikan_wali, $nama_wali, $hubungan_wali, $bhs_digunakan, $nama_panggilan)
@@ -554,6 +556,7 @@ Apabila ada pertanyaan silahkan hubungi Customer Service kami di nomor ".$no_adm
             'pendidikan_wali' => $pendidikan_wali,
             'hubungan_wali' => $hubungan_wali,
             'bhs_digunakan' => $bhs_digunakan,
+            'asal_sekolah' => $asal_sekolah,
             'nama_panggilan' => $nama_panggilan
             
             )
