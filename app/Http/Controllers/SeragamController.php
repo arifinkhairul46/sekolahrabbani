@@ -353,7 +353,7 @@ class SeragamController extends Controller
             $harga_akhir = $total_harga - $total_diskon;
             $harga_akhir_format = number_format($harga_akhir);
 
-            // $this->send_pesan_seragam_detail($no_pesanan, $nama_siswa, $lokasi, $nama_kelas, $produk_id, $jenis_produk, $kode_produk, $ukuran, $quantity, $harga_awal, $diskon/100 * $harga_awal);
+            $this->send_pesan_seragam_detail($no_pesanan, $nama_siswa, $lokasi, $nama_kelas, $produk_id, $jenis_produk, $kode_produk, $ukuran, $quantity, $harga_awal, $diskon/100 * $harga_awal);
             $this->update_stok($kode_produk, $quantity);
         }
 
@@ -368,7 +368,7 @@ class SeragamController extends Controller
         ]);
 
 
-        // $this->send_pesan_seragam($no_pesanan, $nama_pemesan, $no_hp);
+        $this->send_pesan_seragam($no_pesanan, $nama_pemesan, $no_hp);
 
           // Set your Merchant Server Key
           \Midtrans\Config::$serverKey = config('midtrans.serverKey');
@@ -472,7 +472,7 @@ Terima kasih atas kepercayaan *Ayah/Bunda $nama_siswa*.🙏☺";
             $bank = $request->va_numbers[0]['bank'];
 
             $mtd_pembayaran = $bank;
-            $no_va = $bank;
+            $no_va = $no_va;
             // return response()->json($no_va);
         } else if ($paymentType == 'bank_transfer' && $request->permata_va_number) {
             $va_number = $request->permata_va_number;
@@ -517,7 +517,7 @@ Terima kasih atas kepercayaan *Ayah/Bunda $nama_siswa*.🙏☺";
                     'va_number' => $no_va,
                     'updated_at' => $request->settlement_time
                 ]);
-                //    $this->update_status_seragam('success', $mtd_pembayaran, $orderId);
+                   $this->update_status_seragam('success', $mtd_pembayaran, $orderId);
                 break;
             case 'pending':
                 $order->update([
@@ -526,7 +526,7 @@ Terima kasih atas kepercayaan *Ayah/Bunda $nama_siswa*.🙏☺";
                     'va_number' => $no_va,
                     'expire_time' => $request->expiry_time
                 ]);
-                // $this->update_status_seragam('pending', $mtd_pembayaran, $orderId);
+                $this->update_status_seragam('pending', $mtd_pembayaran, $orderId);
                 break;
             case 'deny':
                 $order->update([
@@ -541,7 +541,7 @@ Terima kasih atas kepercayaan *Ayah/Bunda $nama_siswa*.🙏☺";
                     'metode_pembayaran' => $mtd_pembayaran,
                     'va_number' => $no_va
                 ]);
-                // $this->update_status_seragam('expired', $mtd_pembayaran, $orderId);
+                $this->update_status_seragam('expired', $mtd_pembayaran, $orderId);
                 break;
             case 'cancel':
                 $order->update([
