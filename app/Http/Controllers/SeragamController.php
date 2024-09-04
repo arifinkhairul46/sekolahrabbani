@@ -472,7 +472,7 @@ Terima kasih atas kepercayaan *Ayah/Bunda $nama_siswa*.🙏☺";
             $bank = $request->va_numbers[0]['bank'];
 
             $mtd_pembayaran = $bank;
-            $no_va = $no_va;
+            $no_va = $bank;
             // return response()->json($no_va);
         } else if ($paymentType == 'bank_transfer' && $request->permata_va_number) {
             $va_number = $request->permata_va_number;
@@ -480,7 +480,7 @@ Terima kasih atas kepercayaan *Ayah/Bunda $nama_siswa*.🙏☺";
             $bank = 'Permata';
 
             $mtd_pembayaran = $bank;
-            $no_va = $va_number;
+            $no_va = $bank;
         } else if($paymentType == 'echannel') {
             $no_va = $request->bill_key;
             $mtd_pembayaran = 'Mandiri';

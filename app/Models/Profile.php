@@ -19,7 +19,9 @@ class Profile extends Model
         'no_hp_ayah',
         'no_hp_ibu',
         'pass_akun',
-        'user_id'
+        'user_id',
+        'sekolah_id',
+        'nama_kelas'
     ];
 
     public function user()
