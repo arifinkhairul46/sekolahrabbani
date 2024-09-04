@@ -69,21 +69,21 @@
 
                     <div class="form-group mt-3" id="form_jenjang">
                         <label for="jenjang" class="form-label">Jenjang</label>
-                        <select name="jenjang" id="jenjang" class="form-control" onchange="getKelas()">
+                        <select name="jenjang" id="jenjang" class="form-control" onchange="getKelas()" required>
                             <option value="" disabled selected>-- Pilih Jenjang --</option>
                         </select>
                     </div>
 
                     <div class="form-group mt-3" id="form_kelas">
                         <label for="kelas" class="form-label">Kelas</label>
-                        <select name="kelas" id="kelas" class="form-control">
+                        <select name="kelas" id="kelas" class="form-control" required>
                             <option value="" disabled selected>-- Pilih Kelas --</option>
                         </select>
                     </div>
 
                     <div class="form-group mt-3" id="form_boarding" style="display: none">
                         <label for="jenis_pendidikan" class="form-label">Jenis Pendidikan</label>
-                        <select name="jenis_pendidikan" id="jenis_pendidikan" class="form-control">
+                        <select name="jenis_pendidikan" id="jenis_pendidikan" class="form-control" required>
                             <option value="" disabled selected>-- Pilih Jenis Pendidikan --</option>
                             <option value="1">Reguler</option>
                             <option value="2">Boarding</option>
