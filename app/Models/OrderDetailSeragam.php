@@ -20,6 +20,7 @@ class OrderDetailSeragam extends Model
         'produk_id',
         'jenis_produk_id',
         'ukuran',
+        'kode_produk',
         'quantity',
         'harga',
         'diskon',

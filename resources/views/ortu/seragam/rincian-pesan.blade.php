@@ -48,8 +48,12 @@
 
             @if($order->status == 'pending' && $order->metode_pembayaran != 'shopeepay' && $order->metode_pembayaran != 'gopay' )
                 <div class="d-flex" style="justify-content: space-between; font-size: 14px">
-                    <span> No Pembayaran </span>
-                    <span id="va_number">{{$item->va_number}} <i class="fa solid fa-copy" onclick="copy_number()" title="salin"> </i> </span>
+                    <span> No VA Pembayaran </span>
+                    <span id="va_number">{{$order->va_number}} <i class="fa solid fa-copy" onclick="copy_number()" title="salin"> </i> </span>
+                </div>
+                <div class="d-flex" style="justify-content: space-between; font-size: 14px">
+                    <span> Batas Pembayaran </span>
+                    <span class="text-danger" style="font-weight: bold" id="batas_pembayaran" data-countdown = "{{ date('Y-m-d H:i:s', strtotime($order->expire_time))}}" >{{$order->expire_time}} </span>
                 </div>
             @endif
             <hr>
@@ -78,7 +82,15 @@
     @endif
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="{{ asset('assets/js/jquery.countdown/jquery.countdown.min.js') }}"></script>
     <script>
+          $('[data-countdown]').each(function() {
+            var $this = $(this), finalDate = $(this).data('countdown');
+            $this.countdown(finalDate, function(event) {
+                $this.html(event.strftime('%H:%M:%S'));
+            });
+        });
+
         function copy_number() {
             var copyText = document.getElementById("va_number");
             var textArea = document.createElement("textarea");

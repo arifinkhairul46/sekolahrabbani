@@ -13,10 +13,10 @@
 
     @if ($cart_detail->count() > 0)
     
-        <div class="mx-2" style="text-align: right">
-            <input class="mt-1" type="checkbox" id="check_all" name="check_all" value="All">
+        {{-- <div class="mx-2" style="text-align: right">
+            <input class="mt-1" type="checkbox" id="check_all" onclick="getCheckedBoxes(this)" name="check_all" value="All">
             <label for="check_all">All &nbsp;</label><br>
-        </div>
+        </div> --}}
     
         <?php $total = 0; ?>
         <div class="container">
@@ -58,7 +58,11 @@
                             </div>
                         </div>
                         <div style="width: 20px">
-                            <input class="mt-1" type="checkbox" id="check_list" name="check_list" value="All">
+                            @if ($item->is_selected == 1)
+                                <input class="mt-1" type="checkbox" id="checklist-{{$item->id}}" name="checklist-cart" onclick="oncheck('{{$item->id}}')" checked>
+                            @else
+                                <input class="mt-1" type="checkbox" id="checklist-{{$item->id}}" name="checklist-cart" onclick="oncheck('{{$item->id}}')" >
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -66,10 +70,14 @@
             @endforeach
 
             <div class="bottom-navigate sticky-bottom p-3 d-flex" style="justify-content: space-between; background-color: #f5f5f5">
-                <h4> Total <b> Rp. {{number_format($total)}} </b> </h4>
-                <form action="{{route('seragam.bayar')}}" method="GET">
-                    <button type="submit" class="btn btn-purple px-4" > Checkout </button>
-                </form>
+                <h4> Total <b> Rp. {{number_format($total_bayar_selected)}} </b> </h4>
+                @if ($total_bayar_selected != 0)
+                    <form action="{{route('seragam.bayar')}}" method="GET">
+                        <button type="submit" class="btn btn-purple px-4" > Checkout </button>
+                    </form>
+                @else 
+                    <button type="submit" class="btn btn-purple px-4" disabled> Checkout </button>
+                @endif
             </div>
         </div>  
     @else
@@ -111,6 +119,7 @@
                                  _token: '{{csrf_token()}}'
                             },
                             success: function (result) {
+                                // console.log('o',result);
                                window.location.reload()
                             }
                         })
@@ -190,6 +199,45 @@
                     e.preventDefault();
                 }
         });
+
+        function oncheck(id) {
+            id = id;
+            var status_check = $('#checklist-'+id).prop('checked');
+            var url = "{{ route('cart-select.update', ":id") }}";
+            url = url.replace(':id', id);
+            var is_selected = null;
+            if (status_check == true) {
+                var is_selected = '1';
+            } else {
+                var is_selected = '0';
+            }
+
+            $.ajax({
+                url: url,
+                type: 'PUT',
+                data: {
+                    is_selected: is_selected,
+                    _token: '{{csrf_token()}}'
+                },
+                success: function (result) {
+                    window.location.reload();
+                }
+            })
+            
+        }
+
+        function getCheckedBoxes(main) {
+            var checkboxes = document.getElementsByName('checklist-cart');
+            var checkboxesChecked = [];
+
+            // loop over them all
+            for (var i=0; i<checkboxes.length; i++) {
+                // And stick the checked ones onto an array...
+                checkboxes[i].checked = main.checked
+
+                console.log(main.checked);
+            }
+        }
 
     </script>
 

@@ -21,6 +21,7 @@ class OrderSeragam extends Model
         'user_id',
         'metode_pembayaran',
         'va_number',
+        'expire_time',
         'updated_at'
     ];
 

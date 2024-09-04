@@ -19,6 +19,7 @@ class CartDetail extends Model
         'nis',
         'ukuran',
         'jenis',
-        'status_cart'
+        'status_cart',
+        'is_selected'
     ];
 }

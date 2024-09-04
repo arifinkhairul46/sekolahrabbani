@@ -83,9 +83,16 @@
                             <div class="titel">
                                 <p class="card-title mb-0"> <b> {{$produk->nama_produk}} </b> </p>
                                 <p class="mb-1 price-diskon" style="font-size: 24px"> <b> Rp. <span id="harga_diskon"> {{number_format(($produk['harga']) - ($produk['diskon']/100 * $produk['harga'])) }} </span> </b> </p>
-                                <p class="mb-0" style="font-size: 13px"> Discount 
+                                <p class="mb-1" style="font-size: 13px"> Discount 
                                     <span class="bg-danger py-1 px-2" id="diskon_persen"> {{($produk->diskon)}}% </span>
                                     <span class="mx-2" style="color: gray"> <s> Rp. <span id="harga_awal"> {{number_format($produk->harga)}} </span> </s> </span>
+                                </p>
+                                <p class="mb-0 " style="font-size: 11px"> 
+                                    Stok : 
+                                    <input id="total_stok" style="border: none" disabled> <br>
+                                    {{-- <span class="text-danger">  
+                                    Segera checkout, stok sedikit!
+                                    </span> --}}
                                 </p>
                             </div>
                         </div>
@@ -109,12 +116,21 @@
                     <div class="produk-jenis mt-3">
                         <div class="d-flex">
                             @foreach ($jenis_produk as $item)
-                                <div class="button-jenis">
-                                    <input class="form-check-input" type="radio" name="jenis_{{$produk->id}}" id="jenis_{{$produk->id}}_{{$item->id}}" value="{{$item->id}}" {{$item->id == 1 ? 'checked' : ''}}>
-                                    <label class="form-check-label" for="jenis_{{$produk->id}}_{{$item->id}}">
-                                    <span> {{$item->jenis_produk}} </span>
-                                    </label>
-                                </div>
+                                @if ($item->qty != null)
+                                    <div class="button-jenis">
+                                        <input class="form-check-input" type="radio" name="jenis_{{$produk->id}}" id="jenis_{{$produk->id}}_{{$item->id}}" value="{{$item->id}}" {{$item->id == 1 ? 'checked' : ''}}>
+                                        <label class="form-check-label" for="jenis_{{$produk->id}}_{{$item->id}}">
+                                        <span> {{$item->jenis_produk}} </span>
+                                        </label>
+                                    </div>
+                                @else 
+                                    <div class="button-jenis">
+                                        <input class="form-check-input" type="radio" name="jenis_{{$produk->id}}" id="jenis_{{$produk->id}}_{{$item->id}}" value="{{$item->id}}" disabled {{$item->id == 1 ? 'checked' : ''}}>
+                                        <label class="form-check-label" for="jenis_{{$produk->id}}_{{$item->id}}">
+                                        <span> {{$item->jenis_produk}} </span>
+                                        </label>
+                                    </div>
+                                @endif
                             @endforeach
                         </div>
                         <span class="mb-0 text-danger" style="font-size: 10px; display: none" id="valid_jenis_{{$produk->id}}" > Pilih jenis seragam terlebih dahulu! </span>
@@ -125,12 +141,21 @@
                         <h6 style="color: #3152A4"><b> Ukuran </b> </h6>
                         <div class="d-flex">
                             @foreach($ukuran_seragam as $item)
-                                <div class="button-ukuran">
-                                    <input class="form-check-input" type="radio" name="ukuran_{{$produk->id}}"  id="uk_{{$item->ukuran_seragam}}_{{$produk->id}}" value="{{$item->ukuran_seragam}}">
-                                    <label class="form-check-label" for="uk_{{$item->ukuran_seragam}}_{{$produk->id}}">
-                                    <span>{{$item->ukuran_seragam}} </span>
-                                    </label>
-                                </div>
+                                @if ($item->qty != null)
+                                    <div class="button-ukuran">
+                                        <input class="form-check-input" type="radio" name="ukuran_{{$produk->id}}"  id="uk_{{$item->ukuran_seragam}}_{{$produk->id}}" value="{{$item->ukuran_seragam}}">
+                                        <label class="form-check-label" for="uk_{{$item->ukuran_seragam}}_{{$produk->id}}">
+                                        <span>{{$item->ukuran_seragam}} </span>
+                                        </label>
+                                    </div>
+                                @else
+                                    <div class="button-ukuran">
+                                        <input class="form-check-input" type="radio" name="ukuran_{{$produk->id}}"  id="uk_{{$item->ukuran_seragam}}_{{$produk->id}}" value="{{$item->ukuran_seragam}}" disabled>
+                                        <label class="form-check-label" for="uk_{{$item->ukuran_seragam}}_{{$produk->id}}">
+                                        <span>{{$item->ukuran_seragam}} </span>
+                                        </label>
+                                    </div>
+                                @endif
                             @endforeach
                         </div>
                         <span class="mb-0 text-danger" style="font-size: 10px; display: none" id="valid_ukuran_{{$produk->id}}" > Pilih ukuran terlebih dahulu! </span>
@@ -283,6 +308,8 @@
 
                 },
                 success: function (result) {
+                    var stok = 10
+                    // console.log('ini', result);
                     $.each(result, function (key, item) {
                         var harga = parseInt(item.harga);
                         var diskon = parseInt(item.diskon);
@@ -290,8 +317,14 @@
                         var formatter = new Intl.NumberFormat("en-US");
                         var format_harga = formatter.format(harga);
                         var format_harga_diskon = formatter.format(harga_diskon);
+                        var stok = item.qty;
+
                         $("#harga_awal").html(format_harga);
                         $("#harga_diskon").html(format_harga_diskon)
+                        $("#total_stok").val(item.qty)
+                        $(".input-number").attr({
+                            'max' : stok
+                        })
                     });
                 }
             })

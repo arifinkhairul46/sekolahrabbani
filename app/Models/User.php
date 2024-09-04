@@ -28,6 +28,8 @@ class User extends Authenticatable
         'no_hp',
         'no_hp_2',
         'id_profile_csdm',
+        'created_at',
+        'updated_at'
     ];
 
     protected $primaryKey = 'id';

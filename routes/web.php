@@ -65,8 +65,9 @@ Route::group(['middleware' =>['auth']], function () {
     Route::get('seragam/{id}', [SeragamController::class, 'detail_produk'])->name('seragam.detail');
     Route::get('cart', [SeragamController::class, 'cart'])->name('seragam.cart');
     Route::post('cart', [SeragamController::class, 'add_to_cart'])->name('cart_post');
-    Route::post('buy_now', [SeragamController::class, 'buy_now'])->name('buy_now');
+    Route::post('payment', [SeragamController::class, 'buy_now'])->name('buy_now');
     Route::put('cart/{id}', [SeragamController::class, 'update_cart'])->name('cart.update');
+    Route::put('cart-select/{id}', [SeragamController::class, 'update_select_cart'])->name('cart-select.update');
     Route::delete('cart/{id}', [SeragamController::class, 'remove_cart'])->name('cart.delete');
     Route::get('pembayaran', [SeragamController::class, 'pembayaran'])->name('seragam.bayar');
     Route::post('pembayaran', [SeragamController::class, 'store'])->name('seragam.store');

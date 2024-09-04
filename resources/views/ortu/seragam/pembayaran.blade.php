@@ -116,13 +116,13 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-    <script src="https://app.sandbox.midtrans.com/snap/snap.js"  data-client-key="{{env('MIDTRANS_CLIENT_KEY')}}"></script> 
-    {{-- <script src="https://app.midtrans.com/snap/snap.js"  data-client-key="{{env('MIDTRANS_CLIENT_KEY')}}"></script> --}}
+    {{-- <script src="https://app.sandbox.midtrans.com/snap/snap.js"  data-client-key="{{env('MIDTRANS_CLIENT_KEY')}}"></script>  --}}
+    <script src="https://app.midtrans.com/snap/snap.js"  data-client-key="{{env('MIDTRANS_CLIENT_KEY')}}"></script>
     <script type="text/javascript">
 
     var total_harga = $('#total_akhir').val();
 
-    console.log(total_harga);
+    // console.log(total_harga);
         function bayar_seragam() {
             $(this).prop("disabled", true);
                 // add spinner to button
@@ -131,7 +131,6 @@
             );
 
            var total_harga = $('#total_akhir').val();
-           var produk = 
             
             $.ajax({
                 url: "{{route('seragam.store')}}",
