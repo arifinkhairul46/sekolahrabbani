@@ -131,6 +131,8 @@ class PendaftaranController extends Controller
         
         if ($request->radios == 'lainnya') {
             $sumber_ppdb = $request->radios2;
+        } else if ($request->radios == null || $request->radios == '') {
+            $sumber_ppdb = 'spanduk/baliho';
         } else {
             $sumber_ppdb = $request->radios;
         }

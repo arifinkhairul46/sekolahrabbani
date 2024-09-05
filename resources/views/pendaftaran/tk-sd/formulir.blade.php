@@ -118,13 +118,13 @@
 
                     <div class="mt-3">
                         <span for="asal_sekolah" class="form-label">Asal Sekolah</span>
-                        <input class="form-control form-control-sm px-3" id="asal_sekolah" name="asal_sekolah"  placeholder="Sekolah Sebelumnya"  >
+                        <input class="form-control form-control-sm px-3" id="asal_sekolah" name="asal_sekolah"  placeholder="Sekolah Sebelumnya" required >
                     </div>
 
                     <div class="mt-3">
                         <span for="info_ppdb" class="form-label">Informasi PPDB</span>
                         <div class="form-check">
-                            <input type="radio" name="radios" class="form-check-input" value="spanduk/baliho" id="spanduk_baliho" onclick="close_info()">
+                            <input type="radio" name="radios" class="form-check-input" value="spanduk/baliho" id="spanduk_baliho" onclick="close_info()" required>
                             <label class="form-check-label" for="spanduk_baliho">Spanduk / Baliho</label>
                         </div>
                         <div class="form-check">
@@ -149,7 +149,7 @@
                     </div>
 
                     <div class="mt-3 center">
-                        <button type="button" class="btn btn-primary px-3" id="btn-submit"> Submit </button>
+                        <button type="submit" class="btn btn-primary px-3" id="btn-submit"> Submit </button>
                     </div>
                 </form>
             </div>
@@ -160,13 +160,29 @@
     <script>
         $(document).ready(function() {
             $("#btn-submit").click(function() {
-                // disable button
-                $(this).prop("disabled", true);
-                // add spinner to button
-                $(this).html(
-                    `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...`
-                );
-                $("#form_pendaftaran").submit();
+
+                var nama = $('#nama').val();
+                var tempat_lahir = $('#tempat_lahir').val();
+                var tgl_lahir = $('#tgl_lahir').val();
+                var jenis_kelamin = $('#jenis_kelamin').val();
+                var nama_ayah = $('#nama_ayah').val();
+                var nama_ibu = $('#nama_ibu').val();
+                var no_hp_ibu = $('#no_hp_ibu').val();
+                var no_hp_ayah = $('#no_hp_ayah').val();
+                var asal_sekolah = $('#asal_sekolah').val();
+                var info_ppdb = $('input[name="radios"]').val();
+                if (nama == '' || tempat_lahir == '' || tgl_lahir == '' || jenis_kelamin == '' || nama_ayah == '' || nama_ibu == '' || asal_sekolah == '' || info_ppdb == '' ) {
+
+                } else {
+                    // disable button
+                    $(this).prop("disabled", true);
+                    // add spinner to button
+                    $(this).html(
+                        `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...`
+                    );
+                    $("#form_pendaftaran").submit();
+                }
+
             });
         });
 
