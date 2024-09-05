@@ -107,15 +107,12 @@ class PendaftaranController extends Controller
             'lokasi' => 'required',
             'no_hp_ayah' => 'required|alpha_num',
             'no_hp_ibu' => 'required',
-            'info_ppdb' => 'required',
-            'kelas' => 'required'
         ], [
             'nama.required' => 'Name is required',
             'no_hp_ayah.required' => 'No Whatsapp Ayah is required',
             'no_hp_ibu.required' => 'No Whatsapp Ibu is required',
             'no_hp_ayah.alpha_num' => 'No Whatsapp Hanya Nomor saja, tanpa special character seperti + , -',
             'no_hp_ibu.alpha_num' => 'No Whatsapp Hanya Nomor saja, tanpa special character seperti + , -',
-            'info_ppdb.required' => 'Info PPDB is required',
 
         ]);
 
