@@ -13,70 +13,69 @@
 
     @if ($cart_detail->count() > 0)
     
-        {{-- <div class="mx-2" style="text-align: right">
-            <input class="mt-1" type="checkbox" id="check_all" onclick="getCheckedBoxes(this)" name="check_all" value="All">
+        <div class="mx-2" style="text-align: right">
+            <input type="checkbox" id="check_all" onclick="getCheckedBoxes(this)" name="check_all" value="All">
             <label for="check_all">All &nbsp;</label><br>
-        </div> --}}
+        </div>
     
         <?php $total = 0; ?>
         <div class="container">
             @foreach ($cart_detail as $item)
-                <div class="row-card mx-1">
+                <div class="row-card" style="justify-content: center; align-items:center">
                     <div class="frame">
                         <img src="{{asset('assets/images/'.$item->image)}}" width="100%" style="height: 100%; object-fit:cover; border-radius:1rem">
                     </div>
-
-                    <div class="d-flex mx-2 mt-1">
-                        <div class="" style="width: 200px">
-                            <p class="mb-0" style="font-size: 14px"><b> {{$item->nama_produk}} </b>, Size: {{$item['ukuran']}} </p>
-                            <p class="mb-0 price-diskon"> <b> Rp. {{number_format((($item['harga']) - ($item['diskon']/100 * $item['harga'])) * $item['quantity']) }} </b> 
-                                <span class="bg-danger py-1 px-2" style="font-size: 11px"> {{$item['diskon']}}% </span> 
-                            </p>
-                            <p class="mb-0" style="color: gray; font-size: 12px"> <s> Rp. {{number_format($item['harga'] * $item['quantity']) }} </s> </p>
-                            <p class="mb-0" style="font-size: 11px"> Jenis: {{$item['jenis_produk']}} </p>
-                            <p class="mb-0" style="font-size: 11px"> Nama: {{$item['nama_siswa']}} </p>
-                            <p class="mb-1" style="font-size: 11px"> Sekolah: {{$item['sekolah']}}, Kelas: {{$item['nama_kelas']}} </p>
-                            
-                            <div class="input-group" style="border: none;">
-                                <div class="button minus">
-                                    <button type="button" class="btn btn-outline-plus-minus btn-number" data-type="minus" data-id="{{$item->id}}" data-field="quant[{{$item->id}}]">
-                                        <i class="fas fa-minus-circle"></i>
-                                    </button>
-                                </div>
-                                <input type="text" name="quant[{{$item->id}}]" style="font-size: 12px" id="quant_{{$item->id}}" class="input-number" value="{{$item['quantity']}}" min="1" max="10">
-                                {{-- <input type="hidden" id="produk_id_{{$item->id}}" value="{{$item->id}}" > --}}
-                                <div class="button plus">
-                                    <button type="button" class="btn btn-outline-plus-minus btn-number" data-type="plus" data-id="{{$item->id}}" data-field="quant[{{$item->id}}]">
-                                        <i class="fas fa-plus-circle"></i>
-                                    </button>
-                                </div>
-                                
-                                <form action="{{route('cart.delete', $item->id)}}" method="post" style="margin-left:auto">
-                                    @csrf @method('DELETE')
-                                    <button type="submit" style="border: none; background: none;" title="delete"><i class="fa-solid fa-trash-can"></i></button>
-                                </form>
+                    <div class="deskripsi">
+                        <p class="mb-0" style="font-size: 14px"><b> {{$item->nama_produk}} </b>, Size: {{$item['ukuran']}} </p>
+                        <p class="mb-0 price-diskon"> <b> Rp. {{number_format((($item['harga']) - ($item['diskon']/100 * $item['harga'])) * $item['quantity']) }} </b> 
+                            <span class="bg-danger py-1 px-2" style="font-size: 11px"> {{$item['diskon']}}% </span> 
+                        </p>
+                        <p class="mb-0" style="color: gray; font-size: 12px"> <s> Rp. {{number_format($item['harga'] * $item['quantity']) }} </s> </p>
+                        <p class="mb-0" style="font-size: 11px"> Jenis: {{$item['jenis_produk']}} </p>
+                        <p class="mb-0" style="font-size: 11px"> Nama: {{$item['nama_siswa']}} </p>
+                        <p class="mb-1" style="font-size: 11px"> Sekolah: {{$item['sekolah']}}, Kelas: {{$item['nama_kelas']}} </p>
+                        
+                        <div class="input-group" style="border: none;">
+                            <div class="button minus">
+                                <button type="button" class="btn btn-outline-plus-minus btn-number" data-type="minus" data-id="{{$item->id}}" data-field="quant[{{$item->id}}]">
+                                    <i class="fas fa-minus-circle"></i>
+                                </button>
                             </div>
+                            <input type="text" name="quant[{{$item->id}}]" style="font-size: 12px" id="quant_{{$item->id}}" class="input-number" value="{{$item['quantity']}}" min="1" max="10">
+                            {{-- <input type="hidden" id="produk_id_{{$item->id}}" value="{{$item->id}}" > --}}
+                            <div class="button plus">
+                                <button type="button" class="btn btn-outline-plus-minus btn-number" data-type="plus" data-id="{{$item->id}}" data-field="quant[{{$item->id}}]">
+                                    <i class="fas fa-plus-circle"></i>
+                                </button>
+                            </div>
+                            
+                            <form action="{{route('cart.delete', $item->id)}}" method="post" style="margin-left:auto">
+                                @csrf @method('DELETE')
+                                <button type="submit" style="border: none; background: none;" title="delete"><i class="fa-solid fa-trash-can"></i></button>
+                            </form>
                         </div>
-                        <div style="width: 20px">
-                            @if ($item->is_selected == 1)
-                                <input class="mt-1" type="checkbox" id="checklist-{{$item->id}}" name="checklist-cart" onclick="oncheck('{{$item->id}}')" checked>
-                            @else
-                                <input class="mt-1" type="checkbox" id="checklist-{{$item->id}}" name="checklist-cart" onclick="oncheck('{{$item->id}}')" >
-                            @endif
-                        </div>
+                    </div>
+                    <div class="checkbox" >
+                        @if ($item->is_selected == 1)
+                            <input type="checkbox" style="width: 18px; height:18px" id="checklist-{{$item->id}}" name="checklist-cart" onclick="oncheck('{{$item->id}}')" checked>
+                        @else
+                            <input type="checkbox" style="width: 18px; height:18px" id="checklist-{{$item->id}}" name="checklist-cart" onclick="oncheck('{{$item->id}}')" >
+                        @endif
                     </div>
                 </div>
             <?php $total += (($item['harga'] * $item['quantity']) - ($item['diskon']/100 * $item['harga'] * $item['quantity'])); ?>
             @endforeach
 
             <div class="bottom-navigate sticky-bottom p-3 d-flex" style="justify-content: space-between; background-color: #f5f5f5">
-                <h4> Total <b> Rp. {{number_format($total_bayar_selected)}} </b> </h4>
+                <h4> Total <b> Rp. <span id="total_harga_keranjang"> {{number_format($total_bayar_selected)}} </span> </b> </h4>
                 @if ($total_bayar_selected != 0)
                     <form action="{{route('seragam.bayar')}}" method="GET">
-                        <button type="submit" class="btn btn-purple px-4" > Checkout </button>
+                        <button id="btn-checkout" type="submit" class="btn btn-purple px-4" > Checkout </button>
                     </form>
-                @else 
-                    <button type="submit" class="btn btn-purple px-4" disabled> Checkout </button>
+                @else
+                    <form action="{{route('seragam.bayar')}}" method="GET"> 
+                        <button id="btn-checkout" type="submit" class="btn btn-purple px-4" disabled> Checkout </button>
+                    </form>
                 @endif
             </div>
         </div>  
@@ -119,7 +118,6 @@
                                  _token: '{{csrf_token()}}'
                             },
                             success: function (result) {
-                                // console.log('o',result);
                                window.location.reload()
                             }
                         })
@@ -228,15 +226,40 @@
 
         function getCheckedBoxes(main) {
             var checkboxes = document.getElementsByName('checklist-cart');
-            var checkboxesChecked = [];
-
+            var checks = ""; 
+            var ids = ""; 
             // loop over them all
             for (var i=0; i<checkboxes.length; i++) {
                 // And stick the checked ones onto an array...
                 checkboxes[i].checked = main.checked
+                checks += ( checkboxes[ i ].checked ) ? "1," : "0,";
+                ids += checkboxes[i].id + ",";
+                ids = ids.replace('checklist-', '')
 
-                console.log(main.checked);
             }
+
+            $.ajax({
+                type: "PUT",
+                url: "{{route('select-all-cart')}}",
+                data: {
+                    checks: checks,
+                    ids: ids,
+                    _token: '{{csrf_token()}}'
+                },
+                success: function(msg){
+                    var formatter = new Intl.NumberFormat("en-US");
+                    var harga = formatter.format(msg)
+                    if (harga != 0) {
+                        $('#total_harga_keranjang').html(harga);
+                        $('#btn-checkout').prop('disabled', false);
+                    } else {
+                        $('#total_harga_keranjang').html(harga);
+                        $('#btn-checkout').prop('disabled', true);
+
+                    }
+                    
+                }
+            });
         }
 
     </script>

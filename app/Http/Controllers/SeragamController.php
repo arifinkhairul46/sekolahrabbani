@@ -215,6 +215,54 @@ class SeragamController extends Controller
         return response()->json($cart_detail);
     }
 
+    public function select_all_cart(Request $request) 
+    {
+        $user_id = auth()->user()->id;
+
+        if ( isset( $request->checks ) && isset( $request->ids ) ) { 
+            $checks = explode( ",", $request->checks ); 
+            $ids    = explode( ",", $request->ids ); 
+         
+            foreach ($checks as $check) {
+                foreach ($ids as $id) {
+                    $select_all = CartDetail::where('id', $id)->update([
+                            'is_selected' => $check
+                    ]);                    
+                }
+                    $total_bayar = CartDetail::select('t_cart_detail.id', 'm_produk_seragam.id as id_produk','m_produk_seragam.nama_produk', 'm_produk_seragam.deskripsi', 'm_produk_seragam.image', 
+                    'm_produk_seragam.material', 'mhs.harga', 'mhs.diskon', 'mjps.id as jenis_id', 'mp.nama_lengkap as nama_siswa', 'mp.nama_kelas as nama_kelas', 'mhs.kode_produk',
+                    'mls.sublokasi as sekolah', 'mjps.jenis_produk', 't_cart_detail.quantity', 't_cart_detail.ukuran', 't_cart_detail.is_selected')
+                    ->leftJoin('m_produk_seragam', 'm_produk_seragam.id', 't_cart_detail.produk_id')
+                    ->leftJoin('m_profile as mp' , 'mp.nis', 't_cart_detail.nis')
+                    ->leftJoin('mst_lokasi_sub as mls', 'mls.id', 'mp.sekolah_id')
+                    ->leftJoin('m_jenis_produk_seragam as mjps', 'mjps.id', 't_cart_detail.jenis')
+                    ->leftJoin('m_ukuran_seragam as mus', 'mus.ukuran_seragam', 't_cart_detail.ukuran')
+                    ->leftJoin('m_harga_seragam as mhs', function($join)
+                    { $join->on('mhs.produk_id', '=', 'm_produk_seragam.id') 
+                        ->on('mhs.jenis_produk_id', '=', 'mjps.id')
+                        ->on('mus.id', '=', 'mhs.ukuran_id'); 
+                    })
+                    ->where('t_cart_detail.user_id', $user_id)
+                    ->where('t_cart_detail.status_cart', 0)
+                    ->where('t_cart_detail.is_selected', 1)
+                    ->get();
+                    $total_bayar_selected = 0;
+
+                    foreach ($total_bayar as $item) {
+                        $quantity = $item->quantity;
+                        $harga = $item->harga * $quantity;
+                        $diskon = $item->diskon;
+                        $nilai_diskon = ($diskon/100 * $harga);
+
+                        $total_harga = $harga - $nilai_diskon;
+
+                        $total_bayar_selected += $total_harga;
+                    }
+                return response()->json($total_bayar_selected);
+            }
+        }
+    }
+
     public function remove_cart($id) 
     {
         CartDetail::find($id)->delete();
