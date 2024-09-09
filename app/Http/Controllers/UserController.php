@@ -56,7 +56,8 @@ class UserController extends Controller
                     'no_hp' => $nohp_ibu,
                     'no_hp_2' => $nohp_ayah,
                     'password' => Hash::make($pass),
-                    'id_role' => 5
+                    'id_role' => 5,
+                    'created_at' => date('Y-m-d H:i:s')
 
                 ]);
 
@@ -101,7 +102,17 @@ class UserController extends Controller
                         ->orWhere('no_hp_2', $request->no_hp)                
                         ->first();
 
-            if ($user) {
+            if ($user->id_role == 1) {
+                if (Hash::check($request->password, $user->password)) {
+                    $request->session()->regenerate();
+
+                    Auth::login($user);
+
+                    return redirect()->route('list-user');
+                } else {
+                    return redirect()->route('login')->with('error', 'No Hp atau password salah');
+                }
+            } else {
                 if (Hash::check($request->password, $user->password)) {
                     $request->session()->regenerate();
 

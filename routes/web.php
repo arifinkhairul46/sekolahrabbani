@@ -55,12 +55,17 @@ Route::group(['middleware' =>['admin']], function () {
     Route::prefix('master')->group(function () {
         Route::get('list-user', [UserController::class, 'list_user'])->name('list-user');
         Route::get('get-user', [UserController::class, 'get_user_api'])->name('get-user.api');
+
+        Route::get('seragam', [SeragamController::class, 'list_seragam'])->name('list-seragam');
+
     });
 });
 
 Route::group(['middleware' =>['auth']], function () {
     Route::get('dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
     Route::get('profile-diri', [ProfileController::class, 'index'])->name('profile-diri');
+    Route::get('change-password', [ProfileController::class, 'change_password'])->name('change-password');
+    Route::post('change-password', [ProfileController::class, 'update_password'])->name('update-password');
     Route::get('seragam', [SeragamController::class, 'index'])->name('seragam');
     Route::get('seragam/{id}', [SeragamController::class, 'detail_produk'])->name('seragam.detail');
     Route::get('cart', [SeragamController::class, 'cart'])->name('seragam.cart');

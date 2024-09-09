@@ -14,7 +14,7 @@
                     @if ($cart_detail->count() > 0)
                         <i class="fa-solid fa-cart-shopping fa-lg"> <span id="count_cart" class="count-cart py-1" >{{$cart_detail->count()}}</span> </i>
                     @else 
-                        <i class="fa-solid fa-cart-shopping fa-lg"> <span id="count_cart" style="display:none;" > {{session('data') ? count(session('data')) : ''}} </span> </i>
+                        <i class="fa-solid fa-cart-shopping fa-lg"> <span id="count_cart" class="count-cart py-1" style="display:none;" > {{$cart_detail->count()}} </span> </i>
                     @endif
                 </a>
             </form>

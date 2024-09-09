@@ -675,6 +675,49 @@ Terima kasih atas kepercayaan *Ayah/Bunda $nama_siswa*.🙏☺";
         return view('ortu.seragam.invoice', compact('pemesan', 'detail_pesan'));
     }
 
+    public function list_seragam(Request $request) {
+        $list_produk = ProdukSeragam::all();
+        $list_ukuran = UkuranSeragam::all();
+        $list_jenis = JenisSeragam::all();
+
+        $nama_produk = $request->nama_produk ?? null;
+        $jenis_produk = $request->jenis_produk ?? null;
+        $ukuran = $request->ukuran ?? null;
+
+        if ($request->has('nama_produk') || $request->has('jenis_produk') || $request->has('ukuran') ) {
+            $list_seragam = HargaSeragam::select('m_harga_seragam.id', 'mps.nama_produk', 'mjps.jenis_produk', 'mus.ukuran_seragam',
+                                        'm_harga_seragam.kode_produk', 'm_harga_seragam.harga', 'm_harga_seragam.diskon')
+                                        ->leftJoin('m_ukuran_seragam as mus', 'mus.id', 'm_harga_seragam.ukuran_id')
+                                        ->leftJoin('m_produk_seragam as mps', 'mps.id', 'm_harga_seragam.produk_id')
+                                        ->leftJoin('m_jenis_produk_seragam as mjps', 'mjps.id', 'm_harga_seragam.jenis_produk_id');
+
+            if ($request->has('nama_produk')) {
+                $list_seragam = $list_seragam->where('produk_id', $nama_produk);
+            } 
+
+            if ($request->has('ukuran')) {
+                $list_seragam =  $list_seragam->where('ukuran_id', $ukuran);
+            }
+
+            if ($request->has('jenis_produk')) {
+                $list_seragam =  $list_seragam->where('jenis_produk_id', $jenis_produk);
+            }
+
+            $list_seragam = $list_seragam->get();
+
+        } else {
+            $list_seragam = HargaSeragam::select('m_harga_seragam.id', 'mps.nama_produk', 'mjps.jenis_produk', 'mus.ukuran_seragam',
+                            'm_harga_seragam.kode_produk', 'm_harga_seragam.harga', 'm_harga_seragam.diskon')
+                            ->leftJoin('m_ukuran_seragam as mus', 'mus.id', 'm_harga_seragam.ukuran_id')
+                            ->leftJoin('m_produk_seragam as mps', 'mps.id', 'm_harga_seragam.produk_id')
+                            ->leftJoin('m_jenis_produk_seragam as mjps', 'mjps.id', 'm_harga_seragam.jenis_produk_id')
+                            ->get();
+            
+        }
+
+        return view('admin.master.seragam', compact('list_seragam', 'list_produk', 'list_ukuran', 'list_jenis', 'nama_produk', 'jenis_produk', 'ukuran'));
+    }
+
 
     function send_notif ($no_wha, $message) {
         $dataSending = array();

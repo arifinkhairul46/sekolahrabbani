@@ -296,7 +296,6 @@
         });
 
         function update_price(ukuran_id, jenis_id){
-            // console.log(ukuran_id, jenis_id);
             $.ajax({
                 url: "{{route('harga_per_jenis')}}",
                 type: 'POST',
@@ -309,7 +308,6 @@
                 },
                 success: function (result) {
                     var stok = 10
-                    // console.log('ini', result);
                     $.each(result, function (key, item) {
                         var harga = parseInt(item.harga);
                         var diskon = parseInt(item.diskon);
@@ -332,7 +330,6 @@
 
         var cart_now = $('#count_cart').html();
         var cart_num = parseInt(cart_now);
-
         function addToCart(id, nama_anak) {
             var item_id = id;
             var ukuran = $('input[name="ukuran_'+item_id+'"]:checked').val();
@@ -362,7 +359,12 @@
                     },
                     success: function (result) {
                         var qty_now = cart_num + 1
-                        $('#count_cart').html(qty_now)
+                        if (cart_num == 0) {
+                            $('#count_cart').show();
+                            $('#count_cart').html(qty_now)
+                        } else {
+                            $('#count_cart').html(qty_now)
+                        }
                     }
                 })
 
@@ -396,7 +398,6 @@
                 new_pesanan['nama_siswa'] = nama_siswa;
 
                 pesanan.push(new_pesanan);
-                console.log(pesanan);
                 $('#data').val(JSON.stringify(pesanan));
                 $('#beli_sekarang').submit();
 
