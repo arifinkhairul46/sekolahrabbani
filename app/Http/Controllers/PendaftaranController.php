@@ -8,6 +8,7 @@ use App\Models\Kecamatan;
 use App\Models\KelasJenjangSekolah;
 use App\Models\Kelurahan;
 use App\Models\Kota;
+use App\Models\KuotaPPDB;
 use App\Models\Lokasi;
 use App\Models\LokasiSub;
 use App\Models\Pendaftaran;
@@ -153,6 +154,25 @@ class PendaftaranController extends Controller
         $now = date('YmdHis');
         $id_anak = "PPDB-$tingkat-$lokasi-$now";
 
+        // cek kuota
+        $cek_kuota = KuotaPPDB::where('id_tahun_ajaran', $tahun_ajaran)->where('lokasi', $lokasi)
+                                ->where('tingkat', $tingkat)->where('jenjang', $jenjang)->first();
+        
+        $kuota = $cek_kuota->kuota;
+
+        $pendaftar = Pendaftaran::where('tahun_ajaran', $tahun_ajaran)->where('lokasi', $lokasi)
+                                        ->where('tingkat', $tingkat)->where('jenjang', $jenjang)
+                                        ->where('status_pembayaran', 1)->get();
+        
+        $count_pendaftar = $pendaftar->count();
+
+        if ($kuota > $count_pendaftar) {
+            $status_daftar = 2 ;
+        } else {
+            $status_daftar = 3 ;
+        }
+
+        // simpan ke tbl_anak
         Pendaftaran::create([
             'id_anak' => $id_anak,
             'nama_lengkap' => $nama_lengkap,
@@ -168,7 +188,8 @@ class PendaftaranController extends Controller
             'info_ppdb' => $sumber_ppdb,
             'jenis_pendidikan' => $jenis_pendidikan,
             'tahun_ajaran' => $tahun_ajaran,
-            'asal_sekolah' => $asal_sekolah
+            'asal_sekolah' => $asal_sekolah,
+            'status_daftar' => $status_daftar
         ]);
 
         PendaftaranAyah::create([
@@ -186,7 +207,7 @@ class PendaftaranController extends Controller
         ]);
 
         // send ke qlp
-        $this->send_pendaftaran($id_anak, $nama_lengkap, $jenis_kelamin, $tempat_lahir, $tgl_lahir, $lokasi, $kelas, $jenjang, $tingkat, $no_hp_ayah, $no_hp_ibu, $nama_ayah, $nama_ibu, $sumber_ppdb, $tahun_ajaran, $asal_sekolah);
+        $this->send_pendaftaran($id_anak, $nama_lengkap, $jenis_kelamin, $tempat_lahir, $tgl_lahir, $lokasi, $kelas, $jenjang, $tingkat, $no_hp_ayah, $no_hp_ibu, $nama_ayah, $nama_ibu, $sumber_ppdb, $tahun_ajaran, $asal_sekolah, $status_daftar);
 
         $contact_person =  ContactPerson::where('is_aktif', '1')->where('kode_sekolah', $lokasi)->where('id_jenjang', $jenjang)->first();
         $no_admin = $contact_person->telp;
@@ -196,8 +217,7 @@ class PendaftaranController extends Controller
 
         //send notif ke admin
 		$message_for_admin='Pendaftaran telah berhasil dengan nomor registrasi "'.$id_anak.'". a/n "'.$nama_lengkap.'" ';
-
-        $this->send_notif($message_for_admin, $no_admin);
+		$message_for_admin_wl='Pendaftaran telah berhasil dengan nomor registrasi "'.$id_anak.'". a/n "'.$nama_lengkap.'" masuk dalam waiting list';
 
         //send notif ke ortu
         $message_ortu = "Terimakasih *Ayah/Bunda $nama_lengkap* telah mendaftar ke Sekolah Rabbani. 
@@ -205,12 +225,23 @@ No Registrasi / Pendaftaran adalah *$id_anak* mohon disimpan untuk selanjutnya p
 
 Silahkan lakukan pembayaran pendaftaran sebesar *Rp ".number_format($biaya)."* ke rekening *".$nama_rek." ".$no_rek."* dan kirim bukti bayar ke nomor https://wa.me/".$no_admin." 
 
-Apabila ada pertanyaan silahkan hubungi Customer Service kami di nomor ".$no_admin.", Terima Kasih.
-        ";
+Apabila ada pertanyaan silahkan hubungi Customer Service kami di nomor ".$no_admin.", Terima Kasih.";
 
-        $this->send_notif($message_ortu, $no_hp_ayah);
-        $this->send_notif($message_ortu, $no_hp_ibu);
+        $message_waiting_list = "Terimakasih *Ayah/Bunda $nama_lengkap* telah mendaftar ke Sekolah Rabbani dengan No Registrasi adalah *$id_anak*. 
 
+Mohon maaf saat ini kuota pendaftaran sudah terpenuhi, saat ini Ayah/Bunda sedang masuk ke dalam _waiting list_. 
+
+Apabila ada pertanyaan silahkan hubungi Customer Service kami di nomor ".$no_admin.", Terima Kasih.";
+
+        if ($status_daftar == 3) {
+            $this->send_notif($message_for_admin_wl, $no_admin);
+            $this->send_notif($message_waiting_list, $no_hp_ayah);
+            $this->send_notif($message_waiting_list, $no_hp_ibu);
+        } else {
+            $this->send_notif($message_for_admin, $no_admin);
+            $this->send_notif($message_ortu, $no_hp_ayah);
+            $this->send_notif($message_ortu, $no_hp_ibu);
+        }
 
         return redirect()->route('pendaftaran')
             ->with('success', 'Pendaftaran Berhasil.');
@@ -452,7 +483,7 @@ Apabila ada pertanyaan silahkan hubungi Customer Service kami di nomor ".$no_adm
     }
 
 
-    function send_pendaftaran($id_anak, $nama_lengkap, $jenis_kelamin, $tempat_lahir, $tgl_lahir, $lokasi, $kelas, $jenjang, $tingkat, $no_hp_ayah, $no_hp_ibu, $nama_ayah, $nama_ibu, $info_ppdb, $tahun_ajaran, $asal_sekolah){
+    function send_pendaftaran($id_anak, $nama_lengkap, $jenis_kelamin, $tempat_lahir, $tgl_lahir, $lokasi, $kelas, $jenjang, $tingkat, $no_hp_ayah, $no_hp_ibu, $nama_ayah, $nama_ibu, $info_ppdb, $tahun_ajaran, $asal_sekolah, $status_daftar){
 	    $curl = curl_init();
 
 		curl_setopt_array($curl, array(
@@ -484,7 +515,8 @@ Apabila ada pertanyaan silahkan hubungi Customer Service kami di nomor ".$no_adm
 			'no_hp_ibu' => $no_hp_ibu,
 			'info_ppdb' => $info_ppdb,
 			'tahun_ajaran' => $tahun_ajaran,
-			'asal_sekolah' => $asal_sekolah
+			'asal_sekolah' => $asal_sekolah,
+			'status_daftar' => $status_daftar
             )
 
 		));

@@ -46,7 +46,9 @@ class Pendaftaran extends Model
         'id_ayah',
         'status_tinggal',
         'sd_sebelumnya',
-        'npsn'
+        'npsn',
+        'status_daftar',
+        'status_pembayaran'
     ];
 
     public static function get_profile($id)

@@ -17,6 +17,14 @@
         <input type="hidden" id="harga" value="{{$harga}}">
         <input type="hidden" id="harga_awal" value="{{$harga_awal}}">
         <input type="hidden" id="diskon" value="{{$diskon}}">
+        <input type="hidden" id="kode_produk" value="{{$produk_seragam->kode_produk}}">
+        <input type="hidden" id="quantity" value="{{$quantity}}">
+        <input type="hidden" id="ukuran" value="{{$ukuran}}">
+        <input type="hidden" id="jenis_produk" value="{{$produk_seragam->jenis_produk_id}}">
+        <input type="hidden" id="produk_id" value="{{$produk_id}}">
+        <input type="hidden" id="nama_siswa" value="{{$profile->nama_lengkap}}">
+        <input type="hidden" id="nama_kelas" value="{{$profile->nama_kelas}}">
+        <input type="hidden" id="sekolah_id" value="{{$profile->sekolah_id}}">
         <div class="container">
             <div class="row-card mx-1">
                 <div class="frame-bayar">
@@ -120,23 +128,41 @@
     <script src="https://app.midtrans.com/snap/snap.js"  data-client-key="{{env('MIDTRANS_CLIENT_KEY')}}"></script>
     <script type="text/javascript">
 
-    var total_harga = $('#total_akhir').val();
+        var harga_awal = $('#harga_awal').val();
+        var diskon = $('#diskon').val();
+        var total_harga = $('#harga').val();
+        var nama_siswa = $('#nama_siswa').val();
+        var nama_kelas = $('#nama_kelas').val();
+        var sekolah_id = $('#sekolah_id').val();
+        var kode_produk = $('#kode_produk').val();
+        var quantity = $('#quantity').val();
+        var ukuran = $('#ukuran').val();
+        var produk_id = $('#produk_id').val();
+        var jenis_produk = $('#jenis_produk').val();
 
-    // console.log(total_harga);
+        console.log(jenis_produk);
         function bayar_seragam() {
             $(this).prop("disabled", true);
                 // add spinner to button
                 $(this).html(
                     `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...`
             );
-
-           var total_harga = $('#total_akhir').val();
             
             $.ajax({
                 url: "{{route('seragam.store')}}",
                 type: 'POST',
                 data: {
                     total_harga : total_harga,
+                    harga_awal: harga_awal,
+                    diskon: diskon,
+                    nama_siswa: nama_siswa,
+                    nama_kelas: nama_kelas,
+                    sekolah_id: sekolah_id,
+                    kode_produk: kode_produk,
+                    produk_id: produk_id,
+                    quantity: quantity,
+                    ukuran: ukuran,
+                    jenis_produk: jenis_produk,
                     _token: '{{csrf_token()}}'
                 },
                 success: function (res) {

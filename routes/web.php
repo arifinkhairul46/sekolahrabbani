@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ApiController;
+use App\Http\Controllers\ArtikelController;
 use App\Http\Controllers\CsdmController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GoogleController;
@@ -58,6 +59,10 @@ Route::group(['middleware' =>['admin']], function () {
 
         Route::get('seragam', [SeragamController::class, 'list_seragam'])->name('list-seragam');
 
+        Route::get('artikel', [ArtikelController::class, 'index'])->name('artikel.index');
+        Route::get('artikel/{id}', [ArtikelController::class, 'edit'])->name('artikel.edit');
+
+
     });
 });
 
@@ -70,11 +75,11 @@ Route::group(['middleware' =>['auth']], function () {
     Route::get('seragam/{id}', [SeragamController::class, 'detail_produk'])->name('seragam.detail');
     Route::get('cart', [SeragamController::class, 'cart'])->name('seragam.cart');
     Route::post('cart', [SeragamController::class, 'add_to_cart'])->name('cart_post');
-    Route::post('payment', [SeragamController::class, 'buy_now'])->name('buy_now');
     Route::put('cart/{id}', [SeragamController::class, 'update_cart'])->name('cart.update');
     Route::put('cart-select/{id}', [SeragamController::class, 'update_select_cart'])->name('cart-select.update');
     Route::put('cart-select', [SeragamController::class, 'select_all_cart'])->name('select-all-cart');
     Route::delete('cart/{id}', [SeragamController::class, 'remove_cart'])->name('cart.delete');
+    Route::post('payment', [SeragamController::class, 'buy_now'])->name('buy_now');
     Route::get('pembayaran', [SeragamController::class, 'pembayaran'])->name('seragam.bayar');
     Route::post('pembayaran', [SeragamController::class, 'store'])->name('seragam.store');
     Route::get('checkout/success/', [SeragamController::class, 'success'])->name('checkout.success');

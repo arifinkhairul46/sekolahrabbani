@@ -283,7 +283,8 @@ class SeragamController extends Controller
         $jenis = $order_dec[0]['jenis'];
         $nis = $order_dec[0]['nama_siswa'];
 
-        $produk_seragam = ProdukSeragam::select('m_produk_seragam.id', 'm_produk_seragam.nama_produk', 'm_produk_seragam.image', 'mhs.harga', 'mhs.diskon', 'mjps.jenis_produk')
+        $produk_seragam = ProdukSeragam::select('m_produk_seragam.id', 'm_produk_seragam.nama_produk', 'm_produk_seragam.image', 
+                        'mhs.harga', 'mhs.diskon', 'mhs.kode_produk', 'mjps.jenis_produk', 'mjps.id as jenis_produk_id')
                         ->leftJoin('m_harga_seragam as mhs', 'mhs.produk_id', 'm_produk_seragam.id')
                         ->leftJoin('m_jenis_produk_seragam as mjps', 'mjps.id', 'mhs.jenis_produk_id')
                         ->leftJoin('m_ukuran_seragam as mus', 'mus.id', 'mhs.ukuran_id')
@@ -296,7 +297,7 @@ class SeragamController extends Controller
                             ->where('nis', $nis)->first();
         // dd($produk_seragam);
 
-        return view('ortu.seragam.pembayaran', compact('profile', 'produk_seragam', 'quantity', 'ukuran', 'profile', 'order'));
+        return view('ortu.seragam.pembayaran', compact('profile', 'produk_seragam', 'quantity', 'ukuran', 'produk_id', 'profile', 'order'));
 
     }
 
@@ -329,8 +330,6 @@ class SeragamController extends Controller
         return view('ortu.seragam.pembayaran', compact('profile', 'cart_detail', 'order_seragam', 'order'));
         
         // dd($order);
-
-
     }
 
     
@@ -347,53 +346,65 @@ class SeragamController extends Controller
         $nama_pemesan = auth()->user()->name;
         $no_pesanan = 'INV-RSU-'. date('YmdHis');
         $total_harga_now = $request->total_harga;
+        $harga_awal_now = $request->harga_awal;
+        $diskon_now = $request->diskon;
+        $nama_siswa_now = $request->nama_siswa;
+        $nama_kelas_now = $request->nama_kelas;
+        $sekolah_id_now = $request->sekolah_id;
+        $produk_id_now = $request->produk_id;
+        $ukuran_now = $request->ukuran;
+        $kode_produk_now = $request->kode_produk;
+        $jenis_produk_now = $request->jenis_produk;
+        $quantity_now = $request->quantity;
 
-        $order = CartDetail::select('t_cart_detail.id', 'm_produk_seragam.id as id_produk','m_produk_seragam.nama_produk', 'm_produk_seragam.deskripsi', 'm_produk_seragam.image', 
-                            'm_produk_seragam.material', 'mhs.harga', 'mhs.diskon', 'mjps.id as jenis_id', 'mp.nama_lengkap as nama_siswa', 'mp.nama_kelas as nama_kelas', 
-                            'mls.id as sekolah', 'mjps.jenis_produk', 'mjps.id as jenis_id',  't_cart_detail.quantity', 't_cart_detail.ukuran', 'mhs.kode_produk')
-                            ->leftJoin('m_produk_seragam', 'm_produk_seragam.id', 't_cart_detail.produk_id')
-                            ->leftJoin('m_profile as mp' , 'mp.nis', 't_cart_detail.nis')
-                            ->leftJoin('mst_lokasi_sub as mls', 'mls.id', 'mp.sekolah_id')
-                            ->leftJoin('m_jenis_produk_seragam as mjps', 'mjps.id', 't_cart_detail.jenis')
-                            ->leftJoin('m_ukuran_seragam as mus', 'mus.ukuran_seragam', 't_cart_detail.ukuran')
-                            ->leftJoin('m_harga_seragam as mhs', function($join)
-                            { $join->on('mhs.produk_id', '=', 'm_produk_seragam.id') 
-                                ->on('mhs.jenis_produk_id', '=', 'mjps.id')
-                                ->on('mus.id', '=', 'mhs.ukuran_id'); 
-                            })
-                            ->where('t_cart_detail.user_id', $user_id)
-                            ->where('t_cart_detail.status_cart', 0)
-                            ->where('t_cart_detail.is_selected', 1)
-                            ->get();
+        if ($total_harga_now == null || $total_harga_now == 'undefined' || $total_harga_now == '') {
 
-        $total_harga = 0;
-        $total_diskon =0;
-       foreach ($order as $item) {
-           $nama_siswa = $item['nama_siswa'];
-           $lokasi = $item['sekolah'];
-           $nama_kelas = $item['nama_kelas'];
-           $produk_id = $item['id_produk'];
-           $ukuran = $item['ukuran'];
-           $quantity = $item['quantity'];
-           $harga_awal = $item['harga'];
-           $diskon = $item['diskon'];
-           $jenis_produk = $item['jenis_id'];
-           $kode_produk = $item['kode_produk'];
+            $order = CartDetail::select('t_cart_detail.id', 'm_produk_seragam.id as id_produk','m_produk_seragam.nama_produk', 'm_produk_seragam.deskripsi', 'm_produk_seragam.image', 
+            'm_produk_seragam.material', 'mhs.harga', 'mhs.diskon', 'mjps.id as jenis_id', 'mp.nama_lengkap as nama_siswa', 'mp.nama_kelas as nama_kelas', 
+            'mls.id as sekolah', 'mjps.jenis_produk', 'mjps.id as jenis_id',  't_cart_detail.quantity', 't_cart_detail.ukuran', 'mhs.kode_produk')
+            ->leftJoin('m_produk_seragam', 'm_produk_seragam.id', 't_cart_detail.produk_id')
+            ->leftJoin('m_profile as mp' , 'mp.nis', 't_cart_detail.nis')
+            ->leftJoin('mst_lokasi_sub as mls', 'mls.id', 'mp.sekolah_id')
+            ->leftJoin('m_jenis_produk_seragam as mjps', 'mjps.id', 't_cart_detail.jenis')
+            ->leftJoin('m_ukuran_seragam as mus', 'mus.ukuran_seragam', 't_cart_detail.ukuran')
+            ->leftJoin('m_harga_seragam as mhs', function($join)
+            { $join->on('mhs.produk_id', '=', 'm_produk_seragam.id') 
+                ->on('mhs.jenis_produk_id', '=', 'mjps.id')
+                ->on('mus.id', '=', 'mhs.ukuran_id'); 
+            })
+            ->where('t_cart_detail.user_id', $user_id)
+            ->where('t_cart_detail.status_cart', 0)
+            ->where('t_cart_detail.is_selected', 1)
+            ->get();
+
+            $total_harga = 0;
+            $total_diskon =0;
+            foreach ($order as $item) {
+            $nama_siswa = $item['nama_siswa'];
+            $lokasi = $item['sekolah'];
+            $nama_kelas = $item['nama_kelas'];
+            $produk_id = $item['id_produk'];
+            $ukuran = $item['ukuran'];
+            $quantity = $item['quantity'];
+            $harga_awal = $item['harga'];
+            $diskon = $item['diskon'];
+            $jenis_produk = $item['jenis_id'];
+            $kode_produk = $item['kode_produk'];
 
 
             $order_detail = OrderDetailSeragam::create([
-                'no_pemesanan' => $no_pesanan,
-                'nama_siswa' => $nama_siswa,
-                'lokasi_sekolah' => $lokasi,
-                'nama_kelas' => $nama_kelas,
-                'produk_id' => $produk_id,
-                'ukuran' => $ukuran,
-                'kode_produk' => $kode_produk,
-                'quantity' => $quantity,
-                'harga' => $harga_awal,
-                'diskon' => $diskon/100 * $harga_awal,
-                'jenis_produk_id' => $jenis_produk,
-                
+            'no_pemesanan' => $no_pesanan,
+            'nama_siswa' => $nama_siswa,
+            'lokasi_sekolah' => $lokasi,
+            'nama_kelas' => $nama_kelas,
+            'produk_id' => $produk_id,
+            'ukuran' => $ukuran,
+            'kode_produk' => $kode_produk,
+            'quantity' => $quantity,
+            'harga' => $harga_awal,
+            'diskon' => $diskon/100 * $harga_awal,
+            'jenis_produk_id' => $jenis_produk,
+
             ]);
 
             $total_harga += $harga_awal * $quantity;
@@ -403,47 +414,47 @@ class SeragamController extends Controller
 
             $this->send_pesan_seragam_detail($no_pesanan, $nama_siswa, $lokasi, $nama_kelas, $produk_id, $jenis_produk, $kode_produk, $ukuran, $quantity, $harga_awal, $diskon/100 * $harga_awal);
             $this->update_stok($kode_produk, $quantity);
-        }
+            }
 
-       $order_seragam = OrderSeragam::create([
+            $order_seragam = OrderSeragam::create([
 
-        'no_pemesanan' => $no_pesanan,
-        'no_hp' => $no_hp,
-        'nama_pemesan' => $nama_pemesan,
-        'status' => 'pending',
-        'total_harga' => $harga_akhir,
-        'user_id' => $user_id
-        ]);
+            'no_pemesanan' => $no_pesanan,
+            'no_hp' => $no_hp,
+            'nama_pemesan' => $nama_pemesan,
+            'status' => 'pending',
+            'total_harga' => $harga_akhir,
+            'user_id' => $user_id
+            ]);
 
 
-        $this->send_pesan_seragam($no_pesanan, $nama_pemesan, $no_hp);
+            $this->send_pesan_seragam($no_pesanan, $nama_pemesan, $no_hp);
 
-          // Set your Merchant Server Key
-          \Midtrans\Config::$serverKey = config('midtrans.serverKey');
-          // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
-          \Midtrans\Config::$isProduction = config('midtrans.isProduction');;
-          // Set sanitization on (default)
-          \Midtrans\Config::$isSanitized = true;
-          // Set 3DS transaction for credit card to true
-          \Midtrans\Config::$is3ds = true;
+            // Set your Merchant Server Key
+            \Midtrans\Config::$serverKey = config('midtrans.serverKey');
+            // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
+            \Midtrans\Config::$isProduction = config('midtrans.isProduction');;
+            // Set sanitization on (default)
+            \Midtrans\Config::$isSanitized = true;
+            // Set 3DS transaction for credit card to true
+            \Midtrans\Config::$is3ds = true;
 
-          $params = array(
-              'transaction_details' => array(
-                  'order_id' => $no_pesanan,
-                  'gross_amount' => $harga_akhir,
-              ),
-              'customer_details' => array(
-                  'first_name' => $nama_pemesan,
-                  'phone' => $no_hp,
-              )
-          );
+            $params = array(
+            'transaction_details' => array(
+            'order_id' => $no_pesanan,
+            'gross_amount' => $harga_akhir,
+            ),
+            'customer_details' => array(
+            'first_name' => $nama_pemesan,
+            'phone' => $no_hp,
+            )
+            );
 
-          $snapToken = \Midtrans\Snap::getSnapToken($params);
-          $order_seragam->snap_token = $snapToken;
-          $order_seragam->save();
+            $snapToken = \Midtrans\Snap::getSnapToken($params);
+            $order_seragam->snap_token = $snapToken;
+            $order_seragam->save();
 
-          //kirim notif ke pemesan
-          $message = "Informasi Pemesanan Seragam Sekolah Rabbani
+//kirim notif ke pemesan
+$message = "Informasi Pemesanan Seragam Sekolah Rabbani
 
 Terima kasih Ayah/Bunda $nama_siswa telah melakukan pemesanan Seragam.🙏☺
 
@@ -475,8 +486,58 @@ Terima kasih atas kepercayaan *Ayah/Bunda $nama_siswa*.🙏☺";
         //       'status_cart' => 1
         //   ]);
 
-        return response()->json($order_seragam);
+            return response()->json($order_seragam);
 
+        } else {
+            $order_seragam_now = OrderSeragam::create([
+                'no_pemesanan' => $no_pesanan,
+                'no_hp' => $no_hp,
+                'nama_pemesan' => $nama_pemesan,
+                'status' => 'pending',
+                'total_harga' => $total_harga_now,
+                'user_id' => $user_id
+            ]);
+
+            $order_detail_now = OrderDetailSeragam::create([
+                'no_pemesanan' => $no_pesanan,
+                'nama_siswa' => $nama_siswa_now,
+                'lokasi_sekolah' => $sekolah_id_now,
+                'nama_kelas' => $nama_kelas_now,
+                'produk_id' => $produk_id_now,
+                'ukuran' => $ukuran_now,
+                'kode_produk' => $kode_produk_now,
+                'quantity' => $quantity_now,
+                'harga' => $harga_awal_now,
+                'diskon' => $diskon_now,
+                'jenis_produk_id' => $jenis_produk_now,
+            ]);
+
+                // Set your Merchant Server Key
+            \Midtrans\Config::$serverKey = config('midtrans.serverKey');
+            // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
+            \Midtrans\Config::$isProduction = config('midtrans.isProduction');;
+            // Set sanitization on (default)
+            \Midtrans\Config::$isSanitized = true;
+            // Set 3DS transaction for credit card to true
+            \Midtrans\Config::$is3ds = true;
+
+            $params = array(
+            'transaction_details' => array(
+            'order_id' => $no_pesanan,
+            'gross_amount' => $total_harga_now,
+            ),
+            'customer_details' => array(
+            'first_name' => $nama_pemesan,
+            'phone' => $no_hp,
+            )
+            );
+
+            $snapToken = \Midtrans\Snap::getSnapToken($params);
+            $order_seragam_now->snap_token = $snapToken;
+            $order_seragam_now->save();
+
+            return response()->json($order_seragam_now);
+        }
     }
 
     public function update_stok($kode_barang, $qty) {
@@ -535,6 +596,12 @@ Terima kasih atas kepercayaan *Ayah/Bunda $nama_siswa*.🙏☺";
         }
         $orderId = $request->order_id;
         $order = OrderSeragam::where('no_pemesanan', $orderId)->first();
+        $order_detail = OrderDetailSeragam::select('kode_produk', 'quantity')->where('no_pemesanan', $orderId)->get();
+
+        foreach ($order_detail as $item) {
+            $kode_produk = $item->kode_produk;
+            $quantity = $item->quantity;
+        }
 
         if (!$order) {
             return response()->json(['message' => 'Order not found'], 404);
@@ -582,6 +649,7 @@ Terima kasih atas kepercayaan *Ayah/Bunda $nama_siswa*.🙏☺";
                     'metode_pembayaran' => $mtd_pembayaran,
                     'va_number' => $no_va
                 ]);
+                $this->return_stock($kode_produk, $quantity);
                 break;
             case 'expire':
                 $order->update([
@@ -589,6 +657,7 @@ Terima kasih atas kepercayaan *Ayah/Bunda $nama_siswa*.🙏☺";
                     'metode_pembayaran' => $mtd_pembayaran,
                     'va_number' => $no_va
                 ]);
+                $this->return_stock($kode_produk, $quantity);
                 $this->update_status_seragam('expired', $mtd_pembayaran, $orderId);
                 break;
             case 'cancel':
@@ -597,6 +666,7 @@ Terima kasih atas kepercayaan *Ayah/Bunda $nama_siswa*.🙏☺";
                     'metode_pembayaran' => $mtd_pembayaran,
                     'va_number' => $no_va
                 ]);
+                $this->return_stock($kode_produk, $quantity);
                 break;
             default:
                 $order->update([
@@ -606,6 +676,16 @@ Terima kasih atas kepercayaan *Ayah/Bunda $nama_siswa*.🙏☺";
         }
 
         return response()->json(['message' => 'Callback received successfully']);
+    }
+
+    public function return_stock($kode_barang, $qty) {
+        $stok_seragam = StokSeragam::select('kd_barang', 'qty')->where('kd_barang', $kode_barang)->first();
+
+        $update_stok = $stok_seragam->update([
+            'qty' => $stok_seragam->qty + $qty
+        ]);
+
+        return response()->json($update_stok);
     }
 
 
