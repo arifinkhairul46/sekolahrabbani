@@ -10,4 +10,11 @@ class HargaSeragam extends Model
     use HasFactory;
     protected $table = 'm_harga_seragam';
     protected $primaryKey = 'id';
+
+    protected $fillable = [
+        'harga',
+        'diskon',
+        'kode_produk',
+        'stok'
+    ];
 }

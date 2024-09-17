@@ -3,14 +3,7 @@
 @section('content')
     <div class="">
         <img class="banner-2" src="{{ asset('assets/images/home_rabbani_school-2.png') }}" alt="banner">
-        {{-- <div class="centered text-white">
-            <h1> Formulir Pemenuhan Data </h1>
-        </div> --}}
     </div>
-    {{-- <div>
-        <img src="{{ asset('assets/images/awan1.png') }}" class="cloud-pmnh"  alt="cloud">
-        <img src="{{ asset('assets/images/awan2.png') }}" class="cloud-pmnhn"  alt="cloud">
-    </div> --}}
     <div class="container" style="position: relative; z-index:1000">
         <div class="row mx-auto">
             <div class="col-md">
@@ -415,7 +408,6 @@
                 var form = document.getElementById('update_data_pendaftaran');
                 var data = new FormData(form);
                 for (var [key, value] of data) {
-                    console.log(key, 'v', value)
                 }
 
                 if (value == '' || value == null) {
@@ -561,32 +553,33 @@
             });
         }
     </script>
-@endsection
 
-<div class="modal fade" id="lupa_no_regis" tabindex="-1" role="dialog" aria-labelledby="lupa_regis" aria-hidden="true">
-    <div class="modal-dialog">
-        <form role="form" method="POST" action="{{route('forget_no_regis')}}">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="lupa_regis">Lupa No Pendaftaran / Registrasi</h5>
-                </div>
-                <div class="modal-body">
-                    {{ csrf_field() }}
-                    <div class="form-group">
-                        <label>Masukkan No HP Anda</label>
-                        <input type="text" name="no_hp" class="form-control form-control-sm px-3" placeholder="08xx"  >
+    <div class="modal fade" id="lupa_no_regis" tabindex="-1" role="dialog" aria-labelledby="lupa_regis" aria-hidden="true">
+        <div class="modal-dialog">
+            <form role="form" method="POST" action="{{route('forget_no_regis')}}">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="lupa_regis">Lupa No Pendaftaran / Registrasi</h5>
                     </div>
-                    <div class="form-group mt-2">
-                        <label>Nama Lengkap</label>
-                        <input type="text" name="nama_lengkap" class="form-control form-control-sm px-3" placeholder="Masukkan Nama Anak Anda"  >
+                    <div class="modal-body">
+                        {{ csrf_field() }}
+                        <div class="form-group">
+                            <label>Masukkan No HP Anda</label>
+                            <input type="text" name="no_hp" class="form-control form-control-sm px-3" placeholder="08xx"  >
+                        </div>
+                        <div class="form-group mt-2">
+                            <label>Nama Lengkap</label>
+                            <input type="text" name="nama_lengkap" class="form-control form-control-sm px-3" placeholder="Masukkan Nama Anak Anda"  >
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary btn-sm my-4 text-white">Kirim</button>
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary btn-sm my-4 text-white">Kirim</button>
-                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </form> 
+            </form> 
+        </div>
     </div>
-</div>
+    
+@endsection
 

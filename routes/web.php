@@ -58,6 +58,8 @@ Route::group(['middleware' =>['admin']], function () {
         Route::get('get-user', [UserController::class, 'get_user_api'])->name('get-user.api');
 
         Route::get('seragam', [SeragamController::class, 'list_seragam'])->name('list-seragam');
+        Route::get('seragam/{id}', [SeragamController::class, 'detail_seragam'])->name('detail-seragam');
+        Route::put('seragam/{id}', [SeragamController::class, 'update_seragam'])->name('update-seragam');
 
         Route::get('artikel', [ArtikelController::class, 'index'])->name('artikel.index');
         Route::get('artikel/{id}', [ArtikelController::class, 'edit'])->name('artikel.edit');

@@ -50,7 +50,7 @@
                     </form>
                 </div>
                 <div class="table-responsive mt-3">
-                    <table id="list_user" class="table table-striped" data-toggle="data-table">
+                    <table id="list_seragam" class="table table-striped" data-toggle="data-table">
                         <thead>
                             <tr>
                                 <th>No</th>
@@ -74,7 +74,9 @@
                                     <td>Rp {{number_format($item->harga)}}</td>
                                     <td>{{$item->diskon}}</td>
                                     <td class="d-flex">
-                                        <a href="{{$item->id}}" class="btn btn-sm btn-warning" title="Edit"><i class="fa-solid fa-pencil"></i></a>
+                                        <button class="btn btn-sm btn-warning" title="Edit" onclick="edit_data('{{$item->id}}')" data-bs-toggle="modal" data-bs-target="#edit_seragam">
+                                            <i class="fa-solid fa-pencil"></i>
+                                        </button>
                                     </td>
                                 </tr>
                             @endforeach
@@ -95,6 +97,91 @@
             $('#ukuran').select2();
             $('#jenis_produk').select2();
         });
+
+        function edit_data(id) {
+            fetch('/master/seragam/' + id)
+                .then(response => response.json())
+                .then(data => {
+                    var product_name = data.nama_produk + ', ' + data.jenis_produk + ', ' +data.ukuran_seragam
+                    $("#product_name").val(product_name)
+                    $("#kode_produk").val(data.kode_produk)
+                    $("#product_variant").val(data.jenis_produk)
+                    $("#size").val(data.ukuran_seragam)
+                    $("#harga").val(data.harga)
+                    $("#diskon").val(data.diskon)
+                    $("#stock").val(data.qty)
+                    $("#id_harga_seragam").val(id)
+
+                })
+        }
+
+        function update_seragam() {
+            var id = $('#id_harga_seragam').val();
+            var harga = $('#harga').val();
+            var diskon = $('#diskon').val();
+            var kode_produk = $('#kode_produk').val();
+            var stock = $('#stock').val();
+
+            var url = "{{ route('update-seragam', ":id") }}";
+            url = url.replace(':id', id);
+
+            $.ajax({
+                url: url,
+                type: 'PUT',
+                data: {
+                    harga: harga,
+                    diskon: diskon,
+                    kode_produk: kode_produk,
+                    id: id,
+                    stock: stock,
+                    _token: '{{csrf_token()}}'
+                },
+                success: function (result) {
+                    window.location.reload()
+                }
+            })
+        }
+
     </script>
 
+    <div class="modal fade" id="edit_seragam" tabindex="-1" role="dialog" aria-labelledby="label_surat_perjanjian" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="label_surat_perjanjian">Input Stock Seragam</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="product_name" class="form-control-label">Nama Produk</label>
+                        <input type="text" class="form-control" name="product_name" id="product_name" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="harga" class="form-control-label">Harga</label>
+                        <input type="text" class="form-control" name="harga" id="harga">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="diskon" class="form-control-label">Diskon</label>
+                        <input type="text" class="form-control" name="diskon" id="diskon">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="kode_produk" class="form-control-label">Kode Produk</label>
+                        <input type="text" class="form-control" name="kode_produk" id="kode_produk" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="stock" class="form-control-label">Stok</label>
+                        <input type="text" class="form-control" name="stock" id="stock" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                    <input type="hidden" id="id_harga_seragam">
+                    <button type="button" class="btn btn-success btn-sm" onclick="update_seragam()" >Update</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection

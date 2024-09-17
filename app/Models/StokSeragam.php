@@ -9,9 +9,10 @@ class StokSeragam extends Model
 {
     use HasFactory;
     protected $table = 't_stok_seragam';
-    protected $primaryKey = 'kd_barang';
+    protected $primaryKey = 'id';
 
     protected $fillable = [
+        'kd_barang',
         'qty'
     ];
 }

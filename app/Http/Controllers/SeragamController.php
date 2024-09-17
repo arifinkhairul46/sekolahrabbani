@@ -799,6 +799,46 @@ Terima kasih atas kepercayaan *Ayah/Bunda $nama_siswa*.🙏☺";
     }
 
 
+    public function detail_seragam(Request $request, $id)
+    {
+        $dtl_seragam = HargaSeragam::select('m_harga_seragam.id', 'mps.nama_produk', 'mjps.jenis_produk', 'mus.ukuran_seragam',
+                        'm_harga_seragam.kode_produk', 'm_harga_seragam.harga', 'm_harga_seragam.diskon', 'tss.qty')
+                        ->leftJoin('m_ukuran_seragam as mus', 'mus.id', 'm_harga_seragam.ukuran_id')
+                        ->leftJoin('m_produk_seragam as mps', 'mps.id', 'm_harga_seragam.produk_id')
+                        ->leftJoin('m_jenis_produk_seragam as mjps', 'mjps.id', 'm_harga_seragam.jenis_produk_id')
+                        ->leftJoin('t_stok_seragam as tss', 'tss.kd_barang', 'm_harga_seragam.kode_produk')
+                        ->where('m_harga_seragam.id', $id)
+                        ->first();
+
+        return response($dtl_seragam);
+    }
+
+    public function update_seragam(Request $request)
+    {
+
+        $harga = $request->harga;
+        $diskon = $request->diskon;
+        $id = $request->id;
+        $kode_produk = $request->kode_produk;
+        $stock = $request->stock;
+        
+        $update_seragam = HargaSeragam::find($id);
+
+        $update_seragam->update([
+            'harga' => $harga,
+            'diskon' => $diskon,
+            'kode_produk' => $kode_produk
+        ]);
+
+        $stock_seragam = StokSeragam::find($id)->update([
+            'kd_barang' => $kode_produk,
+            'qty' => $stock
+        ]);
+
+        return response()->json($update_seragam);
+    }
+
+
     function send_notif ($no_wha, $message) {
         $dataSending = array();
         $dataSending["api_key"] = "VDSVRW87NW812KD7";
