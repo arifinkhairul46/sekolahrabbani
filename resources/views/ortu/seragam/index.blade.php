@@ -3,7 +3,7 @@
 @section('content')    
     @include('ortu.seragam.top-navigate')
     <div class="container">
-        <div class="row mx-auto">       
+        <div class="row mx-auto" id="card_main_seragam">       
             <div class="col-md">
                 <div class="center mb-3">
                     <img src="{{ asset('assets/images/katalog_produk_tk.png') }}" alt="katalog" width="100%">
@@ -98,6 +98,14 @@
                 </div>
             </div>
         </div>
+
+        <div class="row mx-auto" id="card_second" style="display: none" >
+            <div class="col-md">
+                <div class="d-grid-card" id="card_search">
+
+                </div>
+            </div>
+        </div>
     </div>
 @include('ortu.footer.index')
 
@@ -108,5 +116,35 @@
             $('#cart_submit').submit();
         }
 
+        $('#search').on('keyup', function(){
+            search();
+        });
+        search();
+
+        function search() {
+            var keyword = $('#search').val();
+
+            $.ajax({
+                url: "{{route('seragam.search')}}",
+                type: 'POST',
+                data: {
+                    keyword : keyword,
+                    _token: '{{csrf_token()}}'
+                },
+                success: function (result) {
+                    // console.log(result);
+                    if (result.message == 'not') {
+                        $('#card_main_seragam').show();
+                        $('#card_second').hide();
+                        $('#card_search').hide();
+                    } else if (result.message == 'success') {
+                        $('#card_search').show();
+                        $('#card_search').html(result.output);
+                        $('#card_second').show();
+                        $('#card_main_seragam').hide();
+                    }
+                }
+            })
+        }
     </script>
 @endsection

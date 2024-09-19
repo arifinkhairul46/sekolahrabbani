@@ -7,7 +7,7 @@
             <h4 class="mx-2"> Belanja </h4>
             <div class="input-group mx-2" style="width: 100% !important; max-height: 30px">
                 <span class="input-group-text" style="max-height: 26px"><i class="fa fa-search fa-xs"></i></span>
-                <input class="form-control form-control-sm shadow-none"  style="border: none; font-size: 0.675rem" placeholder="Cari" type="text" name="search" >
+                <input class="form-control form-control-sm shadow-none" id="search" style="border: none; font-size: 0.675rem" placeholder="Cari" type="text" name="search" >
             </div>
             <form action="{{route('seragam.cart')}}" method="GET" class="mt-1 mb-0" id="cart_submit">
                 <a href="#"  onclick="submit_cart()" style="text-decoration: none; color: black">

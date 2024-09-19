@@ -90,6 +90,7 @@
                                 <p class="mb-0 " style="font-size: 11px"> 
                                     Stok : 
                                     <input id="total_stok" style="border: none" disabled> <br>
+                                    <input type="hidden" id="kode_produk">
                                     {{-- <span class="text-danger">  
                                     Segera checkout, stok sedikit!
                                     </span> --}}
@@ -316,10 +317,12 @@
                         var format_harga = formatter.format(harga);
                         var format_harga_diskon = formatter.format(harga_diskon);
                         var stok = item.qty;
+                        var kode_produk = item.kode_produk
 
                         $("#harga_awal").html(format_harga);
                         $("#harga_diskon").html(format_harga_diskon)
                         $("#total_stok").val(item.qty)
+                        $("#kode_produk").val(kode_produk)
                         $(".input-number").attr({
                             'max' : stok
                         })
@@ -336,6 +339,7 @@
             var jenis = $('input[name="jenis_'+item_id+'"]:checked').val();
             var quantity = $('.input-number').val();
             var nama_siswa = $('#nama_siswa').val();
+            var kode_produk = $('#kode_produk').val();
             
 
             if (ukuran == '' || ukuran == null || ukuran == undefined) {
@@ -355,6 +359,7 @@
                         quantity : quantity,
                         jenis: jenis,
                         nama_siswa: nama_siswa,
+                        kode_produk: kode_produk,
                         _token: '{{csrf_token()}}'
                     },
                     success: function (result) {

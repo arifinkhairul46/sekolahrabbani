@@ -451,6 +451,7 @@ Apabila ada pertanyaan silahkan hubungi Customer Service kami di nomor ".$no_adm
             $get_no_regis = Pendaftaran::where('no_hp_ibu', $request->no_hp)
                             ->orWhere('no_hp_ayah', $request->no_hp)
                             ->where('nama_lengkap', 'like', '%' .$request->nama_lengkap. '%')
+                            ->where('status_pembayaran', 1)
                             ->first();
 
             if ($get_no_regis) {

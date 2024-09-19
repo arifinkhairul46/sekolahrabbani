@@ -140,7 +140,6 @@
         var produk_id = $('#produk_id').val();
         var jenis_produk = $('#jenis_produk').val();
 
-        console.log(jenis_produk);
         function bayar_seragam() {
             $(this).prop("disabled", true);
                 // add spinner to button
@@ -166,7 +165,7 @@
                     _token: '{{csrf_token()}}'
                 },
                 success: function (res) {
-                    console.log(res.snap_token);
+                    // console.log(res.snap_token);
                     // SnapToken acquired from previous step
                     snap.pay(res.snap_token, {
                     // Optional

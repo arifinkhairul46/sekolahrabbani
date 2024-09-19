@@ -19,6 +19,7 @@ class CartDetail extends Model
         'nis',
         'ukuran',
         'jenis',
+        'kode_produk',
         'status_cart',
         'is_selected'
     ];
