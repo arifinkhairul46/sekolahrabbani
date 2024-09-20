@@ -26,28 +26,58 @@ class UserController extends Controller
     public function get_user_api()
     {
         $client = new Client();
-        $api_url = "http://103.135.214.11:81/qlp_system/api_pos/api_data_ortu_siswa_aktif.php?pass=aun64268ubstun4w8nw6busrhbumunfjbuwr868w6aynerysteum7timt";
+        $api_ortu = "http://103.135.214.11:81/qlp_system/api_pos/api_data_ortu_siswa_aktif.php?pass=aun64268ubstun4w8nw6busrhbumunfjbuwr868w6aynerysteum7timt";
+        $api_siswa = "http://103.135.214.11:81/qlp_system/api_pos/api_data_siswa_aktif.php?pass=aun64268ubstun4w8nw6busrhbumunfjbuwr868w6aynerysteum7timt";
 
         try {
-            $response = $client->get($api_url);
+            $response_ortu = $client->get($api_ortu);
 
-            $data = json_decode($response->getBody(), true);
+            $data = json_decode($response_ortu->getBody(), true);
 
-            $listUser = $data['userApi'];
+            $list_ortu = $data['userApi'];
 
-            // return response($listUser);
+            //data siswa
+            $response_siswa = $client->get($api_siswa);
 
-            foreach ($listUser as $item) {
+            $data = json_decode($response_siswa->getBody(), true);
+
+            $list_siswa = $data['userApi'];
+
+            // return response($list_siswa);
+
+            foreach ($list_siswa as $item) {
                 $nis = $item['nis'];
                 $nama_siswa = $item['nama_siswa'];
-                $nama_ibu = $item['nama_ibu'];
-                $nohp_ibu = $item['nohp_ibu'];
-                $nohp_ayah = $item['nohp_ayah'];
                 $id_lokasi = $item['id_lokasi'];
                 $id_sekolah = $item['id_sekolah'];
                 $id_jenjang = $item['id_jenjang'];
                 $nama_kelas = $item['nama_kelas'];
                 $tahun_masuk = $item['tahun_masuk'];
+                $nohp_ibu_siswa = $item['nohp_ibu'];
+                $nohp_ayah_siswa = $item['nohp_ayah'];
+
+                // $userId = User::select('id')->where('no_hp', $nohp_ibu_siswa)->where('no_hp_2', $nohp_ayah_siswa)->first();
+
+                // create profile
+                Profile::create([
+                    'nis' => $nis,
+                    'nama_lengkap' => $nama_siswa,
+                    'tahun_masuk' => $tahun_masuk,
+                    'nama_kelas' => $nama_kelas,
+                    'sekolah_id' => $id_sekolah,
+                    'jenjang_id' => $id_jenjang,
+                    'no_hp_ibu' => $nohp_ibu_siswa,
+                    'no_hp_ayah' => $nohp_ayah_siswa,
+                    // 'user_id' => $userId->id,
+                    // 'pass_akun' => $pass
+                ]);
+            }
+
+            foreach ($list_ortu as $item) {
+               
+                $nama_ibu = $item['nama_ibu'];
+                $nohp_ibu = $item['nohp_ibu'];
+                $nohp_ayah = $item['nohp_ayah'];
                 $pass = $this->rand_pass(8);
 
                 // create user
@@ -58,29 +88,23 @@ class UserController extends Controller
                     'password' => Hash::make($pass),
                     'id_role' => 5,
                     'created_at' => date('Y-m-d H:i:s')
-
                 ]);
 
-                // find user id 
+                //find id
                 $userId = User::select('id')->where('no_hp', $nohp_ibu)->where('no_hp_2', $nohp_ayah)->first();
-                
 
-                // create profile
-                Profile::create([
-                    'nis' => $nis,
-                    'nama_lengkap' => $nama_siswa,
-                    'tahun_masuk' => $tahun_masuk,
-                    'nama_kelas' => $nama_kelas,
-                    'sekolah_id' => $id_sekolah,
-                    'jenjang_id' => $id_jenjang,
-                    'no_hp_ibu' => $nohp_ibu,
-                    'no_hp_ayah' => $nohp_ayah,
-                    'user_id' => $userId->id,
-                    'pass_akun' => $pass
-                ]);
+                $profiles = Profile::where('no_hp_ibu', $nohp_ibu)->where('no_hp_ayah', $nohp_ayah)->get();
 
+                foreach ($profiles as $profile) {
+                    $update_profile = Profile::where('no_hp_ibu', $profile->no_hp_ibu)->where('no_hp_ayah', $profile->no_hp_ayah)->first();
 
+                    $update_profile->update([
+                        'pass_akun' => $pass,
+                        'user_id' => $userId->id
+                    ]);
+                }
             }
+
             return redirect()->back()->with('success', 'berhasil menambah user');
 
 

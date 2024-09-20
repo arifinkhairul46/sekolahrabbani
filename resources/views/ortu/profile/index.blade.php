@@ -41,11 +41,11 @@
                                             </div>
                                             <div class="d-flex">
                                                 <label for="kelas" class="form-label col-4">Kelas</label>
-                                                <div id="kelas" name="kelas" >: {{$data->kelas_id}} </div>
+                                                <div id="kelas" name="kelas" >: {{$data->nama_kelas}} </div>
                                             </div>
                                             <div class="d-flex">
                                                 <label for="jenjang" class="form-label col-4">Jenjang</label>
-                                                <div id="jenjang" name="jenjang" >: {{$data->jenjang_id}} </div>
+                                                <div id="jenjang" name="jenjang" >: {{$data->nama_jenjang}} </div>
                                             </div>
                                             <div class="d-flex">
                                                 <label for="no_hp_ibu" class="form-label col-4">No Hp Ibu</label>

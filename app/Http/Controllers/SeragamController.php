@@ -117,6 +117,7 @@ class SeragamController extends Controller
                                 ->first();
 
         $user_id = auth()->user()->id;
+        $no_hp = auth()->user()->no_hp;
 
         $jenis_produk = JenisSeragam::select('m_jenis_produk_seragam.id','m_jenis_produk_seragam.jenis_produk', 'tss.qty')
                                     ->leftJoin('m_harga_seragam as mhs', 'mhs.jenis_produk_id', 'm_jenis_produk_seragam.id')
@@ -143,7 +144,7 @@ class SeragamController extends Controller
                         ->groupby('mus.id')
                         ->first();
 
-        $profile = Profile::where('user_id', $user_id)->get();
+        $profile = Profile::get_user_profile_byphone($no_hp);
 
         $cart_detail = CartDetail::select('t_cart_detail.id', 'm_produk_seragam.id as id_produk','m_produk_seragam.nama_produk', 'm_produk_seragam.deskripsi', 'm_produk_seragam.image', 
                     'm_produk_seragam.material', 'mhs.harga', 'mhs.diskon', 'mjps.id as jenis_id', 'mp.nama_lengkap as nama_siswa', 'mp.nama_kelas as nama_kelas', 'mhs.kode_produk',

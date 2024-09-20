@@ -31,6 +31,7 @@ class Profile extends Model
 
     public static function get_user_profile_byphone($phone) {
         $data = static::with(['user'])
+            ->leftJoin('mst_jenjang as j', 'j.id', 'm_profile.jenjang_id')
             ->where('no_hp_ibu', $phone)
             ->get();
 
