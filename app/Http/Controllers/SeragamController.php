@@ -597,6 +597,8 @@ Terima kasih atas kepercayaan *Ayah/Bunda $nama_siswa*.🙏☺";
                 'jenis_produk_id' => $jenis_produk_now,
             ]);
 
+            $this->update_stok($kode_produk_now, $quantity_now);
+
                 // Set your Merchant Server Key
             \Midtrans\Config::$serverKey = config('midtrans.serverKey');
             // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
@@ -782,9 +784,11 @@ Terima kasih atas kepercayaan *Ayah/Bunda $nama_siswa*.🙏☺";
 
     public function return_stock($kode_barang, $qty) {
         $stok_seragam = StokSeragam::select('kd_barang', 'qty')->where('kd_barang', $kode_barang)->first();
+        $stok_now = $stok_seragam->qty;
+        $jumlah_return = intval($qty);
 
         $update_stok = $stok_seragam->update([
-            'qty' => $stok_seragam->qty + $qty
+            'qty' => $stok_now + $jumlah_return
         ]);
 
         return response()->json($update_stok);
