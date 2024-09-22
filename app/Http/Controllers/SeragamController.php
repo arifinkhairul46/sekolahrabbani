@@ -700,16 +700,12 @@ Terima kasih atas kepercayaan *Ayah/Bunda $nama_siswa*.🙏☺";
         }
         $orderId = $request->order_id;
         $order = OrderSeragam::where('no_pemesanan', $orderId)->first();
-        $order_detail = OrderDetailSeragam::select('kode_produk', 'quantity')->where('no_pemesanan', $orderId)->get();
-
-        foreach ($order_detail as $item) {
-            $kode_produk = $item->kode_produk;
-            $quantity = $item->quantity;
-        }
-
+       
         if (!$order) {
             return response()->json(['message' => 'Order not found'], 404);
         }
+
+         $order_detail = OrderDetailSeragam::select('kode_produk', 'quantity')->where('no_pemesanan', $orderId)->get();
 
         switch ($transactionStatus) {
             case 'capture':
@@ -736,6 +732,12 @@ Terima kasih atas kepercayaan *Ayah/Bunda $nama_siswa*.🙏☺";
                     'va_number' => $no_va,
                     'updated_at' => $request->settlement_time
                 ]);
+                foreach ($order_detail as $item) {
+                    $kode_produk = $item->kode_produk;
+                    $quantity = $item->quantity;
+
+                    $this->return_stock($kode_produk, $quantity);
+                }
                    $this->update_status_seragam('success', $mtd_pembayaran, $orderId);
                 break;
             case 'pending':
@@ -753,7 +755,12 @@ Terima kasih atas kepercayaan *Ayah/Bunda $nama_siswa*.🙏☺";
                     'metode_pembayaran' => $mtd_pembayaran,
                     'va_number' => $no_va
                 ]);
-                $this->return_stock($kode_produk, $quantity);
+                foreach ($order_detail as $item) {
+                    $kode_produk = $item->kode_produk;
+                    $quantity = $item->quantity;
+
+                    $this->return_stock($kode_produk, $quantity);
+                }
                 break;
             case 'expire':
                 $order->update([
@@ -761,7 +768,12 @@ Terima kasih atas kepercayaan *Ayah/Bunda $nama_siswa*.🙏☺";
                     'metode_pembayaran' => $mtd_pembayaran,
                     'va_number' => $no_va
                 ]);
-                $this->return_stock($kode_produk, $quantity);
+                foreach ($order_detail as $item) {
+                    $kode_produk = $item->kode_produk;
+                    $quantity = $item->quantity;
+
+                    $this->return_stock($kode_produk, $quantity);
+                }
                 $this->update_status_seragam('expired', $mtd_pembayaran, $orderId);
                 break;
             case 'cancel':
@@ -770,7 +782,12 @@ Terima kasih atas kepercayaan *Ayah/Bunda $nama_siswa*.🙏☺";
                     'metode_pembayaran' => $mtd_pembayaran,
                     'va_number' => $no_va
                 ]);
-                $this->return_stock($kode_produk, $quantity);
+                foreach ($order_detail as $item) {
+                    $kode_produk = $item->kode_produk;
+                    $quantity = $item->quantity;
+
+                    $this->return_stock($kode_produk, $quantity);
+                }
                 break;
             default:
                 $order->update([
@@ -783,15 +800,15 @@ Terima kasih atas kepercayaan *Ayah/Bunda $nama_siswa*.🙏☺";
     }
 
     public function return_stock($kode_barang, $qty) {
-        $stok_seragam = StokSeragam::select('kd_barang', 'qty')->where('kd_barang', $kode_barang)->first();
+        $stok_seragam = StokSeragam::where('kd_barang', $kode_barang)->first();
         $stok_now = $stok_seragam->qty;
         $jumlah_return = intval($qty);
 
-        $update_stok = $stok_seragam->update([
+        $update_stok_return = $stok_seragam->update([
             'qty' => $stok_now + $jumlah_return
         ]);
 
-        return response()->json($update_stok);
+        return response()->json($update_stok_return);
     }
 
 
