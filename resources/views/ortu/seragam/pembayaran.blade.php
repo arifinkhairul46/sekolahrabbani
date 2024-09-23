@@ -13,7 +13,7 @@
     @if ($order)
         <?php $harga = (($produk_seragam->harga) - ($produk_seragam->diskon/100 * $produk_seragam->harga)) * $quantity; ?>
         <?php $diskon =  ($produk_seragam->diskon/100 * $produk_seragam->harga) * $quantity; ?>
-        <?php $harga_awal = $produk_seragam->harga; ?>
+        <?php $harga_awal = $produk_seragam->harga * $quantity; ?>
         <input type="hidden" id="harga" value="{{$harga}}">
         <input type="hidden" id="harga_awal" value="{{$harga_awal}}">
         <input type="hidden" id="diskon" value="{{$diskon}}">

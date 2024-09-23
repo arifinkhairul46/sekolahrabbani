@@ -392,14 +392,18 @@
             var jenis = $('input[name="jenis_'+item_id+'"]:checked').val();
             var quantity = $('.input-number').val();
             var nama_siswa = $('#nama_siswa').val();
+            var stok = $('#total_stok').val()
 
             if (ukuran == '' || ukuran == null || ukuran == undefined) {
                 $('#valid_ukuran_'+item_id).show();
             } else if (jenis == '' || jenis == null || jenis == undefined)  {
                 $('#valid_jenis_'+item_id).show();
+            } else if (stok == null || stok == 0) {
+                $('#valid_stok').show();
             } else {
                 $('#valid_ukuran_'+item_id).hide(); 
                 $('#valid_jenis_'+item_id).hide();
+                $('#valid_stok').hide();
 
                 new_pesanan['produk_id'] = item_id;
                 new_pesanan['ukuran'] = ukuran;
