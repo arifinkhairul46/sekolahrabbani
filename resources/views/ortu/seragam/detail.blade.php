@@ -160,6 +160,7 @@
                             @endforeach
                         </div>
                         <span class="mb-0 text-danger" style="font-size: 10px; display: none" id="valid_ukuran_{{$produk->id}}" > Pilih ukuran terlebih dahulu! </span>
+                        <span class="mb-0 text-danger" style="font-size: 10px; display: none" id="valid_stok" > Mohon Maaf Stok Tidak Ada! </span>
                     </div>
                     
                     <div class="produk-jumlah my-4">
@@ -340,15 +341,19 @@
             var quantity = $('.input-number').val();
             var nama_siswa = $('#nama_siswa').val();
             var kode_produk = $('#kode_produk').val();
+            var stok = $('#total_stok').val()
             
 
             if (ukuran == '' || ukuran == null || ukuran == undefined) {
                 $('#valid_ukuran_'+item_id).show();
             } else if (jenis == '' || jenis == null || jenis == undefined)  {
                 $('#valid_jenis_'+item_id).show();
+            } else if (stok == null || stok == 0) {
+                $('#valid_stok').show();
             } else {
                 $('#valid_ukuran_'+item_id).hide(); 
                 $('#valid_jenis_'+item_id).hide();
+                $('#valid_stok').hide();
 
                 $.ajax({
                     url: "{{route('cart_post')}}",
