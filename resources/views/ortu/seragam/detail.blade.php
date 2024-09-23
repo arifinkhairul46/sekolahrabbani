@@ -117,7 +117,7 @@
                     <div class="produk-jenis mt-3">
                         <div class="d-flex">
                             @foreach ($jenis_produk as $item)
-                                @if ($item->qty != null)
+                                @if ($item->qty != null || $item->qty != 0)
                                     <div class="button-jenis">
                                         <input class="form-check-input" type="radio" name="jenis_{{$produk->id}}" id="jenis_{{$produk->id}}_{{$item->id}}" value="{{$item->id}}" {{$item->id == 1 ? 'checked' : ''}}>
                                         <label class="form-check-label" for="jenis_{{$produk->id}}_{{$item->id}}">
@@ -142,7 +142,7 @@
                         <h6 style="color: #3152A4"><b> Ukuran </b> </h6>
                         <div class="d-flex">
                             @foreach($ukuran_seragam as $item)
-                                @if ($item->qty != null)
+                                @if ($item->qty != null || $item->qty != 0)
                                     <div class="button-ukuran">
                                         <input class="form-check-input" type="radio" name="ukuran_{{$produk->id}}"  id="uk_{{$item->ukuran_seragam}}_{{$produk->id}}" value="{{$item->ukuran_seragam}}">
                                         <label class="form-check-label" for="uk_{{$item->ukuran_seragam}}_{{$produk->id}}">
