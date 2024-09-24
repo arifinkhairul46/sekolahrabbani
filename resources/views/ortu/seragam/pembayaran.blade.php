@@ -117,7 +117,11 @@
         <div class="bottom-navigate mt-3 p-3 d-flex" style="justify-content: space-between; background-color: #f5f5f5">
             <h6> Total Pembayaran <br> <b> Rp. <span id="total_bayar"> {{number_format($total_akhir)}} </span> </b> </h6>
             <input type="hidden" value="{{$total_akhir}}" id="total_akhir" >
-            <button id="pay-button" type="submit" class="btn btn-purple btn-sm px-4" onclick="bayar_seragam()" style="letter-spacing: 1px"> <b>Bayar</b> </button>
+            @if ($total_akhir != 0)
+                <button id="pay-button" type="submit" class="btn btn-purple btn-sm px-4" onclick="bayar_seragam()" style="letter-spacing: 1px"> <b>Bayar</b> </button>
+            @else 
+                <button id="pay-button" type="submit" class="btn btn-purple btn-sm px-4" onclick="bayar_seragam()" style="letter-spacing: 1px" disabled> <b>Bayar</b> </button>
+            @endif
         </div>
     @endif
 

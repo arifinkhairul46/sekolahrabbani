@@ -309,25 +309,29 @@
 
                 },
                 success: function (result) {
-                    var stok = 10
-                    $.each(result, function (key, item) {
-                        var harga = parseInt(item.harga);
-                        var diskon = parseInt(item.diskon);
-                        var harga_diskon = (harga - diskon/100*harga);
-                        var formatter = new Intl.NumberFormat("en-US");
-                        var format_harga = formatter.format(harga);
-                        var format_harga_diskon = formatter.format(harga_diskon);
-                        var stok = item.qty;
-                        var kode_produk = item.kode_produk
+                    if (!$.trim(result)) {
+                        var stok = 0;
 
-                        $("#harga_awal").html(format_harga);
-                        $("#harga_diskon").html(format_harga_diskon)
-                        $("#total_stok").val(item.qty)
-                        $("#kode_produk").val(kode_produk)
-                        $(".input-number").attr({
-                            'max' : stok
-                        })
-                    });
+                        $("#total_stok").val(stok);
+                    } else {
+                        $.each(result, function (key, item) {
+                            var harga = parseInt(item.harga);
+                            var diskon = parseInt(item.diskon);
+                            var harga_diskon = (harga - diskon/100*harga);
+                            var formatter = new Intl.NumberFormat("en-US");
+                            var format_harga = formatter.format(harga);
+                            var format_harga_diskon = formatter.format(harga_diskon);
+                            var stok = item.qty;
+                            var kode_produk = item.kode_produk
+                    
+                            $("#harga_awal").html(format_harga);
+                            $("#harga_diskon").html(format_harga_diskon)
+                            $("#total_stok").val(stok)
+                            $(".input-number").attr({
+                                'max' : stok
+                            })
+                        });
+                    }                    
                 }
             })
         }

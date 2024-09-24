@@ -103,28 +103,29 @@ Route::group(['middleware' =>['auth']], function () {
 
 });
 
+    Route::prefix('karir')->group(function () {
+        Route::get('/', [KarirController::class, 'index'])->name('karir');
+            Route::group(['middleware' =>['auth', 'csdm']], function () {
+            Route::get('/profile', [KarirController::class, 'profile'])->name('karir.profile');
+            Route::get('/profile/{id}', [KarirController::class, 'profile_by_id'])->name('karir.profile_by_id');
+            Route::post('profile/{id}', [KarirController::class, 'store_profile'])->name('karir.store_profile');
+            Route::put('/profile/{id}', [KarirController::class, 'edit_profile'])->name('karir.edit_profile');
 
-Route::prefix('karir')->group(function () {
-    Route::get('/', [KarirController::class, 'index'])->name('karir');
-    Route::get('/profile', [KarirController::class, 'profile'])->name('karir.profile');
-    Route::get('/profile/{id}', [KarirController::class, 'profile_by_id'])->name('karir.profile_by_id');
-    Route::post('profile/{id}', [KarirController::class, 'store_profile'])->name('karir.store_profile');
-    Route::put('/profile/{id}', [KarirController::class, 'edit_profile'])->name('karir.edit_profile');
+            Route::get('/kelas', [KelasDiklatController::class, 'index'])->name('karir.kelas');
+            Route::get('/kelas/pertemuan/{pertemuan}', [KelasDiklatController::class, 'get_kelas_by_pertemuan_id'])->name('karir.kelas_pertemuan');
+            Route::get('/kelas/tugas/download/{id}', [KelasDiklatController::class, 'getDownloadTugas'])->name('download_tugas');
+            Route::get('/kelas/tugas/download-upload/{id}', [KelasDiklatController::class, 'download_tugas_uploaded'])->name('download_tugas_uploaded');
+            Route::post('/kelas/tugas/upload', [KelasDiklatController::class, 'upload_tugas'])->name('upload_tugas');
+            Route::get('/kelas/modul/download/{id}', [KelasDiklatController::class, 'getDownloadModul'])->name('download_modul');
 
-    Route::get('/kelas', [KelasDiklatController::class, 'index'])->name('karir.kelas');
-    Route::get('/kelas/pertemuan/{pertemuan}', [KelasDiklatController::class, 'get_kelas_by_pertemuan_id'])->name('karir.kelas_pertemuan');
-    Route::get('/kelas/tugas/download/{id}', [KelasDiklatController::class, 'getDownloadTugas'])->name('download_tugas');
-    Route::get('/kelas/tugas/download-upload/{id}', [KelasDiklatController::class, 'download_tugas_uploaded'])->name('download_tugas_uploaded');
-    Route::post('/kelas/tugas/upload', [KelasDiklatController::class, 'upload_tugas'])->name('upload_tugas');
-    Route::get('/kelas/modul/download/{id}', [KelasDiklatController::class, 'getDownloadModul'])->name('download_modul');
+            Route::get('/nilai/{id}', [KarirController::class, 'get_nilai'])->name('karir.nilai');
+            Route::get('/nilai/download/{id}', [KarirController::class, 'download_nilai'])->name('download_nilai');
 
-    Route::get('/nilai/{id}', [KarirController::class, 'get_nilai'])->name('karir.nilai');
-    Route::get('/nilai/download/{id}', [KarirController::class, 'download_nilai'])->name('download_nilai');
+            Route::get('/jadwal-kontrak', [KarirController::class, 'jadwal_kontrak'])->name('karir.jadwal');
+            Route::get('/jadwal-kontrak/download', [KarirController::class, 'download_jadwal'])->name('download_jadwal');
+        });
+    });    
 
-    Route::get('/jadwal-kontrak', [KarirController::class, 'jadwal_kontrak'])->name('karir.jadwal');
-    Route::get('/jadwal-kontrak/download', [KarirController::class, 'download_jadwal'])->name('download_jadwal');
-
-    
     Route::group(['middleware' =>['auth', 'admin']], function () {
         Route::prefix('admin')->group(function () {
             Route::get('/', [KarirController::class, 'admin'])->name('karir.admin');
@@ -193,8 +194,6 @@ Route::prefix('karir')->group(function () {
             Route::get('/kelas/pertemuan/{pertemuan}/tugas/create', [KelasDiklatController::class, 'admin_kelas_tugas_create'])->name('karir.admin.kelas_tugas_create');
         });
     });
-
-});
 
 Route::prefix('pendaftaran')->group(function () {
     Route::get('/', [PendaftaranController::class, 'index'])->name('pendaftaran');
