@@ -125,7 +125,7 @@ class SeragamController extends Controller
                                     ->leftJoin('m_ukuran_seragam as mus', 'mus.id', 'mhs.ukuran_id')
                                     ->leftJoin('t_stok_seragam as tss', 'mhs.kode_produk', 'tss.kd_barang')
                                     ->where('mps.id', $id)
-                                    ->where('tss.qty', '>=', 0)
+                                    ->where('tss.qty', '>', 0)
                                     ->groupby('m_jenis_produk_seragam.id')                          
                                     ->get();
         
