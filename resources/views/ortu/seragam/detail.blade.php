@@ -117,16 +117,16 @@
                     <div class="produk-jenis mt-3">
                         <div class="d-flex">
                             @foreach ($jenis_produk as $item)
-                                @if ($item->qty != null || $item->qty > 0)
+                                @if ($item->quantity > 0)
                                     <div class="button-jenis">
-                                        <input class="form-check-input" type="radio" name="jenis_{{$produk->id}}" id="jenis_{{$produk->id}}_{{$item->id}}" value="{{$item->id}}" {{$item->id == 1 ? 'checked' : ''}}>
+                                        <input class="form-check-input" type="radio" name="jenis_{{$produk->id}}" id="jenis_{{$produk->id}}_{{$item->id}}" value="{{$item->id}}">
                                         <label class="form-check-label" for="jenis_{{$produk->id}}_{{$item->id}}">
                                         <span> {{$item->jenis_produk}} </span>
                                         </label>
                                     </div>
                                 @else 
                                     <div class="button-jenis">
-                                        <input class="form-check-input" type="radio" name="jenis_{{$produk->id}}" id="jenis_{{$produk->id}}_{{$item->id}}" value="{{$item->id}}" disabled {{$item->id == 1 ? 'checked' : ''}}>
+                                        <input class="form-check-input" type="radio" name="jenis_{{$produk->id}}" id="jenis_{{$produk->id}}_{{$item->id}}" value="{{$item->id}}" disabled>
                                         <label class="form-check-label" for="jenis_{{$produk->id}}_{{$item->id}}">
                                         <span> {{$item->jenis_produk}} </span>
                                         </label>
@@ -140,9 +140,9 @@
                     
                     <div class="produk-ukuran mt-3">
                         <h6 style="color: #3152A4"><b> Ukuran </b> </h6>
-                        <div class="d-flex">
+                        <div class="d-flex" id="ukuran_seragam">
                             @foreach($ukuran_seragam as $item)
-                                @if ($item->qty != null || $item->qty >0)
+                                @if ($item->quantity > 0)
                                     <div class="button-ukuran">
                                         <input class="form-check-input" type="radio" name="ukuran_{{$produk->id}}"  id="uk_{{$item->ukuran_seragam}}_{{$produk->id}}" value="{{$item->ukuran_seragam}}">
                                         <label class="form-check-label" for="uk_{{$item->ukuran_seragam}}_{{$produk->id}}">
@@ -284,6 +284,7 @@
             var jenis_id = $('input[name="jenis_'+item_id+'"]:checked').val();
             var ukuran_id = $('input[name="ukuran_'+item_id+'"]:checked').val();
             update_price(ukuran_id, jenis_id);
+            update_stok(jenis_id);
 
            
         });
@@ -311,8 +312,8 @@
                 success: function (result) {
                     if (!$.trim(result)) {
                         var stok = 0;
-
                         $("#total_stok").val(stok);
+                        $("#uk_"+ukuran_id+"_"+item_id).attr('disabled', true)
                     } else {
                         $.each(result, function (key, item) {
                             var harga = parseInt(item.harga);
@@ -332,6 +333,33 @@
                             })
                         });
                     }                    
+                }
+            })
+        }
+
+        function update_stok(jenis_id) {
+            $.ajax({
+                url: "{{route('stok')}}",
+                type: 'POST',
+                data: {
+                    jenis_id: jenis_id,
+                    produk_id : item_id,
+                    _token: '{{csrf_token()}}'
+
+                },
+                success: function (result) {
+                    
+                    $.each(result, function (key, item) {
+                        var stok = item.qty;
+
+                        if (stok == 0 || stok == null) {
+                            $("#uk_"+item.ukuran_seragam+"_"+item_id).attr('disabled', true)
+                            
+                        } else {
+                            $("#uk_"+item.ukuran_seragam+"_"+item_id).attr('disabled', false)
+                        }
+                    })
+
                 }
             })
         }

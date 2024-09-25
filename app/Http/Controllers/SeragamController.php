@@ -119,19 +119,19 @@ class SeragamController extends Controller
         $user_id = auth()->user()->id;
         $no_hp = auth()->user()->no_hp;
 
-        $jenis_produk = JenisSeragam::select('m_jenis_produk_seragam.id','m_jenis_produk_seragam.jenis_produk', 'tss.qty')
+        $jenis_produk = JenisSeragam::select('m_jenis_produk_seragam.id','m_jenis_produk_seragam.jenis_produk', DB::raw('sum(tss.qty) as quantity') )
                                     ->leftJoin('m_harga_seragam as mhs', 'mhs.jenis_produk_id', 'm_jenis_produk_seragam.id')
                                     ->leftJoin('m_produk_seragam as mps', 'mps.id', 'mhs.produk_id')
                                     ->leftJoin('m_ukuran_seragam as mus', 'mus.id', 'mhs.ukuran_id')
                                     ->leftJoin('t_stok_seragam as tss', 'mhs.kode_produk', 'tss.kd_barang')
                                     ->where('mps.id', $id)
-                                    ->where('tss.qty', '>', 0)
                                     ->groupby('m_jenis_produk_seragam.id')                          
                                     ->get();
         
-        $ukuran_seragam = HargaSeragam::select('mus.id', 'mus.ukuran_seragam', 'tss.qty')
+        $ukuran_seragam = HargaSeragam::select('mus.id', 'mus.ukuran_seragam', 'mjps.id as jenis_produk_id', DB::raw('sum(tss.qty) as quantity'))
                                     ->leftJoin('m_ukuran_seragam as mus', 'mus.id', 'm_harga_seragam.ukuran_id')
                                     ->leftJoin('m_produk_seragam as mps', 'mps.id', 'm_harga_seragam.produk_id')
+                                    ->leftJoin('m_jenis_produk_seragam as mjps', 'mjps.id', 'm_harga_seragam.jenis_produk_id')
                                     ->leftJoin('t_stok_seragam as tss', 'm_harga_seragam.kode_produk', 'tss.kd_barang')
                                     ->where('mps.id', $id)
                                     ->groupby('mus.id')
@@ -165,7 +165,7 @@ class SeragamController extends Controller
                     ->where('t_cart_detail.status_cart', 0)
                     ->where('tss.qty', '>', 0)
                     ->get();
-                    // dd($ukuran_seragam);
+                    // dd($jenis_produk,$ukuran_seragam);
 
         return view('ortu.seragam.detail', compact('produk', 'cart_detail', 'profile', 'jenis_produk', 'ukuran_seragam'));
     }
@@ -245,6 +245,19 @@ class SeragamController extends Controller
                         ->where('jenis_produk_id', $jenis)->where('produk_id', $produk_id)->where('ukuran_id', $ukuran_id->id)->get();
      
         return response()->json($harga);
+    }
+
+    public function stok(Request $request) {
+        $jenis = $request->jenis_id;
+        $produk_id = $request->produk_id;
+
+        $stok = HargaSeragam::select('m_harga_seragam.harga', 'm_harga_seragam.kode_produk', 'mjps.id as jenis_produk_id', 'mus.ukuran_seragam', 'tss.qty')
+                            ->leftJoin('t_stok_seragam as tss', 'm_harga_seragam.kode_produk', 'tss.kd_barang')
+                            ->leftJoin('m_ukuran_seragam as mus', 'm_harga_seragam.ukuran_id', 'mus.id')
+                            ->leftJoin('m_jenis_produk_seragam as mjps', 'm_harga_seragam.jenis_produk_id', 'mjps.id')
+                            ->where('jenis_produk_id', $jenis)->where('produk_id', $produk_id)->get();
+
+        return response()->json($stok);
     }
 
 

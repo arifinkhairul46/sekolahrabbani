@@ -85,11 +85,13 @@ Route::group(['middleware' =>['auth']], function () {
     Route::post('payment', [SeragamController::class, 'buy_now'])->name('buy_now');
     Route::get('pembayaran', [SeragamController::class, 'pembayaran'])->name('seragam.bayar');
     Route::post('pembayaran', [SeragamController::class, 'store'])->name('seragam.store');
+    Route::get('check-stok', [SeragamController::class, 'check_stok'])->name('check.stock');
     Route::get('checkout/success/', [SeragamController::class, 'success'])->name('checkout.success');
 
     Route::get('riwayat-transaksi', [SeragamController::class, 'history'])->name('seragam.history');
     Route::get('riwayat-transaksi/{id}', [SeragamController::class, 'rincian_pesanan'])->name('seragam.history.detail');
     Route::post('harga', [SeragamController::class, 'harga'])->name('harga_per_jenis');
+    Route::post('stok', [SeragamController::class, 'stok'])->name('stok');
 
     Route::get('download-invoice/{id}', [SeragamController::class, 'download'])->name('download.invoice');
 

@@ -150,47 +150,75 @@
                 $(this).html(
                     `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...`
             );
-            
+
+            // cek stok dahulu
             $.ajax({
-                url: "{{route('seragam.store')}}",
-                type: 'POST',
+                url: "{{route('check.stock')}}",
+                type: 'GET',
                 data: {
-                    total_harga : total_harga,
-                    harga_awal: harga_awal,
-                    diskon: diskon,
-                    nama_siswa: nama_siswa,
-                    nama_kelas: nama_kelas,
-                    sekolah_id: sekolah_id,
-                    kode_produk: kode_produk,
-                    produk_id: produk_id,
-                    quantity: quantity,
-                    ukuran: ukuran,
-                    jenis_produk: jenis_produk,
-                    _token: '{{csrf_token()}}'
+                    kode_produk: kode_produk
                 },
                 success: function (res) {
-                    // console.log(res.snap_token);
-                    // SnapToken acquired from previous step
-                    snap.pay(res.snap_token, {
-                    // Optional
-                    onSuccess: function(result){
-                        window.location.href = '{{route('checkout.success')}}'
-                        /* You may add your own js here, this is just example */ /*document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);*/
-                    },
-                    // Optional
-                    onPending: function(result){
-                        window.location.href = '{{route('seragam.history')}}'
-                        /* You may add your own js here, this is just example */ document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
-                    },
-                    // Optional
-                    onError: function(result){
-                        window.location.href = '{{route('seragam.history')}}'
-                        /* You may add your own js here, this is just example */ document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+                    if (res > 0) {
+                         $.ajax({
+                            url: "{{route('seragam.store')}}",
+                            type: 'POST',
+                            data: {
+                                total_harga : total_harga,
+                                harga_awal: harga_awal,
+                                diskon: diskon,
+                                nama_siswa: nama_siswa,
+                                nama_kelas: nama_kelas,
+                                sekolah_id: sekolah_id,
+                                kode_produk: kode_produk,
+                                produk_id: produk_id,
+                                quantity: quantity,
+                                ukuran: ukuran,
+                                jenis_produk: jenis_produk,
+                                _token: '{{csrf_token()}}'
+                            },
+                            success: function (res) {
+                                // SnapToken acquired from previous step
+                                snap.pay(res.snap_token, {
+                                // Optional
+                                onSuccess: function(result){
+                                    window.location.href = '{{route('checkout.success')}}'
+                                    /* You may add your own js here, this is just example */ /*document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);*/
+                                },
+                                // Optional
+                                onPending: function(result){
+                                    window.location.href = '{{route('seragam.history')}}'
+                                    /* You may add your own js here, this is just example */ document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+                                },
+                                // Optional
+                                onError: function(result){
+                                    window.location.href = '{{route('seragam.history')}}'
+                                    /* You may add your own js here, this is just example */ document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+                                }
+                                });
+                            }
+                        });
+                    } else {
+                        $('#info_stok').modal('show')
                     }
-                    });
                 }
-            });
+            })
+            
+           
         }
     </script>
+
+    <div class="modal fade" id="info_stok" tabindex="-1" role="dialog" aria-labelledby="stok" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h6 class="modal-title" id="stok">Mohon Maaf, Produk yang Anda Pilih Sudah Habis Stok</h6>
+                </div>
+            </div>
+        </div>
+    </div>
 
 @endsection
