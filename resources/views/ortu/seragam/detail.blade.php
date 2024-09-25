@@ -44,7 +44,11 @@
             <input type="hidden" id="produk_id" value="{{$produk->id}}">
             <div class="produk-title mt-3">
                 <h5 class="card-title mb-0">{{$produk->nama_produk}}</h5>
-                <p class="mb-1 price-diskon-detail" ><b> Rp. {{number_format($produk->harga * 80/100)}}/set </b> </p>
+                @if ($produk->jenis_produk == 'Baju')
+                    <p class="mb-1 price-diskon-detail" ><b> Rp. {{number_format($produk->harga * 80/100)}} </b> </p>
+                @else
+                    <p class="mb-1 price-diskon-detail" ><b> Rp. {{number_format($produk->harga * 80/100)}}/set </b> </p>
+                @endif
                 <p class="mb-0" style="font-size: 16px"> Discount 
                     <span class="bg-danger py-1 px-2"> {{($produk->diskon)}}% </span>
                     <span class="mx-2" style="color: gray"> <s> Rp. {{number_format($produk->harga)}} </s> </span>
