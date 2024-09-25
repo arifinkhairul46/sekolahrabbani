@@ -25,10 +25,10 @@ class SeragamController extends Controller
         $user_id = auth()->user()->id;
         $lokasi = LokasiSub::select('id as kode_lokasi', 'sublokasi')->where('status', 1)->get();
         $produk_seragam = ProdukSeragam::all();
-        $produk_seragam_tk = ProdukSeragam::where('jenjang_id', 2)->get();
-        $produk_seragam_sd = ProdukSeragam::where('jenjang_id', 3)->get();
-        $produk_seragam_smp = ProdukSeragam::where('jenjang_id', 4)->get();
-        $produk_seragam_bani = ProdukSeragam::where('jenjang_id', 5)->get();
+        $produk_seragam_tk = ProdukSeragam::where('jenjang_id', 3)->get();
+        $produk_seragam_sd = ProdukSeragam::where('jenjang_id', 4)->get();
+        $produk_seragam_smp = ProdukSeragam::where('jenjang_id', 5)->get();
+        $produk_seragam_bani = ProdukSeragam::where('jenjang_id', 10)->get();
 
         $search = $request->input('search');
 
@@ -418,6 +418,16 @@ class SeragamController extends Controller
         return view('ortu.seragam.pembayaran', compact('profile', 'cart_detail', 'order_seragam', 'order'));
         
         // dd($order);
+    }
+
+    public function check_stok(Request $request)
+    {
+        $kode_produk = $request->kode_produk;
+
+        $cek_stok = StokSeragam::where('kd_barang', $kode_produk)->first();
+        $qty_stok = $cek_stok->qty;
+
+        return response()->json($qty_stok);
     }
 
     
