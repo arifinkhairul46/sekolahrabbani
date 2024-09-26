@@ -332,6 +332,7 @@
                             $("#harga_awal").html(format_harga);
                             $("#harga_diskon").html(format_harga_diskon)
                             $("#total_stok").val(stok)
+                            $("#kode_produk").val(kode_produk)
                             $(".input-number").attr({
                                 'max' : stok
                             })

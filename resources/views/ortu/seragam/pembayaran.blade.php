@@ -128,8 +128,8 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-    {{-- <script src="https://app.sandbox.midtrans.com/snap/snap.js"  data-client-key="{{env('MIDTRANS_CLIENT_KEY')}}"></script>  --}}
-    <script src="https://app.midtrans.com/snap/snap.js"  data-client-key="{{env('MIDTRANS_CLIENT_KEY')}}"></script>
+    <script src="https://app.sandbox.midtrans.com/snap/snap.js"  data-client-key="{{env('MIDTRANS_CLIENT_KEY')}}"></script> 
+    {{-- <script src="https://app.midtrans.com/snap/snap.js"  data-client-key="{{env('MIDTRANS_CLIENT_KEY')}}"></script> --}}
     <script type="text/javascript">
 
         var harga_awal = $('#harga_awal').val();
@@ -152,60 +152,47 @@
             );
 
             // cek stok dahulu
+
             $.ajax({
-                url: "{{route('check.stock')}}",
-                type: 'GET',
+                url: "{{route('seragam.store')}}",
+                type: 'POST',
                 data: {
-                    kode_produk: kode_produk
+                    total_harga : total_harga,
+                    harga_awal: harga_awal,
+                    diskon: diskon,
+                    nama_siswa: nama_siswa,
+                    nama_kelas: nama_kelas,
+                    sekolah_id: sekolah_id,
+                    kode_produk: kode_produk,
+                    produk_id: produk_id,
+                    quantity: quantity,
+                    ukuran: ukuran,
+                    jenis_produk: jenis_produk,
+                    _token: '{{csrf_token()}}'
                 },
                 success: function (res) {
-                    if (res > 0) {
-                         $.ajax({
-                            url: "{{route('seragam.store')}}",
-                            type: 'POST',
-                            data: {
-                                total_harga : total_harga,
-                                harga_awal: harga_awal,
-                                diskon: diskon,
-                                nama_siswa: nama_siswa,
-                                nama_kelas: nama_kelas,
-                                sekolah_id: sekolah_id,
-                                kode_produk: kode_produk,
-                                produk_id: produk_id,
-                                quantity: quantity,
-                                ukuran: ukuran,
-                                jenis_produk: jenis_produk,
-                                _token: '{{csrf_token()}}'
-                            },
-                            success: function (res) {
-                                // SnapToken acquired from previous step
-                                snap.pay(res.snap_token, {
-                                // Optional
-                                onSuccess: function(result){
-                                    window.location.href = '{{route('checkout.success')}}'
-                                    /* You may add your own js here, this is just example */ /*document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);*/
-                                },
-                                // Optional
-                                onPending: function(result){
-                                    window.location.href = '{{route('seragam.history')}}'
-                                    /* You may add your own js here, this is just example */ document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
-                                },
-                                // Optional
-                                onError: function(result){
-                                    window.location.href = '{{route('seragam.history')}}'
-                                    /* You may add your own js here, this is just example */ document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
-                                }
-                                });
-                            }
-                        });
-                    } else {
-                        $('#info_stok').modal('show')
+                    // SnapToken acquired from previous step
+                    snap.pay(res.snap_token, {
+                    // Optional
+                    onSuccess: function(result){
+                        window.location.href = '{{route('checkout.success')}}'
+                        /* You may add your own js here, this is just example */ /*document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);*/
+                    },
+                    // Optional
+                    onPending: function(result){
+                        window.location.href = '{{route('seragam.history')}}'
+                        /* You may add your own js here, this is just example */ document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+                    },
+                    // Optional
+                    onError: function(result){
+                        window.location.href = '{{route('seragam.history')}}'
+                        /* You may add your own js here, this is just example */ document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
                     }
+                    });
                 }
-            })
-            
-           
+            });
         }
+
     </script>
 
     <div class="modal fade" id="info_stok" tabindex="-1" role="dialog" aria-labelledby="stok" aria-hidden="true">
