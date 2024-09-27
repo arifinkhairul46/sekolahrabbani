@@ -620,7 +620,8 @@ Terima kasih atas kepercayaan *Ayah/Bunda $nama_siswa*.🙏☺";
                 'diskon' => $diskon_now,
                 'jenis_produk_id' => $jenis_produk_now,
             ]);
-
+            $this->send_pesan_seragam($no_pesanan, $nama_pemesan, $no_hp);
+            $this->send_pesan_seragam_detail($no_pesanan, $nama_siswa_now, $sekolah_id_now, $nama_kelas_now, $produk_id_now, $jenis_produk_now, $kode_produk_now, $ukuran_now, $quantity_now, $harga_awal_now, $diskon_now);
             $this->update_stok($kode_produk_now, $quantity_now);
 
                 // Set your Merchant Server Key
@@ -862,7 +863,7 @@ Terima kasih atas kepercayaan *Ayah/Bunda $nama_siswa*.🙏☺";
                                             ->leftJoin('t_pesan_seragam as tps', 'tps.no_pemesanan', 't_pesan_seragam_detail.no_pemesanan')
                                             ->where('tps.no_pemesanan', $id)->get();
         
-                                            // dd($order);
+                                            // dd($order_detail);
         return view('ortu.seragam.rincian-pesan', compact( 'order', 'order_detail'));
     }
 
