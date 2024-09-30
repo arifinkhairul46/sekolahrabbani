@@ -28,7 +28,7 @@ class SeragamController extends Controller
         $produk_seragam_tk = ProdukSeragam::where('jenjang_id', 3)->get();
         $produk_seragam_sd = ProdukSeragam::where('jenjang_id', 4)->get();
         $produk_seragam_smp = ProdukSeragam::where('jenjang_id', 5)->get();
-        $produk_seragam_bani = ProdukSeragam::where('jenjang_id', 10)->get();
+        $produk_seragam_bani = ProdukSeragam::where('jenjang_id', 100)->get();
 
         $search = $request->input('search');
 
@@ -66,7 +66,7 @@ class SeragamController extends Controller
             $output = '';
 
             if ($keyword != '') {
-                $produk = ProdukSeragam::where('nama_produk', 'LIKE', '%'.$keyword.'%')->get();
+                $produk = ProdukSeragam::where('nama_produk', 'LIKE', '%'.$keyword.'%')->where('jenjang_id', '!=', '10')->get();
                 
                 if ($produk) {
                     foreach ($produk as $item) {

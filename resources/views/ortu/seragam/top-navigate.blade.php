@@ -1,5 +1,5 @@
 
-    <div class="top-navigate sticky-top mb-2">
+    <div class="top-navigate sticky-top">
         <div class="d-flex" style="justify-content: stretch; width: 100%;">
             <a onclick="window.history.go(-1); return false;" class="mt-1" style="text-decoration: none; color: black">
                 <i class="fa-solid fa-arrow-left"></i>

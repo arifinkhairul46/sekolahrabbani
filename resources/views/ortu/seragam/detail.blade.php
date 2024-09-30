@@ -42,7 +42,7 @@
     <div class="container">
         <div class="produk-detail">
             <input type="hidden" id="produk_id" value="{{$produk->id}}">
-            <div class="produk-title mt-3">
+            <div class="produk-title">
                 <h5 class="card-title mb-0">{{$produk->nama_produk}}</h5>
                 @if ($produk->jenis_produk == 'Baju')
                     <p class="mb-1 price-diskon-detail" ><b> Rp. {{number_format($produk->harga * 80/100)}}/baju </b> </p>
