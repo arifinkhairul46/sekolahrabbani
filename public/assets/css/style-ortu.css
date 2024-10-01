@@ -311,7 +311,7 @@ main {
 
 .catalog {
     position: static !important;
-    border-radius: 1rem !important; 
+    border-radius: 0.4rem !important; 
     box-shadow: 0 4px 2px -1px #ECECEC !important;
 }
 
