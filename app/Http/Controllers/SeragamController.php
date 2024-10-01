@@ -28,7 +28,7 @@ class SeragamController extends Controller
         $produk_seragam_tk = ProdukSeragam::where('jenjang_id', 3)->get();
         $produk_seragam_sd = ProdukSeragam::where('jenjang_id', 4)->get();
         $produk_seragam_smp = ProdukSeragam::where('jenjang_id', 5)->get();
-        $produk_seragam_bani = ProdukSeragam::where('jenjang_id', 100)->get();
+        $produk_seragam_kober = ProdukSeragam::where('jenjang_id', 1)->get();
 
         $search = $request->input('search');
 
@@ -55,7 +55,7 @@ class SeragamController extends Controller
 
         $menubar = MenuMobile::where('is_footer', 1)->get();
 
-        return view('ortu.seragam.index', compact('lokasi', 'produk_seragam', 'produk_seragam_tk', 'produk_seragam_sd', 'produk_seragam_smp', 'produk_seragam_bani', 'search_produk', 'cart_detail', 'menubar'));
+        return view('ortu.seragam.index', compact('lokasi', 'produk_seragam', 'produk_seragam_tk', 'produk_seragam_sd', 'produk_seragam_smp', 'produk_seragam_kober', 'search_produk', 'cart_detail', 'menubar'));
     }
 
     public function search_produk(Request $request)
@@ -135,6 +135,7 @@ class SeragamController extends Controller
                                     ->leftJoin('t_stok_seragam as tss', 'm_harga_seragam.kode_produk', 'tss.kd_barang')
                                     ->where('mps.id', $id)
                                     ->groupby('mus.id')
+                                    ->orderby('mus.urutan', 'ASC')
                                     ->get();
 
         $stok_seragam = HargaSeragam::select('mus.id', 'mus.ukuran_seragam', 'tss.qty', 'm_harga_seragam.kode_produk')

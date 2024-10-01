@@ -5,6 +5,25 @@
     <div class="container">
         <div class="row mx-auto" id="card_main_seragam">       
             <div class="col-md">
+                <div class="d-grid-card">
+                    @foreach ($produk_seragam_kober as $item)
+                        <a href="{{route('seragam.detail', $item->id)}}" style="text-decoration: none">
+                            <div class="card catalog mb-1">
+                                <img src="{{ asset('assets/images/'.$item->image) }}" class="card-img-top" alt="{{$item->image}}" style="max-height: 180px">
+                                <div class="card-body pt-1" style="padding-left: 0.8rem; padding-right: 0">
+                                    <h6 class="card-title mb-0">{{$item->nama_produk}}</h6>
+                                    <p class="mb-0 price-diskon" ><b> Rp. {{number_format($item->harga_awal * 80/100)}} </b> </p>
+                                    <p class="mb-1 price-normal"><s> Rp. {{number_format($item->harga_awal)}} </s> </p>
+                                    <p class="mb-0" style="font-size: 10px"> Disc. 
+                                        <span class="bg-danger p-1"> {{($item->diskon_persen)}}% </span> 
+                                        <span class="mx-2"> <i class="fa-solid fa-paper-plane fa-sm"></i> Sekolah Rabbani </span> 
+                                    </p>
+                                </div>
+                            </div>
+                        </a>
+                    @endforeach
+                </div>
+
                 <div class="center mb-3">
                     <img src="{{ asset('assets/images/katalog_produk_tk.png') }}" alt="katalog" width="100%">
                 </div>
