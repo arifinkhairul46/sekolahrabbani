@@ -5,6 +5,10 @@
     <div class="container">
         <div class="row mx-auto" id="card_main_seragam">       
             <div class="col-md">
+                <div class="center mb-3">
+                    <img src="{{ asset('assets/images/katalog_produk_kober.png') }}" alt="katalog" style="border-radius: 0.4rem" width="100%">
+                </div>
+
                 <div class="d-grid-card">
                     @foreach ($produk_seragam_kober as $item)
                         <a href="{{route('seragam.detail', $item->id)}}" style="text-decoration: none">
@@ -24,8 +28,8 @@
                     @endforeach
                 </div>
 
-                <div class="center mb-3">
-                    <img src="{{ asset('assets/images/katalog_produk_tk.png') }}" alt="katalog" width="100%">
+                <div class="center my-3">
+                    <img src="{{ asset('assets/images/katalog_produk_tk.png') }}" alt="katalog" style="border-radius: 0.4rem" width="100%">
                 </div>
 
                 <div class="d-grid-card">
@@ -48,7 +52,7 @@
                 </div>
 
                 <div class="center my-4">
-                    <img src="{{ asset('assets/images/katalog_produk_sd.png') }}" alt="discount" width="100%">
+                    <img src="{{ asset('assets/images/katalog_produk_sd.png') }}" alt="katalog" style="border-radius: 0.4rem" width="100%">
                 </div>
 
                 <div class="d-grid-card" >
@@ -71,7 +75,7 @@
                 </div>
 
                 <div class="center my-4">
-                    <img src="{{ asset('assets/images/katalog_produk_smp.png') }}" alt="katalog" width="100%">
+                    <img src="{{ asset('assets/images/katalog_produk_smp.png') }}" alt="katalog" style="border-radius: 0.4rem" width="100%">
                 </div>
 
                 <div class="d-grid-card" >
