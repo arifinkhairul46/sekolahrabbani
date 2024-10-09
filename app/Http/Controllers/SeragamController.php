@@ -460,6 +460,7 @@ class SeragamController extends Controller
         $total_harga_now = $request->total_harga;
         $harga_awal_now = $request->harga_awal;
         $diskon_now = $request->diskon;
+        $diskon_persen_now = $request->diskon_persen;
         $nama_siswa_now = $request->nama_siswa;
         $nama_kelas_now = $request->nama_kelas;
         $sekolah_id_now = $request->sekolah_id;
@@ -518,7 +519,7 @@ class SeragamController extends Controller
                 'harga' => $harga_awal,
                 'diskon' => $diskon/100 * $harga_awal,
                 'jenis_produk_id' => $jenis_produk,
-
+                'p_diskon' => $diskon
                 ]);
 
                 $total_harga += $harga_awal * $quantity;
@@ -526,7 +527,7 @@ class SeragamController extends Controller
                 $harga_akhir = $total_harga - $total_diskon;
                 $harga_akhir_format = number_format($harga_akhir);
 
-                $this->send_pesan_seragam_detail($no_pesanan, $nama_siswa, $lokasi, $nama_kelas, $produk_id, $jenis_produk, $kode_produk, $ukuran, $quantity, $harga_awal, $diskon/100 * $harga_awal);
+                $this->send_pesan_seragam_detail($no_pesanan, $nama_siswa, $lokasi, $nama_kelas, $produk_id, $jenis_produk, $kode_produk, $ukuran, $quantity, $harga_awal, $diskon/100 * $harga_awal, $diskon);
                 $this->update_stok($kode_produk, $quantity);
                 $this->update_cart_status($user_id, $kode_produk);
             }
@@ -568,34 +569,6 @@ class SeragamController extends Controller
             $order_seragam->snap_token = $snapToken;
             $order_seragam->save();
 
-//kirim notif ke pemesan
-$message = "Informasi Pemesanan Seragam Sekolah Rabbani
-
-Terima kasih Ayah/Bunda $nama_siswa telah melakukan pemesanan Seragam.🙏☺
-
-Berikut adalah detail pemesanan Anda:
-
-No invoice: *$no_pesanan*
-Nama Pemesan: *$nama_pemesan*
-Cabang Sekolah : *$lokasi*
-Total Pembayaran: *Rp. $harga_akhir_format*
-
-Berikut Rekening Pembayaran Pemesanan Seragam :
-
-*Bank Syariah Indonesia (BSI)*
-Nomor Rekening: 7700700218
-Atas Nama: *Seragam Sekolah Rabbani*
-
-Setelah melakukan pembayaran, silahkan bisa konfirmasi dengan mengirimkan foto bukti transfernya.🙏
-
-Catatan :
-_Pesanan akan diproses setelah pembayaran dikonfirmasi._
-Jika Anda memiliki pertanyaan atau membutuhkan bantuan lebih lanjut, silahkan bisa menghubungi kami.
-
-Terima kasih atas kepercayaan *Ayah/Bunda $nama_siswa*.🙏☺";
-
-        // $send_notif = $this->send_notif($no_hp, $message);
-
             return response()->json($order_seragam);
 
         } else {
@@ -620,9 +593,10 @@ Terima kasih atas kepercayaan *Ayah/Bunda $nama_siswa*.🙏☺";
                 'harga' => $harga_awal_now,
                 'diskon' => $diskon_now,
                 'jenis_produk_id' => $jenis_produk_now,
+                'p_diskon' => $diskon_persen_now
             ]);
             $this->send_pesan_seragam($no_pesanan, $nama_pemesan, $no_hp);
-            $this->send_pesan_seragam_detail($no_pesanan, $nama_siswa_now, $sekolah_id_now, $nama_kelas_now, $produk_id_now, $jenis_produk_now, $kode_produk_now, $ukuran_now, $quantity_now, $harga_awal_now, $diskon_now);
+            $this->send_pesan_seragam_detail($no_pesanan, $nama_siswa_now, $sekolah_id_now, $nama_kelas_now, $produk_id_now, $jenis_produk_now, $kode_produk_now, $ukuran_now, $quantity_now, $harga_awal_now, $diskon_now, $diskon_persen_now);
             $this->update_stok($kode_produk_now, $quantity_now);
 
                 // Set your Merchant Server Key
@@ -915,10 +889,11 @@ Terima kasih atas kepercayaan *Ayah/Bunda $nama_siswa*.🙏☺";
 
         if ($request->has('nama_produk') || $request->has('jenis_produk') || $request->has('ukuran') ) {
             $list_seragam = HargaSeragam::select('m_harga_seragam.id', 'mps.nama_produk', 'mjps.jenis_produk', 'mus.ukuran_seragam',
-                                        'm_harga_seragam.kode_produk', 'm_harga_seragam.harga', 'm_harga_seragam.diskon')
+                                        'm_harga_seragam.kode_produk', 'm_harga_seragam.harga', 'm_harga_seragam.diskon', 'tss.qty')
                                         ->leftJoin('m_ukuran_seragam as mus', 'mus.id', 'm_harga_seragam.ukuran_id')
                                         ->leftJoin('m_produk_seragam as mps', 'mps.id', 'm_harga_seragam.produk_id')
-                                        ->leftJoin('m_jenis_produk_seragam as mjps', 'mjps.id', 'm_harga_seragam.jenis_produk_id');
+                                        ->leftJoin('m_jenis_produk_seragam as mjps', 'mjps.id', 'm_harga_seragam.jenis_produk_id')
+                                        ->leftJoin('t_stok_seragam as tss', 'tss.kd_barang', 'm_harga_seragam.kode_produk');
 
             if ($request->has('nama_produk')) {
                 $list_seragam = $list_seragam->where('produk_id', $nama_produk);
@@ -936,10 +911,11 @@ Terima kasih atas kepercayaan *Ayah/Bunda $nama_siswa*.🙏☺";
 
         } else {
             $list_seragam = HargaSeragam::select('m_harga_seragam.id', 'mps.nama_produk', 'mjps.jenis_produk', 'mus.ukuran_seragam',
-                            'm_harga_seragam.kode_produk', 'm_harga_seragam.harga', 'm_harga_seragam.diskon')
+                            'm_harga_seragam.kode_produk', 'm_harga_seragam.harga', 'm_harga_seragam.diskon', 'tss.qty')
                             ->leftJoin('m_ukuran_seragam as mus', 'mus.id', 'm_harga_seragam.ukuran_id')
                             ->leftJoin('m_produk_seragam as mps', 'mps.id', 'm_harga_seragam.produk_id')
                             ->leftJoin('m_jenis_produk_seragam as mjps', 'mjps.id', 'm_harga_seragam.jenis_produk_id')
+                            ->leftJoin('t_stok_seragam as tss', 'tss.kd_barang', 'm_harga_seragam.kode_produk')
                             ->get();
             
         }
@@ -1044,7 +1020,7 @@ Terima kasih atas kepercayaan *Ayah/Bunda $nama_siswa*.🙏☺";
 	    // return ($response);
 	}
 
-    function send_pesan_seragam_detail($no_pesanan, $nama_siswa, $lokasi_sekolah, $nama_kelas, $produk_id, $jenis_produk_id, $kode_produk, $ukuran, $quantity, $harga, $diskon){
+    function send_pesan_seragam_detail($no_pesanan, $nama_siswa, $lokasi_sekolah, $nama_kelas, $produk_id, $jenis_produk_id, $kode_produk, $ukuran, $quantity, $harga, $diskon, $diskon_persen){
 	    $curl = curl_init();
 
 		curl_setopt_array($curl, array(
@@ -1069,7 +1045,9 @@ Terima kasih atas kepercayaan *Ayah/Bunda $nama_siswa*.🙏☺";
 		  	'ukuran' => $ukuran,
 		  	'quantity' => $quantity,
 		  	'harga' => $harga,
-		  	'diskon' => $diskon)
+		  	'diskon' => $diskon,
+		  	'diskon_persen' => $diskon_persen
+            )
 
 		));
 

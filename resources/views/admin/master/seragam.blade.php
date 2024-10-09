@@ -60,6 +60,7 @@
                                 <th>Kode Produk</th>
                                 <th>Harga</th>
                                 <th>Diskon</th>
+                                <th>Stok </th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -73,6 +74,7 @@
                                     <td>{{$item->kode_produk}}</td>
                                     <td>Rp {{number_format($item->harga)}}</td>
                                     <td>{{$item->diskon}}</td>
+                                    <td>{{$item->qty}}</td>
                                     <td class="d-flex">
                                         <button class="btn btn-sm btn-warning" title="Edit" onclick="edit_data('{{$item->id}}')" data-bs-toggle="modal" data-bs-target="#edit_seragam">
                                             <i class="fa-solid fa-pencil"></i>

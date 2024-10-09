@@ -25,7 +25,8 @@ class OrderDetailSeragam extends Model
         'harga',
         'diskon',
         'status', 
-        'snap_token'
+        'snap_token',
+        'p_diskon'
     ];
 
     public function order_seragam()

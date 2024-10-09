@@ -13,10 +13,12 @@
     @if ($order)
         <?php $harga = (($produk_seragam->harga) - ($produk_seragam->diskon/100 * $produk_seragam->harga)) * $quantity; ?>
         <?php $diskon =  ($produk_seragam->diskon/100 * $produk_seragam->harga) * $quantity; ?>
+        <?php $diskon_persen =  ($produk_seragam->diskon); ?>
         <?php $harga_awal = $produk_seragam->harga * $quantity; ?>
         <input type="hidden" id="harga" value="{{$harga}}">
         <input type="hidden" id="harga_awal" value="{{$harga_awal}}">
         <input type="hidden" id="diskon" value="{{$diskon}}">
+        <input type="hidden" id="diskon_persen" value="{{$diskon_persen}}">
         <input type="hidden" id="kode_produk" value="{{$produk_seragam->kode_produk}}">
         <input type="hidden" id="quantity" value="{{$quantity}}">
         <input type="hidden" id="ukuran" value="{{$ukuran}}">
@@ -141,6 +143,7 @@
 
         var harga_awal = $('#harga_awal').val();
         var diskon = $('#diskon').val();
+        var diskon_persen = $('#diskon_persen').val();
         var total_harga = $('#harga').val();
         var nama_siswa = $('#nama_siswa').val();
         var nama_kelas = $('#nama_kelas').val();
@@ -189,6 +192,7 @@
                         total_harga : total_harga,
                         harga_awal: harga_awal,
                         diskon: diskon,
+                        diskon_persen: diskon_persen,
                         nama_siswa: nama_siswa,
                         nama_kelas: nama_kelas,
                         sekolah_id: sekolah_id,
@@ -240,6 +244,7 @@
                                     total_harga : total_harga,
                                     harga_awal: harga_awal,
                                     diskon: diskon,
+                                    diskon_persen: diskon_persen,
                                     nama_siswa: nama_siswa,
                                     nama_kelas: nama_kelas,
                                     sekolah_id: sekolah_id,
