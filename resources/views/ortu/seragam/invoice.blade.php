@@ -31,9 +31,12 @@
             border: 1px solid black;
         }
 
-
+        .bg-pink {
+            background-color: #EB3C97;
+            color: white;
+        }
         .footer { 
-            position: fixed; left: 0px; bottom: 0px; right: 0px; background-color: lightblue; 
+            position: fixed; left: 0px; bottom: 0px; right: 0px; background-color: #3FA2F6;
         }
     </style>
 
@@ -100,11 +103,11 @@
         <table class="table table-bordered">
             <thead style="font-size: 16px" >
                 <tr>
-                    <th style="width: 20px" >No</th>
-                    <th colspan="2" style="width: 300px">Deskripsi Item</th>
-                    <th style="width: 120px">Harga</th>
-                    <th style="width: 80px">Jumlah</th>
-                    <th style="width: 100px">Total</th>
+                    <th class="bg-pink" style="width: 25px" >No</th>
+                    <th class="bg-pink" colspan="2" style="width: 300px">Deskripsi Item</th>
+                    <th class="bg-pink" style="width: 120px">Harga</th>
+                    <th class="bg-pink" style="width: 80px">Jumlah</th>
+                    <th class="bg-pink" style="width: 100px">Total</th>
                 </tr>
             </thead>
             <tbody style="font-size: 13px">
@@ -112,7 +115,7 @@
                 @foreach($order_detail as $item)
                 
                 <tr class="items">
-                    <td>
+                    <td class="text-center">
                         {{$loop->iteration}}
                     </td>
                     <td colspan="2">
@@ -151,6 +154,18 @@
  
 
     <div class="mt-3"><i> Terimakasih </i></div>
+
+    <div class=" mt-3 policy">
+        <h6 class="mb-0"> Privacy Policy </h6>
+        <ol type="1" style="font-size: 10px"> 
+            <i>
+            <li> Jika ada salah pembelian, tidak ada kebijakan refund atau pengembalian uang</li>
+            <li> Jika salah ukuran maka dapat ditukar dengan barang sejenis maksimal H+1 setelah barang diterima dan hanya dapat dilakukan 1 kali</li>
+            <li> Penukaran barang sejenis dimulai dari ukuran XS s.d. 3XL</li>
+            <li> Proses penukaran membutuhkan waktu maksimal 14 hari kerja</li>
+            </i>
+        </ol>
+    </div>
  
     <div class="footer">
         <table>
@@ -169,21 +184,6 @@
                 </td>
             </tr>
         </table>
-
-        {{-- <div class="d-flex p-2" style="justify-content: space-between;">
-            <div class="web">
-                <i class="fa fa-globe"></i>
-                <span style="font-size: 10px"> www.sekolahrabbani.sch.id</span>
-            </div>
-            <div class="ig">
-                <i class="fa-brands fa-instagram"></i>
-                <span style="font-size: 10px">sekolahrabbani</span>
-            </div>
-            <div class="wa">
-                <i class="fa-brands fa-whatsapp"></i>
-                <span style="font-size: 10px">+62 851-7327-3274</span>
-            </div>
-        </div> --}}
     </div>
 </body>
 </html>

@@ -62,10 +62,13 @@
             </div>
         </div>
 
-        <div class="bottom-navigate mt-3 p-3 d-flex" style="justify-content: space-between; background-color: #f5f5f5">
-            <h6> Total Pembayaran <br> <b> Rp. <span id="total_bayar"> {{number_format($harga)}} </span> </b> </h6>
-            <input type="hidden" value="{{$harga}}" id="total_akhir" >
-            <button id="pay-button" type="submit" class="btn btn-purple btn-sm px-4" onclick="bayar_seragam()" style="letter-spacing: 1px"> <b>Bayar</b> </button>
+        <div class="bottom-navigate mt-3" style="background-color: #f5f5f5">
+            <a href="#" style="font-size: 10px; text-decoration: none; color: #624F8F" data-bs-toggle="modal" data-bs-target="#privacy_policy"><i class="fa-solid fa-circle-info"></i> Privacy Policy </a>
+            <div class="p-2 d-flex" style="justify-content: space-between">
+                <h6> Total Pembayaran <br> <b> Rp. <span id="total_bayar"> {{number_format($harga)}} </span> </b> </h6>
+                <input type="hidden" value="{{$harga}}" id="total_akhir" >
+                <button id="pay-button" type="submit" class="btn btn-purple btn-sm px-4" onclick="bayar_seragam()" style="letter-spacing: 1px"> <b>Bayar</b> </button>
+            </div>
         </div>
     @else 
         <?php $total_awal = 0; ?>
@@ -115,14 +118,17 @@
             </div>
         </div>
 
-        <div class="bottom-navigate mt-3 p-3 d-flex" style="justify-content: space-between; background-color: #f5f5f5">
-            <h6> Total Pembayaran <br> <b> Rp. <span id="total_bayar"> {{number_format($total_akhir)}} </span> </b> </h6>
-            <input type="hidden" value="{{$total_akhir}}" id="total_akhir" >
-            @if ($total_akhir != 0)
-                <button id="pay-button" type="submit" class="btn btn-purple btn-sm px-4" onclick="bayar_seragam()" style="letter-spacing: 1px"> <b>Bayar</b> </button>
-            @else 
-                <button id="pay-button" type="submit" class="btn btn-purple btn-sm px-4" onclick="bayar_seragam()" style="letter-spacing: 1px" disabled> <b>Bayar</b> </button>
-            @endif
+        <div class="bottom-navigate mt-3" style="background-color: #f5f5f5">
+            <a href="#" style="font-size: 10px; text-decoration: none; color: #624F8F" data-bs-toggle="modal" data-bs-target="#privacy_policy"><i class="fa-solid fa-circle-info"></i> Privacy Policy </a>
+            <div class="p-2 d-flex" style="justify-content: space-between">
+                <h6> Total Pembayaran <br> <b> Rp. <span id="total_bayar"> {{number_format($total_akhir)}} </span> </b> </h6>
+                <input type="hidden" value="{{$total_akhir}}" id="total_akhir" >
+                @if ($total_akhir != 0)
+                    <button id="pay-button" type="submit" class="btn btn-purple btn-sm px-4" onclick="bayar_seragam()" style="letter-spacing: 1px"> <b>Bayar</b> </button>
+                @else 
+                    <button id="pay-button" type="submit" class="btn btn-purple btn-sm px-4" onclick="bayar_seragam()" style="letter-spacing: 1px" disabled> <b>Bayar</b> </button>
+                @endif
+            </div>
         </div>
     @endif
 
@@ -283,6 +289,25 @@
                 </div>
                 <div class="modal-body">
                     <h6 class="modal-title" id="stok">Mohon Maaf, Produk yang Anda Pilih Sudah Habis Stok</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="privacy_policy" tabindex="-1" role="dialog" aria-labelledby="stok" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3> Privacy Policy </h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ol type="1"> 
+                        <li> Jika ada salah pembelian, tidak ada kebijakan refund atau pengembalian uang</li>
+                        <li> Jika salah ukuran maka dapat ditukar dengan barang sejenis maksimal H+1 setelah barang diterima dan hanya dapat dilakukan 1 kali</li>
+                        <li> Penukaran barang sejenis dimulai dari ukuran XS s.d. 3XL</li>
+                        <li> Proses penukaran membutuhkan waktu maksimal 14 hari kerja</li>
+                    </ol>
                 </div>
             </div>
         </div>
