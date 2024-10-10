@@ -12,6 +12,7 @@ use App\Models\OrderDetailSeragam;
 use App\Models\OrderSeragam;
 use App\Models\ProdukSeragam;
 use App\Models\Profile;
+use App\Models\StokCard;
 use App\Models\StokSeragam;
 use App\Models\UkuranSeragam;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -528,7 +529,6 @@ class SeragamController extends Controller
                 $harga_akhir_format = number_format($harga_akhir);
 
                 $this->send_pesan_seragam_detail($no_pesanan, $nama_siswa, $lokasi, $nama_kelas, $produk_id, $jenis_produk, $kode_produk, $ukuran, $quantity, $harga_awal, $diskon/100 * $harga_awal, $diskon);
-                $this->update_stok($kode_produk, $quantity);
                 $this->update_cart_status($user_id, $kode_produk);
             }
 
@@ -597,7 +597,6 @@ class SeragamController extends Controller
             ]);
             $this->send_pesan_seragam($no_pesanan, $nama_pemesan, $no_hp);
             $this->send_pesan_seragam_detail($no_pesanan, $nama_siswa_now, $sekolah_id_now, $nama_kelas_now, $produk_id_now, $jenis_produk_now, $kode_produk_now, $ukuran_now, $quantity_now, $harga_awal_now, $diskon_now, $diskon_persen_now);
-            $this->update_stok($kode_produk_now, $quantity_now);
 
                 // Set your Merchant Server Key
             \Midtrans\Config::$serverKey = config('midtrans.serverKey');
@@ -732,6 +731,22 @@ class SeragamController extends Controller
                     'va_number' => $no_va,
                     'updated_at' => $request->settlement_time
                 ]);
+                foreach ($order_detail as $item) {
+                    $kode_produk = $item->kode_produk;
+                    $quantity = $item->quantity;
+
+                    $stok_awal = StokSeragam::where('kd_barang', $kode_produk)->first();
+
+                    $stok_card = StokCard::create([
+                        'kd_gudang' => 'YYS',
+                        'kd_barang' => $kode_produk,
+                        'stok_awal' => $stok_awal->qty,
+                        'qty' => $quantity,
+                        'stok_akhir' => $stok_awal->qty - $quantity,
+                        'proses' => 'penjualan',
+                        'no_proses' => $orderId
+                    ]);
+                };
                 $this->update_status_seragam('success', $mtd_pembayaran, $orderId);
                 break;
             case 'pending':
@@ -741,6 +756,12 @@ class SeragamController extends Controller
                     'va_number' => $no_va,
                     'expire_time' => $request->expiry_time
                 ]);
+                foreach ($order_detail as $item) {
+                    $kode_produk = $item->kode_produk;
+                    $quantity = $item->quantity;
+
+                    $this->update_stok($kode_produk, $quantity);
+                }
                 $this->update_status_seragam('pending', $mtd_pembayaran, $orderId);
                 break;
             case 'deny':
