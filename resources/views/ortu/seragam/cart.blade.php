@@ -31,7 +31,7 @@
                             <span class="bg-danger py-1 px-2" style="font-size: 11px"> {{$item['diskon']}}% </span> 
                         </p>
                         <p class="mb-0" style="color: gray; font-size: 12px"> <s> Rp. {{number_format($item['harga'] * $item['quantity']) }} </s> </p>
-                        <p class="mb-0" style="font-size: 11px"> Jenis: {{$item['jenis_produk']}} </p>
+                        <span class="mb-0" style="font-size: 11px"> Jenis: {{$item['jenis_produk']}} , </span> <span class="mb-0" id="stok_{{$item->kode_produk}}" style="font-size: 11px"> Stok: {{$item['qty']}} </span>
                         <p class="mb-0" style="font-size: 11px"> Nama: {{$item['nama_siswa']}} </p>
                         <p class="mb-1" style="font-size: 11px"> Sekolah: {{$item['sekolah']}}, Kelas: {{$item['nama_kelas']}} </p>
                         
@@ -41,7 +41,7 @@
                                     <i class="fas fa-minus-circle"></i>
                                 </button>
                             </div>
-                            <input type="text" name="quant[{{$item->id}}]" style="font-size: 12px" id="quant_{{$item->id}}" class="input-number" value="{{$item['quantity']}}" min="1" max="10">
+                            <input type="text" name="quant[{{$item->id}}]" style="font-size: 12px" id="quant_{{$item->id}}" class="input-number" value="{{$item['quantity']}}" min="1" max="{{$item['qty']}}">
                             {{-- <input type="hidden" id="produk_id_{{$item->id}}" value="{{$item->id}}" > --}}
                             <div class="button plus">
                                 <button type="button" class="btn btn-outline-plus-minus btn-number" data-type="plus" data-id="{{$item->id}}" data-field="quant[{{$item->id}}]">
