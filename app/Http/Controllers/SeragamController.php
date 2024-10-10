@@ -732,13 +732,7 @@ class SeragamController extends Controller
                     'va_number' => $no_va,
                     'updated_at' => $request->settlement_time
                 ]);
-                foreach ($order_detail as $item) {
-                    $kode_produk = $item->kode_produk;
-                    $quantity = $item->quantity;
-
-                    $this->return_stock($kode_produk, $quantity);
-                }
-                   $this->update_status_seragam('success', $mtd_pembayaran, $orderId);
+                $this->update_status_seragam('success', $mtd_pembayaran, $orderId);
                 break;
             case 'pending':
                 $order->update([
