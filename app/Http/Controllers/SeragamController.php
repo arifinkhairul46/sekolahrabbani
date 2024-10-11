@@ -676,7 +676,7 @@ class SeragamController extends Controller
         $paymentType = $request->payment_type;
 
         if ($paymentType == 'shopeepay' || $paymentType == 'gopay') {
-            $mtd_pembayaran == $paymentType;
+            $mtd_pembayaran = $paymentType;
             $no_va = 0;
         } else if ($paymentType == 'bank_transfer' && !$request->permata_va_number) {
             $va_number = $request->va_numbers[0]['va_number'];
@@ -735,17 +735,6 @@ class SeragamController extends Controller
                     $kode_produk = $item->kode_produk;
                     $quantity = $item->quantity;
 
-                    $stok_awal = StokSeragam::where('kd_barang', $kode_produk)->first();
-
-                    $stok_card = StokCard::create([
-                        'kd_gudang' => 'YYS',
-                        'kd_barang' => $kode_produk,
-                        'stok_awal' => $stok_awal->qty,
-                        'qty' => $quantity,
-                        'stok_akhir' => $stok_awal->qty - $quantity,
-                        'proses' => 'penjualan',
-                        'no_proses' => $orderId
-                    ]);
                 };
                 $this->update_status_seragam('success', $mtd_pembayaran, $orderId);
                 break;
@@ -759,6 +748,18 @@ class SeragamController extends Controller
                 foreach ($order_detail as $item) {
                     $kode_produk = $item->kode_produk;
                     $quantity = $item->quantity;
+
+                    $stok_awal = StokSeragam::where('kd_barang', $kode_produk)->first();
+
+                    $stok_card = StokCard::create([
+                        'kd_gudang' => 'YYS',
+                        'kd_barang' => $kode_produk,
+                        'stok_awal' => $stok_awal->qty,
+                        'qty' => $quantity,
+                        'stok_akhir' => $stok_awal->qty - $quantity,
+                        'proses' => 'penjualan',
+                        'no_proses' => $orderId
+                    ]);
 
                     $this->update_stok($kode_produk, $quantity);
                 }
@@ -786,6 +787,18 @@ class SeragamController extends Controller
                 foreach ($order_detail as $item) {
                     $kode_produk = $item->kode_produk;
                     $quantity = $item->quantity;
+
+                    $stok_awal = StokSeragam::where('kd_barang', $kode_produk)->first();
+
+                    $stok_card = StokCard::create([
+                        'kd_gudang' => 'YYS',
+                        'kd_barang' => $kode_produk,
+                        'stok_awal' => $stok_awal->qty,
+                        'qty' => $quantity,
+                        'stok_akhir' => $stok_awal->qty + $quantity,
+                        'proses' => 'expired',
+                        'no_proses' => $orderId
+                    ]);
 
                     $this->return_stock($kode_produk, $quantity);
                 }
