@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Profile;
+use App\Models\Role;
 use App\Models\User;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
@@ -19,8 +20,39 @@ class UserController extends Controller
     public function list_user()
     {
         $list_user = User::all();
+        $list_role = Role::all();
         // dd($list_user);
-        return view('admin.master.index', compact('list_user'));
+        return view('admin.master.index', compact('list_user', 'list_role'));
+    }
+
+    public function add_user(Request $request)
+    {
+        $no_hp = $request->no_hp;
+        $nama_lengkap = $request->nama_lengkap;
+        $email = $request->email;
+        $id_role = $request->id_role;
+        $pass = $this->rand_pass(8);
+
+        $create = User::create([
+            'name' => $nama_lengkap,
+            'no_hp' => $no_hp,
+            'email' => $email,
+            'password' => Hash::make($pass),
+            'id_role' => $id_role,
+            'created_at' => date('Y-m-d H:i:s')
+        ]);
+
+        $get_user = User::where('no_hp', $no_hp)->first();
+
+        Profile::create([
+            'pass_akun' => $pass,
+            'user_id' => $get_user->id,
+            'no_hp_ibu' => $no_hp,
+            'created_at' => date('Y-m-d H:i:s')
+        ]);
+
+        return redirect()->back()->with('success', 'berhasil menambah user');
+
     }
 
     public function get_user_api()
@@ -126,13 +158,13 @@ class UserController extends Controller
                         ->orWhere('no_hp_2', $request->no_hp)                
                         ->first();
 
-            if ($user->id_role == 1) {
+            if ($user->id_role == 1 || $user->id_role == 2 ) {
                 if (Hash::check($request->password, $user->password)) {
                     $request->session()->regenerate();
 
                     Auth::login($user);
 
-                    return redirect()->route('list-user');
+                    return redirect()->route('list-seragam');
                 } else {
                     return redirect()->route('login')->with('error', 'No Hp atau password salah');
                 }

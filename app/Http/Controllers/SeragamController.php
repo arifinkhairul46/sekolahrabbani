@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\HargaExport;
+use App\Exports\StokExport;
 use App\Models\Cart;
 use App\Models\CartDetail;
 use App\Models\HargaSeragam;
@@ -18,6 +20,7 @@ use App\Models\UkuranSeragam;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class SeragamController extends Controller
 {
@@ -951,6 +954,10 @@ class SeragamController extends Controller
         return view('admin.master.seragam', compact('list_seragam', 'list_produk', 'list_ukuran', 'list_jenis', 'nama_produk', 'jenis_produk', 'ukuran'));
     }
 
+    public function export_seragam()
+    {
+        return Excel::download(new StokExport(), 'stok.xlsx');
+    }
 
     public function detail_seragam(Request $request, $id)
     {

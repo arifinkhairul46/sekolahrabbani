@@ -25,10 +25,8 @@
                 <div class="caption ms-3 d-none d-md-block ">
                     @if ( auth()->user()->id_role == 1)
                     <span class="mb-1 caption-sub-title">Superadmin</span>
-                    @elseif ( auth()->user()->id_role == 4)
-                    <p class="mb-0 caption-sub-title">Karyawan</p>
-                    @else
-                    <p class="mb-0 caption-sub-title">Orang Tua Siswa</p>
+                    @elseif ( auth()->user()->id_role == 2)
+                    <p class="mb-0 caption-sub-title">Admin</p>
                     @endif
                     <h6 class="mb-1 caption-title">{{ auth()->user()->name }}</h6>
                 </div>

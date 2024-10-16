@@ -55,9 +55,11 @@ Route::controller(GoogleController::class)->group(function () {
 Route::group(['middleware' =>['admin']], function () {
     Route::prefix('master')->group(function () {
         Route::get('list-user', [UserController::class, 'list_user'])->name('list-user');
+        Route::post('list-user/create', [UserController::class, 'add_user'])->name('add-user');
         Route::get('get-user', [UserController::class, 'get_user_api'])->name('get-user.api');
 
         Route::get('seragam', [SeragamController::class, 'list_seragam'])->name('list-seragam');
+        Route::get('export-seragam', [SeragamController::class, 'export_seragam'])->name('export-seragam');
         Route::get('seragam/{id}', [SeragamController::class, 'detail_seragam'])->name('detail-seragam');
         Route::put('seragam/{id}', [SeragamController::class, 'update_seragam'])->name('update-seragam');
 

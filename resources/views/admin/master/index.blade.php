@@ -13,9 +13,7 @@
         <div class="card">
             <div class="card-body">
                 <div class="d-flex" style="justify-content: flex-end">
-                    <form action="#" method="GET" class="mx-2">
-                        <button class="btn btn-primary btn-sm"> Add User </button>
-                    </form>
+                    <button class="btn btn-primary btn-sm mx-2"  data-bs-toggle="modal" data-bs-target="#add_user"> Add User </button>
                     <form action="{{route('get-user.api')}}" method="GET">
                         <button class="btn btn-warning btn-sm"> Get User From API </button>
                     </form>
@@ -60,4 +58,50 @@
         </div>
     </div>
 
+    {{-- modal create user --}}
+    <div class="modal fade" id="add_user" tabindex="-1" role="dialog" aria-labelledby="create_user" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="create_user">Tambah user</h5>
+                </div>
+                <form action="{{route('add-user')}}" method="POST">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="nama_lengkap" class="form-control-label">Nama Lengkap</label>
+                            <input type="text" class="form-control" name="nama_lengkap" id="nama_lengkap">
+                        
+                        </div>
+
+                        <div class="form-group">
+                            <label for="no_hp" class="form-control-label">No Hp</label>
+                            <input type="text" class="form-control" name="no_hp" id="no_hp">
+                            
+                        </div>
+
+                        <div class="form-group">
+                            <label for="id_role" class="form-control-label">Role</label>
+                            <select name="id_role" id="id_role" class="select2 form-control form-control-sm" aria-label=".form-select-sm" >
+                                <option value="" disabled selected> </option>
+                                    @foreach ($list_role as $item)
+                                        <option value="{{ $item->id }}" >{{ $item->name }}</option>
+                                    @endforeach
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email" class="form-control-label">Email</label>
+                            <input type="email" class="form-control" name="email" id="email">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                        <input type="hidden" id="id_harga_user">
+                        <button type="submit" class="btn btn-success btn-sm" onclick="#" >Create</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection

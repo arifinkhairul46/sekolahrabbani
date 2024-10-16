@@ -45,9 +45,8 @@
         <div class="card">
             <div class="card-body">
                 <div class="d-flex" style="justify-content: flex-end">
-                    <form action="#" method="GET" class="mx-2">
-                        <button class="btn btn-primary btn-sm"> Add Seragam </button>
-                    </form>
+                    <button class="btn btn-primary btn-sm mx-2" data-bs-toggle="modal" data-bs-target="#add_seragam"> Add Seragam </button>
+                    <form action="{{route('export-seragam')}}" method="GET" ><button class="btn btn-success btn-sm" > Export Excel </button> </form>
                 </div>
                 <div class="table-responsive mt-3">
                     <table id="list_seragam" class="table table-striped" data-toggle="data-table">
@@ -182,6 +181,76 @@
                     <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
                     <input type="hidden" id="id_harga_seragam">
                     <button type="button" class="btn btn-success btn-sm" onclick="update_seragam()" >Update</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- create seragam --}}
+    <div class="modal fade" id="add_seragam" tabindex="-1" role="dialog" aria-labelledby="create_seragam" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="create_seragam">Tambah Seragam</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="product_name" class="form-control-label">Nama Produk</label>
+                        <select name="product_name" id="product_name" class="select2 form-control form-control-sm" aria-label=".form-select-sm" >
+                            <option value="" disabled selected> </option>
+                                @foreach ($list_produk as $item)
+                                    <option value="{{ $item->id }}" {{($item->id == $nama_produk) ? 'selected' : ''}} >{{ $item->nama_produk }}</option>
+                                @endforeach
+                        </select>
+                        <span style="font-size: 10px"> Tidak ada dalam list? Tambah Disini </span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="product_name" class="form-control-label">Ukuran Produk</label>
+                        <select name="product_name" id="product_name" class="select2 form-control form-control-sm" aria-label=".form-select-sm" >
+                            <option value="" disabled selected> </option>
+                                @foreach ($list_ukuran as $item)
+                                    <option value="{{ $item->id }}" >{{ $item->ukuran_seragam }}</option>
+                                @endforeach
+                        </select>
+                        <span style="font-size: 10px"> Tidak ada dalam list? Tambah Disini </span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="product_name" class="form-control-label">Jenis Produk</label>
+                        <select name="product_name" id="product_name" class="select2 form-control form-control-sm" aria-label=".form-select-sm" >
+                            <option value="" disabled selected> </option>
+                                @foreach ($list_jenis as $item)
+                                    <option value="{{ $item->id }}" >{{ $item->jenis_produk }}</option>
+                                @endforeach
+                        </select>
+                        <span style="font-size: 10px"> Tidak ada dalam list? Tambah Disini </span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="harga" class="form-control-label">Harga</label>
+                        <input type="text" class="form-control" name="harga" id="harga">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="diskon" class="form-control-label">Diskon</label>
+                        <input type="text" class="form-control" name="diskon" id="diskon">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="kode_produk" class="form-control-label">Kode Produk</label>
+                        <input type="text" class="form-control" name="kode_produk" id="kode_produk" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="stock" class="form-control-label">Stok</label>
+                        <input type="text" class="form-control" name="stock" id="stock" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                    <input type="hidden" id="id_harga_seragam">
+                    <button type="button" class="btn btn-success btn-sm" onclick="#" >Create</button>
                 </div>
             </div>
         </div>
