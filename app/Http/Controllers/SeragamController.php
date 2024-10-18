@@ -678,7 +678,7 @@ class SeragamController extends Controller
         $no_va = null;
         $paymentType = $request->payment_type;
 
-        if ($paymentType == 'shopeepay' || $paymentType == 'gopay') {
+        if ($paymentType == 'shopeepay' || $paymentType == 'gopay' || $paymentType == 'qris') {
             $mtd_pembayaran = $paymentType;
             $no_va = 0;
         } else if ($paymentType == 'bank_transfer' && !$request->permata_va_number) {
