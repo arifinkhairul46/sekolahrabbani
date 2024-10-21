@@ -19,6 +19,7 @@ class StokCard extends Model
         'proses',
         'no_proses',
         'created_at',
-        'updated_at'
+        'updated_at',
+        'updateby'
     ];
 }

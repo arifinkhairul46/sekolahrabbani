@@ -975,13 +975,17 @@ class SeragamController extends Controller
 
     public function update_seragam(Request $request)
     {
+        $user = auth()->user()->name;
 
         $harga = $request->harga;
         $diskon = $request->diskon;
         $id = $request->id;
         $kode_produk = $request->kode_produk;
-        $stock = $request->stock;
+        $stock_update = $request->stock;
         
+        $stock_seragam = StokSeragam::find($id);
+        $stok_awal = $stock_seragam->qty;
+
         $update_seragam = HargaSeragam::find($id);
 
         $update_seragam->update([
@@ -990,9 +994,19 @@ class SeragamController extends Controller
             'kode_produk' => $kode_produk
         ]);
 
-        $stock_seragam = StokSeragam::find($id)->update([
+        $stock_seragam->update([
             'kd_barang' => $kode_produk,
-            'qty' => $stock
+            'qty' => $stock_update
+        ]);
+
+        $stok_card_seragam = StokCard::create([
+            'kd_gudang' => 'YYS',
+            'kd_barang' => $kode_produk,
+            'stok_awal' => $stok_awal,
+            'qty' => $stock_update - $stok_awal,
+            'stok_akhir' => $stok_awal + ($stock_update - $stok_awal),
+            'updateby' => $user,
+            'proses' => 'update stok'
         ]);
 
         return response()->json($update_seragam);
