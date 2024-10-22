@@ -266,15 +266,17 @@ Apabila ada pertanyaan silahkan hubungi Customer Service kami di nomor ".$no_adm
      */
     public function edit(Request $request, Pendaftaran $pendaftaran)
     {
+        $no_registrasi = $request->no_registrasi ?? null;
+        $get_profile = Pendaftaran::get_profile($no_registrasi);
+
         $provinsi = Provinsi::all();
-        $kota = Kota::all();
-        $kecamatan = Kecamatan::all();
+        $kota = Kota::where('provinsi_id', $get_profile->provinsi)->get();
+        $kecamatan = Kecamatan::where('kabkot_id', $get_profile->kota)->get();
         $kecamatan_asal_sekolah = Kecamatan::kecamatan_with_kota();
         // dd($kecamatan);
-        $kelurahan = Kelurahan::all();
+        $kelurahan = Kelurahan::where('kecamatan_id', $get_profile->kecamatan)->get();
 
         // $id = $request->no_registrasi;
-        $no_registrasi = $request->no_registrasi ?? null;
 
         if ($request->has('no_registrasi')) {
             $get_profile = Pendaftaran::get_profile($no_registrasi);
@@ -283,7 +285,6 @@ Apabila ada pertanyaan silahkan hubungi Customer Service kami di nomor ".$no_adm
             $get_profile_wali = PendaftaranWali::get_profile($no_registrasi);
         }
         
-        $get_profile = Pendaftaran::get_profile($no_registrasi);
         $get_profile_ibu = PendaftaranIbu::get_profile($no_registrasi);
         $get_profile_ayah = PendaftaranAyah::get_profile($no_registrasi);
         $get_profile_wali = PendaftaranWali::get_profile($no_registrasi);
