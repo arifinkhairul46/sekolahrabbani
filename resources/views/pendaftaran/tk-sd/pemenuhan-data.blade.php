@@ -69,30 +69,39 @@
                                 <div class="mb-3">
                                     <span for="kota" class="form-label">Kabupaten/Kota</span>
                                     <select id="kota" name="kota" class="select form-control form-control-sm px-3" onchange="getKecamatan()" required>
-                                        {{-- <option value="" disabled selected>-- Pilih Kota--</option>
-                                        @foreach ($kota as $item)
-                                            <option value="{{ $item->id }}" {{($get_profile->kota == $item->id) ? 'selected' : ''}} >{{ $item->kabupaten_kota }}</option>
-                                        @endforeach --}}
+                                        @if ($get_profile->kota == null)
+                                            <option value="" disabled selected>-- Pilih Kota--</option>
+                                        @else
+                                            @foreach ($kota as $item)
+                                                <option value="{{ $item->id }}" {{($get_profile->kota == $item->id) ? 'selected' : ''}} >{{ $item->kabupaten_kota }}</option>
+                                            @endforeach
+                                        @endif
                                     </select>
                                 </div>
 
                                 <div class="mb-3">
                                     <span for="kecamatan" class="form-label">Kecamatan</span>
                                     <select id="kecamatan" name="kecamatan" class="select form-control form-control-sm px-3" onchange="getKelurahan()" required>
-                                        {{-- <option value="" disabled selected>-- Pilih Kecamatan--</option>
-                                        @foreach ($kecamatan as $item)
-                                            <option value="{{ $item->id }}" {{($get_profile->kecamatan == $item->id) ? 'selected' : ''}} >{{ $item->kecamatan }}</option>
-                                        @endforeach --}}
+                                        @if ($get_profile->kecamatan == null)
+                                            <option value="" disabled selected>-- Pilih Kecamatan--</option>
+                                        @else 
+                                            @foreach ($kecamatan as $item)
+                                                <option value="{{ $item->id }}" {{($get_profile->kecamatan == $item->id) ? 'selected' : ''}} >{{ $item->kecamatan }}</option>
+                                            @endforeach
+                                        @endif
                                     </select>
                                 </div>
 
                                 <div class="mb-3">
                                     <span for="kelurahan" class="form-label">Desa/Kelurahan</span>
                                     <select id="kelurahan" name="kelurahan" class="select form-control form-control-sm px-3">
-                                        {{-- <option value="" disabled selected>-- Pilih Desa/Kelurahan --</option>
-                                        @foreach ($kelurahan as $item)
-                                            <option value="{{ $item->id }}" {{($get_profile->kelurahan == $item->id) ? 'selected' : ''}} >{{ $item->kelurahan }}</option>
-                                        @endforeach --}}
+                                        @if ($get_profile->kelurahan == null)
+                                            <option value="" disabled selected>-- Pilih Desa/Kelurahan --</option>
+                                        @else
+                                            @foreach ($kelurahan as $item)
+                                                <option value="{{ $item->id }}" {{($get_profile->kelurahan == $item->id) ? 'selected' : ''}} >{{ $item->kelurahan }}</option>
+                                            @endforeach
+                                        @endif
                                     </select>
                                 </div>
 
@@ -176,7 +185,7 @@
                                         <option value="A" {{($get_profile->gol_darah == 'A') ? 'selected' : ''}}>A</option>
                                         <option value="B" {{($get_profile->gol_darah == 'B') ? 'selected' : ''}}>B</option>
                                         <option value="AB" {{($get_profile->gol_darah == 'AB') ? 'selected' : ''}}>AB</option>
-                                        <option value="O" {{($get_profile->gol_darah == '0') ? 'selected' : ''}}>O</option>
+                                        <option value="O" {{($get_profile->gol_darah == 'O') ? 'selected' : ''}}>O</option>
                                     </select>
                                 </div>
             
