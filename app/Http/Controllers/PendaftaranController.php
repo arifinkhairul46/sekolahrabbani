@@ -599,7 +599,7 @@ Apabila ada pertanyaan silahkan hubungi Customer Service kami di nomor ".$no_adm
 
 		// echo $response;
 		curl_close($curl);
-	    // return ($response);
+	    return ($response);
 	}
 
     function send_notif($message,$no_wha){
