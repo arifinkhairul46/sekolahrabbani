@@ -270,11 +270,17 @@ Apabila ada pertanyaan silahkan hubungi Customer Service kami di nomor ".$no_adm
         $get_profile = Pendaftaran::get_profile($no_registrasi);
 
         $provinsi = Provinsi::all();
-        $kota = Kota::where('provinsi_id', $get_profile->provinsi)->get();
-        $kecamatan = Kecamatan::where('kabkot_id', $get_profile->kota)->get();
         $kecamatan_asal_sekolah = Kecamatan::kecamatan_with_kota();
-        // dd($kecamatan);
-        $kelurahan = Kelurahan::where('kecamatan_id', $get_profile->kecamatan)->get();
+
+        if ($get_profile != null) {
+            $kota = Kota::where('provinsi_id', $get_profile->provinsi)->get();
+            $kecamatan = Kecamatan::where('kabkot_id', $get_profile->kota)->get();
+            $kelurahan = Kelurahan::where('kecamatan_id', $get_profile->kecamatan)->get();
+        } else {
+            $kota = Kota::all();
+            $kecamatan = Kecamatan::all();
+            $kelurahan = Kelurahan::all();
+        }
 
         // $id = $request->no_registrasi;
 
