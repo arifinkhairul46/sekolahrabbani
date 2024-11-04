@@ -223,7 +223,7 @@
                                     </div>
                                     <div class=" col-md-6">
                                         <span for="tgl_lahir_ibu" class="form-label">Tanggal Lahir</span>
-                                        <input type="date" class="form-control form-control-sm px-3" id="tgl_lahir_ibu" name="tgl_lahir_ibu" value="{{$get_profile->tgllahir_ibu}}" placeholder="Tanggal Lahir" required >
+                                        <input type="date" class="form-control form-control-sm px-3" id="tgl_lahir_ibu" name="tgl_lahir_ibu" value="{{$get_profile_ibu->tgllahir_ibu}}" placeholder="Tanggal Lahir" required >
                                     </div>
                                 </div>
 
