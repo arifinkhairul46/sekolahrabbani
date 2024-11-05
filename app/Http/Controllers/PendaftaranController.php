@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Angket;
 use App\Models\ContactPerson;
 use App\Models\JenjangSekolah;
 use App\Models\Kecamatan;
 use App\Models\KelasJenjangSekolah;
 use App\Models\Kelurahan;
 use App\Models\Kota;
+use App\Models\KuesionerAnak;
+use App\Models\KuesionerOrtu;
 use App\Models\KuotaPPDB;
 use App\Models\Lokasi;
 use App\Models\LokasiSub;
@@ -15,6 +18,7 @@ use App\Models\Pendaftaran;
 use App\Models\PendaftaranAyah;
 use App\Models\PendaftaranIbu;
 use App\Models\PendaftaranWali;
+use App\Models\ProgramReg;
 use App\Models\Provinsi;
 use App\Models\TahunAjaranAktif;
 use Illuminate\Http\Request;
@@ -206,6 +210,14 @@ class PendaftaranController extends Controller
             'id_wali' => $id_anak,
         ]);
 
+        Angket::create([
+            'id_anak' => $id_anak
+        ]);
+
+        ProgramReg::create([
+            'id_anak' => $id_anak
+        ]);
+
         // send ke qlp
         $this->send_pendaftaran($id_anak, $nama_lengkap, $jenis_kelamin, $tempat_lahir, $tgl_lahir, $lokasi, $kelas, $jenjang, $tingkat, $no_hp_ayah, $no_hp_ibu, $nama_ayah, $nama_ibu, $sumber_ppdb, $tahun_ajaran, $asal_sekolah, $status_daftar);
 
@@ -289,15 +301,26 @@ Apabila ada pertanyaan silahkan hubungi Customer Service kami di nomor ".$no_adm
             $get_profile_ibu = PendaftaranIbu::get_profile($no_registrasi);
             $get_profile_ayah = PendaftaranAyah::get_profile($no_registrasi);
             $get_profile_wali = PendaftaranWali::get_profile($no_registrasi);
+            $kuesioner = KuesionerAnak::all();
+            $kuesioner_ortu = KuesionerOrtu::all();
+            $get_kuesioner_anak = Angket::get_profile($no_registrasi);
+            $get_kuesioner_ortu = ProgramReg::get_profile($no_registrasi);
         }
         
+
         $get_profile_ibu = PendaftaranIbu::get_profile($no_registrasi);
         $get_profile_ayah = PendaftaranAyah::get_profile($no_registrasi);
         $get_profile_wali = PendaftaranWali::get_profile($no_registrasi);
-        // dd($get_profile);
+        $kuesioner = KuesionerAnak::all();
+        $kuesioner_ortu = KuesionerOrtu::all();
+        $get_kuesioner_anak = Angket::get_profile($no_registrasi);
+        $get_kuesioner_ortu = ProgramReg::get_profile($no_registrasi);
+        // dd($get_kuesioner_ortu);
 
 
-        return view('pendaftaran.tk-sd.pemenuhan-data', compact('provinsi', 'kecamatan', 'kecamatan_asal_sekolah', 'kelurahan', 'kota', 'get_profile',  'get_profile_ibu',  'get_profile_ayah', 'get_profile_wali', 'no_registrasi'));
+        return view('pendaftaran.tk-sd.pemenuhan-data', compact('provinsi', 'kecamatan', 'kecamatan_asal_sekolah', 'kelurahan', 'kota', 
+        'get_profile',  'get_profile_ibu',  'get_profile_ayah', 'get_profile_wali', 'no_registrasi', 'kuesioner', 'kuesioner_ortu',
+        'get_kuesioner_ortu', 'get_kuesioner_anak'));
     }
 
     public function find(Request $request, Pendaftaran $pendaftaran)
@@ -372,6 +395,35 @@ Apabila ada pertanyaan silahkan hubungi Customer Service kami di nomor ".$no_adm
             $nama_panggilan = $request->nama_panggilan;
             $bhs_digunakan = $request->bhs_digunakan;
             $asal_sekolah = $request->asal_sekolah;
+            $hijayah = $request->hijayah;
+            $alphabet = $request->alphabet;
+            $suka_menulis = $request->suka_menulis;
+            $suka_gambar = $request->suka_gambar;
+            $suka_hafalan = $request->suka_hafalan;
+            $memiliki_hafalan = $request->memiliki_hafalan;
+            $bergaul = $request->bergaul;
+            $prakarya = $request->prakarya;
+            $mengungkapkan = $request->mengungkapkan;
+            $sholat_fardhu = $request->sholat_fardhu;
+            $berbicara_baik = $request->berbicara_baik;
+            $baju_sendiri = $request->baju_sendiri;
+            $simpan_sepatu = $request->simpan_sepatu;
+            $buang_sampah = $request->buang_sampah;
+            $ekspresi_marah = $request->ekspresi_marah;
+            $malu_salah = $request->malu_salah;
+            $ketergantungan = $request->ketergantungan;
+            $merengek = $request->merengek;
+            $mandi_sendiri = $request->mandi_sendiri;
+            $bab_bak_sendiri = $request->bab_bak_sendiri;
+            $habis_waktu = $request->habis_waktu;
+            $kelebihan_ananda = $request->kelebihan_ananda;
+            $welcome_ceremony = $request->welcome_ceremony;
+            $quranic_parenting = $request->quranic_parenting;
+            $temu_wali_kelas = $request->temu_wali_kelas;
+            $hafalan_rumah = $request->hafalan_rumah;
+            $wirausaha = $request->wirausaha;
+            $komunikasi = $request->komunikasi;
+            $biaya_pendidikan = $request->biaya_pendidikan;
             
     
             $update_data_anak = Pendaftaran::where('id_anak', $id)->update([
@@ -425,12 +477,54 @@ Apabila ada pertanyaan silahkan hubungi Customer Service kami di nomor ".$no_adm
                 'hubungan_wali' => $hubungan_wali,
             ]);
 
+            $update_kuesioner = Angket::where('id_anak', $id)->update([
+                'mengenal_hijaiyah' => $hijayah,
+                'mengenal_alphabet' => $alphabet,
+                'suka_menulis' => $suka_menulis,
+                'suka_menggambar' => $suka_gambar,
+                'hafalan_alquran' => $suka_hafalan,
+                'memiliki_hafalan' => $memiliki_hafalan,
+                'senang_bergaul' => $bergaul,
+                'membuat_prakarya' => $prakarya,
+                'ungkapan_keinginan' => $mengungkapkan,
+                'mengikuti_sholat' => $sholat_fardhu,
+                'berbicara_baik' => $berbicara_baik,
+                'memakai_baju_sendiri' => $baju_sendiri,
+                'menyimpan_sepatu' => $simpan_sepatu,
+                'membuang_sampah' => $buang_sampah,
+                'mengekspresikan' => $ekspresi_marah,
+                'melakukan_kesalahan' => $malu_salah,
+                'ketergantungan' => $ketergantungan,
+                'keinginan' => $merengek,
+                'mampu_mandi' => $mandi_sendiri,
+                'mampu_sendiri' => $bab_bak_sendiri,
+                'menghabiskan_waktu' => $habis_waktu,
+                'kelebihan_ananda' => $kelebihan_ananda,
+                'updatedate' => date('Y-m-d H:i:s'),
+            ]);
+
+            $update_kuesionere_ortu = ProgramReg::where('id_anak', $id)->update([
+                'orientasi_peserta_didik' => $welcome_ceremony,
+                'bersedia_mengikuti_qp' => $quranic_parenting,
+                'mengikuti_pertemuan_rutin' => $temu_wali_kelas,
+                'menemani_ananda' => $hafalan_rumah,
+                'kewirausahaan_ananda' => $wirausaha,
+                'kemampuan_komunikasi_aktif_ananda' => $komunikasi,
+                'pembiayaan_pendidikan' => $biaya_pendidikan,
+                'updatedate' => date('Y-m-d H:i:s')
+            ]);
+
             // update ke qlp
             $this->update_pendaftaran($id, $nik, $alamat, $provinsi, $kota, $kecamatan, $kelurahan, $agama, $anak_ke, $jumlah_saudara, $npsn,
             $asal_sekolah, $tinggi_badan, $berat_badan, $gol_darah, $riwayat_penyakit, $kec_asal_sekolah, $hafalan, $email_ayah, $email_ibu, $status_tinggal, 
             $tempat_lahir_ibu, $tgl_lahir_ibu, $pekerjaan_ibu, $penghasilan_ibu, $pendidikan_ibu, 
             $tempat_lahir_ayah, $tgl_lahir_ayah, $pekerjaan_ayah, $penghasilan_ayah, $pendidikan_ayah, 
-            $tempat_lahir_wali, $tgl_lahir_wali, $pekerjaan_wali, $pendidikan_wali, $nama_wali, $hubungan_wali, $bhs_digunakan, $nama_panggilan);
+            $tempat_lahir_wali, $tgl_lahir_wali, $pekerjaan_wali, $pendidikan_wali, $nama_wali, $hubungan_wali, $bhs_digunakan, $nama_panggilan,
+            $hijayah, $alphabet, $suka_menulis, $suka_gambar, $suka_hafalan, $memiliki_hafalan, $bergaul, $prakarya, $mengungkapkan, 
+            $sholat_fardhu, $berbicara_baik, $baju_sendiri, $simpan_sepatu, $buang_sampah, $ekspresi_marah, $malu_salah, $ketergantungan, 
+            $merengek, $mandi_sendiri, $bab_bak_sendiri, $habis_waktu, $kelebihan_ananda,
+            $welcome_ceremony, $quranic_parenting, $temu_wali_kelas, $hafalan_rumah, $wirausaha, $komunikasi, $biaya_pendidikan
+            );
     
             return redirect()->route('pendaftaran')->with('success', 'Data berhasil diupdate');
         } catch (\Throwable $th) {
@@ -540,7 +634,11 @@ Apabila ada pertanyaan silahkan hubungi Customer Service kami di nomor ".$no_adm
     $asal_sekolah, $tinggi_badan, $berat_badan, $gol_darah, $riwayat_penyakit, $kec_asal_sekolah, $hafalan, $email_ayah, $email_ibu, $status_tinggal, 
     $tempat_lahir_ibu, $tgl_lahir_ibu, $pekerjaan_ibu, $penghasilan_ibu, $pendidikan_ibu, 
     $tempat_lahir_ayah, $tgl_lahir_ayah, $pekerjaan_ayah, $penghasilan_ayah, $pendidikan_ayah, 
-    $tempat_lahir_wali, $tgl_lahir_wali, $pekerjaan_wali, $pendidikan_wali, $nama_wali, $hubungan_wali, $bhs_digunakan, $nama_panggilan)
+    $tempat_lahir_wali, $tgl_lahir_wali, $pekerjaan_wali, $pendidikan_wali, $nama_wali, $hubungan_wali, $bhs_digunakan, $nama_panggilan,
+    $hijayah, $alphabet, $suka_menulis, $suka_gambar, $suka_hafalan, $memiliki_hafalan, $bergaul, $prakarya, $mengungkapkan, 
+    $sholat_fardhu, $berbicara_baik, $baju_sendiri, $simpan_sepatu, $buang_sampah, $ekspresi_marah, $malu_salah, $ketergantungan, 
+    $merengek, $mandi_sendiri, $bab_bak_sendiri, $habis_waktu, $kelebihan_ananda,
+    $welcome_ceremony, $quranic_parenting, $temu_wali_kelas, $hafalan_rumah, $wirausaha, $komunikasi, $biaya_pendidikan)
     {
 	    $curl = curl_init();
 
@@ -596,8 +694,36 @@ Apabila ada pertanyaan silahkan hubungi Customer Service kami di nomor ".$no_adm
             'hubungan_wali' => $hubungan_wali,
             'bhs_digunakan' => $bhs_digunakan,
             'asal_sekolah' => $asal_sekolah,
-            'nama_panggilan' => $nama_panggilan
-            
+            'nama_panggilan' => $nama_panggilan,
+            'mengenal_hijaiyah' => $hijayah,
+            'mengenal_alphabet' => $alphabet,
+            'suka_menulis' => $suka_menulis,
+            'suka_menggambar' => $suka_gambar,
+            'hafalan_alquran' => $suka_hafalan,
+            'memiliki_hafalan' => $memiliki_hafalan,
+            'senang_bergaul' => $bergaul,
+            'membuat_prakarya' => $prakarya,
+            'ungkapan_keinginan' => $mengungkapkan,
+            'mengikuti_sholat' => $sholat_fardhu,
+            'berbicara_baik' => $berbicara_baik,
+            'memakai_baju_sendiri' => $baju_sendiri,
+            'menyimpan_sepatu' => $simpan_sepatu,
+            'membuang_sampah' => $buang_sampah,
+            'mengekspresikan' => $ekspresi_marah,
+            'melakukan_kesalahan' => $malu_salah,
+            'ketergantungan' => $ketergantungan,
+            'keinginan' => $merengek,
+            'mampu_mandi' => $mandi_sendiri,
+            'mampu_sendiri' => $bab_bak_sendiri,
+            'menghabiskan_waktu' => $habis_waktu,
+            'kelebihan_ananda' => $kelebihan_ananda,
+            'orientasi_peserta_didik' => $welcome_ceremony,
+            'bersedia_mengikuti_qp' => $quranic_parenting,
+            'mengikuti_pertemuan_rutin' => $temu_wali_kelas,
+            'menemani_ananda' => $hafalan_rumah,
+            'kewirausahaan_ananda' => $wirausaha,
+            'kemampuan_komunikasi_aktif_ananda' => $komunikasi,
+            'pembiayaan_pendidikan' => $biaya_pendidikan,
             )
 
 		));

@@ -27,6 +27,8 @@
                                 <button class="nav-link tab-2" id="nav-data-ibu-tab" data-bs-toggle="tab" data-bs-target="#nav-data-ibu" type="button" role="tab" aria-controls="nav-data-ibu" aria-selected="false">Data Ibu</button>
                                 <button class="nav-link tab-3" id="nav-data-ayah-tab" data-bs-toggle="tab" data-bs-target="#nav-data-ayah" type="button" role="tab" aria-controls="nav-data-ayah" aria-selected="false">Data Ayah</button>
                                 <button class="nav-link tab-4" id="nav-data-wali-tab" data-bs-toggle="tab" data-bs-target="#nav-data-wali" type="button" role="tab" aria-controls="nav-data-wali" aria-selected="false">Data Wali</button>
+                                <button class="nav-link tab-5" id="nav-data-kuesioner-anak-tab" data-bs-toggle="tab" data-bs-target="#nav-data-kuesioner-anak" type="button" role="tab" aria-controls="nav-data-kuesioner-anak" aria-selected="false">Kuesioner Anak</button>
+                                <button class="nav-link tab-6" id="nav-data-kuesioner-ortu-tab" data-bs-toggle="tab" data-bs-target="#nav-data-kuesioner-ortu" type="button" role="tab" aria-controls="nav-data-kuesioner-ortu" aria-selected="false">Kuesioner Ortu</button>
                             </div>
                         </nav>
                         <div class="tab-content" id="nav-tabContent">
@@ -393,8 +395,68 @@
                                     </select>
                                 </div>
 
-                                <div class="d-flex" style="justify-content: flex-end">
-                                    <button type="submit" class="btn btn-primary btn-sm ml-auto px-3" id="btn-submit"> Submit </button>
+                                <a style="float: right" id="next-kue-anak" class="btn btn-primary btn-sm px-3">Next</a>
+                                
+                            </div>
+
+                            <div class="tab-pane fade" id="nav-data-kuesioner-anak" role="tabpanel" aria-labelledby="nav-data-kuesioner-anak-tab" tabindex="0">
+                                <table> 
+                                    <tbody>
+                                    @foreach ($kuesioner as $item)        
+                                        <tr>
+                                            <td style="width: 80%">
+                                                <span class="form-label">{{$item->kuesioner}} ?</span>
+                                            </td>
+                                            <td>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="{{$item->name}}" id="{{$item->name}}_ya" value="ya" {{$get_kuesioner_anak->{$item->aliases} == 'ya' ? 'checked' : ''}}>
+                                                    <label class="form-check-label" for="{{$item->name}}_ya">Iya</label>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="{{$item->name}}" id="{{$item->name}}_tidak" value="tidak" {{$get_kuesioner_anak->{$item->aliases} == 'tidak' ? 'checked' : ''}}>
+                                                    <label class="form-check-label" for="{{$item->name}}_tidak">Tidak</label>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    
+                                    @endforeach
+                                    
+                                        <tr>
+                                            <td style="width: 80%" >
+                                                <span class="form-label">Berapa lama menghabiskan waktu dengan ananda dalam satu hari? (Jam)</span>
+                                            </td>
+                                            <td colspan="2">
+                                                <div class="form-check form-check-inline">
+                                                    <input type="text" class="form-control" id="habis_waktu" name="habis_waktu" value="{{$get_kuesioner_anak !=null ? $get_kuesioner_anak->menghabiskan_waktu : ''}}" placeholder="Jam">
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        
+                                    </tbody>
+                                </table>
+                                <div class="mb-3">
+                                    <span for="kelebihan_ananda" class="form-label">Menurut Ayah/Bunda apa kelebihan yang ananda miliki?</span>
+                                    <input type="text" name="kelebihan_ananda" class="form-control form-control-sm px-3" id="kelebihan_ananda" value="{{$get_kuesioner_anak !=null ? $get_kuesioner_anak->kelebihan_ananda : ''}}" id="{{$item->name}}" placeholder="Kelebihan Ananda" required>
+                                </div>
+
+                                <a style="float: right" id="next-kue-ortu" class="btn btn-primary btn-sm px-3">Next</a>
+                            
+                            </div>
+
+                            <div class="tab-pane fade" id="nav-data-kuesioner-ortu" role="tabpanel" aria-labelledby="nav-data-kuesioner-ortu-tab" tabindex="0">
+                                @foreach ($kuesioner_ortu as $item)
+                                
+                                <div class="mt-3">
+                                    <span for="{{$item->name}}" class="form-label">{{$item->kuesioner_ortu}}</span>
+                                    <input type="text" name="{{$item->name}}" class="form-control form-control-sm px-3" value="{{$get_kuesioner_ortu !=null ? $get_kuesioner_ortu->{$item->aliases} : ''}}" id="{{$item->name}}" required>
+                                </div>
+                                @endforeach
+
+                                <div class="mt-4 d-flex" style="justify-content: flex-end">
+                                    <button type="button" class="btn btn-primary btn-sm ml-auto px-3" id="btn-submit"> Submit </button>
                                 </div>
                             </div>
                         </div>
@@ -414,22 +476,23 @@
     <script>
          $(document).ready(function() {
             $("#btn-submit").click(function() {
+                event.preventDefault();
                 var form = document.getElementById('update_data_pendaftaran');
                 var data = new FormData(form);
                 for (var [key, value] of data) {
+                    if (value == "" || value == null) {
+                        alert("Mohon cek kembali bagian " + key +", Pastikan Semua Data Sudah Terisi")
+                        return false;
+                    } 
                 }
+                // disable button
+                $(this).prop("disabled", true);
+                // add spinner to button
+                $(this).html(
+                    `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...`
+                );
+                $("#update_data_pendaftaran").submit();
 
-                if (value == '' || value == null) {
-                    alert('Mohon cek kembali, Pastikan Semua Data Sudah Terisi')
-                } else {
-                    // disable button
-                    $(this).prop("disabled", true);
-                    // add spinner to button
-                    $(this).html(
-                        `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...`
-                    );
-                    $("#update_data_pendaftaran").submit();
-                }
             });
         });
 
@@ -447,62 +510,16 @@
 
         $('#next-wali').click(function(){
             $('#nav-tab button:eq(3) ').tab('show');
-           
-        })
-    
+        });
 
-        // var id_prov = document.getElementById("provinsi").value
-        // console.log(id_prov);
-        // $.ajax({
-        //     url: "{{route('get_kota')}}",
-        //     type: 'POST',
-        //     data: {
-        //         id_provinsi: id_prov,
-        //             _token: '{{csrf_token()}}'
-        //     },
-        //     success: function (result) {
-        //         $.each(result.kota, function (key, item) {
-        //             console.log('ini', item.id, get_profile.kota);
+        $('#next-kue-anak').click(function(){
+            $('#nav-tab button:eq(4) ').tab('show');
+        });
 
-        //             if (item.id == get_profile.kota) {
-        //                 $("#kota").append('<option value="' + item
-        //                     .id + '" selected >' + item.kabupaten_kota + '</option>');
-        //             } else {
-        //                 $("#kota").append('<option value="' + item
-        //                     .id + '" >' + item.kabupaten_kota + '</option>');
-        //             }
-        //         });
-        //     }
-        // });
-
-        // var id_city = document.getElementById("kota").value
-        // console.log('ci', id_city, get_profile.kecamatan);
-        // var id_kota = document.getElementById("kota").value
-
-
-        // $.ajax({
-        //         url: "{{route('get_kecamatan')}}",
-        //         type: 'POST',
-        //         data: {
-        //             id_kota: id_city,
-        //              _token: '{{csrf_token()}}'
-        //         },
-        //         success: function (result) {
-        //             console.log('itu', result);
-        //             $.each(result.kecamatan, function (key, item) {
-        //                 console.log('ini', item.id, get_profile.kecamatan);
-        //                 if (item.id == get_profile.kecamatan) {
-        //                 $("#kecamatan").append('<option value="' + item
-        //                     .id + '" selected >' + item.kecamatan + '</option>');
-        //             } else {
-        //                 $("#kecamatan").append('<option value="' + item
-        //                     .id + '" >' + item.kecamatan + '</option>');
-        //             }
-        //             });
-        //         }
-        // });
+        $('#next-kue-ortu').click(function(){
+            $('#nav-tab button:eq(5) ').tab('show');
+        });
         
-
         function getKota() {
             var id_provinsi = document.getElementById("provinsi").value
             $.ajax({
