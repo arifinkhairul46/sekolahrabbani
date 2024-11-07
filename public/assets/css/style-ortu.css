@@ -74,6 +74,31 @@ main {
 
   }
 
+.center-btn {
+    text-align: center;
+    position: relative;
+    margin-top: 40%;
+}
+
+.cover-img-smp{
+    filter: brightness(0.4);
+    
+}
+
+.number-background{
+    height: 30px;
+    width: 30px;
+    background-color: #35508E;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.deskripsi-konten{
+    white-space: pre-wrap;
+    text-align: justify !important;
+    text-justify: inter-word !important;
+}
+
 .form-control {
     border-radius: 1rem !important;
     border-color: #624F8F !important;

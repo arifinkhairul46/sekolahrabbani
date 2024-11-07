@@ -12,6 +12,7 @@ use App\Http\Controllers\KelasDiklatController;
 use App\Http\Controllers\KurikulumController;
 use App\Http\Controllers\ModulDiklatController;
 use App\Http\Controllers\NilaiDiklatController;
+use App\Http\Controllers\PalestineDayController;
 use App\Http\Controllers\PendaftaranController;
 use App\Http\Controllers\PosisiLamaranController;
 use App\Http\Controllers\ProfileController;
@@ -66,6 +67,11 @@ Route::group(['middleware' =>['admin']], function () {
         Route::get('artikel', [ArtikelController::class, 'index'])->name('artikel.index');
         Route::get('artikel/{id}', [ArtikelController::class, 'edit'])->name('artikel.edit');
 
+        Route::get('palestine-day', [PalestineDayController::class, 'master_materi'])->name('master.palestine');
+        Route::post('palestine-day/create', [PalestineDayController::class, 'store'])->name('materi.store');
+        Route::get('sudah-baca', [PalestineDayController::class, 'list_sudah_baca'])->name('master.sudah-baca');
+
+
 
     });
 });
@@ -103,6 +109,16 @@ Route::group(['middleware' =>['auth']], function () {
     Route::prefix('keuangan')->group(function () {
         Route::get('tagihan', [TagihanController::class, 'index'])->name('tagihan.index');
         Route::get('bukti-bayar/{id}', [TagihanController::class, 'bukti_bayar'])->name('bukti_bayar');
+    });
+
+    Route::prefix('palestine-day')->group(function () {
+        Route::get('/', [PalestineDayController::class, 'index'])->name('palestine.index');
+        Route::get('/tk-sd', [PalestineDayController::class, 'materi_tk'])->name('palestine.tksd');
+        Route::get('/tk-sd/{id}', [PalestineDayController::class, 'materi_tk_by_id'])->name('materi-tksd-by-id');
+        Route::get('/tksd/{id}', [PalestineDayController::class, 'materi_tksd_by_id'])->name('materi-by-id');
+        Route::get('/smp', [PalestineDayController::class, 'materi_smp'])->name('palestine.smp');
+        Route::get('/smp/{id}', [PalestineDayController::class, 'materi_smp_by_id'])->name('materi-smp-by-id');
+        Route::post('/sudahbaca', [PalestineDayController::class, 'sudah_baca'])->name('sudah_baca');
     });
 
 });

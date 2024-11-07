@@ -44,15 +44,40 @@
         <div class="row mt-3">
             <h6> Menu Pilihan </h6>
             @foreach ($main_menu as $item)
-                <div class="col-3 mb-2">
-                    <a href="{{$item->url}}" style="text-decoration: none; color:black" >
-                        <img class="center" src="{{asset($item->icon)}}" alt="{{$item->icon}}" width="80px" >
-                        <span class="center p-0" style="font-size: 12px"> {{$item->name}} </span>
-                    </a>
-                </div>
+                @if ($main_menu->count() == 2)
+                    <div class="col-6 my-2">
+                        <a href="{{$item->url}}" style="text-decoration: none; color:black" >
+                            <img class="center" src="{{asset($item->icon)}}" alt="{{$item->icon}}" width="125px" >
+                            <span class="center p-0" style="font-size: 16px"> {{$item->name}} </span>
+                        </a>
+                    </div>
+                @elseif ($main_menu->count() == 3) 
+                    <div class="col-4 mb-2">
+                        <a href="{{$item->url}}" style="text-decoration: none; color:black" >
+                            <img class="center" src="{{asset($item->icon)}}" alt="{{$item->icon}}" width="90px" >
+                            <span class="center p-0" style="font-size: 12px"> {{$item->name}} </span>
+                        </a>
+                    </div>
+                @else 
+                    <div class="col-3 mb-2">
+                        <a href="{{$item->url}}" style="text-decoration: none; color:black" >
+                            <img class="center" src="{{asset($item->icon)}}" alt="{{$item->icon}}" width="80px" >
+                            <span class="center p-0" style="font-size: 12px"> {{$item->name}} </span>
+                        </a>
+                    </div>
+                @endif
             @endforeach
         </div>
         {{-- end menu --}}
+
+        <div class="center-btn">
+            <a href="{{route('home.index')}}">
+            <button class="btn btn-warning px-5 shadow" style="border-radius: 1rem" > 
+                <span> Informasi lebih lanjut </span> 
+                <h4> sekolahrabbani.sch.id </h4>
+            </button>
+            </a>
+        </div>
     </div>
     {{-- @include('ortu.footer.index') --}}
 @endsection

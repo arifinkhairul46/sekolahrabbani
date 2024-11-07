@@ -46,7 +46,7 @@ class DashboardController extends Controller
     {
         $user_id = Auth::user()->id;
 
-        $main_menu = MenuMobile::where('is_footer', 0)->where('is_profile', 0)->get();
+        $main_menu = MenuMobile::where('is_footer', 0)->where('is_profile', 0)->where('status', 1)->get();
         $menubar = MenuMobile::where('is_footer', 1)->get();
 
         
