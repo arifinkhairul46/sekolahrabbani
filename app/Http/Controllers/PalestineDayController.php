@@ -85,6 +85,14 @@ class PalestineDayController extends Controller
         return view('admin.master.palestineday.index', compact('materi_tksd', 'materi_smp'));
     }
 
+    public function master_materi_by_id(Request $request, $id)
+    {
+        $detail_materi = PalestineDay::where('id', $id)->first();
+        // dd($detail_materi);
+
+        return response($detail_materi);
+    }
+
     public function store(Request $request)
     {
         $request->validate([
@@ -150,7 +158,7 @@ class PalestineDayController extends Controller
 
     public function list_sudah_baca()
     {
-        $haveRead = HaveRead::select('t_sudah_baca_materi.materi_id', 'mpro.nis', 'mpro.nama_lengkap', 'mls.sublokasi as lokasi', 'mpd.judul')
+        $haveRead = HaveRead::select('t_sudah_baca_materi.materi_id', 'mpro.nis', 'mpro.nama_lengkap', 'mls.sublokasi as lokasi', 'mpro.nama_kelas', 'mpd.judul')
                             ->leftJoin('m_palestine_day as mpd', 'mpd.id', 't_sudah_baca_materi.materi_id')
                             ->leftJoin('m_profile as mpro', 'mpro.user_id', 't_sudah_baca_materi.user_id')
                             ->leftJoin('mst_lokasi_sub as mls', 'mpro.sekolah_id', 'mls.id')

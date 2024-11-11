@@ -20,6 +20,7 @@
                                 <th>Nis </th>
                                 <th>Nama</th>
                                 <th>Sekolah</th>
+                                <th>Kelas</th>
                                 <th>Materi sudah baca</th>
                             </tr>
                         </thead>
@@ -30,6 +31,7 @@
                                     <td>{{$item->nis}}</td>
                                     <td>{{$item->nama_lengkap}} </td>
                                     <td>{{$item->lokasi}}</td>
+                                    <td>{{$item->nama_kelas}}</td>
                                     <td>{{$item->judul}}</td>
                                 </tr>
                             @endforeach

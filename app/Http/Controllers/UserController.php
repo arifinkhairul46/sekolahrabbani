@@ -168,6 +168,16 @@ class UserController extends Controller
                 } else {
                     return redirect()->route('login')->with('error', 'No Hp atau password salah');
                 }
+            } else if ($user->id_role == 4) {
+                if (Hash::check($request->password, $user->password)) {
+                    $request->session()->regenerate();
+
+                    Auth::login($user);
+
+                    return redirect()->route('master.palestine');
+                } else {
+                    return redirect()->route('login')->with('error', 'No Hp atau password salah');
+                }
             } else {
                 if (Hash::check($request->password, $user->password)) {
                     $request->session()->regenerate();

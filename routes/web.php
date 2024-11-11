@@ -68,6 +68,7 @@ Route::group(['middleware' =>['admin']], function () {
         Route::get('artikel/{id}', [ArtikelController::class, 'edit'])->name('artikel.edit');
 
         Route::get('palestine-day', [PalestineDayController::class, 'master_materi'])->name('master.palestine');
+        Route::get('palestine-day/{id}', [PalestineDayController::class, 'master_materi_by_id'])->name('master.materi-by-id');
         Route::post('palestine-day/create', [PalestineDayController::class, 'store'])->name('materi.store');
         Route::get('sudah-baca', [PalestineDayController::class, 'list_sudah_baca'])->name('master.sudah-baca');
 

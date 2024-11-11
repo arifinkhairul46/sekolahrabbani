@@ -52,7 +52,7 @@
                                             <td>{{$item->created_by}}</td>
                                             <td>{{$item->created_at}}</td>
                                             <td class="d-flex">
-                                                <button class="btn btn-sm btn-warning" title="Edit" onclick="edit_data('{{$item->id}}')" data-bs-toggle="modal" data-bs-target="#edit_seragam">
+                                                <button class="btn btn-sm btn-warning" title="Edit" onclick="edit_data_tksd('{{$item->id}}')" data-bs-toggle="modal" data-bs-target="#edit_materi">
                                                     <i class="fa-solid fa-pencil"></i>
                                                 </button>
                                             </td>
@@ -88,7 +88,7 @@
                                             @endif
                                             <td>{{$item->terbit}}</td>
                                             <td class="d-flex">
-                                                <button class="btn btn-sm btn-warning" title="Edit" onclick="edit_data('{{$item->id}}')" data-bs-toggle="modal" data-bs-target="#edit_seragam">
+                                                <button class="btn btn-sm btn-warning" title="Edit" onclick="edit_data_smp('{{$item->id}}')" data-bs-toggle="modal" data-bs-target="#edit_materi">
                                                     <i class="fa-solid fa-pencil"></i>
                                                 </button>
                                             </td>
@@ -168,8 +168,70 @@
             </div>
         </div>
     </div>
+
+    {{-- edit --}}
+    <div class="modal fade" id="edit_materi" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="edit">Edit materi</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="jenjang" class="form-control-label">Jenjang</label>
+                        <select name="jenjang" id="jenjang_edit" onchange="getMateri()" class="form-control form-control-sm" required>
+                            <option value="" disabled selected> </option>
+                            <option value="1" >Kober - TK - SD </option>
+                            <option value="2" >SMP </option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="judul" class="form-control-label">Judul</label>
+                        <input type="text" class="form-control" name="judul" id="judul_edit" required>
+                    </div>
+
+                    <div class="form-group" id="deskripsi_group_edit">
+                        <label for="deskripsi" class="form-control-label">Deskripsi</label>
+                        <textarea type="text" class="form-control" name="deskripsi" id="deskripsi_edit" rows="5"> </textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="warna" class="form-control-label">Warna</label>
+                        <input type="warna" class="form-control" name="warna" id="warna_edit">
+                    </div>
+
+                    <div class="form-group" id="penulis_group_edit">
+                        <label for="penulis" class="form-control-label">Penulis</label>
+                        <input type="text" class="form-control" name="penulis" id="penulis_edit">
+                    </div>
+
+                    <div class="form-group" id="terbit_group_edit">
+                        <label for="terbit" class="form-control-label">Terbit</label>
+                        <input type="date" class="form-control" name="terbit" id="terbit_edit">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="gambar" class="form-control-label">Gambar</label>
+                        <input type="file" class="form-control" name="gambar" id="gambar_edit" required>
+                    </div>
+
+                    <div class="form-group" id="file_group_edit">
+                        <label for="file" class="form-control-label">File</label>
+                        <input type="file" class="form-control" name="file" id="file_edit">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-success btn-sm" onclick="update_materi()" >Update</button>
+                </div>
+            </div>
+        </div>
+    </div>
     
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js" defer></script>
     <script> 
         
         function getMateri() {
@@ -182,9 +244,27 @@
             } else {
                 $('#file_group').show();
                 $('#deskripsi_group').hide();
+                $('#terbit_group').hide();
                 $('#penulis_group').show();
 
             }
+        }
+
+        function edit_data_tksd(id) {
+            $('#terbit_group_edit').hide();
+            $('#deskripsi_group_edit').hide();
+            fetch('/master/palestine-day/' + id)
+                .then(response => response.json())
+                .then(data => {
+                    $("#jenjang_edit").val(data.jenjang)
+                    $("#judul_edit").val(data.judul)
+                    $("#deskripsi_edit").val(data.deskripsi)
+                    $("#warna_edit").val(data.style)
+                    $("#penulis_edit").val(data.created_by)
+                    $("#terbit_edit").val(data.terbit)
+                    $("#gambar_edit").val(data.image)
+                    $("#file_edit").val(data.file)
+                })
         }
 
     </script>
