@@ -13,6 +13,7 @@ class StokSeragam extends Model
 
     protected $fillable = [
         'kd_barang',
-        'qty'
+        'qty',
+        'barcode_15'
     ];
 }

@@ -12,9 +12,14 @@ class HargaSeragam extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
+        'produk_id',
+        'jenis_produk_id',
+        'ukuran_id',
         'harga',
         'diskon',
         'kode_produk',
-        'stok'
+        'stok',
+        'style_produk',
+        'status_item'
     ];
 }

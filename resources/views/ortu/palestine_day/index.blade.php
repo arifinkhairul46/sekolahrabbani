@@ -17,10 +17,14 @@
             </a>
         </div>
 
-        <div class="center mb-3">
-            <a style="text-decoration: none" href="{{route('palestine.smp')}}"> 
-                <img src="{{ asset('assets/images/palestine_day_smp.png') }}" alt="pd_smp" style="border-radius: 0.4rem" width="100%">
-            </a>
-        </div>
+        @foreach ($get_jenjang as $item)
+            @if ($item->sekolah_id == 'UBRSMP')
+                <div class="center mb-3">
+                    <a style="text-decoration: none" href="{{route('palestine.smp')}}"> 
+                        <img src="{{ asset('assets/images/palestine_day_smp.png') }}" alt="pd_smp" style="border-radius: 0.4rem" width="100%">
+                    </a>
+                </div>
+            @endif
+        @endforeach
     </div>
 @endsection

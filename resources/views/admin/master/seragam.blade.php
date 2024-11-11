@@ -193,65 +193,78 @@
                 <div class="modal-header">
                     <h5 class="modal-title" id="create_seragam">Tambah Seragam</h5>
                 </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="product_name" class="form-control-label">Nama Produk</label>
-                        <select name="product_name" id="product_name" class="select2 form-control form-control-sm" aria-label=".form-select-sm" >
-                            <option value="" disabled selected> </option>
-                                @foreach ($list_produk as $item)
-                                    <option value="{{ $item->id }}" {{($item->id == $nama_produk) ? 'selected' : ''}} >{{ $item->nama_produk }}</option>
-                                @endforeach
-                        </select>
-                        <span style="font-size: 10px"> Tidak ada dalam list? Tambah Disini </span>
-                    </div>
+                <form action="{{route('create-seragam')}}" method="post">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="product_name_add" class="form-control-label">Nama Produk</label>
+                            <select name="product_name_add" id="product_name_add" class="select2 form-control form-control-sm" aria-label=".form-select-sm" >
+                                <option value="" disabled selected> </option>
+                                    @foreach ($list_produk as $item)
+                                        <option value="{{ $item->id }}" {{($item->id == $nama_produk) ? 'selected' : ''}} >{{ $item->nama_produk }}</option>
+                                    @endforeach
+                            </select>
+                            <span style="font-size: 10px"> Tidak ada dalam list? Tambah Disini </span>
+                        </div>
 
-                    <div class="form-group">
-                        <label for="product_name" class="form-control-label">Ukuran Produk</label>
-                        <select name="product_name" id="product_name" class="select2 form-control form-control-sm" aria-label=".form-select-sm" >
-                            <option value="" disabled selected> </option>
-                                @foreach ($list_ukuran as $item)
-                                    <option value="{{ $item->id }}" >{{ $item->ukuran_seragam }}</option>
-                                @endforeach
-                        </select>
-                        <span style="font-size: 10px"> Tidak ada dalam list? Tambah Disini </span>
-                    </div>
+                        <div class="form-group">
+                            <label for="ukuran_produk_add" class="form-control-label">Ukuran Produk</label>
+                            <select name="ukuran_produk_add" id="ukuran_produk_add" class="select2 form-control form-control-sm" aria-label=".form-select-sm" >
+                                <option value="" disabled selected> </option>
+                                    @foreach ($list_ukuran as $item)
+                                        <option value="{{ $item->id }}" >{{ $item->ukuran_seragam }}</option>
+                                    @endforeach
+                            </select>
+                            <span style="font-size: 10px"> Tidak ada dalam list? Tambah Disini </span>
+                        </div>
 
-                    <div class="form-group">
-                        <label for="product_name" class="form-control-label">Jenis Produk</label>
-                        <select name="product_name" id="product_name" class="select2 form-control form-control-sm" aria-label=".form-select-sm" >
-                            <option value="" disabled selected> </option>
-                                @foreach ($list_jenis as $item)
-                                    <option value="{{ $item->id }}" >{{ $item->jenis_produk }}</option>
-                                @endforeach
-                        </select>
-                        <span style="font-size: 10px"> Tidak ada dalam list? Tambah Disini </span>
-                    </div>
+                        <div class="form-group">
+                            <label for="jenis_produk_add" class="form-control-label">Jenis Produk</label>
+                            <select name="jenis_produk_add" id="jenis_produk_add" class="select2 form-control form-control-sm" aria-label=".form-select-sm" >
+                                <option value="" disabled selected> </option>
+                                    @foreach ($list_jenis as $item)
+                                        <option value="{{ $item->id }}" >{{ $item->jenis_produk }}</option>
+                                    @endforeach
+                            </select>
+                            <span style="font-size: 10px"> Tidak ada dalam list? Tambah Disini </span>
+                        </div>
 
-                    <div class="form-group">
-                        <label for="harga" class="form-control-label">Harga</label>
-                        <input type="text" class="form-control" name="harga" id="harga">
-                    </div>
+                        <div class="form-group">
+                            <label for="harga_add" class="form-control-label">Harga</label>
+                            <input type="text" class="form-control" name="harga_add" id="harga_add">
+                        </div>
 
-                    <div class="form-group">
-                        <label for="diskon" class="form-control-label">Diskon</label>
-                        <input type="text" class="form-control" name="diskon" id="diskon">
-                    </div>
+                        <div class="form-group">
+                            <label for="diskon_add" class="form-control-label">Diskon</label>
+                            <input type="text" class="form-control" name="diskon_add" id="diskon_add">
+                        </div>
 
-                    <div class="form-group">
-                        <label for="kode_produk" class="form-control-label">Kode Produk</label>
-                        <input type="text" class="form-control" name="kode_produk" id="kode_produk" required>
-                    </div>
+                        <div class="form-group">
+                            <label for="kode_produk_add" class="form-control-label">Kode Produk</label>
+                            <input type="text" class="form-control" name="kode_produk_add" id="kode_produk_add" required>
+                        </div>
 
-                    <div class="form-group">
-                        <label for="stock" class="form-control-label">Stok</label>
-                        <input type="text" class="form-control" name="stock" id="stock" required>
+                        <div class="form-group">
+                            <label for="barcode15_add" class="form-control-label">Barcode 15</label>
+                            <input type="text" class="form-control" name="barcode15_add" id="barcode15_add" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="style_produk_add" class="form-control-label">Style Produk</label>
+                            <input type="text" class="form-control" name="style_produk_add" id="style_produk_add" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="stock_add" class="form-control-label">Stok</label>
+                            <input type="text" class="form-control" name="stock_add" id="stock_add" required>
+                        </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
-                    <input type="hidden" id="id_harga_seragam">
-                    <button type="button" class="btn btn-success btn-sm" onclick="#" >Create</button>
-                </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                        <input type="hidden" id="id_harga_seragam">
+                        <button type="submit" class="btn btn-success btn-sm" >Create</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

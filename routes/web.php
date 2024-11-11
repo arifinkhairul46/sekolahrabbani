@@ -60,6 +60,7 @@ Route::group(['middleware' =>['admin']], function () {
         Route::get('get-user', [UserController::class, 'get_user_api'])->name('get-user.api');
 
         Route::get('seragam', [SeragamController::class, 'list_seragam'])->name('list-seragam');
+        Route::post('seragam', [SeragamController::class, 'create_seragam'])->name('create-seragam');
         Route::get('export-seragam', [SeragamController::class, 'export_seragam'])->name('export-seragam');
         Route::get('seragam/{id}', [SeragamController::class, 'detail_seragam'])->name('detail-seragam');
         Route::put('seragam/{id}', [SeragamController::class, 'update_seragam'])->name('update-seragam');

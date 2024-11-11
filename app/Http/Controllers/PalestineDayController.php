@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\HaveRead;
 use App\Models\PalestineDay;
+use App\Models\Profile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -13,8 +14,11 @@ class PalestineDayController extends Controller
     public function index()
     {
         $user_id = Auth::user()->id;
+        $user_phone = Auth::user()->no_hp;
 
-        return view('ortu.palestine_day.index');
+        $get_jenjang = Profile::where('no_hp_ibu', $user_phone)->get();
+
+        return view('ortu.palestine_day.index', compact('get_jenjang'));
         
     }
 

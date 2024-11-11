@@ -129,11 +129,6 @@
                             <input type="text" class="form-control" name="judul" id="judul" required>
                         </div>
 
-                        <div class="form-group" id="deskripsi_group">
-                            <label for="deskripsi" class="form-control-label">Deskripsi</label>
-                            <textarea type="text" class="form-control" name="deskripsi" id="deskripsi" rows="5"> </textarea>
-                        </div>
-
                         <div class="form-group">
                             <label for="warna" class="form-control-label">Warna</label>
                             <input type="warna" class="form-control" name="warna" id="warna">
@@ -191,11 +186,6 @@
                         <input type="text" class="form-control" name="judul" id="judul_edit" required>
                     </div>
 
-                    <div class="form-group" id="deskripsi_group_edit">
-                        <label for="deskripsi" class="form-control-label">Deskripsi</label>
-                        <textarea type="text" class="form-control" name="deskripsi" id="deskripsi_edit" rows="5"> </textarea>
-                    </div>
-
                     <div class="form-group">
                         <label for="warna" class="form-control-label">Warna</label>
                         <input type="warna" class="form-control" name="warna" id="warna_edit">
@@ -238,15 +228,11 @@
             var jenjang = document.getElementById("jenjang").value
 
             if (jenjang == 2) {
-                $('#file_group').hide();
-                $('#deskripsi_group').show();
                 $('#penulis_group').hide();
+                $('#terbit_group').show();
             } else {
-                $('#file_group').show();
-                $('#deskripsi_group').hide();
                 $('#terbit_group').hide();
                 $('#penulis_group').show();
-
             }
         }
 
@@ -258,7 +244,6 @@
                 .then(data => {
                     $("#jenjang_edit").val(data.jenjang)
                     $("#judul_edit").val(data.judul)
-                    $("#deskripsi_edit").val(data.deskripsi)
                     $("#warna_edit").val(data.style)
                     $("#penulis_edit").val(data.created_by)
                     $("#terbit_edit").val(data.terbit)

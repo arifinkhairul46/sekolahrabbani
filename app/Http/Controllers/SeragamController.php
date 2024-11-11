@@ -954,6 +954,38 @@ class SeragamController extends Controller
         return view('admin.master.seragam', compact('list_seragam', 'list_produk', 'list_ukuran', 'list_jenis', 'nama_produk', 'jenis_produk', 'ukuran'));
     }
 
+    public function create_seragam(Request $request) {
+        $product_name = $request->product_name_add;
+        $ukuran_produk_add = $request->ukuran_produk_add;
+        $jenis_produk_add = $request->jenis_produk_add;
+        $harga_add = $request->harga_add;
+        $diskon_add = $request->diskon_add;
+        $kode_produk_add = $request->kode_produk_add;
+        $barcode15_add = $request->barcode15_add;
+        $style_produk_add = $request->style_produk_add;
+        $stock_add = $request->stock_add;
+
+        $add_product = HargaSeragam::create([
+            'produk_id' => $product_name,
+            'jenis_produk_id' => $jenis_produk_add,
+            'ukuran_id' => $ukuran_produk_add,
+            'harga' => $harga_add,
+            'diskon' => $diskon_add,
+            'kode_produk' => $kode_produk_add,
+            'stok' => $stock_add,
+            'style_produk' => $style_produk_add
+        ]);
+
+        $add_stock = StokSeragam::create([
+            'kd_barang' =>$kode_produk_add,
+            'qty' => $stock_add,
+            'barcode_15' => $barcode15_add
+        ]);
+
+        return redirect()->back()->with('success', 'create new seragam successfully');
+      
+    }
+
     public function export_seragam()
     {
         return Excel::download(new StokExport(), 'stok.xlsx');
