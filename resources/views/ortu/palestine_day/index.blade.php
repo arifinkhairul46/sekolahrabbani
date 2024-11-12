@@ -18,7 +18,7 @@
         </div>
 
         @foreach ($get_jenjang as $item)
-            @if ($item->sekolah_id == 'UBRSMP')
+            @if ($item->sekolah_id == 'UBRSMP' || $item->user_id == 2)
                 <div class="center mb-3">
                     <a style="text-decoration: none" href="{{route('palestine.smp')}}"> 
                         <img src="{{ asset('assets/images/palestine_day_smp.png') }}" alt="pd_smp" style="border-radius: 0.4rem" width="100%">

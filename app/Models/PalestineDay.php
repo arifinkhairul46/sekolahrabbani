@@ -22,6 +22,7 @@ class PalestineDay extends Model
         'terbit',
         'jenjang',
         'created_by',
+        'design_by',
         'updated_by',
     ];
 }

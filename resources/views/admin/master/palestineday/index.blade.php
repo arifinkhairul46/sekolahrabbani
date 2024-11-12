@@ -42,12 +42,14 @@
                                         <tr>
                                             <td>{{$loop->iteration}}</td>
                                             <td>{{$item->judul}}</td>
+                                            <td> 
+                                                <img src="{{asset('storage/'.$item->image)}}" id="img_cover_{{$item->id}}" onclick="zoomImage('{{asset('storage/'.$item->image)}}')" width="20px">
+                                            </td>
                                             <td>{{$item->file}}</td>
-                                            <td>{{$item->image}} </td>
-                                            @if ($item->status = 0) 
-                                                <td>Tidak Aktif</td>
+                                            @if ($item->status == 0) 
+                                                <td> <span class="badge rounded-pill bg-danger" >Tidak Aktif </span></td>
                                             @else
-                                                <td>Aktif</td>
+                                                <td> <span class="badge rounded-pill bg-success"> Aktif </span> </td>
                                             @endif
                                             <td>{{$item->created_by}}</td>
                                             <td>{{$item->created_at}}</td>
@@ -69,7 +71,9 @@
                                     <tr>
                                         <th>No</th>
                                         <th>Judul</th>
-                                        <th>Deskripsi </th>
+                                        <th>Image </th>
+                                        <th>File </th>
+                                        <th>Design by </th>
                                         <th>Status</th>
                                         <th>Terbit</th>
                                         <th>Aksi</th>
@@ -80,11 +84,13 @@
                                         <tr>
                                             <td>{{$loop->iteration}}</td>
                                             <td>{{$item->judul}}</td>
-                                            <td>{{$item->deskripsi}}</td>
-                                            @if ($item->status = 0) 
-                                                <td>Tidak Aktif</td>
+                                            <td><img src="{{asset('storage/'.$item->image)}}"  id="img_cover_{{$item->id}}" onclick="zoomImage('{{asset('storage/'.$item->image)}}')" width="20px"></td>
+                                            <td>{{$item->file}}</td>
+                                            <td>{{$item->design_by}}</td>
+                                            @if ($item->status == 0) 
+                                                <td> <span class="badge rounded-pill bg-danger" >Tidak Aktif </span></td>
                                             @else
-                                                <td>Aktif</td>
+                                                <td> <span class="badge rounded-pill bg-success"> Aktif </span> </td>
                                             @endif
                                             <td>{{$item->terbit}}</td>
                                             <td class="d-flex">
@@ -139,6 +145,11 @@
                             <input type="text" class="form-control" name="penulis" id="penulis">
                         </div>
 
+                        <div class="form-group" id="design_by_group">
+                            <label for="design_by" class="form-control-label">Design by</label>
+                            <input type="text" class="form-control" name="design_by" id="design_by">
+                        </div>
+
                         <div class="form-group" id="terbit_group">
                             <label for="terbit" class="form-control-label">Terbit</label>
                             <input type="date" class="form-control" name="terbit" id="terbit">
@@ -171,54 +182,86 @@
                 <div class="modal-header">
                     <h5 class="modal-title" id="edit">Edit materi</h5>
                 </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="jenjang" class="form-control-label">Jenjang</label>
-                        <select name="jenjang" id="jenjang_edit" onchange="getMateri()" class="form-control form-control-sm" required>
-                            <option value="" disabled selected> </option>
-                            <option value="1" >Kober - TK - SD </option>
-                            <option value="2" >SMP </option>
-                        </select>
-                    </div>
+                <form action="#" method="post" enctype="multipart/form-data" id="editForm">
+                    @csrf @method('PUT')
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="jenjang_edit" class="form-control-label">Jenjang</label>
+                            <select name="jenjang_edit" id="jenjang_edit" onchange="getMateri()" class="form-control form-control-sm" required>
+                                <option value="" disabled selected> </option>
+                                <option value="1" >Kober - TK - SD </option>
+                                <option value="2" >SMP </option>
+                            </select>
+                        </div>
 
-                    <div class="form-group">
-                        <label for="judul" class="form-control-label">Judul</label>
-                        <input type="text" class="form-control" name="judul" id="judul_edit" required>
-                    </div>
+                        <div class="form-group">
+                            <label for="judul_edit" class="form-control-label">Judul</label>
+                            <input type="text" class="form-control" name="judul_edit" id="judul_edit" required>
+                        </div>
 
-                    <div class="form-group">
-                        <label for="warna" class="form-control-label">Warna</label>
-                        <input type="warna" class="form-control" name="warna" id="warna_edit">
-                    </div>
+                        <div class="form-group">
+                            <label for="warna_edit" class="form-control-label">Warna</label>
+                            <input type="text" class="form-control" name="warna_edit" id="warna_edit">
+                        </div>
 
-                    <div class="form-group" id="penulis_group_edit">
-                        <label for="penulis" class="form-control-label">Penulis</label>
-                        <input type="text" class="form-control" name="penulis" id="penulis_edit">
-                    </div>
+                        <div class="form-group" id="penulis_group_edit">
+                            <label for="penulis_edit" class="form-control-label">Penulis</label>
+                            <input type="text" class="form-control" name="penulis_edit" id="penulis_edit">
+                        </div>
 
-                    <div class="form-group" id="terbit_group_edit">
-                        <label for="terbit" class="form-control-label">Terbit</label>
-                        <input type="date" class="form-control" name="terbit" id="terbit_edit">
-                    </div>
+                        <div class="form-group" id="design_by_group_edit">
+                            <label for="design_by_edit" class="form-control-label">Design by</label>
+                            <input type="text" class="form-control" name="design_by_edit" id="design_by_edit">
+                        </div>
 
-                    <div class="form-group">
-                        <label for="gambar" class="form-control-label">Gambar</label>
-                        <input type="file" class="form-control" name="gambar" id="gambar_edit" required>
-                    </div>
+                        <div class="form-group" id="terbit_group_edit">
+                            <label for="terbit_edit" class="form-control-label">Terbit</label>
+                            <input type="date" class="form-control" name="terbit_edit" id="terbit_edit">
+                        </div>
 
-                    <div class="form-group" id="file_group_edit">
-                        <label for="file" class="form-control-label">File</label>
-                        <input type="file" class="form-control" name="file" id="file_edit">
+                        <div class="form-group">
+                            <label for="status_edit" class="form-control-label">Status</label>
+                            <select name="status_edit" id="status_edit" class="form-control form-control-sm" required>
+                                <option value="" disabled selected> </option>
+                                <option value="1" >Aktif</option>
+                                <option value="0" >Tidak Aktif </option>
+                            </select>
+                        </div>
+
+                        {{-- <div class="form-group">
+                            <label for="gambar" class="form-control-label">Gambar</label>
+                            <input type="file" class="form-control" name="gambar" id="gambar_edit" required>
+                        </div>
+
+                        <div class="form-group" id="file_group_edit">
+                            <label for="file" class="form-control-label">File</label>
+                            <input type="file" class="form-control" name="file" id="file_edit">
+                        </div> --}}
                     </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-success btn-sm" >Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {{-- modal zoom image --}}
+    <div class="modal fade" id="zoom_image" tabindex="-1" role="dialog" aria-labelledby="zoom" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-success btn-sm" onclick="update_materi()" >Update</button>
+                <div class="modal-body">
+                   <img id="img_modal" src="#" alt="image-cover" width="100%" >
                 </div>
             </div>
         </div>
     </div>
-    
+
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js" defer></script>
@@ -230,15 +273,37 @@
             if (jenjang == 2) {
                 $('#penulis_group').hide();
                 $('#terbit_group').show();
+                $('#design_by_group').show();
             } else {
                 $('#terbit_group').hide();
                 $('#penulis_group').show();
+                $('#design_by_group').hide();
             }
         }
 
+        function edit_data_smp(id) {
+            $('#penulis_group_edit').hide();
+            fetch('/master/palestine-day/' + id)
+                .then(response => response.json())
+                .then(data => {
+                    $("#jenjang_edit").val(data.jenjang)
+                    $("#judul_edit").val(data.judul)
+                    $("#warna_edit").val(data.style)
+                    $("#design_by_edit").val(data.design_by)
+                    $("#terbit_edit").val(data.terbit)
+                    $("#status_edit").val(data.status)
+                    $("#gambar_edit").val(data.image)
+                    $("#file_edit").val(data.file)
+                    $("#editForm").attr('action', '/master/palestine-day/' + id)
+                    $("input[name='_method']").val('PUT')
+                })
+        }
+
         function edit_data_tksd(id) {
+            var url = "{{ route('master.update-materi', '') }}" + "/" + id;
+            console.log(url);
             $('#terbit_group_edit').hide();
-            $('#deskripsi_group_edit').hide();
+            $('#design_by_group_edit').hide();
             fetch('/master/palestine-day/' + id)
                 .then(response => response.json())
                 .then(data => {
@@ -246,32 +311,25 @@
                     $("#judul_edit").val(data.judul)
                     $("#warna_edit").val(data.style)
                     $("#penulis_edit").val(data.created_by)
-                    $("#terbit_edit").val(data.terbit)
+                    $("#status_edit").val(data.status)
                     $("#gambar_edit").val(data.image)
                     $("#file_edit").val(data.file)
+                    $("#editForm").attr('action', url)
+                    $("input[name='_method']").val('PUT')
                 })
+        }
+
+        function zoomImage(file)
+        {
+           $('#zoom_image').modal('show')
+           $('#img_modal').attr('src', file)
         }
 
     </script>
 @endsection
 
 <style>
-    table.dataTable th:nth-child(3) {
-        width: 300px;
-        max-width: 300px;
-        word-break: break-all;
-        white-space: pre-line;
-    }
-
-    table.dataTable td:nth-child(3) {
-        width: 300px;
-        max-width: 300px;
-        word-break: break-all;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
+   
     table.dataTable th:nth-child(4) {
         width: 300px;
         max-width: 300px;

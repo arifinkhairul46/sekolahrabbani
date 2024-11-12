@@ -10,18 +10,75 @@
         </div>
     </div>    
     
-    <div class="container">
-        <h6> Ikuti Langkah ini :</h6>
-        <p> <span class="number-background center text-white"> 1 </span>  Lihat dan baca konten yang ada dibawah ini :  </p>
-        <div class="container" style="background-color: #EFEFEF; border-radius: 1rem">
-            <p class="deskripsi-konten"> {{$materi->deskripsi}} </p>
-        </div>
-        <p> <span class="number-background center text-white mt-3"> 2 </span>  Download asset pada link di bawah ini :  </p>
-        <div class="center">
-            <a href="#" class="btn btn-primary px-5" style="border-radius: 1rem">
-                <h6 class="mt-1"> Link Asset Palestine Day </h6 class="mt-1">
-            </a>
-        </div>
-        <p> <span class="number-background center text-white mt-3"> 3 </span>  Kreasikan oleh kalian dengan desain yang menarik. Jika sudah selesai, kirim kepada guru kelas masing-masing. Guru akan menilai hasil kreatifitas kalian.  </p>
+    <div class="row justify-content-center">
+        <object  data="{{ asset('storage/'.$materi->file) }}" type="application/pdf" height="600" >
+            <iframe src="https://docs.google.com/viewer?url={{asset('storage/'.$materi->file)}}&embedded=true" width="100%" style="height: 600px" >
+                This browser does not support PDFs. Please download the PDF to view it: <a href="{{ asset('folder/file_name.pdf') }}">Download PDF</a>
+            </iframe>
+        </object>
     </div>
+
+    <div class="center my-3">
+        @if ($sudah_baca == null)
+            <h3> Apakah Ananda sudah mempresentasikan infografis ini kepada Ayah/Bunda? </h3>
+            <a href="#" class="btn btn-danger px-4 mx-2" id="btn-belum" data-bs-toggle="modal" data-bs-target="#modal_belum">Belum</a>
+            <a href="#" class="btn btn-success px-4" id="btn-sudah" onclick="sudah('{{$materi->id}}')">Sudah</a>
+        @else 
+            <h3> Ayah/Bunda sudah baca materi ini, ayo <span class="text-success"> ceritakan kembali </span> pada anaknya </h3>
+        @endif
+    </div>
+
+    <div class="modal fade" id="modal_belum" tabindex="-1" role="dialog" aria-labelledby="belum" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="px-2" style="text-align: right">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="d-flex">
+                        <img src="{{asset('assets/images/sad_emoticon.png')}}" width="15%" alt="sad emoticon">
+                        <h6 class="mt-3 mx-3"> Yaaaahh, sayang sekaliii... </h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal fade" id="modal_sudah" tabindex="-1" role="dialog" aria-labelledby="sudah" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="px-2" style="text-align: right">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="d-flex">
+                        <img src="{{asset('assets/images/happy_emoticon.png')}}" width="15%" alt="happy emoticon">
+                        <h6 class="mt-3  mx-3"> Alhamdulillah, yeaaayy... </h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+
+        function sudah(id) {
+            var materi_id = id
+
+            $.ajax({
+                url: "{{route('sudah_baca')}}",
+                type: 'POST',
+                data: {
+                    materi_id: materi_id,
+                    _token: '{{csrf_token()}}'
+
+                },
+                success: function (result) {
+                   $('#modal_sudah').modal('show')       
+                }
+            })
+        }
+    </script>
 @endsection

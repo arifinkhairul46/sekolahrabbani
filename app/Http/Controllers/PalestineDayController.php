@@ -26,7 +26,7 @@ class PalestineDayController extends Controller
     {
         $user_id = Auth::user()->id;
 
-        $materi = PalestineDay::where('jenjang', 1)->get();
+        $materi = PalestineDay::where('jenjang', 1)->where('status', 1)->get();
         // dd($materi);
 
         return view('ortu.palestine_day.materi-tk', compact('materi'));
@@ -64,9 +64,11 @@ class PalestineDayController extends Controller
     {
         $user_id = Auth::user()->id;
 
-        $materi = PalestineDay::where('jenjang', 2)->get();
+        $materi = PalestineDay::where('jenjang', 2)->where('status', 1)->get();
 
-        return view('ortu.palestine_day.materi-smp', compact('materi'));
+        $date_today = date('Y-m-d');
+
+        return view('ortu.palestine_day.materi-smp', compact('materi', 'date_today'));
         
     }
 
@@ -77,8 +79,11 @@ class PalestineDayController extends Controller
         $materi = PalestineDay::find($id);
 
         $file = public_path('storage/'.$materi->file);
+
+        $sudah_baca = HaveRead::where('user_id', $user_id)->where('materi_id', $id)->first();
+
         
-        return view('ortu.palestine_day.materi-smp-by-id', compact('file', 'materi'));
+        return view('ortu.palestine_day.materi-smp-by-id', compact('file', 'materi', 'sudah_baca'));
         
     }
 
@@ -92,9 +97,50 @@ class PalestineDayController extends Controller
     public function master_materi_by_id(Request $request, $id)
     {
         $detail_materi = PalestineDay::where('id', $id)->first();
-        // dd($detail_materi);
 
         return response($detail_materi);
+    }
+
+    public function update_materi(Request $request, $id)
+    {
+        try {
+            $user = Auth::user()->name;
+
+            $file = null;
+            $file_url = null;
+            $path = 'palestineday/file';
+            if ($request->has('file')) {
+                $file = $request->file('file')->store($path);
+                $file_name = $request->file('file')->getClientOriginalName();
+                $file_url = $path . '/' . $file_name;
+                Storage::disk('public')->put($file_url, file_get_contents($request->file('file')->getRealPath()));
+            }
+    
+            $image = null;
+            $image_url = null;
+            $path = 'palestineday/gambar';
+            if ($request->has('gambar')) {
+                $image = $request->file('gambar')->store($path);
+                $image_name = $request->file('gambar')->getClientOriginalName();
+                $image_url = $path . '/' . $image_name;
+                Storage::disk('public')->put($image_url, file_get_contents($request->file('gambar')->getRealPath()));
+            }
+
+            $update_materi = PalestineDay::where('id', $id)->update([
+            'judul' => $request->judul_edit,
+            'style' => $request->warna_edit,
+            'status'  => $request->status_edit,
+            'terbit'  => $request->terbit_edit,
+            'jenjang' => $request->jenjang_edit,
+            'created_by' => $request->penulis_edit,
+            'design_by' => $request->design_by_edit,
+            'updated_by' => $user,
+            ]);
+            return redirect()->back()->withSuccess('Success update Materi ');
+        } catch (\Exception $e) {
+            return redirect()->back()->withError($e->getMessage());
+        }
+
     }
 
     public function store(Request $request)
@@ -114,6 +160,8 @@ class PalestineDayController extends Controller
             $file_name = $request->file('file')->getClientOriginalName();
             $file_url = $path . '/' . $file_name;
             Storage::disk('public')->put($file_url, file_get_contents($request->file('file')->getRealPath()));
+        } else {
+            return redirect()->back()->with('failed', 'File tidak boleh kosong');
         }
 
         $image = null;
@@ -125,7 +173,7 @@ class PalestineDayController extends Controller
             $image_url = $path . '/' . $image_name;
             Storage::disk('public')->put($image_url, file_get_contents($request->file('gambar')->getRealPath()));
         } else {
-            return redirect()->back()->with('failed', 'File tidak boleh kosong');
+            return redirect()->back()->with('error', 'Image tidak boleh kosong');
         }
 
         PalestineDay::create([
@@ -138,6 +186,7 @@ class PalestineDayController extends Controller
             'terbit'  => $request->terbit,
             'jenjang' => $request->jenjang,
             'created_by' => $request->penulis,
+            'design_by' => $request->design_by,
             'updated_by' => $user,
             'created_at' => date('Y-m-d H:i:s')
         ]);
