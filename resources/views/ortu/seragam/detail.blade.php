@@ -9,6 +9,8 @@
             <button type="button" data-bs-target="#image-carousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
             <button type="button" data-bs-target="#image-carousel" data-bs-slide-to="3" aria-label="Slide 4"></button>
             <button type="button" data-bs-target="#image-carousel" data-bs-slide-to="4" aria-label="Slide 5"></button>
+            <button type="button" data-bs-target="#image-carousel" data-bs-slide-to="5" aria-label="Slide 6"></button>
+            <button type="button" data-bs-target="#image-carousel" data-bs-slide-to="6" aria-label="Slide 7"></button>
         </div>
         <div class="carousel-inner">
             <div class="carousel-item active">
@@ -26,6 +28,18 @@
             <div class="carousel-item">
                 <img class="img-detail-card" src="{{ asset('assets/images/'.$produk->image_5) }}" alt="{{$produk->image_5}}">
             </div>
+
+            @if ($produk->image_6 != null)
+                <div class="carousel-item">
+                    <img class="img-detail-card" src="{{ asset('assets/images/'.$produk->image_6) }}" alt="{{$produk->image_6}}">
+                </div>
+            @endif
+
+            @if ($produk->image_7 != null)
+                <div class="carousel-item">
+                    <img class="img-detail-card" src="{{ asset('assets/images/'.$produk->image_7) }}" alt="{{$produk->image_7}}">
+                </div>
+            @endif
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#image-carousel"
             data-bs-slide="prev">

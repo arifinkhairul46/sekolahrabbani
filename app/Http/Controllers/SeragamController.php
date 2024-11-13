@@ -113,13 +113,13 @@ class SeragamController extends Controller
     public function detail_produk(Request $request, $id)
     {
         $produk = ProdukSeragam::select('m_produk_seragam.id','m_produk_seragam.nama_produk', 'm_produk_seragam.deskripsi', 'm_produk_seragam.image', 'm_produk_seragam.image_2',
-        'm_produk_seragam.image_3', 'm_produk_seragam.image_4', 'm_produk_seragam.image_5', 'm_produk_seragam.material', 'mhs.harga', 'mhs.diskon', 'mjps.jenis_produk')
+        'm_produk_seragam.image_3', 'm_produk_seragam.image_4', 'm_produk_seragam.image_5', 'm_produk_seragam.image_6', 'm_produk_seragam.image_7', 'm_produk_seragam.material', 'mhs.harga', 'mhs.diskon', 'mjps.jenis_produk')
                                 ->leftJoin('m_harga_seragam as mhs', 'mhs.produk_id', 'm_produk_seragam.id')
                                 ->leftJoin('m_ukuran_seragam as mus', 'mus.grup_ukuran', 'mhs.ukuran_id')
                                 ->leftJoin('m_jenis_produk_seragam as mjps', 'mjps.id', 'mhs.jenis_produk_id')
                                 ->where('m_produk_seragam.id', $id)
                                 ->first();
-
+        // dd($produk->image_7);
         $user_id = auth()->user()->id;
         $no_hp = auth()->user()->no_hp;
 
