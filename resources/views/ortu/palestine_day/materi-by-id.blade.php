@@ -11,7 +11,7 @@
     </div>    
     <div class="row justify-content-center">
         <object  data="{{ asset('storage/'.$materi->file) }}" type="application/pdf" height="600" >
-            <iframe src="https://docs.google.com/viewer?url={{asset('storage/'.$materi->file)}}&embedded=true" width="100%" style="height: 600px" >
+            <iframe src="https://docs.google.com/viewerng/viewer?url={{asset('storage/'.$materi->file)}}&embedded=true" width="100%" style="height: 600px" scrolling="auto" type='application/pdf' >
                 This browser does not support PDFs. Please download the PDF to view it: <a href="{{ asset('folder/file_name.pdf') }}">Download PDF</a>
             </iframe>
         </object>
