@@ -11,7 +11,7 @@
     </div>    
     <div class="row justify-content-center">
         <object  data="{{ asset('storage/'.$materi->file) }}" type="application/pdf" height="600" >
-            <iframe src="https://docs.google.com/gview?url={{asset('storage/'.$materi->file)}}&embedded=true" width="100%" style="height: 600px" scrolling="auto" type='application/pdf' >
+            <iframe src="https://docs.google.com/gview?url={{asset('storage/'.$materi->file)}}&embedded=true" id="theFrame" width="100%" style="height: 600px" scrolling="auto" type='application/pdf' >
                 This browser does not support PDFs. Please download the PDF to view it: <a href="{{ asset('folder/file_name.pdf') }}">Download PDF</a>
             </iframe>
         </object>
@@ -61,6 +61,34 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
+
+        document.getElementById("theFrame").contentWindow.onload = function() {
+            this.document.getElementsByTagName("img")[0].style.width="100%";
+        };
+
+        setTimeout(function () {
+        var startY = 0;
+        var startX = 0;
+        var b = document.body;
+        b.addEventListener('touchstart', function (event) {
+            parent.window.scrollTo(0, 1);
+            startY = event.targetTouches[0].pageY;
+            startX = event.targetTouches[0].pageX;
+        });
+        b.addEventListener('touchmove', function (event) {
+            event.preventDefault();
+            var posy = event.targetTouches[0].pageY;
+            var h = parent.document.getElementById("theFrame");
+            var sty = h.scrollTop;
+
+            var posx = event.targetTouches[0].pageX;
+            var stx = h.scrollLeft;
+            h.scrollTop = sty - (posy - startY);
+            h.scrollLeft = stx - (posx - startX);
+            startY = posy;
+            startX = posx;
+        });
+        }, 1000);
 
         function sudah(id) {
             var materi_id = id
