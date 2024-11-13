@@ -3,7 +3,7 @@
 @section('content')
     <div class="top-navigate sticky-top">
         <div class="d-flex" style="justify-content: stretch; width: 100%;">
-            <a onclick="window.history.go(-1); return false;" class="mt-1" style="text-decoration: none; color: black">
+            <a href="{{route('palestine.tksd')}}" class="mt-1" style="text-decoration: none; color: black">
                 <i class="fa-solid fa-arrow-left"></i>
             </a>
             <h4 class="mx-2"> {{$materi->judul}} </h4>
@@ -15,6 +15,7 @@
                 This browser does not support PDFs. Please download the PDF to view it: <a href="{{ asset('folder/file_name.pdf') }}">Download PDF</a>
             </iframe>
         </object>
+        <span style="font-size: 12px"> Jika materi PDF tidak dapat di<i>scroll</i>, silahkan klik <a href="https://docs.google.com/viewerng/viewer?url={{asset('storage/'.$materi->file)}}&embedded=true" target="_blank"> link disini </a> </span>
     </div>
 
     <div class="center my-3">
