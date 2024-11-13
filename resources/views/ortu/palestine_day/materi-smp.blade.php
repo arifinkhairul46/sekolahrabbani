@@ -14,7 +14,7 @@
         <div class="d-grid-card">
             @foreach ($materi as $item)
                 @if (date($item->terbit) <= $date_today)
-                    <a href="{{route('materi-smp-by-id', $item->id)}}" target="_blank" style="text-decoration: none">
+                    <a href="{{route('materi-smp-by-id', $item->id)}}" style="text-decoration: none">
                         <div class="card catalog mb-1">
                             @if ($item->image == null || $item->image == "")
                             <img src="{{ asset('assets/images/img-palestine-1.png') }}" class="card-img-top cover-img-smp" alt="palestine" style="max-height: 180px">

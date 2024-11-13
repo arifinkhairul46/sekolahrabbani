@@ -3,7 +3,7 @@
 @section('content')
     <div class="top-navigate sticky-top">
         <div class="d-flex" style="justify-content: stretch; width: 100%;">
-            <a href="{{route('palestine.tksd')}}" class="mt-1" style="text-decoration: none; color: black">
+            <a href="{{route('palestine.smp')}}" class="mt-1" style="text-decoration: none; color: black">
                 <i class="fa-solid fa-arrow-left"></i>
             </a>
             <h4 class="mx-2"> {{$materi->judul}} </h4>
@@ -77,7 +77,10 @@
 
                 },
                 success: function (result) {
-                   $('#modal_sudah').modal('show')       
+                    setTimeout(function(){
+                        window.location.reload(); // you can pass true to reload function to ignore the client cache and reload from the server
+                    }, 2000);
+                    $('#modal_sudah').modal('show');       
                 }
             })
         }

@@ -103,6 +103,9 @@
 
                 },
                 success: function (result) {
+                    setTimeout(function(){
+                        window.location.reload(); // you can pass true to reload function to ignore the client cache and reload from the server
+                    }, 2000);
                    $('#modal_sudah').modal('show')                    
                 }
             })

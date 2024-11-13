@@ -13,7 +13,7 @@
     @if ($materi->count() > 0)
         <div class="d-grid-card">
             @foreach ($materi as $item)
-                <a href="{{route('materi-by-id', $item->id)}}" target="_blank" style="text-decoration: none">
+                <a href="{{route('materi-by-id', $item->id)}}" style="text-decoration: none">
                     <div class="card catalog mb-1">
                         @if ($item->image == null || $item->image == "")
                             <img src="{{ asset('assets/images/img-palestine-1.png') }}" class="card-img-top" alt="palestine" style="max-height: 180px">
