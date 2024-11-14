@@ -27,7 +27,6 @@ class PalestineDayController extends Controller
         $user_id = Auth::user()->id;
 
         $materi = PalestineDay::where('jenjang', 1)->where('status', 1)->get();
-        // dd($materi);
 
         return view('ortu.palestine_day.materi-tk', compact('materi'));
         
@@ -54,8 +53,7 @@ class PalestineDayController extends Controller
         $file = public_path('storage/'.$materi->file);
 
         $sudah_baca = HaveRead::where('user_id', $user_id)->where('materi_id', $id)->first();
-        // dd($sudah_baca);
-        
+
         return view('ortu.palestine_day.materi-by-id', compact('file', 'materi', 'sudah_baca'));
         
     }
@@ -200,24 +198,60 @@ class PalestineDayController extends Controller
         $user_name = $user->name;
         $materi_id = $request->materi_id;
 
-        $store_have_read = HaveRead::create([
-            'user_id' => $user_id,
-            'user_name' => $user_name,
-            'materi_id' => $materi_id,
-        ]);
+        $materi = PalestineDay::find($materi_id);
+        
+        $get_jenjang = $materi->jenjang;
 
-        return response()->json($store_have_read);
+        if ($get_jenjang == 2) {
+            $jenjang = 'UBRSMP';
+
+            $data = Profile::select('m_profile.nis')
+                            ->leftJoin('t_sudah_baca_materi as tsbm', 'tsbm.user_id', 'm_profile.user_id')
+                            ->leftJoin('m_palestine_day as mpd', 'mpd.id', 'tsbm.materi_id')
+                            ->where('m_profile.user_id', $user_id)
+                            ->where('m_profile.sekolah_id', 'UBRSMP')
+                            ->get();
+            
+            foreach ($data as $item) {
+                $store_have_read = HaveRead::create([
+                    'user_id' => $user_id,
+                    'user_name' => $user_name,
+                    'nis' => $item['nis'],
+                    'materi_id' => $materi_id,
+                ]);
+                return response()->json($store_have_read);
+            }
+
+        } else {
+            $data = Profile::select('m_profile.nis')
+                            ->leftJoin('t_sudah_baca_materi as tsbm', 'tsbm.user_id', 'm_profile.user_id')
+                            ->leftJoin('m_palestine_day as mpd', 'mpd.id', 'tsbm.materi_id')
+                            ->where('m_profile.user_id', $user_id)
+                            ->where('m_profile.sekolah_id', '!=', 'UBRSMP')
+                            ->get();
+
+            foreach ($data as $item) {
+                $store_have_read = HaveRead::create([
+                    'user_id' => $user_id,
+                    'user_name' => $user_name,
+                    'nis' => $item['nis'],
+                    'materi_id' => $materi_id,
+                ]);
+                return response()->json($store_have_read);
+            }
+        }
+
     }
 
     public function list_sudah_baca()
     {
-        $haveRead = HaveRead::select('t_sudah_baca_materi.materi_id', 'mpro.nis', 'mpro.nama_lengkap', 'mls.sublokasi as lokasi', 'mpro.nama_kelas', 'mpd.judul')
+        $haveRead = HaveRead::select('t_sudah_baca_materi.materi_id', 't_sudah_baca_materi.created_at', 'mpro.nis', 'mpro.nama_lengkap', 'mls.sublokasi as lokasi', 'mpro.nama_kelas', 'mpd.judul', )
                             ->leftJoin('m_palestine_day as mpd', 'mpd.id', 't_sudah_baca_materi.materi_id')
-                            ->leftJoin('m_profile as mpro', 'mpro.user_id', 't_sudah_baca_materi.user_id')
+                            ->leftJoin('m_profile as mpro', 'mpro.nis', 't_sudah_baca_materi.nis')
                             ->leftJoin('mst_lokasi_sub as mls', 'mpro.sekolah_id', 'mls.id')
                             ->groupby('t_sudah_baca_materi.materi_id', 't_sudah_baca_materi.user_id')
                             ->get();
-        // dd($haveRead);
+
         return view('admin.master.palestineday.sudahbaca', compact('haveRead'));
     }
 }

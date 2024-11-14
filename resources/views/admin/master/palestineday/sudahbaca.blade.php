@@ -22,6 +22,7 @@
                                 <th>Sekolah</th>
                                 <th>Kelas</th>
                                 <th>Materi sudah baca</th>
+                                <th>Waktu</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -33,6 +34,7 @@
                                     <td>{{$item->lokasi}}</td>
                                     <td>{{$item->nama_kelas}}</td>
                                     <td>{{$item->judul}}</td>
+                                    <td>{{$item->created_at}}</td>
                                 </tr>
                             @endforeach
                         </tbody>
