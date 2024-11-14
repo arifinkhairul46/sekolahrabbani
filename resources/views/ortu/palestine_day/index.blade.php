@@ -11,11 +11,15 @@
     </div>
 
     <div class="container mt-0 pt-0">
-        <div class="center">
-            <a style="text-decoration: none" href="{{route('palestine.tksd')}}"> 
-                <img src="{{ asset('assets/images/palestine_day_tk_sd.png') }}" alt="pd_tk_sd" style="border-radius: 0.4rem" width="100%">
-            </a>
-        </div>
+        @foreach ($get_jenjang as $item)
+            @if ($item->sekolah_id != 'UBRSMP' || $item->user_id == 2 || $item->user_id == 1789 || $item->user_id == 1790)
+                <div class="center">
+                    <a style="text-decoration: none" href="{{route('palestine.tksd')}}"> 
+                        <img src="{{ asset('assets/images/palestine_day_tk_sd.png') }}" alt="pd_tk_sd" style="border-radius: 0.4rem" width="100%">
+                    </a>
+                </div>
+            @endif
+        @endforeach
 
         @foreach ($get_jenjang as $item)
             @if ($item->sekolah_id == 'UBRSMP' || $item->user_id == 2 || $item->user_id == 1789 || $item->user_id == 1790)

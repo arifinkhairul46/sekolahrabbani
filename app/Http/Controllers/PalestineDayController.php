@@ -16,7 +16,7 @@ class PalestineDayController extends Controller
         $user_id = Auth::user()->id;
         $user_phone = Auth::user()->no_hp;
 
-        $get_jenjang = Profile::where('no_hp_ibu', $user_phone)->get();
+        $get_jenjang = Profile::where('no_hp_ibu', $user_phone)->groupby('sekolah_id')->get();
 
         return view('ortu.palestine_day.index', compact('get_jenjang'));
         
@@ -211,6 +211,8 @@ class PalestineDayController extends Controller
                             ->where('m_profile.user_id', $user_id)
                             ->where('m_profile.sekolah_id', 'UBRSMP')
                             ->get();
+            // return response()->json($data);
+            
             
             foreach ($data as $item) {
                 $store_have_read = HaveRead::create([
@@ -219,8 +221,8 @@ class PalestineDayController extends Controller
                     'nis' => $item['nis'],
                     'materi_id' => $materi_id,
                 ]);
-                return response()->json($store_have_read);
             }
+            return response()->json($store_have_read);
 
         } else {
             $data = Profile::select('m_profile.nis')
@@ -237,8 +239,8 @@ class PalestineDayController extends Controller
                     'nis' => $item['nis'],
                     'materi_id' => $materi_id,
                 ]);
-                return response()->json($store_have_read);
             }
+            return response()->json($store_have_read);
         }
 
     }
@@ -249,7 +251,7 @@ class PalestineDayController extends Controller
                             ->leftJoin('m_palestine_day as mpd', 'mpd.id', 't_sudah_baca_materi.materi_id')
                             ->leftJoin('m_profile as mpro', 'mpro.nis', 't_sudah_baca_materi.nis')
                             ->leftJoin('mst_lokasi_sub as mls', 'mpro.sekolah_id', 'mls.id')
-                            ->groupby('t_sudah_baca_materi.materi_id', 't_sudah_baca_materi.user_id')
+                            ->groupby('t_sudah_baca_materi.materi_id', 't_sudah_baca_materi.nis')
                             ->get();
 
         return view('admin.master.palestineday.sudahbaca', compact('haveRead'));
