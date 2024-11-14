@@ -1014,6 +1014,7 @@ class SeragamController extends Controller
         $id = $request->id;
         $kode_produk = $request->kode_produk;
         $stock_update = $request->stock;
+        $keterangan = $request->keterangan;
         
         $stock_seragam = StokSeragam::find($id);
         $stok_awal = $stock_seragam->qty;
@@ -1038,7 +1039,7 @@ class SeragamController extends Controller
             'qty' => $stock_update - $stok_awal,
             'stok_akhir' => $stok_awal + ($stock_update - $stok_awal),
             'updateby' => $user,
-            'proses' => 'update stok'
+            'proses' => $keterangan
         ]);
 
         return response()->json($update_seragam);

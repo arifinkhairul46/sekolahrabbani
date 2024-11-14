@@ -122,6 +122,7 @@
             var diskon = $('#diskon').val();
             var kode_produk = $('#kode_produk').val();
             var stock = $('#stock').val();
+            var keterangan = $('#keterangan').val();
 
             var url = "{{ route('update-seragam', ":id") }}";
             url = url.replace(':id', id);
@@ -135,6 +136,7 @@
                     kode_produk: kode_produk,
                     id: id,
                     stock: stock,
+                    keterangan: keterangan,
                     _token: '{{csrf_token()}}'
                 },
                 success: function (result) {
@@ -175,6 +177,11 @@
                     <div class="form-group">
                         <label for="stock" class="form-control-label">Stok</label>
                         <input type="text" class="form-control" name="stock" id="stock" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="keterangan" class="form-control-label">Keterangan</label>
+                        <input type="text" class="form-control" name="keterangan" id="keterangan" required>
                     </div>
                 </div>
                 <div class="modal-footer">
