@@ -73,6 +73,7 @@ Route::group(['middleware' =>['admin']], function () {
         Route::put('palestine-day/{id}', [PalestineDayController::class, 'update_materi'])->name('master.update-materi');
         Route::post('palestine-day/create', [PalestineDayController::class, 'store'])->name('materi.store');
         Route::get('sudah-baca', [PalestineDayController::class, 'list_sudah_baca'])->name('master.sudah-baca');
+        Route::get('sudah-baca/export', [PalestineDayController::class, 'export_have_read'])->name('master.export-sudahbaca');
 
 
 

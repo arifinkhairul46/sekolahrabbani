@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\HaveReadList;
 use App\Models\HaveRead;
 use App\Models\PalestineDay;
 use App\Models\Profile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PalestineDayController extends Controller
 {
@@ -255,5 +257,12 @@ class PalestineDayController extends Controller
                             ->get();
 
         return view('admin.master.palestineday.sudahbaca', compact('haveRead'));
+    }
+
+    public function export_have_read()
+    {
+        $now = date('d-m-y');
+        $file_name = 'haveread-'.$now.'.xlsx';
+        return Excel::download(new HaveReadList(), $file_name);
     }
 }
