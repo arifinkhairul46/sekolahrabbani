@@ -213,8 +213,8 @@ class PalestineDayController extends Controller
                             ->leftJoin('m_palestine_day as mpd', 'mpd.id', 'tsbm.materi_id')
                             ->where('m_profile.user_id', $user_id)
                             ->where('m_profile.sekolah_id', 'UBRSMP')
+                            ->groupby('m_profile.user_id', 'm_profile.nis')
                             ->get();
-            // return response()->json($data);
             
             
             foreach ($data as $item) {
@@ -233,6 +233,7 @@ class PalestineDayController extends Controller
                             ->leftJoin('m_palestine_day as mpd', 'mpd.id', 'tsbm.materi_id')
                             ->where('m_profile.user_id', $user_id)
                             ->where('m_profile.sekolah_id', '!=', 'UBRSMP')
+                            ->groupby('m_profile.user_id', 'm_profile.nis')
                             ->get();
 
             foreach ($data as $item) {
@@ -255,6 +256,7 @@ class PalestineDayController extends Controller
                             ->leftJoin('m_profile as mpro', 'mpro.nis', 't_sudah_baca_materi.nis')
                             ->leftJoin('mst_lokasi_sub as mls', 'mpro.sekolah_id', 'mls.id')
                             ->groupby('t_sudah_baca_materi.materi_id', 't_sudah_baca_materi.nis')
+                            ->orderby('t_sudah_baca_materi.created_at', 'Desc')
                             ->get();
 
         return view('admin.master.palestineday.sudahbaca', compact('haveRead'));
