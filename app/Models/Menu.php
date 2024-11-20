@@ -10,6 +10,15 @@ class Menu extends Model
     use HasFactory;
     protected $table = 'menus';
 
+    protected $fillable = [
+        'name',
+        'url',
+        'icon',
+        'root',
+        'no',
+        'created_at'
+    ];
+
     public function parent()
     {
         return $this->hasOne('App\Models\Menu', 'id_menu', 'root');

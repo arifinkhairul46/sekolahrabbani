@@ -219,6 +219,11 @@
                             <input type="date" class="form-control" name="terbit_edit" id="terbit_edit">
                         </div>
 
+                        <div class="form-group" id="evaluasi_group_edit">
+                            <label for="evaluasi_edit" class="form-control-label">Link Evaluasi</label>
+                            <input type="text" class="form-control" name="evaluasi_edit" id="evaluasi_edit">
+                        </div>
+
                         <div class="form-group">
                             <label for="status_edit" class="form-control-label">Status</label>
                             <select name="status_edit" id="status_edit" class="form-control form-control-sm" required>
@@ -291,6 +296,7 @@
                     $("#warna_edit").val(data.style)
                     $("#design_by_edit").val(data.design_by)
                     $("#terbit_edit").val(data.terbit)
+                    $("#evaluasi_edit").val(data.link_evaluasi)
                     $("#status_edit").val(data.status)
                     $("#gambar_edit").val(data.image)
                     $("#file_edit").val(data.file)
@@ -301,7 +307,6 @@
 
         function edit_data_tksd(id) {
             var url = "{{ route('master.update-materi', '') }}" + "/" + id;
-            console.log(url);
             $('#terbit_group_edit').hide();
             $('#design_by_group_edit').hide();
             fetch('/master/palestine-day/' + id)
@@ -312,6 +317,7 @@
                     $("#warna_edit").val(data.style)
                     $("#penulis_edit").val(data.created_by)
                     $("#status_edit").val(data.status)
+                    $("#evaluasi_edit").val(data.link_evaluasi)
                     $("#gambar_edit").val(data.image)
                     $("#file_edit").val(data.file)
                     $("#editForm").attr('action', url)

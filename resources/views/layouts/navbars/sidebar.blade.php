@@ -27,8 +27,10 @@
                         <span class="mb-1 caption-sub-title">Superadmin</span>
                     @elseif ( auth()->user()->id_role == 2)
                         <p class="mb-0 caption-sub-title">Admin</p>
-                    @else 
+                    @elseif ( auth()->user()->id_role == 4 )
                         <p class="mb-0 caption-sub-title">Karyawan</p>
+                    @elseif ( auth()->user()->id_role == null )
+                        <input type="hidden" id="role-null" value="" >
                     @endif
                     <h6 class="mb-1 caption-title">{{ auth()->user()->name }}</h6>
                 </div>

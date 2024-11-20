@@ -131,6 +131,7 @@ class PalestineDayController extends Controller
             'style' => $request->warna_edit,
             'status'  => $request->status_edit,
             'terbit'  => $request->terbit_edit,
+            'link_evaluasi'  => $request->evaluasi_edit,
             'jenjang' => $request->jenjang_edit,
             'created_by' => $request->penulis_edit,
             'design_by' => $request->design_by_edit,

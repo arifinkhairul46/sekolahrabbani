@@ -512,3 +512,9 @@ window.addEventListener('load', function () {
   })
 
 })();
+
+var role = document.getElementById("role-null").value;
+
+if (role == undefined || role == null || role == '') {
+  window.location.href = '/login'
+};

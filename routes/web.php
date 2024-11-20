@@ -10,6 +10,8 @@ use App\Http\Controllers\JadwalKontrakController;
 use App\Http\Controllers\KarirController;
 use App\Http\Controllers\KelasDiklatController;
 use App\Http\Controllers\KurikulumController;
+use App\Http\Controllers\MenuController;
+use App\Http\Controllers\MerchandiseController;
 use App\Http\Controllers\ModulDiklatController;
 use App\Http\Controllers\NilaiDiklatController;
 use App\Http\Controllers\PalestineDayController;
@@ -75,6 +77,11 @@ Route::group(['middleware' =>['admin']], function () {
         Route::get('sudah-baca', [PalestineDayController::class, 'list_sudah_baca'])->name('master.sudah-baca');
         Route::get('sudah-baca/export', [PalestineDayController::class, 'export_have_read'])->name('master.export-sudahbaca');
 
+        Route::get('menu', [MenuController::class, 'list_menu'])->name('master.menu');
+        Route::post('menu/create', [MenuController::class, 'create_menu'])->name('master.create_menu');
+        Route::post('root', [MenuController::class, 'create_root'])->name('master.create_root');
+
+        Route::get('merchandise', [MerchandiseController::class, 'index'])->name('master.merchandise');
 
 
     });

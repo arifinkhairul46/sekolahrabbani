@@ -20,6 +20,7 @@ class PalestineDay extends Model
         'style',
         'status',
         'terbit',
+        'link_evaluasi',
         'jenjang',
         'created_by',
         'design_by',

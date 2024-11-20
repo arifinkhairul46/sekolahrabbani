@@ -23,8 +23,10 @@
             <h3> Apakah Ayah/Bunda sudah menceritakan ini kepada anaknya? </h3>
             <a href="#" class="btn btn-danger px-4 mx-2" id="btn-belum" data-bs-toggle="modal" data-bs-target="#modal_belum">Belum</a>
             <a href="#" class="btn btn-success px-4" id="btn-sudah" onclick="sudah('{{$materi->id}}')">Sudah</a>
-        @else 
-            <h3> Ayah/Bunda sudah baca materi ini, ayo <span class="text-success"> ceritakan kembali </span> pada anaknya </h3>
+        @elseif ($materi->link_evaluasi != null)
+            <h3> Ayah/Bunda sudah baca materi ini, silahkan isi link <a href="{{$materi->link_evaluasi}}" target="_blank" class="text-success"> evaluasi disini </a> </h3>
+        @elseif ($materi->link_evaluasi == null)
+            <h3> Ayah/Bunda sudah baca materi ini, Ayo <span class="text-success"> Ceritakan Kembali </span> kepada Anaknya </h3>
         @endif
     </div>
 
