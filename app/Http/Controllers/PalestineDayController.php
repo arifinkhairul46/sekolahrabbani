@@ -213,7 +213,7 @@ class PalestineDayController extends Controller
                             ->leftJoin('m_palestine_day as mpd', 'mpd.id', 'tsbm.materi_id')
                             ->where('m_profile.user_id', $user_id)
                             ->where('m_profile.sekolah_id', 'UBRSMP')
-                            ->groupby('m_profile.user_id', 'm_profile.nis')
+                            ->groupby('m_profile.user_id', 'm_profile.nis', 'tsbm.materi_id')
                             ->get();
             
             
@@ -233,7 +233,7 @@ class PalestineDayController extends Controller
                             ->leftJoin('m_palestine_day as mpd', 'mpd.id', 'tsbm.materi_id')
                             ->where('m_profile.user_id', $user_id)
                             ->where('m_profile.sekolah_id', '!=', 'UBRSMP')
-                            ->groupby('m_profile.user_id', 'm_profile.nis')
+                            ->groupby('m_profile.user_id', 'm_profile.nis', 'tsbm.materi_id')
                             ->get();
 
             foreach ($data as $item) {
