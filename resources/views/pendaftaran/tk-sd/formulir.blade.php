@@ -86,7 +86,7 @@
                         <select name="jenis_pendidikan" id="jenis_pendidikan" class="form-control" required>
                             <option value="" disabled selected>-- Pilih Jenis Pendidikan --</option>
                             <option value="1">Reguler</option>
-                            <option value="2">Boarding</option>
+                            {{-- <option value="2">Boarding</option> --}}
                         </select>
                     </div>
 
