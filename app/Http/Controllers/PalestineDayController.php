@@ -291,7 +291,16 @@ class PalestineDayController extends Controller
 
         $merch_kaos = Merchandise::where('jenis_id', '1')->first();
         $get_merch = Merchandise::where('jenis_id', '!=', '1')->get();
-        $cart_detail = CartMerchandise::all();
+        $cart_detail = CartMerchandise::select('t_cart_merchandise.quantity', 't_cart_merchandise.id', 't_cart_merchandise.merchandise_id', 't_cart_merchandise.is_selected', 
+                        'mwk.warna', 'mus.ukuran_seragam', 't_cart_merchandise.lengan_id', 'mm.nama_produk', 'mm.harga_awal', 'mm.diskon', 'mm.image_1', 'mm.image_2', 
+                        'tdp.nama_siswa', 'tdp.sekolah_id',  'tdp.nama_kelas', 'tdp.image_file' )
+                        ->leftJoin('m_merchandise as mm', 'mm.id', 't_cart_merchandise.merchandise_id')
+                        ->leftJoin('t_desain_palestineday as tdp', 'tdp.id', 't_cart_merchandise.design_id')
+                        ->leftJoin('m_warna_kaos as mwk', 'mwk.id', 't_cart_merchandise.warna_id')
+                        ->leftJoin('m_ukuran_seragam as mus', 'mus.ukuran_seragam', 't_cart_merchandise.ukuran_id')
+                        ->where('t_cart_merchandise.user_id', $user_id)
+                        ->where('t_cart_merchandise.status_cart', 0)
+                        ->get();
 
         
         return view('ortu.palestine_day.merchandise', compact('get_nis', 'list_karya', 'get_merch', 'merch_kaos', 'cart_detail'));
@@ -362,6 +371,7 @@ class PalestineDayController extends Controller
                         ->leftJoin('m_warna_kaos as mwk', 'mwk.id', 't_cart_merchandise.warna_id')
                         ->leftJoin('m_ukuran_seragam as mus', 'mus.ukuran_seragam', 't_cart_merchandise.ukuran_id')
                         ->where('t_cart_merchandise.user_id', $user_id)
+                        ->where('t_cart_merchandise.status_cart', 0)
                         ->get();
 
         $ukuran = UkuranSeragam::whereNotIn('ukuran_seragam', ['ALL', 'XXS'])->get();
@@ -579,6 +589,8 @@ class PalestineDayController extends Controller
             $total_diskon += $nilai_diskon;
             $harga_akhir = $total_harga - $total_diskon;
             $harga_akhir_format = number_format($harga_akhir);
+
+            $this->update_cart_status($user_id, $merchandise_id);
         }
 
             $order_merchandise = OrderMerchandise::create([
@@ -591,9 +603,9 @@ class PalestineDayController extends Controller
             ]);
 
              // Set your Merchant Server Key
-             \Midtrans\Config::$serverKey = 'SB-Mid-server-A57y5d7NZRqdV-nBRuJ-MS3f';
+             \Midtrans\Config::$serverKey = config('midtrans.serverKey');
              // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
-             \Midtrans\Config::$isProduction = false;
+             \Midtrans\Config::$isProduction = config('midtrans.isProduction');
              // Set sanitization on (default)
              \Midtrans\Config::$isSanitized = true;
              // Set 3DS transaction for credit card to true
@@ -749,31 +761,19 @@ class PalestineDayController extends Controller
         return response()->json(['message' => 'Callback received successfully']);
     }
 
+    public function update_cart_status($user_id, $merch_id) 
+    {
+        $cart_detail = CartMerchandise::where('user_id', $user_id)
+                ->where('status_cart', 0)
+                ->where('merchandise_id', $merch_id)
+                ->where('is_selected', 1)
+                ->first();
+        
+        $update_status_cart = $cart_detail->update([
+            'status_cart' => 1
+        ]);
 
-    public function tes_bayar(Request $request) {
-          // Set your Merchant Server Key
-          \Midtrans\Config::$serverKey = 'SB-Mid-server-A57y5d7NZRqdV-nBRuJ-MS3f';
-          // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
-          \Midtrans\Config::$isProduction = false;
-          // Set sanitization on (default)
-          \Midtrans\Config::$isSanitized = true;
-          // Set 3DS transaction for credit card to true
-          \Midtrans\Config::$is3ds = true;
-
-          $params = array(
-          'transaction_details' => array(
-          'order_id' => 'T-1234',
-          'gross_amount' => 95000,
-          ),
-          'customer_details' => array(
-          'first_name' => 'asep',
-          'phone' => '0813587236',
-          )
-          );
-
-          $snapToken = \Midtrans\Snap::getSnapToken($params);
-          return $snapToken;
+        return response()->json($update_status_cart);
     }
-
 
 }

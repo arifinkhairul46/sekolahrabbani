@@ -145,6 +145,54 @@ class UserController extends Controller
         }
     }
 
+    public function get_guru_api()
+    {
+        $client = new Client();
+        $api_guru = "http://103.135.214.11:81/qlp_system/api_pos/api_data_guru_aktif.php?pass=aun64268ubstun4w8nw6busrhbumunfjbuwr868w6aynerysteum7tim8";
+
+        try {
+            $response_ortu = $client->get($api_guru);
+
+            $data = json_decode($response_ortu->getBody(), true);
+
+            $list_guru = $data['guruApi'];
+            // return response($list_siswa);
+
+            foreach ($list_guru as $item) {
+                $nik = $item['nik'];
+                $nama_guru = $item['nama_guru'];
+                $lokasi = $item['lokasi'];
+                $password = $item['password'];
+                $nohp = $item['nohp'];
+
+                  // create user
+                User::create([
+                    'name' => $nama_guru,
+                    'no_hp' => $nik,
+                    'no_hp_2' => $nohp,
+                    'password' => Hash::make($password),
+                    'id_role' => 4,
+                    'created_at' => date('Y-m-d H:i:s')
+                ]);
+
+                // create profile
+                Profile::create([
+                    'nik' => $nik,
+                    'nama_lengkap' => $nama_guru,
+                    'sekolah_id' => $lokasi,
+                    'no_hp_ibu' => $nohp,
+                    'pass_akun' => $password
+                ]);
+            }
+
+            return redirect()->back()->with('success', 'berhasil menambah user');
+
+
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
     public function customLogin(Request $request)
     {
         try {

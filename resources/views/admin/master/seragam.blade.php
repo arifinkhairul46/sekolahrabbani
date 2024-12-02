@@ -60,7 +60,9 @@
                                 <th>Harga</th>
                                 <th>Diskon</th>
                                 <th>Stok </th>
-                                <th>Action</th>
+                                @if ($id_role == 1)
+                                    <th>Action</th>
+                                @endif
                             </tr>
                         </thead>
                         <tbody>
@@ -74,11 +76,13 @@
                                     <td>Rp {{number_format($item->harga)}}</td>
                                     <td>{{$item->diskon}}</td>
                                     <td>{{$item->qty}}</td>
-                                    <td class="d-flex">
-                                        <button class="btn btn-sm btn-warning" title="Edit" onclick="edit_data('{{$item->id}}')" data-bs-toggle="modal" data-bs-target="#edit_seragam">
-                                            <i class="fa-solid fa-pencil"></i>
-                                        </button>
-                                    </td>
+                                    @if ($id_role == 1)
+                                        <td class="d-flex">
+                                            <button class="btn btn-sm btn-warning" title="Edit" onclick="edit_data('{{$item->id}}')" data-bs-toggle="modal" data-bs-target="#edit_seragam">
+                                                <i class="fa-solid fa-pencil"></i>
+                                            </button>
+                                        </td>
+                                    @endif
                                 </tr>
                             @endforeach
                         </tbody>

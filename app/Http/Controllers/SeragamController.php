@@ -10,7 +10,9 @@ use App\Models\HargaSeragam;
 use App\Models\JenisSeragam;
 use App\Models\LokasiSub;
 use App\Models\MenuMobile;
+use App\Models\OrderDetailMerchandise;
 use App\Models\OrderDetailSeragam;
+use App\Models\OrderMerchandise;
 use App\Models\OrderSeragam;
 use App\Models\ProdukSeragam;
 use App\Models\Profile;
@@ -19,6 +21,7 @@ use App\Models\StokSeragam;
 use App\Models\UkuranSeragam;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -59,14 +62,14 @@ class SeragamController extends Controller
 
         $menubar = MenuMobile::where('is_footer', 1)->get();
 
-        return view('ortu.seragam.maintenance', compact('lokasi', 'produk_seragam', 'produk_seragam_tk', 'produk_seragam_sd', 'produk_seragam_smp', 'produk_seragam_kober', 'search_produk', 'cart_detail', 'menubar'));
+        return view('ortu.seragam.index', compact('lokasi', 'produk_seragam', 'produk_seragam_tk', 'produk_seragam_sd', 'produk_seragam_smp', 'produk_seragam_kober', 'search_produk', 'cart_detail', 'menubar'));
     }
 
     public function search_produk(Request $request)
     {
         $keyword = $request->keyword;
 
-        
+
             $output = '';
 
             if ($keyword != '') {
@@ -170,7 +173,6 @@ class SeragamController extends Controller
                     ->where('t_cart_detail.status_cart', 0)
                     ->where('tss.qty', '>', 0)
                     ->get();
-                    // dd($jenis_produk,$ukuran_seragam);
 
         return view('ortu.seragam.detail', compact('produk', 'cart_detail', 'profile', 'jenis_produk', 'ukuran_seragam'));
     }
@@ -551,7 +553,7 @@ class SeragamController extends Controller
             // Set your Merchant Server Key
             \Midtrans\Config::$serverKey = config('midtrans.serverKey');
             // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
-            \Midtrans\Config::$isProduction = config('midtrans.isProduction');;
+            \Midtrans\Config::$isProduction = config('midtrans.isProduction');
             // Set sanitization on (default)
             \Midtrans\Config::$isSanitized = true;
             // Set 3DS transaction for credit card to true
@@ -702,132 +704,205 @@ class SeragamController extends Controller
         }
         $orderId = $request->order_id;
         $order = OrderSeragam::where('no_pemesanan', $orderId)->first();
+        $order_merch = OrderMerchandise::where('no_pesanan', $orderId)->first();
        
-        if (!$order) {
+        if (!$order && !$order_merch) {
             return response()->json(['message' => 'Order not found'], 404);
         }
 
-         $order_detail = OrderDetailSeragam::select('kode_produk', 'quantity')->where('no_pemesanan', $orderId)->get();
+        $order_detail = OrderDetailSeragam::select('kode_produk', 'quantity')->where('no_pemesanan', $orderId)->get();
 
-        switch ($transactionStatus) {
-            case 'capture':
-                if ($request->payment_type == 'credit_card') {
-                    if ($request->fraud_status == 'challenge') {
-                        $order->update([
-                            'status' => 'pending',
-                            'metode_pembayaran' => $mtd_pembayaran,
-                            'va_number' => $no_va
-                        ]);
-                    } else {
-                        $order->update([
-                            'status' => 'success',
-                            'metode_pembayaran' => $mtd_pembayaran,
-                            'va_number' => $no_va
-                        ]);
+        if ($order != null && $order_merch == null) {
+            switch ($transactionStatus) {
+                case 'capture':
+                    if ($request->payment_type == 'credit_card') {
+                        if ($request->fraud_status == 'challenge') {
+                            $order->update([
+                                'status' => 'pending',
+                                'metode_pembayaran' => $mtd_pembayaran,
+                                'va_number' => $no_va
+                            ]);
+                        } else {
+                            $order->update([
+                                'status' => 'success',
+                                'metode_pembayaran' => $mtd_pembayaran,
+                                'va_number' => $no_va
+                            ]);
+                        }
                     }
-                }
-                break;
-            case 'settlement':
-                $order->update([
-                    'status' => 'success',
-                    'metode_pembayaran' => $mtd_pembayaran,
-                    'va_number' => $no_va,
-                    'updated_at' => $request->settlement_time
-                ]);
-                foreach ($order_detail as $item) {
-                    $kode_produk = $item->kode_produk;
-                    $quantity = $item->quantity;
-
-                };
-                $this->update_status_seragam('success', $mtd_pembayaran, $orderId);
-                break;
-            case 'pending':
-                $order->update([
-                    'status' => 'pending',
-                    'metode_pembayaran' => $mtd_pembayaran,
-                    'va_number' => $no_va,
-                    'expire_time' => $request->expiry_time
-                ]);
-                foreach ($order_detail as $item) {
-                    $kode_produk = $item->kode_produk;
-                    $quantity = $item->quantity;
-
-                    $stok_awal = StokSeragam::where('kd_barang', $kode_produk)->first();
-
-                    $stok_card = StokCard::create([
-                        'kd_gudang' => 'YYS',
-                        'kd_barang' => $kode_produk,
-                        'stok_awal' => $stok_awal->qty,
-                        'qty' => $quantity,
-                        'stok_akhir' => $stok_awal->qty - $quantity,
-                        'proses' => 'penjualan',
-                        'no_proses' => $orderId
+                    break;
+                case 'settlement':
+                    $order->update([
+                        'status' => 'success',
+                        'metode_pembayaran' => $mtd_pembayaran,
+                        'va_number' => $no_va,
+                        'updated_at' => $request->settlement_time
                     ]);
-
-                    $this->update_stok($kode_produk, $quantity);
-                }
-                $this->update_status_seragam('pending', $mtd_pembayaran, $orderId);
-                break;
-            case 'deny':
-                $order->update([
-                    'status' => 'failed',
-                    'metode_pembayaran' => $mtd_pembayaran,
-                    'va_number' => $no_va
-                ]);
-                foreach ($order_detail as $item) {
-                    $kode_produk = $item->kode_produk;
-                    $quantity = $item->quantity;
-
-                    $this->return_stock($kode_produk, $quantity);
-                }
-                break;
-            case 'expire':
-                $order->update([
-                    'status' => 'expired',
-                    'metode_pembayaran' => $mtd_pembayaran,
-                    'va_number' => $no_va
-                ]);
-                foreach ($order_detail as $item) {
-                    $kode_produk = $item->kode_produk;
-                    $quantity = $item->quantity;
-
-                    $stok_awal = StokSeragam::where('kd_barang', $kode_produk)->first();
-
-                    $stok_card = StokCard::create([
-                        'kd_gudang' => 'YYS',
-                        'kd_barang' => $kode_produk,
-                        'stok_awal' => $stok_awal->qty,
-                        'qty' => $quantity,
-                        'stok_akhir' => $stok_awal->qty + $quantity,
-                        'proses' => 'expired',
-                        'no_proses' => $orderId
+                    foreach ($order_detail as $item) {
+                        $kode_produk = $item->kode_produk;
+                        $quantity = $item->quantity;
+    
+                    };
+                    $this->update_status_seragam('success', $mtd_pembayaran, $orderId);
+                    break;
+                case 'pending':
+                    $order->update([
+                        'status' => 'pending',
+                        'metode_pembayaran' => $mtd_pembayaran,
+                        'va_number' => $no_va,
+                        'expire_time' => $request->expiry_time
                     ]);
-
-                    $this->return_stock($kode_produk, $quantity);
-                }
-                $this->update_status_seragam('expired', $mtd_pembayaran, $orderId);
-                break;
-            case 'cancel':
-                $order->update([
-                    'status' => 'canceled',
-                    'metode_pembayaran' => $mtd_pembayaran,
-                    'va_number' => $no_va
-                ]);
-                foreach ($order_detail as $item) {
-                    $kode_produk = $item->kode_produk;
-                    $quantity = $item->quantity;
-
-                    $this->return_stock($kode_produk, $quantity);
-                }
-                break;
-            default:
-                $order->update([
-                    'status' => 'unknown',
-                ]);
-                break;
+                    foreach ($order_detail as $item) {
+                        $kode_produk = $item->kode_produk;
+                        $quantity = $item->quantity;
+    
+                        $stok_awal = StokSeragam::where('kd_barang', $kode_produk)->first();
+    
+                        $stok_card = StokCard::create([
+                            'kd_gudang' => 'YYS',
+                            'kd_barang' => $kode_produk,
+                            'stok_awal' => $stok_awal->qty,
+                            'qty' => $quantity,
+                            'stok_akhir' => $stok_awal->qty - $quantity,
+                            'proses' => 'penjualan',
+                            'no_proses' => $orderId
+                        ]);
+    
+                        $this->update_stok($kode_produk, $quantity);
+                    }
+                    $this->update_status_seragam('pending', $mtd_pembayaran, $orderId);
+                    break;
+                case 'deny':
+                    $order->update([
+                        'status' => 'failed',
+                        'metode_pembayaran' => $mtd_pembayaran,
+                        'va_number' => $no_va
+                    ]);
+                    foreach ($order_detail as $item) {
+                        $kode_produk = $item->kode_produk;
+                        $quantity = $item->quantity;
+    
+                        $this->return_stock($kode_produk, $quantity);
+                    }
+                    break;
+                case 'expire':
+                    $order->update([
+                        'status' => 'expired',
+                        'metode_pembayaran' => $mtd_pembayaran,
+                        'va_number' => $no_va
+                    ]);
+                    foreach ($order_detail as $item) {
+                        $kode_produk = $item->kode_produk;
+                        $quantity = $item->quantity;
+    
+                        $stok_awal = StokSeragam::where('kd_barang', $kode_produk)->first();
+    
+                        $stok_card = StokCard::create([
+                            'kd_gudang' => 'YYS',
+                            'kd_barang' => $kode_produk,
+                            'stok_awal' => $stok_awal->qty,
+                            'qty' => $quantity,
+                            'stok_akhir' => $stok_awal->qty + $quantity,
+                            'proses' => 'expired',
+                            'no_proses' => $orderId
+                        ]);
+    
+                        $this->return_stock($kode_produk, $quantity);
+                    }
+                    $this->update_status_seragam('expired', $mtd_pembayaran, $orderId);
+                    break;
+                case 'cancel':
+                    $order->update([
+                        'status' => 'canceled',
+                        'metode_pembayaran' => $mtd_pembayaran,
+                        'va_number' => $no_va
+                    ]);
+                    foreach ($order_detail as $item) {
+                        $kode_produk = $item->kode_produk;
+                        $quantity = $item->quantity;
+    
+                        $this->return_stock($kode_produk, $quantity);
+                    }
+                    break;
+                default:
+                    $order->update([
+                        'status' => 'unknown',
+                    ]);
+                    break;
+            }
+    
+            return response()->json(['message' => 'Callback received successfully']);
+        } else if ($order_merch != null && $order == null) {
+            switch ($transactionStatus) {
+                case 'capture':
+                    if ($request->payment_type == 'credit_card') {
+                        if ($request->fraud_status == 'challenge') {
+                            $order_merch->update([
+                                'status' => 'pending',
+                                'metode_pembayaran' => $mtd_pembayaran,
+                                'va_number' => $no_va
+                            ]);
+                        } else {
+                            $order_merch->update([
+                                'status' => 'success',
+                                'metode_pembayaran' => $mtd_pembayaran,
+                                'va_number' => $no_va
+                            ]);
+                        }
+                    }
+                    break;
+                case 'settlement':
+                    $order_merch->update([
+                        'status' => 'success',
+                        'metode_pembayaran' => $mtd_pembayaran,
+                        'va_number' => $no_va,
+                        'updated_at' => $request->settlement_time
+                    ]);
+                    // $this->update_status_seragam('success', $mtd_pembayaran, $orderId);
+                    break;
+                case 'pending':
+                    $order_merch->update([
+                        'status' => 'pending',
+                        'metode_pembayaran' => $mtd_pembayaran,
+                        'va_number' => $no_va,
+                        'expire_time' => $request->expiry_time
+                    ]);
+                  
+                    // $this->update_status_seragam('pending', $mtd_pembayaran, $orderId);
+                    break;
+                case 'deny':
+                    $order_merch->update([
+                        'status' => 'failed',
+                        'metode_pembayaran' => $mtd_pembayaran,
+                        'va_number' => $no_va
+                    ]);
+                   
+                    break;
+                case 'expire':
+                    $order->update([
+                        'status' => 'expired',
+                        'metode_pembayaran' => $mtd_pembayaran,
+                        'va_number' => $no_va
+                    ]);
+                   
+                    // $this->update_status_seragam('expired', $mtd_pembayaran, $orderId);
+                    break;
+                case 'cancel':
+                    $order->update([
+                        'status' => 'canceled',
+                        'metode_pembayaran' => $mtd_pembayaran,
+                        'va_number' => $no_va
+                    ]);
+                    break;
+                default:
+                    $order->update([
+                        'status' => 'unknown',
+                    ]);
+                    break;
+            }
+    
+            return response()->json(['message' => 'Callback received successfully']);
         }
-
-        return response()->json(['message' => 'Callback received successfully']);
     }
 
     public function return_stock($kode_barang, $qty) {
@@ -910,6 +985,9 @@ class SeragamController extends Controller
     }
 
     public function list_seragam(Request $request) {
+        $user = Auth::user();
+        $id_role = $user->id_role;
+        // dd($id_role);
         $list_produk = ProdukSeragam::all();
         $list_ukuran = UkuranSeragam::all();
         $list_jenis = JenisSeragam::all();
@@ -951,7 +1029,7 @@ class SeragamController extends Controller
             
         }
 
-        return view('admin.master.seragam', compact('list_seragam', 'list_produk', 'list_ukuran', 'list_jenis', 'nama_produk', 'jenis_produk', 'ukuran'));
+        return view('admin.master.seragam', compact('list_seragam', 'list_produk', 'list_ukuran', 'list_jenis', 'nama_produk', 'jenis_produk', 'ukuran', 'id_role'));
     }
 
     public function create_seragam(Request $request) {

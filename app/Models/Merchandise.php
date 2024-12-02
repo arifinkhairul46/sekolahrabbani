@@ -14,7 +14,7 @@ class Merchandise extends Model
         'kode',
         'nama_produk',
         'ukuran',
-        'jenis',
+        'jenis_id',
         'warna',
         'deskripsi',
         'harga_awal',
@@ -24,4 +24,17 @@ class Merchandise extends Model
         'image_3',
         'created_at'
     ];
+
+    public function jenis_merch()
+    {
+        return $this->belongsTo(JenisMerchandise::class, 'jenis_id', 'id');
+    }
+
+    public static function get_jenis () {
+        $data = static::with(['jenis_merch'])
+                ->select('*')
+                ->get();
+    
+        return $data;
+    }
 }

@@ -73,7 +73,7 @@ class MenuController extends Controller
                 'id_menu' => $add_menu->id
             ]);
 
-            return redirect()->route('master.menu')->with('success', 'Berhasil tambah menu');;
+            return redirect()->route('master.menu')->with('success', 'Berhasil tambah menu');
 
         } catch (\Throwable $th) {
             //throw $th;

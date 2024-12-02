@@ -153,7 +153,6 @@ Route::group(['middleware' =>['auth']], function () {
         Route::get('pembayaran', [PalestineDayController::class, 'pembayaran'])->name('merchandise.bayar');
         Route::post('payment', [PalestineDayController::class, 'pre_order'])->name('pre_order');
         Route::post('pembayaran', [PalestineDayController::class, 'store_order'])->name('merchandise.store');
-        Route::get('tes-bayar', [PalestineDayController::class, 'tes_bayar'])->name('tes_bayar');
 
 
 

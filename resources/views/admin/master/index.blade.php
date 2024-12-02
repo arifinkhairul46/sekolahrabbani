@@ -13,9 +13,12 @@
         <div class="card">
             <div class="card-body">
                 <div class="d-flex" style="justify-content: flex-end">
-                    <button class="btn btn-primary btn-sm mx-2"  data-bs-toggle="modal" data-bs-target="#add_user"> Add User </button>
+                    <button class="btn btn-primary btn-sm"  data-bs-toggle="modal" data-bs-target="#add_user"> Add User </button>
                     <form action="{{route('get-user.api')}}" method="GET">
-                        <button class="btn btn-warning btn-sm"> Get User From API </button>
+                        <button class="btn btn-warning btn-sm mx-2"> Get Ortu </button>
+                    </form>
+                    <form action="{{route('get-guru.api')}}" method="GET">
+                        <button class="btn btn-success btn-sm "> Get Guru </button>
                     </form>
                 </div>
                 <div class="table-responsive mt-3">
