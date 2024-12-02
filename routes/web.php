@@ -60,6 +60,7 @@ Route::group(['middleware' =>['admin']], function () {
         Route::get('list-user', [UserController::class, 'list_user'])->name('list-user');
         Route::post('list-user/create', [UserController::class, 'add_user'])->name('add-user');
         Route::get('get-user', [UserController::class, 'get_user_api'])->name('get-user.api');
+        Route::get('get-guru', [UserController::class, 'get_guru_api'])->name('get-guru.api');
 
         Route::get('seragam', [SeragamController::class, 'list_seragam'])->name('list-seragam');
         Route::post('seragam', [SeragamController::class, 'create_seragam'])->name('create-seragam');
@@ -82,6 +83,16 @@ Route::group(['middleware' =>['admin']], function () {
         Route::post('root', [MenuController::class, 'create_root'])->name('master.create_root');
 
         Route::get('merchandise', [MerchandiseController::class, 'index'])->name('master.merchandise');
+        Route::post('merchandise', [MerchandiseController::class, 'store'])->name('store_merchandise');
+        Route::post('jenis', [MerchandiseController::class, 'create_jenis'])->name('master.create_jenis');
+
+        Route::get('kumpul-desain', [MerchandiseController::class, 'kumpul_desain'])->name('master.kumpul_desain');
+        Route::post('/get-kelas', [MerchandiseController::class, 'get_kelas'])->name('get_kelas_master');
+        Route::post('/get-siswa', [MerchandiseController::class, 'get_siswa'])->name('get_siswa_master');
+        Route::post('kumpul-desain', [MerchandiseController::class, 'store_desain'])->name('master.store_desain');
+        Route::get('kumpul-desain/{id}', [MerchandiseController::class, 'desain_by_id'])->name('master.desain_by_id');
+
+
 
 
     });
@@ -130,6 +141,23 @@ Route::group(['middleware' =>['auth']], function () {
         Route::get('/smp', [PalestineDayController::class, 'materi_smp'])->name('palestine.smp');
         Route::get('/smp/{id}', [PalestineDayController::class, 'materi_smp_by_id'])->name('materi-smp-by-id');
         Route::post('/sudahbaca', [PalestineDayController::class, 'sudah_baca'])->name('sudah_baca');
+        Route::get('merchandise', [PalestineDayController::class, 'merchandise'])->name('palestine.merchandise');
+        Route::get('merchandise/{id}', [PalestineDayController::class, 'detail_merchandise'])->name('detail.merchandise');
+        Route::get('merchandise/design/{id}', [PalestineDayController::class, 'detail_merchandise_kaos'])->name('detail.merchandise_kaos');
+        Route::get('cart', [PalestineDayController::class, 'cart'])->name('merchandise.cart');
+        Route::post('cart', [PalestineDayController::class, 'add_to_cart'])->name('cart_post_merchandise');
+        Route::put('cart/{id}', [PalestineDayController::class, 'update_cart'])->name('merchandise-cart.update');
+        Route::put('cart-select/{id}', [PalestineDayController::class, 'update_select_cart'])->name('merchandise-cart-select.update');
+        Route::put('cart-select', [PalestineDayController::class, 'select_all_cart'])->name('merchandise-select-all-cart');
+        Route::delete('cart/{id}', [PalestineDayController::class, 'remove_cart'])->name('merchandise-cart.delete');
+        Route::get('pembayaran', [PalestineDayController::class, 'pembayaran'])->name('merchandise.bayar');
+        Route::post('payment', [PalestineDayController::class, 'pre_order'])->name('pre_order');
+        Route::post('pembayaran', [PalestineDayController::class, 'store_order'])->name('merchandise.store');
+        Route::get('tes-bayar', [PalestineDayController::class, 'tes_bayar'])->name('tes_bayar');
+
+
+
+
     });
 
 });
