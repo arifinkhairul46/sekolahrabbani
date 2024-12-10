@@ -632,7 +632,7 @@ class PalestineDayController extends Controller
 
             $order = CartMerchandise::select('t_cart_merchandise.quantity', 't_cart_merchandise.id', 't_cart_merchandise.merchandise_id', 't_cart_merchandise.is_selected', 
                     'mwk.warna', 'mwk.id as warna_id', 'mus.ukuran_seragam', 'mm.jenis_id', 't_cart_merchandise.template_id', 't_cart_merchandise.kategori_id', 'mm.nama_produk', 'mm.harga_awal', 'mm.diskon', 'mm.image_1', 'mm.image_2', 
-                    'tdp.nama_siswa', 'tdp.sekolah_id', 'tdp.id as design_id', 'tdp.nama_kelas', 'tdp.image_file', 'mus.id as ukuran_id', 'mjm.jenis', 'mku.kategori', 'mtd.judul as template' )
+                    'tdp.nama_siswa', 'tdp.sekolah_id as sekolah', 'tdp.id as design_id', 'tdp.nama_kelas', 'tdp.image_file', 'mus.id as ukuran_id', 'mjm.jenis', 'mku.kategori', 'mtd.judul as template' )
                     ->leftJoin('m_merchandise as mm', 'mm.id', 't_cart_merchandise.merchandise_id')
                     ->leftJoin('m_jenis_merchandise as mjm', 'mjm.id', 't_cart_merchandise.jenis_id')
                     ->leftJoin('t_desain_palestineday as tdp', 'tdp.id', 't_cart_merchandise.design_id')
