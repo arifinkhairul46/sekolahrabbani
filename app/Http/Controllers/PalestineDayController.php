@@ -7,11 +7,14 @@ use App\Models\CartMerchandise;
 use App\Models\DesainPalestineday;
 use App\Models\HargaMerchandise;
 use App\Models\HaveRead;
+use App\Models\JenisMerchandise;
+use App\Models\KategoriUmur;
 use App\Models\Merchandise;
 use App\Models\OrderDetailMerchandise;
 use App\Models\OrderMerchandise;
 use App\Models\PalestineDay;
 use App\Models\Profile;
+use App\Models\TemplateDesain;
 use App\Models\UkuranSeragam;
 use App\Models\WarnaKaos;
 use Illuminate\Http\Request;
@@ -289,57 +292,99 @@ class PalestineDayController extends Controller
             $list_karya = DesainPalestineday::where('nis', $get_nis)->orderby('created_at', 'desc')->get();
         }
 
-        $merch_kaos = Merchandise::where('jenis_id', '1')->first();
-        $get_merch = Merchandise::where('jenis_id', '!=', '1')->get();
+        $get_merch = Merchandise::all();
         $cart_detail = CartMerchandise::select('t_cart_merchandise.quantity', 't_cart_merchandise.id', 't_cart_merchandise.merchandise_id', 't_cart_merchandise.is_selected', 
-                        'mwk.warna', 'mus.ukuran_seragam', 't_cart_merchandise.lengan_id', 'mm.nama_produk', 'mm.harga_awal', 'mm.diskon', 'mm.image_1', 'mm.image_2', 
-                        'tdp.nama_siswa', 'tdp.sekolah_id',  'tdp.nama_kelas', 'tdp.image_file' )
+                        'mwk.warna', 'mus.ukuran_seragam', 't_cart_merchandise.jenis_id', 't_cart_merchandise.template_id', 'mm.nama_produk', 'mm.harga_awal', 'mm.diskon', 'mm.image_1', 'mm.image_2', 
+                        'tdp.nama_siswa', 'tdp.sekolah_id',  'tdp.nama_kelas', 'tdp.image_file', 'mjm.jenis', 'mku.kategori' )
                         ->leftJoin('m_merchandise as mm', 'mm.id', 't_cart_merchandise.merchandise_id')
+                        ->leftJoin('m_jenis_merchandise as mjm', 'mjm.id', 't_cart_merchandise.jenis_id')
                         ->leftJoin('t_desain_palestineday as tdp', 'tdp.id', 't_cart_merchandise.design_id')
                         ->leftJoin('m_warna_kaos as mwk', 'mwk.id', 't_cart_merchandise.warna_id')
                         ->leftJoin('m_ukuran_seragam as mus', 'mus.ukuran_seragam', 't_cart_merchandise.ukuran_id')
+                        ->leftJoin('m_kategori_umur as mku', 'mku.id', 't_cart_merchandise.kategori_id') 
                         ->where('t_cart_merchandise.user_id', $user_id)
                         ->where('t_cart_merchandise.status_cart', 0)
                         ->get();
 
         
-        return view('ortu.palestine_day.merchandise', compact('get_nis', 'list_karya', 'get_merch', 'merch_kaos', 'cart_detail'));
+        return view('ortu.palestine_day.merchandise', compact('get_nis', 'list_karya', 'get_merch', 'cart_detail'));
     }
 
     public function detail_merchandise($id) 
     {
+        $user_id = Auth::user()->id;
         $no_hp = auth()->user()->no_hp;
         $profile = Profile::get_user_profile_byphone($no_hp);
+        $get_nis = Profile::select('nis')->where('no_hp_ibu',$no_hp)->get();
+        $nis = $get_nis->toArray();
+
         $merchandise = Merchandise::where('id', $id)->first();
+        
+        $design_anak = DesainPalestineday::whereIn('nis', $nis)->get();
 
-        $cart_detail = CartMerchandise::all();
+        $ukuran = UkuranSeragam::whereNotIn('ukuran_seragam', ['ALL', 'XXS'])->get();
+        $ukuran_kerudung = UkuranSeragam::where('ukuran_seragam', 'ALL')->get();
+        $warna_kaos = WarnaKaos::all();
+        $jenis_kaos = JenisMerchandise::where('grup', 1)->get();
+        $kategori = KategoriUmur::all();
+        $template_kaos = TemplateDesain::where('jenis_id', 1)->get();
+        $template_kerudung = TemplateDesain::where('jenis_id', 2)->get();
 
-        return view('ortu.palestine_day.detail-merchandise', compact('merchandise', 'cart_detail', 'profile'));
+        $cart_detail = CartMerchandise::select('t_cart_merchandise.quantity', 't_cart_merchandise.id', 't_cart_merchandise.merchandise_id', 't_cart_merchandise.is_selected', 
+                        'mwk.warna', 'mus.ukuran_seragam', 't_cart_merchandise.jenis_id', 't_cart_merchandise.template_id', 'mm.nama_produk', 'mm.harga_awal', 'mm.diskon', 'mm.image_1', 'mm.image_2', 
+                        'tdp.nama_siswa', 'tdp.sekolah_id',  'tdp.nama_kelas', 'tdp.image_file', 'mjm.jenis', 'mku.kategori' )
+                        ->leftJoin('m_merchandise as mm', 'mm.id', 't_cart_merchandise.merchandise_id')
+                        ->leftJoin('m_jenis_merchandise as mjm', 'mjm.id', 't_cart_merchandise.jenis_id')
+                        ->leftJoin('t_desain_palestineday as tdp', 'tdp.id', 't_cart_merchandise.design_id')
+                        ->leftJoin('m_warna_kaos as mwk', 'mwk.id', 't_cart_merchandise.warna_id')
+                        ->leftJoin('m_ukuran_seragam as mus', 'mus.ukuran_seragam', 't_cart_merchandise.ukuran_id')
+                        ->leftJoin('m_kategori_umur as mku', 'mku.id', 't_cart_merchandise.kategori_id') 
+                        ->where('t_cart_merchandise.user_id', $user_id)
+                        ->where('t_cart_merchandise.status_cart', 0)
+                        ->get();
+
+        return view('ortu.palestine_day.detail-merchandise', compact('merchandise', 'cart_detail', 'profile', 'design_anak', 'kategori', 
+        'ukuran', 'warna_kaos', 'jenis_kaos', 'ukuran_kerudung', 'template_kaos', 'template_kerudung'));
     }
 
     public function detail_merchandise_kaos($id) 
     {
+        $user_id = auth()->user()->id;
         $no_hp = auth()->user()->no_hp;
         $profile = Profile::get_user_profile_byphone($no_hp);
+
         $merchandise_kaos = DesainPalestineday::where('id', $id)->first();
-        $detail_kaos = Merchandise::where('jenis_id', 1)->first();
+        // dd($merchandise_kaos);
+        $detail_kaos = Merchandise::whereIn('jenis_id', ['1', '2'])->get();
         $ukuran = UkuranSeragam::whereNotIn('ukuran_seragam', ['ALL', 'XXS'])->get();
         $warna_kaos = WarnaKaos::all();
+        $jenis_kaos = JenisMerchandise::where('grup', 1)->get();
+        $kategori = KategoriUmur::all();
 
-        // dd($merchandise_kaos, $detail_kaos);
+        $cart_detail = CartMerchandise::select('t_cart_merchandise.quantity', 't_cart_merchandise.id', 't_cart_merchandise.merchandise_id', 't_cart_merchandise.is_selected', 
+                        'mwk.warna', 'mus.ukuran_seragam', 't_cart_merchandise.jenis_id', 't_cart_merchandise.template_id', 'mm.nama_produk', 'mm.harga_awal', 'mm.diskon', 'mm.image_1', 'mm.image_2', 
+                        'tdp.nama_siswa', 'tdp.sekolah_id',  'tdp.nama_kelas', 'tdp.image_file' )
+                        ->leftJoin('m_merchandise as mm', 'mm.id', 't_cart_merchandise.merchandise_id')
+                        ->leftJoin('t_desain_palestineday as tdp', 'tdp.id', 't_cart_merchandise.design_id')
+                        ->leftJoin('m_warna_kaos as mwk', 'mwk.id', 't_cart_merchandise.warna_id')
+                        ->leftJoin('m_ukuran_seragam as mus', 'mus.ukuran_seragam', 't_cart_merchandise.ukuran_id')
+                        ->leftJoin('m_kategori_umur as mku', 'mku.id', 't_cart_merchandise.kategori_id')
+                        ->where('t_cart_merchandise.user_id', $user_id)
+                        ->where('t_cart_merchandise.status_cart', 0)
+                        ->get();
 
-        $cart_detail = CartMerchandise::all();
-
-        return view('ortu.palestine_day.detail-kaos', compact('merchandise_kaos', 'cart_detail', 'profile', 'detail_kaos', 'ukuran', 'warna_kaos'));
+        return view('ortu.palestine_day.detail-kaos', compact('merchandise_kaos', 'cart_detail', 'profile', 'detail_kaos', 'kategori', 'ukuran', 'warna_kaos', 'jenis_kaos'));
     }
 
     public function add_to_cart(Request $request)
     {
         $merchandise_id = $request->merchandise_id;
         $design_id = $request->design_id;
-        $ukuran_id = $request->ukuran_id;
+        $ukuran = $request->ukuran;
         $warna_id = $request->warna_id;
-        $lengan_id = $request->lengan_id;
+        $jenis_id = $request->jenis_id;
+        $template_id = $request->template_id;
+        $kategori_id = $request->kategori_id;
         $quantity = $request->quantity;
         $user_id = auth()->user()->id;
 
@@ -348,9 +393,11 @@ class PalestineDayController extends Controller
             'user_id' => $user_id,
             'quantity' => $quantity,
             'design_id' => $design_id,
-            'ukuran_id' => $ukuran_id,
+            'ukuran_id' => $ukuran,
             'warna_id' => $warna_id,
-            'lengan_id' => $lengan_id
+            'jenis_id' => $jenis_id,
+            'template_id' => $template_id,
+            'kategori_id' => $kategori_id,
         ]);
     
         return response()->json($add_cart_detail);
@@ -364,35 +411,45 @@ class PalestineDayController extends Controller
         $profile = Profile::where('user_id', $user_id)->get();
 
         $cart_detail = CartMerchandise::select('t_cart_merchandise.quantity', 't_cart_merchandise.id', 't_cart_merchandise.merchandise_id', 't_cart_merchandise.is_selected', 
-                        'mwk.warna', 'mus.ukuran_seragam', 't_cart_merchandise.lengan_id', 'mm.nama_produk', 'mm.harga_awal', 'mm.diskon', 'mm.image_1', 'mm.image_2', 
-                        'tdp.nama_siswa', 'tdp.sekolah_id',  'tdp.nama_kelas', 'tdp.image_file' )
+                        'mwk.warna', 'mus.ukuran_seragam', 'mm.jenis_id', 't_cart_merchandise.template_id', 'mm.nama_produk', 'mm.harga_awal', 'mm.diskon', 'mm.image_1', 'mm.image_2', 
+                        'tdp.nama_siswa', 'tdp.sekolah_id',  'tdp.nama_kelas', 'tdp.image_file', 'mjm.jenis', 'mku.kategori', 'mtd.judul as template' )
                         ->leftJoin('m_merchandise as mm', 'mm.id', 't_cart_merchandise.merchandise_id')
+                        ->leftJoin('m_jenis_merchandise as mjm', 'mjm.id', 't_cart_merchandise.jenis_id')
                         ->leftJoin('t_desain_palestineday as tdp', 'tdp.id', 't_cart_merchandise.design_id')
                         ->leftJoin('m_warna_kaos as mwk', 'mwk.id', 't_cart_merchandise.warna_id')
                         ->leftJoin('m_ukuran_seragam as mus', 'mus.ukuran_seragam', 't_cart_merchandise.ukuran_id')
+                        ->leftJoin('m_kategori_umur as mku', 'mku.id', 't_cart_merchandise.kategori_id') 
+                        ->leftJoin('m_template_desain as mtd', 'mtd.id', 't_cart_merchandise.template_id') 
                         ->where('t_cart_merchandise.user_id', $user_id)
                         ->where('t_cart_merchandise.status_cart', 0)
                         ->get();
 
         $ukuran = UkuranSeragam::whereNotIn('ukuran_seragam', ['ALL', 'XXS'])->get();
 
-        $total_bayar = CartMerchandise::select('t_cart_merchandise.quantity', 't_cart_merchandise.id', 't_cart_merchandise.is_selected', 
-                        'mm.nama_produk', 'mm.harga_awal', 'mm.diskon', 'mm.image_1', 'mm.image_2' )
+        $total_bayar = CartMerchandise::select('t_cart_merchandise.quantity', 't_cart_merchandise.id', 't_cart_merchandise.merchandise_id', 't_cart_merchandise.is_selected', 
+                        'mwk.warna', 'mus.ukuran_seragam', 'mm.jenis_id', 't_cart_merchandise.template_id', 'mm.nama_produk', 'mm.harga_awal', 'mm.diskon', 'mm.image_1', 'mm.image_2', 
+                        'tdp.nama_siswa', 'tdp.sekolah_id',  'tdp.nama_kelas', 'tdp.image_file', 'mjm.jenis', 'mku.kategori' )
                         ->leftJoin('m_merchandise as mm', 'mm.id', 't_cart_merchandise.merchandise_id')
+                        ->leftJoin('m_jenis_merchandise as mjm', 'mjm.id', 't_cart_merchandise.jenis_id')
+                        ->leftJoin('t_desain_palestineday as tdp', 'tdp.id', 't_cart_merchandise.design_id')
+                        ->leftJoin('m_warna_kaos as mwk', 'mwk.id', 't_cart_merchandise.warna_id')
+                        ->leftJoin('m_ukuran_seragam as mus', 'mus.ukuran_seragam', 't_cart_merchandise.ukuran_id')
+                        ->leftJoin('m_kategori_umur as mku', 'mku.id', 't_cart_merchandise.kategori_id')
                         ->where('t_cart_merchandise.user_id', $user_id)
                         ->where('t_cart_merchandise.status_cart', 0)
                         ->where('t_cart_merchandise.is_selected', 1)
                         ->get();
-        // dd($total_bayar);
 
         $total_bayar_selected = 0;
         foreach ($total_bayar as $item) {
-            $quantity = $item->quantity;
-            $harga = $item->harga_awal * $quantity;
-            $diskon = $item->diskon;
-            $nilai_diskon = ($diskon/100 * $harga);
+            $harga = $item->harga_awal;
 
-            $total_harga = $harga - $nilai_diskon;
+            $quantity = $item->quantity;
+            $jumlah_harga = $harga * $quantity;
+            $diskon = $item->diskon;
+            $nilai_diskon = ($diskon/100 * $jumlah_harga);
+
+            $total_harga = $jumlah_harga - $nilai_diskon;
 
             $total_bayar_selected += $total_harga;
         }
@@ -441,8 +498,15 @@ class PalestineDayController extends Controller
                             'is_selected' => $check
                     ]);                    
                 }
-                $total_bayar = CartMerchandise::select('mm.*', 't_cart_merchandise.quantity')
+                $total_bayar = CartMerchandise::select('t_cart_merchandise.quantity', 't_cart_merchandise.id', 't_cart_merchandise.merchandise_id', 't_cart_merchandise.is_selected', 
+                                'mwk.warna', 'mus.ukuran_seragam', 'mm.jenis_id', 't_cart_merchandise.template_id', 'mm.nama_produk', 'mm.harga_awal', 'mm.diskon', 'mm.image_1', 'mm.image_2', 
+                                'tdp.nama_siswa', 'tdp.sekolah_id',  'tdp.nama_kelas', 'tdp.image_file', 'mjm.jenis', 'mku.kategori' )
                                 ->leftJoin('m_merchandise as mm', 'mm.id', 't_cart_merchandise.merchandise_id')
+                                ->leftJoin('m_jenis_merchandise as mjm', 'mjm.id', 't_cart_merchandise.jenis_id')
+                                ->leftJoin('t_desain_palestineday as tdp', 'tdp.id', 't_cart_merchandise.design_id')
+                                ->leftJoin('m_warna_kaos as mwk', 'mwk.id', 't_cart_merchandise.warna_id')
+                                ->leftJoin('m_ukuran_seragam as mus', 'mus.ukuran_seragam', 't_cart_merchandise.ukuran_id')
+                                ->leftJoin('m_kategori_umur as mku', 'mku.id', 't_cart_merchandise.kategori_id')
                                 ->where('t_cart_merchandise.user_id', $user_id)
                                 ->where('t_cart_merchandise.status_cart', 0)
                                 ->where('t_cart_merchandise.is_selected', 1)
@@ -451,12 +515,13 @@ class PalestineDayController extends Controller
                 $total_bayar_selected = 0;
 
                 foreach ($total_bayar as $item) {
+                    $harga = $item->harga_awal;
                     $quantity = $item->quantity;
-                    $harga = $item->harga_awal * $quantity;
+                    $jumlah_harga = $harga * $quantity;
                     $diskon = $item->diskon;
-                    $nilai_diskon = ($diskon/100 * $harga);
+                    $nilai_diskon = ($diskon/100 * $jumlah_harga);
 
-                    $total_harga = $harga - $nilai_diskon;
+                    $total_harga = $jumlah_harga - $nilai_diskon;
 
                     $total_bayar_selected += $total_harga;
                 }
@@ -482,18 +547,19 @@ class PalestineDayController extends Controller
         
         $profile = Profile::where('user_id', $user_id)->get();
         $cart_detail =  CartMerchandise::select('t_cart_merchandise.quantity', 't_cart_merchandise.id', 't_cart_merchandise.merchandise_id', 't_cart_merchandise.is_selected', 
-                            'mwk.warna', 'mus.ukuran_seragam', 't_cart_merchandise.lengan_id', 'mm.nama_produk', 'mm.harga_awal', 'mm.diskon', 'mm.image_1', 'mm.image_2', 
-                            'tdp.image_file', 'mp.nama_lengkap as nama_siswa', 'mp.nama_kelas', 'mp.sekolah_id' )
-                            ->leftJoin('m_merchandise as mm', 'mm.id', 't_cart_merchandise.merchandise_id')
-                            ->leftJoin('t_desain_palestineday as tdp', 'tdp.id', 't_cart_merchandise.design_id')
-                            ->leftJoin('m_warna_kaos as mwk', 'mwk.id', 't_cart_merchandise.warna_id')
-                            ->leftJoin('m_ukuran_seragam as mus', 'mus.ukuran_seragam', 't_cart_merchandise.ukuran_id')
-                            ->leftJoin('m_profile as mp', 'mp.user_id', 't_cart_merchandise.user_id')
-                            ->where('t_cart_merchandise.user_id', $user_id)
-                            ->where('t_cart_merchandise.status_cart', 0)
-                            ->where('t_cart_merchandise.is_selected', 1)
-                            ->groupby('t_cart_merchandise.id')
-                            ->get();
+                        'mwk.warna', 'mus.ukuran_seragam', 'mm.jenis_id', 't_cart_merchandise.template_id', 'mm.nama_produk', 'mm.harga_awal', 'mm.diskon', 'mm.image_1', 'mm.image_2', 
+                        'tdp.nama_siswa', 'tdp.sekolah_id',  'tdp.nama_kelas', 'tdp.image_file', 'mjm.jenis', 'mku.kategori', 'mtd.judul as template' )
+                        ->leftJoin('m_merchandise as mm', 'mm.id', 't_cart_merchandise.merchandise_id')
+                        ->leftJoin('m_jenis_merchandise as mjm', 'mjm.id', 't_cart_merchandise.jenis_id')
+                        ->leftJoin('t_desain_palestineday as tdp', 'tdp.id', 't_cart_merchandise.design_id')
+                        ->leftJoin('m_warna_kaos as mwk', 'mwk.id', 't_cart_merchandise.warna_id')
+                        ->leftJoin('m_ukuran_seragam as mus', 'mus.ukuran_seragam', 't_cart_merchandise.ukuran_id')
+                        ->leftJoin('m_kategori_umur as mku', 'mku.id', 't_cart_merchandise.kategori_id')
+                        ->leftJoin('m_template_desain as mtd', 'mtd.id', 't_cart_merchandise.template_id') 
+                        ->where('t_cart_merchandise.user_id', $user_id)
+                        ->where('t_cart_merchandise.status_cart', 0)
+                        ->where('t_cart_merchandise.is_selected', 1)
+                        ->get();
 
         return view('ortu.palestine_day.pembayaran', compact('profile', 'cart_detail', 'order'));
 
@@ -501,37 +567,43 @@ class PalestineDayController extends Controller
 
     public function pre_order(Request $request)
     {
+        $user_id = auth()->user()->id;
         
         $order = $request->all();
         $order_dec = json_decode($order['data'], true);
     
         $merch_id = $order_dec[0]['merch_id'];
         $quantity = $order_dec[0]['quantity'];
-      
 
-        if ($merch_id != 1) {
-            $merchandise = Merchandise::find($merch_id);
+        $merchandise = Merchandise::find($merch_id);
 
-            return view('ortu.palestine_day.pembayaran', compact( 'merchandise', 'quantity', 'merch_id', 'order'));
+        $profile = Profile::select('u.id', 'u.no_hp', 'm_profile.sekolah_id', 'm_profile.nama_lengkap', 'm_profile.nama_kelas', 'm_profile.nis')
+                    ->leftJoin('mst_lokasi_sub as mls', 'mls.id', 'm_profile.sekolah_id')
+                    ->leftJoin('users as u', 'u.no_hp', 'm_profile.no_hp_ibu')
+                    ->where('u.id', $user_id)
+                    ->first();
 
-        } else {
-            $design_id = $order_dec[0]['design_id'];
+        if ($merchandise->jenis_id == '1' || $merchandise->jenis_id == '2') {
+
+            $design_id = $order_dec[0]['design'];
             $ukuran = $order_dec[0]['ukuran'];
-            $lengan = $order_dec[0]['lengan'];
-            if ($lengan == 1) {
-                $jenis_lengan = 'Pendek';
-            } else if ($lengan == 2) {
-                $jenis_lengan = 'Panjang';
-            }
             $warna_id = $order_dec[0]['warna'];
-
+            $template_id = $order_dec[0]['template'];
+            $kategori_id = $order_dec[0]['kategori'];
             $get_warna = WarnaKaos::where('id', $warna_id)->first();
             $warna = $get_warna->warna;
 
-            $merchandise =  Merchandise::find($merch_id);
+            $template = TemplateDesain::find($template_id);
+
             $design = DesainPalestineday::find($design_id);
             
-            return view('ortu.palestine_day.pembayaran', compact('order', 'merchandise', 'design', 'quantity', 'ukuran', 'warna', 'design_id', 'merch_id', 'jenis_lengan'));
+            return view('ortu.palestine_day.pembayaran', compact('order', 'merchandise', 'design', 'quantity', 'ukuran', 'warna', 
+            'warna_id', 'design_id', 'kategori_id', 'template', 'profile'));
+
+        } else {
+            
+            return view('ortu.palestine_day.pembayaran', compact( 'merchandise', 'quantity', 'order', 'profile'));
+
         }
 
     }
@@ -543,55 +615,77 @@ class PalestineDayController extends Controller
         $nama_pemesan = auth()->user()->name;
         $no_pesanan = 'INV-MPD-'. date('YmdHis');
 
-        $order = CartMerchandise::select('t_cart_merchandise.quantity', 't_cart_merchandise.id', 't_cart_merchandise.merchandise_id', 't_cart_merchandise.is_selected', 
-                                'mwk.id as warna_id', 'mus.ukuran_seragam', 'mus.id as ukuran_id', 't_cart_merchandise.lengan_id', 'mm.nama_produk', 'mm.harga_awal', 'mm.diskon', 'mm.image_1', 'mm.image_2', 
-                                'mp.nama_lengkap as nama_siswa', 'mp.nama_kelas', 'mp.sekolah_id', 'tdp.image_file' )
-                                ->leftJoin('m_merchandise as mm', 'mm.id', 't_cart_merchandise.merchandise_id')
-                                ->leftJoin('t_desain_palestineday as tdp', 'tdp.id', 't_cart_merchandise.design_id')
-                                ->leftJoin('m_warna_kaos as mwk', 'mwk.id', 't_cart_merchandise.warna_id')
-                                ->leftJoin('m_ukuran_seragam as mus', 'mus.ukuran_seragam', 't_cart_merchandise.ukuran_id')
-                                ->leftJoin('m_profile as mp', 'mp.user_id', 't_cart_merchandise.user_id')
-                                ->where('t_cart_merchandise.user_id', $user_id)
-                                ->where('t_cart_merchandise.status_cart', 0)
-                                ->where('t_cart_merchandise.is_selected', 1)
-                                ->groupby('t_cart_merchandise.id')
-                                ->get();
+        $total_harga_now = $request->total_harga;
+        $harga_awal_now = $request->harga_awal;
+        $diskon_now = $request->diskon;
+        $warna_now = $request->warna;
+        $template_now = $request->template;
+        $kategori_now = $request->kategori;
+        $quantity_now = $request->quantity;
+        $ukuran_now = $request->ukuran;
+        $merchandise_id_now = $request->merchandise_id;
+        $nama_siswa_now = $request->nama_siswa;
+        $kelas_now = $request->kelas;
+        $sekolah_id_now = $request->sekolah_id;
 
-        $total_harga = 0;
-        $total_diskon =0;
-        foreach ($order as $item) {
-            $nama_siswa = $item['nama_siswa'];
-            $lokasi = $item['sekolah'];
-            $nama_kelas = $item['nama_kelas'];
-            $merchandise_id = $item['merchandise_id'];
-            $ukuran = $item['ukuran_id'];
-            $warna = $item['warna_id'];
-            $quantity = $item['quantity'];
-            $harga_awal = $item['harga_awal'];
-            $diskon = $item['diskon'];
-            $nilai_diskon = $diskon/100 * $harga_awal * $quantity;
+        if ($total_harga_now == null || $total_harga_now == 'undefined' || $total_harga_now == '') {
+
+            $order = CartMerchandise::select('t_cart_merchandise.quantity', 't_cart_merchandise.id', 't_cart_merchandise.merchandise_id', 't_cart_merchandise.is_selected', 
+                    'mwk.warna', 'mwk.id as warna_id', 'mus.ukuran_seragam', 'mm.jenis_id', 't_cart_merchandise.template_id', 't_cart_merchandise.kategori_id', 'mm.nama_produk', 'mm.harga_awal', 'mm.diskon', 'mm.image_1', 'mm.image_2', 
+                    'tdp.nama_siswa', 'tdp.sekolah_id', 'tdp.id as design_id', 'tdp.nama_kelas', 'tdp.image_file', 'mus.id as ukuran_id', 'mjm.jenis', 'mku.kategori', 'mtd.judul as template' )
+                    ->leftJoin('m_merchandise as mm', 'mm.id', 't_cart_merchandise.merchandise_id')
+                    ->leftJoin('m_jenis_merchandise as mjm', 'mjm.id', 't_cart_merchandise.jenis_id')
+                    ->leftJoin('t_desain_palestineday as tdp', 'tdp.id', 't_cart_merchandise.design_id')
+                    ->leftJoin('m_warna_kaos as mwk', 'mwk.id', 't_cart_merchandise.warna_id')
+                    ->leftJoin('m_ukuran_seragam as mus', 'mus.ukuran_seragam', 't_cart_merchandise.ukuran_id')
+                    ->leftJoin('m_kategori_umur as mku', 'mku.id', 't_cart_merchandise.kategori_id')
+                    ->leftJoin('m_template_desain as mtd', 'mtd.id', 't_cart_merchandise.template_id') 
+                    ->where('t_cart_merchandise.user_id', $user_id)
+                    ->where('t_cart_merchandise.status_cart', 0)
+                    ->where('t_cart_merchandise.is_selected', 1)
+                    ->get();
+
+            $total_harga = 0;
+            $total_diskon =0;
+            foreach ($order as $item) {
+                $nama_siswa = $item['nama_siswa'];
+                $lokasi = $item['sekolah'];
+                $nama_kelas = $item['nama_kelas'];
+                $merchandise_id = $item['merchandise_id'];
+                $ukuran = $item['ukuran_id'];
+                $warna = $item['warna_id'];
+                $template = $item['template_id'];
+                $kategori = $item['kategori_id'];
+                $desgin = $item['design_id'];
+                $quantity = $item['quantity'];
+                $harga_awal = $item['harga_awal'];
+                $diskon = $item['diskon'];
+                $nilai_diskon = $diskon/100 * $harga_awal * $quantity;
 
 
-            $order_detail = OrderDetailMerchandise::create([
-            'no_pesanan' => $no_pesanan,
-            'nama_siswa' => $nama_siswa,
-            'lokasi_sekolah' => $lokasi,
-            'nama_kelas' => $nama_kelas,
-            'merchandise_id' => $merchandise_id,
-            'ukuran_id' => $ukuran,
-            'warna_id' => $warna,
-            'quantity' => $quantity,
-            'harga' => $harga_awal,
-            'persen_diskon' => $diskon,
-            ]);
+                $order_detail = OrderDetailMerchandise::create([
+                'no_pesanan' => $no_pesanan,
+                'nama_siswa' => $nama_siswa,
+                'lokasi_sekolah' => $lokasi,
+                'nama_kelas' => $nama_kelas,
+                'merchandise_id' => $merchandise_id,
+                'ukuran_id' => $ukuran,
+                'warna_id' => $warna,
+                'template_id' => $template,
+                'kategori_id' => $kategori,
+                'design_id' => $desgin,
+                'quantity' => $quantity,
+                'harga' => $harga_awal,
+                'persen_diskon' => $diskon,
+                ]);
 
-            $total_harga += $harga_awal * $quantity;
-            $total_diskon += $nilai_diskon;
-            $harga_akhir = $total_harga - $total_diskon;
-            $harga_akhir_format = number_format($harga_akhir);
+                $total_harga += $harga_awal * $quantity;
+                $total_diskon += $nilai_diskon;
+                $harga_akhir = $total_harga - $total_diskon;
+                $harga_akhir_format = number_format($harga_akhir);
 
-            $this->update_cart_status($user_id, $merchandise_id);
-        }
+                $this->update_cart_status($user_id, $merchandise_id);
+            }
 
             $order_merchandise = OrderMerchandise::create([
                 'no_pesanan' => $no_pesanan,
@@ -602,31 +696,83 @@ class PalestineDayController extends Controller
                 'user_id' => $user_id
             ]);
 
-             // Set your Merchant Server Key
-             \Midtrans\Config::$serverKey = config('midtrans.serverKey');
-             // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
-             \Midtrans\Config::$isProduction = config('midtrans.isProduction');
-             // Set sanitization on (default)
-             \Midtrans\Config::$isSanitized = true;
-             // Set 3DS transaction for credit card to true
-             \Midtrans\Config::$is3ds = true;
- 
-             $params = array(
-             'transaction_details' => array(
-             'order_id' => $no_pesanan,
-             'gross_amount' => $harga_akhir,
-             ),
-             'customer_details' => array(
-             'first_name' => $nama_pemesan,
-             'phone' => $no_hp,
-             )
-             );
- 
-             $snapToken = \Midtrans\Snap::getSnapToken($params);
-             $order_merchandise->snap_token = $snapToken;
-             $order_merchandise->save();
- 
-             return response()->json($order_merchandise);
+                // Set your Merchant Server Key
+                \Midtrans\Config::$serverKey = config('midtrans.serverKey');
+                // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
+                \Midtrans\Config::$isProduction = config('midtrans.isProduction');
+                // Set sanitization on (default)
+                \Midtrans\Config::$isSanitized = true;
+                // Set 3DS transaction for credit card to true
+                \Midtrans\Config::$is3ds = true;
+
+            $params = array(
+            'transaction_details' => array(
+            'order_id' => $no_pesanan,
+            'gross_amount' => $harga_akhir,
+            ),
+            'customer_details' => array(
+            'first_name' => $nama_pemesan,
+            'phone' => $no_hp,
+            )
+            );
+
+            $snapToken = \Midtrans\Snap::getSnapToken($params);
+            $order_merchandise->snap_token = $snapToken;
+            $order_merchandise->save();
+
+            return response()->json($order_merchandise);
+        
+        } else {
+            $order_merchandise = OrderMerchandise::create([
+                'no_pesanan' => $no_pesanan,
+                'no_hp' => $no_hp,
+                'nama_pemesan' => $nama_pemesan,
+                'status' => 'pending',
+                'total_harga' => $total_harga_now,
+                'user_id' => $user_id
+            ]);
+
+            $order_detail = OrderDetailMerchandise::create([
+                'no_pesanan' => $no_pesanan,
+                'nama_siswa' => $nama_siswa_now,
+                'lokasi_sekolah' => $sekolah_id_now,
+                'nama_kelas' => $kelas_now,
+                'merchandise_id' => $merchandise_id_now,
+                'ukuran_id' => $ukuran_now,
+                'warna_id' => $warna_now,
+                'template_id' => $template_now,
+                'kategori_id' => $kategori_now,
+                'quantity' => $quantity_now,
+                'harga' => $harga_awal_now,
+                'persen_diskon' => $diskon_now,
+            ]);
+
+               // Set your Merchant Server Key
+               \Midtrans\Config::$serverKey = config('midtrans.serverKey');
+               // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
+               \Midtrans\Config::$isProduction = config('midtrans.isProduction');
+               // Set sanitization on (default)
+               \Midtrans\Config::$isSanitized = true;
+               // Set 3DS transaction for credit card to true
+               \Midtrans\Config::$is3ds = true;
+
+           $params = array(
+           'transaction_details' => array(
+           'order_id' => $no_pesanan,
+           'gross_amount' => $total_harga_now,
+           ),
+           'customer_details' => array(
+           'first_name' => $nama_pemesan,
+           'phone' => $no_hp,
+           )
+           );
+
+           $snapToken = \Midtrans\Snap::getSnapToken($params);
+           $order_merchandise->snap_token = $snapToken;
+           $order_merchandise->save();
+
+           return response()->json($order_merchandise);
+        }
     }
 
     public function callback(Request $request) {

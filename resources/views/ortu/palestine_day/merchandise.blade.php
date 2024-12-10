@@ -4,23 +4,9 @@
     @include('ortu.palestine_day.top-navigate')
     <div class="container">
         <div class="d-grid-card">
-            @foreach ($list_karya as $item)
-                <a href="{{route('detail.merchandise_kaos', $item->id)}}" style="text-decoration: none">
-                    <div class="card catalog mb-1">
-                        <img src="{{ asset('storage/'.$item->image_file) }}" class="card-img-top" alt="palestine" style="max-height: 180px">
-                        <div class="card-body pt-1">
-                            <h6 class="card-title mb-0">Kaos Design Exclusive by {{$item->nama_siswa}}</h6>
-                            <p class="mb-2 price-diskon" ><b> Rp. {{number_format($merch_kaos->harga_awal)}} </b> </p>
-                            <p class="mb-0" style="font-size: 10px">
-                                <span> <i class="fa-solid fa-paper-plane fa-sm"></i> Sekolah Rabbani</span> 
-                            </p>
-                        </div>
-                    </div>
-                </a>
-            @endforeach
             @if ($get_merch->count() > 0)
                 @foreach ($get_merch as $item)
-                    <a href="{{route('detail.merchandise', $item->id)}}" style="text-decoration: none">
+                        <a href="{{route('detail.merchandise', $item->id)}}" style="text-decoration: none">
                         <div class="card catalog mb-1">
                             <img src="{{ asset('storage/'.$item->image_1) }}" class="card-img-top" alt="palestine" style="max-height: 180px">
                             <div class="card-body pt-1">

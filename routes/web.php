@@ -21,6 +21,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProfileSekolahController;
 use App\Http\Controllers\SeragamController;
 use App\Http\Controllers\TagihanController;
+use App\Http\Controllers\TemplateController;
 use App\Http\Controllers\TugasDiklatController;
 use App\Http\Controllers\UserController;
 use App\Models\JadwalKontrak;
@@ -91,6 +92,12 @@ Route::group(['middleware' =>['admin']], function () {
         Route::post('/get-siswa', [MerchandiseController::class, 'get_siswa'])->name('get_siswa_master');
         Route::post('kumpul-desain', [MerchandiseController::class, 'store_desain'])->name('master.store_desain');
         Route::get('kumpul-desain/{id}', [MerchandiseController::class, 'desain_by_id'])->name('master.desain_by_id');
+        Route::get('desain/download/{id}', [MerchandiseController::class, 'download_desain'])->name('download_desain');
+
+        Route::get('template-desain', [TemplateController::class, 'index'])->name('template-desain');
+        Route::post('template-desain', [TemplateController::class, 'store'])->name('store_template');
+
+
 
 
 

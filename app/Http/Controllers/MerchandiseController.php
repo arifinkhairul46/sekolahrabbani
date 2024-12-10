@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\DesainPalestineday;
+use App\Models\HargaMerchandise;
 use App\Models\JenisMerchandise;
 use App\Models\LokasiSub;
 use App\Models\Merchandise;
@@ -72,7 +73,7 @@ class MerchandiseController extends Controller
                 Storage::disk('public')->put($image_url_2, file_get_contents($request->file('image_2')->getRealPath()));
             }
 
-            $add_menu = Merchandise::create([
+            $add_merch = Merchandise::create([
                 'nama_produk' => $nama_merchandise,
                 'jenis_id' => $jenis,
                 'deskripsi' => $deskripsi,
@@ -81,6 +82,12 @@ class MerchandiseController extends Controller
                 'image_1' => $image_url_1,
                 'image_2' => $image_url_2,
             ]);
+
+            // $add_harga = HargaMerchandise::create([
+            //     'merchandise_id' => $add_merch->id,
+            //     'harga' => $harga,
+            //     'diskon' => $diskon
+            // ]);
 
             return redirect()->back()->with('success', 'Berhasil tambah menu');
 
@@ -140,6 +147,7 @@ class MerchandiseController extends Controller
 
         $list_desain = DesainPalestineday::select('t_desain_palestineday.*', 'mls.sublokasi as lokasi')
                         ->leftJoin('mst_lokasi_sub as mls', 't_desain_palestineday.sekolah_id', 'mls.id')
+                        ->orderby('created_at', 'desc')
                         ->get();
                         
 
@@ -221,5 +229,19 @@ class MerchandiseController extends Controller
         ]);
 
         return redirect()->back();
+    }
+
+    public function download_desain(Request $request, $id)
+    {
+        $desain = DesainPalestineday::find($id);
+        
+        $file = public_path('storage/'.$desain->image_file);
+        $name = $desain->nis.'.jpg';
+        
+        $headers = array(
+            'Content-Disposition' => 'inline',
+        );
+
+        return response()->download($file, $name, $headers);
     }
 }

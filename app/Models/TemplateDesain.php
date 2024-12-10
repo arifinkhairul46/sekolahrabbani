@@ -5,20 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class HargaMerchandise extends Model
+class TemplateDesain extends Model
 {
     use HasFactory;
-    protected $table = 'm_harga_kaos';
+    protected $table = 'm_template_desain';
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'merchandise_id',
         'jenis_id',
-        'ukuran_id',
-        'harga',
-        'diskon',
-        'kategori_id',
-        'warna_id',
-        'lengan_id'
+        'judul',
+        'image_1'
     ];
 }

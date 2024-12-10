@@ -57,8 +57,12 @@ class MenuController extends Controller
 
             
             $menu = Menu::where('root', $root)->orderby('no', 'Desc')->first();
-            $last_urutan = $menu->no;
-            $new_urutan = $last_urutan +1;
+            if ($menu == null) {
+                $new_urutan = 1;
+            } else {
+                $last_urutan = $menu->no;
+                $new_urutan = $last_urutan +1;
+            }
 
             $add_menu = Menu::create([
                 'name' => $nama_menu,

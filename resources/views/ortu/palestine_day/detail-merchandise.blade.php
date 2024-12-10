@@ -6,11 +6,43 @@
         <div class="carousel-indicators">
             <button type="button" data-bs-target="#image-carousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
             <button type="button" data-bs-target="#image-carousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#image-carousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            <button type="button" data-bs-target="#image-carousel" data-bs-slide-to="3" aria-label="Slide 4"></button>
+            <button type="button" data-bs-target="#image-carousel" data-bs-slide-to="4" aria-label="Slide 5"></button>
+            <button type="button" data-bs-target="#image-carousel" data-bs-slide-to="5" aria-label="Slide 6"></button>
+            <button type="button" data-bs-target="#image-carousel" data-bs-slide-to="6" aria-label="Slide 7"></button>
+            <button type="button" data-bs-target="#image-carousel" data-bs-slide-to="7" aria-label="Slide 8"></button>
         </div>
         <div class="carousel-inner">
             <div class="carousel-item active">
                 <img class="img-detail-card" src="{{ asset('storage/'.$merchandise->image_1) }}" alt="{{$merchandise->image_1}}">
             </div>
+
+            @if ($merchandise->jenis_id == 1 )
+                @foreach ($design_anak as $item)
+                    <div class="carousel-item">
+                        <img class="img-detail-card" src="{{ asset('storage/'.$item->image_file) }}" alt="{{$item->image_file}}">
+                    </div>
+                @endforeach
+
+                @foreach ($template_kaos as $item)
+                    <div class="carousel-item">
+                        <img class="img-detail-card" src="{{ asset('storage/'.$item->image_1) }}" alt="{{$item->image_1}}">
+                    </div>
+                @endforeach
+            @elseif ($merchandise->jenis_id == 2)
+                @foreach ($design_anak as $item)
+                    <div class="carousel-item">
+                        <img class="img-detail-card" src="{{ asset('storage/'.$item->image_file) }}" alt="{{$item->image_file}}">
+                    </div>
+                @endforeach
+
+                @foreach ($template_kerudung as $item)
+                    <div class="carousel-item">
+                        <img class="img-detail-card" src="{{ asset('storage/'.$item->image_1) }}" alt="{{$item->image_1}}">
+                    </div>
+                @endforeach
+            @endif
 
             <div class="carousel-item">
                 <img class="img-detail-card" src="{{ asset('storage/'.$merchandise->image_2) }}" alt="{{$merchandise->image_2}}">
@@ -70,6 +102,146 @@
                         </div>
                     </div>
 
+                    @if ($merchandise->jenis_id == 1)
+                        <div class="produk-karya mt-3">
+                            <h6 style="color: #3152A4"><b> Karya </b> </h6>
+                            <div class="d-flex">
+                                @foreach ($design_anak as $item)
+                                    <div class="button-jenis">
+                                        <input class="form-check-input" type="radio" name="design" id="design_{{$item->id}}" value="{{$item->id}}">
+                                        <label class="form-check-label" for="design_{{$item->id}}">
+                                        <span style="font-size: 10px"> {{$item->nama_siswa}} </span>
+                                        </label>
+                                    </div>
+                                @endforeach
+                            </div>
+                            <span class="mb-0 text-danger" style="font-size: 10px; display: none" id="valid_warna_{{$item->id}}" > Pilih warna terlebih dahulu! </span>
+                        </div>
+
+                        <div class="produk-template mt-3">
+                            <h6 style="color: #3152A4"><b> Template </b> </h6>
+                            <div class="d-flex">
+                                @foreach ($template_kaos as $item)
+                                    <div class="button-jenis">
+                                        <input class="form-check-input" type="radio" name="template" id="template_{{$item->id}}" value="{{$item->id}}">
+                                        <label class="form-check-label" for="template_{{$item->id}}">
+                                        <span style="font-size: 12px"> {{$item->judul}} </span>
+                                        </label>
+                                    </div>
+                                @endforeach
+                            </div>
+                            <span class="mb-0 text-danger" style="font-size: 10px; display: none" id="valid_warna_{{$item->id}}" > Pilih warna terlebih dahulu! </span>
+                        </div>
+
+                        <div class="produk-warna mt-3">
+                            <h6 style="color: #3152A4"><b> Warna </b> </h6>
+                            <div class="d-flex">
+                                @foreach ($warna_kaos as $item)
+                                    <div class="button-jenis">
+                                        <input class="form-check-input" type="radio" name="warna" id="warna_{{$item->id}}" value="{{$item->id}}">
+                                        <label class="form-check-label" for="warna_{{$item->id}}">
+                                        <span> {{$item->warna}} </span>
+                                        </label>
+                                    </div>
+                                @endforeach
+                            </div>
+                            <span class="mb-0 text-danger" style="font-size: 10px; display: none" id="valid_warna_{{$item->id}}" > Pilih warna terlebih dahulu! </span>
+                        </div>
+
+                        <div class="produk-kategori mt-3">
+                            <h6 style="color: #3152A4"><b> Kategori </b> </h6>
+                            <div class="d-flex">
+                                @foreach ($kategori as $item)
+                                    <div class="button-jenis">
+                                        <input class="form-check-input" type="radio" name="kategori" id="kategori_{{$item->id}}" value="{{$item->id}}">
+                                        <label class="form-check-label" for="kategori_{{$item->id}}">
+                                        <span> {{$item->kategori}} </span>
+                                        </label>
+                                    </div>
+                                @endforeach
+                            </div>
+                            <span class="mb-0 text-danger" style="font-size: 10px; display: none" id="valid_kategori_{{$item->id}}" > Pilih lengan baju terlebih dahulu! </span>
+
+                        </div>
+
+                        <div class="produk-ukuran mt-3">
+                            <h6 style="color: #3152A4"><b> Ukuran </b> </h6>
+                            <div class="d-flex" id="ukuran_seragam">
+                                @foreach($ukuran as $item)
+                                    <div class="button-ukuran">
+                                        <input class="form-check-input" type="radio" name="ukuran"  id="uk_{{$item->ukuran_seragam}}_{{$item->id}}" value="{{$item->ukuran_seragam}}">
+                                        <label class="form-check-label" for="uk_{{$item->ukuran_seragam}}_{{$item->id}}">
+                                        <span>{{$item->ukuran_seragam}} </span>
+                                        </label>
+                                    </div>
+                                @endforeach
+                            </div>
+                            <span class="mb-0 text-danger" style="font-size: 10px; display: none" id="valid_ukuran_{{$item->id}}" > Pilih ukuran terlebih dahulu! </span>
+                        </div>
+
+                    @elseif ( $merchandise->jenis_id == 2)
+                        <div class="produk-karya mt-3">
+                            <h6 style="color: #3152A4"><b> Karya </b> </h6>
+                            <div class="d-flex">
+                                @foreach ($design_anak as $item)
+                                    <div class="button-jenis">
+                                        <input class="form-check-input" type="radio" name="design" id="design_{{$item->id}}" value="{{$item->id}}">
+                                        <label class="form-check-label" for="design_{{$item->id}}">
+                                        <span style="font-size: 10px"> {{$item->nama_siswa}} </span>
+                                        </label>
+                                    </div>
+                                @endforeach
+                            </div>
+                            <span class="mb-0 text-danger" style="font-size: 10px; display: none" id="valid_warna_{{$item->id}}" > Pilih warna terlebih dahulu! </span>
+                        </div>
+
+                        <div class="produk-template mt-3">
+                            <h6 style="color: #3152A4"><b> Template </b> </h6>
+                            <div class="d-flex">
+                                @foreach ($template_kerudung as $item)
+                                    <div class="button-jenis">
+                                        <input class="form-check-input" type="radio" name="template" id="template_{{$item->id}}" value="{{$item->id}}">
+                                        <label class="form-check-label" for="template_{{$item->id}}">
+                                        <span> {{$item->judul}} </span>
+                                        </label>
+                                    </div>
+                                @endforeach
+                            </div>
+                            <span class="mb-0 text-danger" style="font-size: 10px; display: none" id="valid_warna_{{$item->id}}" > Pilih warna terlebih dahulu! </span>
+                        </div>
+
+                        <div class="produk-warna mt-3">
+                            <h6 style="color: #3152A4"><b> Warna </b> </h6>
+                            <div class="d-flex">
+                                @foreach ($warna_kaos as $item)
+                                    <div class="button-jenis">
+                                        <input class="form-check-input" type="radio" name="warna" id="warna_{{$item->id}}" value="{{$item->id}}">
+                                        <label class="form-check-label" for="warna_{{$item->id}}">
+                                        <span> {{$item->warna}} </span>
+                                        </label>
+                                    </div>
+                                @endforeach
+                            </div>
+                            <span class="mb-0 text-danger" style="font-size: 10px; display: none" id="valid_warna_{{$item->id}}" > Pilih warna terlebih dahulu! </span>
+                        </div>
+
+                        <div class="produk-ukuran mt-3">
+                            <h6 style="color: #3152A4"><b> Ukuran </b> </h6>
+                            <div class="d-flex" id="ukuran_seragam">
+                                @foreach($ukuran_kerudung as $item)
+                                    <div class="button-ukuran">
+                                        <input class="form-check-input" type="radio" name="ukuran"  id="uk_{{$item->ukuran_seragam}}_{{$item->id}}" value="{{$item->ukuran_seragam}}">
+                                        <label class="form-check-label" for="uk_{{$item->ukuran_seragam}}_{{$item->id}}">
+                                        <span>{{$item->ukuran_seragam}} </span>
+                                        </label>
+                                    </div>
+                                @endforeach
+                            </div>
+                            <span class="mb-0 text-danger" style="font-size: 10px; display: none" id="valid_ukuran_{{$item->id}}" > Pilih ukuran terlebih dahulu! </span>
+                        </div>
+                    
+                    @endif
+
                     <div class="produk-jumlah my-4">
                         <h6 class="mt-1" style="color: #3152A4"><b> Jumlah </b> </h6>
                         <div class="input-group mx-3" style="border: none;">
@@ -87,21 +259,12 @@
                         </div>
                     </div>
 
-                    {{-- <div class="produk-siswa d-flex">
-                        <h6 class="mt-1" style="color: #3152A4; width: 150px;"><b> Nama Siswa </b> </h6>
-                        <select id="nama_siswa" name="nama_siswa" class="select form-control form-control-sm px-3" required>
-                            @foreach ($profile as $item)
-                                <option value="{{ $item->nis }}" >{{ $item->nama_lengkap }}</option>
-                            @endforeach
-                        </select>
-                    </div> --}}
-
                     <div class="d-flex mt-3" style="justify-content: end">
                         <button type="button" class="btn btn-primary px-3 " onclick="addToCart('{{$merchandise->id}}')" > <i class="fa-solid fa-plus"></i> Keranjang </button>
                         <form action="{{route('pre_order')}}" method="POST" id="po_now">
                             @csrf
                             <input type="hidden" name="data" id="data" value="">
-                            <button type="button" class="btn btn-purple mx-2 px-3" onclick="pre_order('{{$merchandise->id}}')" > Pre Order </button>
+                            <button type="button" class="btn btn-purple mx-2 px-3" onclick="pre_order('{{$merchandise->id}}')" > Pre Order (30 Hari) </button>
                         </form>
                     </div>
                 </div>
@@ -187,7 +350,11 @@
         function addToCart(id) {
             var item_id = id;
             var quantity = $('.input-number').val();
-            // var nama_siswa = $('#nama_siswa').val();
+            var ukuran = $('input[name="ukuran"]:checked').val();
+            var template = $('input[name="template"]:checked').val();
+            var warna = $('input[name="warna"]:checked').val();
+            var kategori = $('input[name="kategori"]:checked').val();
+            var design = $('input[name="design"]:checked').val();
 
                 $.ajax({
                     url: "{{route('cart_post_merchandise')}}",
@@ -195,6 +362,11 @@
                     data: {
                         merchandise_id : item_id,
                         quantity : quantity,
+                        ukuran : ukuran,
+                        template_id : template,
+                        warna_id : warna,
+                        kategori_id : kategori,
+                        design_id : design,
                         _token: '{{csrf_token()}}'
                     },
                     success: function (result) {
@@ -221,10 +393,22 @@
             var new_pesanan = {};
             var merch_id = id;
             var quantity = $('.input-number').val();
+            var ukuran = $('input[name="ukuran"]:checked').val();
+            var template = $('input[name="template"]:checked').val();
+            var warna = $('input[name="warna"]:checked').val();
+            var kategori = $('input[name="kategori"]:checked').val();
+            if (kategori == null || kategori ==''){
+                kategori = '-'
+            }
+            var design = $('input[name="design"]:checked').val();
 
             new_pesanan['merch_id'] = merch_id;
             new_pesanan['quantity'] = quantity;
-            // new_pesanan['nama_siswa'] = nama_siswa;
+            new_pesanan['ukuran'] = ukuran;
+            new_pesanan['template'] = template;
+            new_pesanan['warna'] = warna;
+            new_pesanan['kategori'] = kategori;
+            new_pesanan['design'] = design;
 
             pesanan.push(new_pesanan);
             $('#data').val(JSON.stringify(pesanan));

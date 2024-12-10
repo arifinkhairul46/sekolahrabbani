@@ -39,6 +39,17 @@ class Profile extends Model
 
     }
 
+    public static function get_nis_byphone($phone) {
+        $data = static::with(['user'])
+            ->select('nis')
+            ->leftJoin('mst_jenjang as j', 'j.id', 'm_profile.jenjang_id')
+            ->where('no_hp_ibu', $phone)
+            ->get();
+
+        return $data;
+
+    }
+
      public static function get_nis($id) {
         $data = static::select('nis', 'nama_lengkap')
             ->where('user_id', $id)

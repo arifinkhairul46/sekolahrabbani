@@ -3,10 +3,10 @@
 @section('content')    
     <div class="top-navigate sticky-top">
         <div class="d-flex" style="justify-content: stretch; width: 100%;">
-            <a href="{{route('dashboard')}}" return false;" class="mt-1" style="text-decoration: none; color: black">
+            <a href="{{route('dashboard')}}" class="mt-1" style="text-decoration: none; color: black">
                 <i class="fa-solid fa-arrow-left"></i>
             </a>
-            <h4 class="mx-2"> Palestine Day </h4>
+            <h4 class="mx-2">Pendidikan Palestine Day </h4>
         </div>
     </div>
 

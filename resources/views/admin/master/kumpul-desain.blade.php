@@ -41,6 +41,9 @@
                                         <button class="btn btn-sm btn-warning" title="Edit" onclick="edit_desain('{{$item->id}}')" data-bs-toggle="modal" data-bs-target="#edit_materi">
                                             <i class="fa-solid fa-pencil"></i>
                                         </button>
+                                        <a href="{{route('download_desain', $item->id)}}" class="btn btn-sm btn-success mx-2" title="Download">
+                                            <i class="fa-solid fa-download"></i>
+                                        </a>
                                     </td>
                                 </tr>
                             @endforeach

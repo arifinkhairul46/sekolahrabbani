@@ -21,6 +21,8 @@ class CartMerchandise extends Model
         'design_id',
         'ukuran_id',
         'warna_id',
-        'lengan_id',
+        'template_id',
+        'jenis_id',
+        'kategori_id'
     ];
 }

@@ -858,7 +858,6 @@ class SeragamController extends Controller
                         'va_number' => $no_va,
                         'updated_at' => $request->settlement_time
                     ]);
-                    // $this->update_status_seragam('success', $mtd_pembayaran, $orderId);
                     break;
                 case 'pending':
                     $order_merch->update([
@@ -868,7 +867,6 @@ class SeragamController extends Controller
                         'expire_time' => $request->expiry_time
                     ]);
                   
-                    // $this->update_status_seragam('pending', $mtd_pembayaran, $orderId);
                     break;
                 case 'deny':
                     $order_merch->update([
@@ -879,23 +877,22 @@ class SeragamController extends Controller
                    
                     break;
                 case 'expire':
-                    $order->update([
+                    $order_merch->update([
                         'status' => 'expired',
                         'metode_pembayaran' => $mtd_pembayaran,
                         'va_number' => $no_va
                     ]);
                    
-                    // $this->update_status_seragam('expired', $mtd_pembayaran, $orderId);
                     break;
                 case 'cancel':
-                    $order->update([
+                    $order_merch->update([
                         'status' => 'canceled',
                         'metode_pembayaran' => $mtd_pembayaran,
                         'va_number' => $no_va
                     ]);
                     break;
                 default:
-                    $order->update([
+                    $order_merch->update([
                         'status' => 'unknown',
                     ]);
                     break;

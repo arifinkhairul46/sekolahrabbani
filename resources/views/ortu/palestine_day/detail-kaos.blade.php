@@ -70,6 +70,37 @@
                         </div>
                     </div>
 
+                    <div class="produk-jenis mt-3">
+                        <h6 style="color: #3152A4"><b> Jenis </b> </h6>
+                        <div class="d-flex">
+                            @foreach ($jenis_kaos as $item)
+                                <div class="button-jenis">
+                                    <input class="form-check-input" type="radio" name="jenis_{{$detail_kaos->id}}" onclick="handleRadio('{{$detail_kaos->id}}')" id="jenis_{{$detail_kaos->id}}_{{$item->id}}" value="{{$item->id}}">
+                                    <label class="form-check-label" for="jenis_{{$detail_kaos->id}}_{{$item->id}}">
+                                    <span> {{$item->jenis}} </span>
+                                    </label>
+                                </div>
+                            @endforeach
+                        </div>
+                        <span class="mb-0 text-danger" style="font-size: 10px; display: none" id="valid_jenis_{{$detail_kaos->id}}" > Pilih jenis terlebih dahulu! </span>
+                    </div>
+
+                    <div class="produk-lengan mt-3" id="produk_lengan">
+                        <h6 style="color: #3152A4"><b> Lengan </b> </h6>
+                        <div class="d-flex">
+                            @foreach ($lengan_kaos as $item)
+                                <div class="button-jenis">
+                                    <input class="form-check-input" type="radio" name="lengan_{{$detail_kaos->id}}" id="lengan_{{$detail_kaos->id}}_{{$item->id}}" value="{{$item->id}}">
+                                    <label class="form-check-label" for="lengan_{{$detail_kaos->id}}_{{$item->id}}">
+                                    <span> {{$item->lengan}} </span>
+                                    </label>
+                                </div>
+                            @endforeach
+                        </div>
+                        <span class="mb-0 text-danger" style="font-size: 10px; display: none" id="valid_lengan_{{$detail_kaos->id}}" > Pilih lengan baju terlebih dahulu! </span>
+
+                    </div>
+
                     <div class="produk-warna mt-3">
                         <h6 style="color: #3152A4"><b> Warna </b> </h6>
                         <div class="d-flex">
@@ -83,27 +114,21 @@
                             @endforeach
                         </div>
                         <span class="mb-0 text-danger" style="font-size: 10px; display: none" id="valid_warna_{{$detail_kaos->id}}" > Pilih warna terlebih dahulu! </span>
-
                     </div>
 
-                    <div class="produk-lengan mt-3">
-                        <h6 style="color: #3152A4"><b> Lengan </b> </h6>
+                    <div class="produk-kategori mt-3">
+                        <h6 style="color: #3152A4"><b> Kategori </b> </h6>
                         <div class="d-flex">
-                            <div class="button-jenis">
-                                <input class="form-check-input" type="radio" name="lengan_{{$detail_kaos->id}}" id="lengan_{{$detail_kaos->id}}_1" value="1">
-                                <label class="form-check-label" for="lengan_{{$detail_kaos->id}}_1">
-                                <span> Pendek </span>
-                                </label>
-                            </div>
-                        
-                            <div class="button-jenis">
-                                <input class="form-check-input" type="radio" name="lengan_{{$detail_kaos->id}}" id="lengan_{{$detail_kaos->id}}_2" value="2">
-                                <label class="form-check-label" for="lengan_{{$detail_kaos->id}}_2">
-                                <span> Panjang </span>
-                                </label>
-                            </div>
+                            @foreach ($kategori as $item)
+                                <div class="button-jenis">
+                                    <input class="form-check-input" type="radio" name="kategori_{{$detail_kaos->id}}" id="kategori_{{$detail_kaos->id}}_{{$item->id}}" value="{{$item->id}}">
+                                    <label class="form-check-label" for="kategori_{{$detail_kaos->id}}_{{$item->id}}">
+                                    <span> {{$item->kategori}} </span>
+                                    </label>
+                                </div>
+                            @endforeach
                         </div>
-                        <span class="mb-0 text-danger" style="font-size: 10px; display: none" id="valid_lengan_{{$detail_kaos->id}}" > Pilih lengan baju terlebih dahulu! </span>
+                        <span class="mb-0 text-danger" style="font-size: 10px; display: none" id="valid_kategori_{{$detail_kaos->id}}" > Pilih lengan baju terlebih dahulu! </span>
 
                     </div>
 
@@ -242,7 +267,7 @@
             var design_id = id;
             var merchandise_id = merch_id;
             var ukuran = $('input[name="ukuran_'+merchandise_id+'"]:checked').val();
-            var lengan = $('input[name="lengan_'+merchandise_id+'"]:checked').val();
+            var jenis = $('input[name="jenis_'+merchandise_id+'"]:checked').val();
             var warna = $('input[name="warna_'+merchandise_id+'"]:checked').val();
             var quantity = $('.input-number').val();
 
@@ -253,7 +278,7 @@
                         design_id : design_id,
                         merchandise_id : merchandise_id,
                         ukuran_id : ukuran,
-                        lengan_id : lengan,
+                        jenis_id : jenis,
                         warna_id : warna,
                         quantity : quantity,
                         _token: '{{csrf_token()}}'
@@ -271,6 +296,20 @@
 
             $('#pre_order').modal('hide')
                 
+        }
+
+        function handleRadio(id) {
+            var merch_id = id;
+            var jenis = $('input[name="jenis_'+merch_id+'"]:checked').val();
+            console.log(jenis);
+            if (jenis == 1) {
+                $('#produk_lengan').show()
+            } else if (jenis == 2){
+                $('#produk_lengan').hide()
+                $('input[name="lengan_'+merch_id+'"]:checked').each(function(){
+                    $(this).prop('checked', false)  
+                });
+            }
         }
 
         function submit_cart() {
