@@ -2,15 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\OrderDetailMerchandiseExport;
 use App\Models\DesainPalestineday;
 use App\Models\HargaMerchandise;
 use App\Models\JenisMerchandise;
 use App\Models\LokasiSub;
 use App\Models\Merchandise;
+use App\Models\OrderDetailMerchandise;
+use App\Models\OrderMerchandise;
 use App\Models\Profile;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 
 class MerchandiseController extends Controller
 {
@@ -244,4 +249,92 @@ class MerchandiseController extends Controller
 
         return response()->download($file, $name, $headers);
     }
+
+    public function list_order ()
+    {
+        $list_order = OrderMerchandise::where('status', 'success')->orderby('created_at', 'desc')->get();
+
+        return view('admin.laporan.order-merchandise', compact('list_order'));
+    }
+
+    public function order_detail ($id)
+    {
+        $order_detail = OrderDetailMerchandise::select('mm.nama_produk', 'mwk.warna', 'mus.ukuran_seragam', 'mku.kategori', 'mtd.judul as template',
+                        't_pesan_merchandise_detail.nama_siswa', 'tdp.id as design_id', 'tdp.nis', 't_pesan_merchandise_detail.lokasi_sekolah as sekolah_id', 
+                        't_pesan_merchandise_detail.nama_kelas', 'tdp.image_file', 't_pesan_merchandise_detail.quantity',
+                        't_pesan_merchandise_detail.harga', 't_pesan_merchandise_detail.persen_diskon')
+                        ->leftJoin('m_merchandise as mm', 'mm.id', 't_pesan_merchandise_detail.merchandise_id')
+                        ->leftJoin('m_warna_kaos as mwk', 'mwk.id', 't_pesan_merchandise_detail.warna_id')
+                        ->leftJoin('m_ukuran_seragam as mus', 'mus.id', 't_pesan_merchandise_detail.ukuran_id')
+                        ->leftJoin('m_kategori_umur as mku', 'mku.id', 't_pesan_merchandise_detail.kategori_id')
+                        ->leftJoin('m_template_desain as mtd', 'mtd.id', 't_pesan_merchandise_detail.template_id')
+                        ->leftJoin('t_desain_palestineday as tdp', 'tdp.id', 't_pesan_merchandise_detail.design_id')
+                        ->where('no_pesanan', $id)
+                        ->get();
+        // dd($order_detail);
+
+        return response()->json($order_detail);
+    }
+
+    public function download_invoice(Request $request, $id)
+    {
+        $user_id = auth()->user()->id;
+
+        $order = OrderMerchandise::where('no_pesanan', $id)->first();
+
+        $order_detail = OrderDetailMerchandise::select('t_pesan_merchandise_detail.nama_siswa', 't_pesan_merchandise_detail.lokasi_sekolah',
+                    't_pesan_merchandise_detail.nama_kelas', 'mm.nama_produk', 'mwk.warna', 'mm.image_1', 'mtd.judul as template',  
+                    'mus.ukuran_seragam', 'mku.kategori', 'tdp.nis', 't_pesan_merchandise_detail.harga', 't_pesan_merchandise_detail.persen_diskon', 
+                    't_pesan_merchandise_detail.quantity', 't_pesan_merchandise_detail.created_at')
+                    ->leftJoin('t_pesan_merchandise as tpm', 'tpm.no_pesanan', 't_pesan_merchandise_detail.no_pesanan')
+                    ->leftJoin('m_merchandise as mm', 'mm.id', 't_pesan_merchandise_detail.merchandise_id')
+                    ->leftJoin('m_warna_kaos as mwk', 'mwk.id', 't_pesan_merchandise_detail.warna_id')
+                    ->leftJoin('m_ukuran_seragam as mus', 'mus.id', 't_pesan_merchandise_detail.ukuran_id')
+                    ->leftJoin('m_kategori_umur as mku', 'mku.id', 't_pesan_merchandise_detail.kategori_id')
+                    ->leftJoin('m_template_desain as mtd', 'mtd.id', 't_pesan_merchandise_detail.template_id')
+                    ->leftJoin('t_desain_palestineday as tdp', 'tdp.id', 't_pesan_merchandise_detail.design_id')
+                    ->where('tpm.no_pesanan', $id)
+                    ->get();
+
+        // Load view dengan data yang disiapkan
+        $pdf = Pdf::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])->loadView('admin.laporan.invoice', [
+                        'order' => $order,
+                        'order_detail' => $order_detail
+                    ]);
+        $pdf->setPaper('Letter');
+        $pdf->setWarnings(false);
+
+        // Download file PDF
+        return $pdf->download('Invoice-'.$id.'.pdf');
+    }
+
+    public function export_list_order()
+    {
+        $now = date('d-m-y');
+        $file_name = 'list-order-by-'.$now.'.xlsx';
+        return Excel::download(new OrderDetailMerchandiseExport(), $file_name);
+    }
+
+    public function rincian_pesanan (Request $request, $id) {
+        $user_id = auth()->user()->id;
+
+        $order = OrderMerchandise::where('no_pesanan', $id)->first();
+
+        $order_detail = OrderDetailMerchandise::select('t_pesan_merchandise_detail.nama_siswa', 't_pesan_merchandise_detail.lokasi_sekolah',
+                        't_pesan_merchandise_detail.nama_kelas', 'mm.nama_produk', 'mwk.warna', 'mm.image_1', 'mtd.judul as template',  
+                        'mus.ukuran_seragam', 'mku.kategori', 'tdp.nis', 't_pesan_merchandise_detail.harga', 't_pesan_merchandise_detail.persen_diskon', 
+                        't_pesan_merchandise_detail.quantity', 't_pesan_merchandise_detail.created_at', 'tpm.metode_pembayaran', 'tpm.no_pesanan')
+                        ->leftJoin('t_pesan_merchandise as tpm', 'tpm.no_pesanan', 't_pesan_merchandise_detail.no_pesanan')
+                        ->leftJoin('m_merchandise as mm', 'mm.id', 't_pesan_merchandise_detail.merchandise_id')
+                        ->leftJoin('m_warna_kaos as mwk', 'mwk.id', 't_pesan_merchandise_detail.warna_id')
+                        ->leftJoin('m_ukuran_seragam as mus', 'mus.id', 't_pesan_merchandise_detail.ukuran_id')
+                        ->leftJoin('m_kategori_umur as mku', 'mku.id', 't_pesan_merchandise_detail.kategori_id')
+                        ->leftJoin('m_template_desain as mtd', 'mtd.id', 't_pesan_merchandise_detail.template_id')
+                        ->leftJoin('t_desain_palestineday as tdp', 'tdp.id', 't_pesan_merchandise_detail.design_id')
+                        ->where('tpm.no_pesanan', $id)
+                        ->get();
+
+        return view('ortu.palestine_day.rincian-pesan', compact( 'order', 'order_detail'));
+    }
+
 }

@@ -25,6 +25,7 @@ use App\Http\Controllers\TemplateController;
 use App\Http\Controllers\TugasDiklatController;
 use App\Http\Controllers\UserController;
 use App\Models\JadwalKontrak;
+use App\Models\Merchandise;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 
@@ -99,6 +100,13 @@ Route::group(['middleware' =>['admin']], function () {
 
 
 
+    });
+
+    Route::prefix('laporan')->group(function () {
+        Route::get('merchandise', [MerchandiseController::class, 'list_order'])->name('list-order-merchandise');
+        Route::get('merchandise/{id}', [MerchandiseController::class, 'order_detail'])->name('get_pesanan_merchandise_by_invoice');
+        Route::get('download-invoice/{id}', [MerchandiseController::class, 'download_invoice'])->name('download.invoice-merchandise');
+        Route::get('list-order/export', [MerchandiseController::class, 'export_list_order'])->name('list-order.export');
 
 
 
@@ -160,8 +168,8 @@ Route::group(['middleware' =>['auth']], function () {
         Route::get('pembayaran', [PalestineDayController::class, 'pembayaran'])->name('merchandise.bayar');
         Route::post('payment', [PalestineDayController::class, 'pre_order'])->name('pre_order');
         Route::post('pembayaran', [PalestineDayController::class, 'store_order'])->name('merchandise.store');
-
-
+        Route::get('riwayat-transaksi/{id}', [MerchandiseController::class, 'rincian_pesanan'])->name('merchandise.history.detail');
+        Route::get('download-invoice/{id}', [MerchandiseController::class, 'download_invoice'])->name('invoice-merchandise');
 
 
     });

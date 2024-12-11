@@ -153,7 +153,6 @@
             id      = $(this).attr('data-id');
             var input = $("input[name='"+fieldName+"']");
             var currentVal = parseInt(input.val());
-            console.log('n',currentVal, id);
             var url = "{{ route('merchandise-cart.update', ":id") }}";
             url = url.replace(':id', id);
             if (!isNaN(currentVal)) {

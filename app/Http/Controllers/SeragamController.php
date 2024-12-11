@@ -927,8 +927,25 @@ class SeragamController extends Controller
                                 ->groupby('psd.no_pemesanan', 't_pesan_seragam.total_harga')
                                 ->orderby('psd.created_at', 'DESC')
                                 ->get();
+
+        $order_merch = OrderMerchandise::where('user_id', $user_id)->where('status', 'success')->get();
+
+        $order_detail_merch = OrderMerchandise::select('tpmd.*', 'mm.nama_produk', 'mwk.warna', 'mtd.judul as template', 
+                        'mus.ukuran_seragam', 'mku.kategori', 'tdp.nis', 'mm.image_1', 't_pesan_merchandise.status', 
+                        't_pesan_merchandise.total_harga')
+                        ->leftJoin('t_pesan_merchandise_detail as tpmd', 'tpmd.no_pesanan', 't_pesan_merchandise.no_pesanan')
+                        ->leftJoin('m_merchandise as mm', 'mm.id', 'tpmd.merchandise_id')
+                        ->leftJoin('m_warna_kaos as mwk', 'mwk.id', 'tpmd.warna_id')
+                        ->leftJoin('m_ukuran_seragam as mus', 'mus.id', 'tpmd.ukuran_id')
+                        ->leftJoin('m_kategori_umur as mku', 'mku.id', 'tpmd.kategori_id')
+                        ->leftJoin('m_template_desain as mtd', 'mtd.id', 'tpmd.template_id')
+                        ->leftJoin('t_desain_palestineday as tdp', 'tdp.id', 'tpmd.design_id')
+                        ->where('t_pesan_merchandise.user_id', $user_id)
+                        ->groupby('tpmd.no_pesanan')
+                        ->orderby('tpmd.created_at', 'DESC')
+                        ->get();
         
-        return view('ortu.seragam.history', compact('order', 'menubar'));
+        return view('ortu.seragam.history', compact('order', 'menubar', 'order_merch', 'order_detail_merch'));
     }
 
     public function rincian_pesanan (Request $request, $id) {

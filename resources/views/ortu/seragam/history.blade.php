@@ -9,6 +9,41 @@
             <h4 class="mx-3"> Riwayat Transaksi </h4>
         </div>
 
+        @foreach ($order_detail_merch as $item)
+            <a href="{{route('merchandise.history.detail', $item->no_pesanan)}}" style="text-decoration: none">
+                <div class="card card-history mt-3">
+                    <div class="card-header d-flex" style="justify-content: space-between; font-size: 12px">
+                        <span class=""> No Pesanan </span>
+                        <span > {{$item->no_pesanan}} </span>
+                    </div>
+                    <div class="card-body d-flex">
+                        <div class="frame-bayar">
+                            <img src="{{asset('storage/'.$item->image_1)}}" width="100%" style="height: 100%; object-fit:cover; border-radius:1rem">
+                        </div>
+                        <div class="d-flex mx-2">
+                            <div class="" style="width: 200px">
+                                <p class="mb-0" style="font-size: 14px;"> {{$item->nama_produk}} </p>
+                                <p class="mb-0 price-diskon"> <b> Rp. {{number_format((($item->total_harga))) }} </b> </p>
+                                <p class="mb-0" style="font-size: 10px">Waktu Pesan: {{$item->created_at}} </p>
+        
+                            </div>
+                        </div>
+                        <div class="status" style="margin-left: auto">
+                            @if ($item->status == 'success')
+                                <span class="badge bg-success" style="font-size: 12px"> {{$item->status}} </span>
+
+                            @elseif($item->status == 'pending')
+                                <span class="badge bg-warning" style="font-size: 12px"> Menunggu </span>
+
+                            @elseif($item->status == 'cancel' || $item->status == 'failed' || $item->status == 'expired' )
+                                <span class="badge bg-danger" style="font-size: 12px"> Gagal </span>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </a>
+        @endforeach
+
         @foreach ($order as $item)
             <a href="{{route('seragam.history.detail', $item->no_pemesanan)}}" style="text-decoration: none">
                 <div class="card card-history mt-3">

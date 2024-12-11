@@ -47,7 +47,7 @@
             <tr>
             </tr>
             <tr>
-                <td colspan="6">
+                <td colspan="5">
                     <table id="table-logo">
                         <tr>
                             <td>
@@ -63,18 +63,18 @@
             </tr>
 
             <tr>
-                <td colspan="6" style="height: 20px">
+                <td colspan="5" style="height: 20px">
                 </td>
             </tr>
 
             <tr>
-                <td colspan="6" class="text-center">
+                <td colspan="5" class="text-center">
                     <span style="font-size: 20px;"> <b> Bukti Pembayaran </b> </span> 
                 </td>
             </tr>
 
             <tr>
-                <td colspan="6" style="height: 20px">
+                <td colspan="5" style="height: 20px">
                 </td>
             </tr>
 
@@ -85,15 +85,18 @@
                     <span> <b> {{$order->no_hp}} </b> </span>
                 </td>
 
-                <td style="width:20%">
+                <td>
                 </td>
 
-                <td style="width:15%">
+                <td>
+                </td>
+
+                <td>
                 </td>
 
                 <td style="width: 35%" >
-                    <span style="font-size: 14px">Invoice No: {{$order->no_pemesanan}} </span> <br>
-                    <span style="font-size: 14px">Tanggal : {{date('d-m-Y', strtotime($order->created_at))}} </span>
+                    <span style="font-size: 14px">Invoice No: {{$order->no_pesanan}} </span> <br>
+                    <span style="font-size: 14px">Tanggal : {{date('d-F-Y', strtotime($order->created_at))}} </span>
                 </td>
             </tr>
         </table>
@@ -120,7 +123,7 @@
                         {{$loop->iteration}}
                     </td>
                     <td colspan="2">
-                        {{ $item->nama_produk }} {{$item->jenis_produk}} ({{$item->ukuran}})
+                        {{ $item->nama_produk }} {{$item->warna}} {{$item->template}} {{$item->ukuran_seragam}} {{$item->kategori}}
                     </td>
                     <td class="text-center">
                         {{ number_format($item->harga) }}
@@ -133,18 +136,17 @@
                     </td>
                 </tr>
                 <?php $total_harga += $item->harga * $item->quantity; ?>
-                <?php $total_diskon += ($item->p_diskon/100 * $item->harga * $item->quantity); ?>
+                <?php $total_diskon += ($item->persen_diskon/100 * $item->harga * $item->quantity); ?>
                 <?php $harga_akhir = $total_harga - $total_diskon; ?>
 
                 
                 @endforeach
-                <input type="text" style="display: none" value="{{ 80/100 * $total_harga}}" id="harga_akhir">
                 <tr>
                     <td colspan="5" class="text-center"><span style="font-size: 13px">Sub Total</span></td>
                     <td id="total_harga" colspan="1"><span style="font-size: 13px">Rp {{number_format($total_harga)}} </span></td>
                 </tr>
                 <tr>
-                    <td colspan="5" class="text-center"><span style="font-size: 13px">Diskon 20%</span></td>
+                    <td colspan="5" class="text-center"><span style="font-size: 13px">Diskon</span></td>
                     <td id="diskon" colspan="1"><span style="font-size: 13px; color:red">Rp {{number_format($total_diskon)}}</span></td>
                 </tr>
                 <tr>
@@ -155,20 +157,7 @@
         </table>
     </div>
  
-
     <div class="mt-3"><i> Terimakasih </i></div>
-
-    <div class=" mt-3 policy">
-        <h6 class="mb-0"> Privacy Policy </h6>
-        <ol type="1" style="font-size: 10px"> 
-            <i>
-            <li> Jika ada salah pembelian, tidak ada kebijakan refund atau pengembalian uang</li>
-            <li> Jika salah ukuran maka dapat ditukar dengan barang sejenis maksimal H+1 setelah barang diterima dan hanya dapat dilakukan 1 kali</li>
-            <li> Penukaran barang sejenis dimulai dari ukuran XS s.d. 3XL</li>
-            <li> Proses penukaran membutuhkan waktu maksimal 14 hari kerja</li>
-            </i>
-        </ol>
-    </div>
  
     <div class="footer">
         <table>

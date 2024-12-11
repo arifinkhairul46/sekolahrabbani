@@ -220,7 +220,6 @@
             fetch('/master/kumpul-desain/' + id)
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data);
                     $("#sekolah_edit").val(data.sekolah_id)
                     $("#kelas_edit").val(data.nama_kelas)
                     $("#nama_siswa_edit").val(data.nama_siswa)

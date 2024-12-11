@@ -301,7 +301,6 @@
         function handleRadio(id) {
             var merch_id = id;
             var jenis = $('input[name="jenis_'+merch_id+'"]:checked').val();
-            console.log(jenis);
             if (jenis == 1) {
                 $('#produk_lengan').show()
             } else if (jenis == 2){
