@@ -337,4 +337,15 @@ class MerchandiseController extends Controller
         return view('ortu.palestine_day.rincian-pesan', compact( 'order', 'order_detail'));
     }
 
+    public function harga_per_kategori(Request $request) {
+        $user_id = auth()->user()->id;
+        $merch_id = $request->merch_id;
+        $kategori_id = $request->kategori_id;
+
+        $harga = HargaMerchandise::select('harga', 'diskon')
+                        ->where('merchandise_id', $merch_id)->where('kategori_id', $kategori_id)->get();
+     
+        return response()->json($harga);
+    }
+
 }

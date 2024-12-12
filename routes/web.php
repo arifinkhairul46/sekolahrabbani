@@ -170,6 +170,8 @@ Route::group(['middleware' =>['auth']], function () {
         Route::post('pembayaran', [PalestineDayController::class, 'store_order'])->name('merchandise.store');
         Route::get('riwayat-transaksi/{id}', [MerchandiseController::class, 'rincian_pesanan'])->name('merchandise.history.detail');
         Route::get('download-invoice/{id}', [MerchandiseController::class, 'download_invoice'])->name('invoice-merchandise');
+        Route::post('harga', [MerchandiseController::class, 'harga_per_kategori'])->name('harga_per_kategori');
+
 
 
     });

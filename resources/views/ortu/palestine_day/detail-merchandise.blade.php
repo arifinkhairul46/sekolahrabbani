@@ -62,7 +62,7 @@
 
     <div class="container">
         <div class="produk-detail">
-            <input type="hidden" id="produk_id" value="{{$merchandise->id}}">
+            <input type="hidden" id="merchandise_id" value="{{$merchandise->id}}">
             <div class="produk-title">
                 <h5 class="card-title mb-0">{{$merchandise->nama_produk}}</h5>
                 <p class="mb-1 price-diskon-detail" ><b> Rp. {{number_format($merchandise->harga_awal)}} </b> </p>
@@ -326,8 +326,6 @@
                 alert('Sorry, the maximum value was reached');
                 $(this).val($(this).data('oldValue'));
             }
-            
-            
         });
         $(".input-number").keydown(function (e) {
                 // Allow: backspace, delete, tab, escape, enter and .
@@ -344,6 +342,39 @@
                     e.preventDefault();
                 }
         });
+
+         // pilih kategori produk
+        $('input[name="kategori"]').change(function(){
+          var kategori = $('input[name="kategori"]:checked').val();
+          var merch_id = $('#merchandise_id').val()
+          update_price(kategori, merch_id);
+        });
+
+        function update_price(kategori, merch_id){
+            $.ajax({
+                url: "{{route('harga_per_kategori')}}",
+                type: 'POST',
+                data: {
+                    kategori_id: kategori,
+                    merch_id : merch_id,
+                    _token: '{{csrf_token()}}'
+                },
+                success: function (result) {
+                    console.log(result);
+                    
+                    $.each(result, function (key, item) {
+                        var harga = parseInt(item.harga);
+                        var diskon = parseInt(item.diskon);
+                        var harga_diskon = (harga - diskon/100*harga);
+                        var formatter = new Intl.NumberFormat("en-US");
+                        var format_harga = formatter.format(harga);
+                        var format_harga_diskon = formatter.format(harga_diskon);
+                
+                        $("#harga_awal").html(format_harga);
+                    });
+                }
+            })
+        }
 
         var cart_now = $('#count_cart').html();
         var cart_num = parseInt(cart_now);

@@ -13,12 +13,8 @@ class HargaMerchandise extends Model
 
     protected $fillable = [
         'merchandise_id',
-        'jenis_id',
-        'ukuran_id',
         'harga',
         'diskon',
         'kategori_id',
-        'warna_id',
-        'lengan_id'
     ];
 }
