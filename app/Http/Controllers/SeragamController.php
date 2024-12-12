@@ -390,7 +390,7 @@ class SeragamController extends Controller
         $nis = $order_dec[0]['nama_siswa'];
 
         $produk_seragam = ProdukSeragam::select('m_produk_seragam.id', 'm_produk_seragam.nama_produk', 'm_produk_seragam.image', 
-                        'mhs.harga', 'mhs.diskon', 'mhs.kode_produk', 'mjps.jenis_produk', 'mjps.id as jenis_produk_id')
+                        'mhs.harga', 'mhs.diskon', 'mhs.kode_produk', 'mjps.jenis_produk', 'mjps.id as jenis_produk_id', 'mhs.hpp', 'mhs.ppn')
                         ->leftJoin('m_harga_seragam as mhs', 'mhs.produk_id', 'm_produk_seragam.id')
                         ->leftJoin('m_jenis_produk_seragam as mjps', 'mjps.id', 'mhs.jenis_produk_id')
                         ->leftJoin('m_ukuran_seragam as mus', 'mus.id', 'mhs.ukuran_id')
@@ -473,30 +473,32 @@ class SeragamController extends Controller
         $produk_id_now = $request->produk_id;
         $ukuran_now = $request->ukuran;
         $kode_produk_now = $request->kode_produk;
+        $hpp_now = $request->hpp;
+        $ppn_now = $request->ppn;
         $jenis_produk_now = $request->jenis_produk;
         $quantity_now = $request->quantity;
 
         if ($total_harga_now == null || $total_harga_now == 'undefined' || $total_harga_now == '') {
 
             $order = CartDetail::select('t_cart_detail.id', 'm_produk_seragam.id as id_produk','m_produk_seragam.nama_produk', 'm_produk_seragam.deskripsi', 'm_produk_seragam.image', 
-            'm_produk_seragam.material', 'mhs.harga', 'mhs.diskon', 'mjps.id as jenis_id', 'mp.nama_lengkap as nama_siswa', 'mp.nama_kelas as nama_kelas', 
-            'mls.id as sekolah', 'mjps.jenis_produk', 't_cart_detail.quantity', 't_cart_detail.ukuran', 'mhs.kode_produk')
-            ->leftJoin('m_produk_seragam', 'm_produk_seragam.id', 't_cart_detail.produk_id')
-            ->leftJoin('m_profile as mp' , 'mp.nis', 't_cart_detail.nis')
-            ->leftJoin('mst_lokasi_sub as mls', 'mls.id', 'mp.sekolah_id')
-            ->leftJoin('m_jenis_produk_seragam as mjps', 'mjps.id', 't_cart_detail.jenis')
-            ->leftJoin('m_ukuran_seragam as mus', 'mus.ukuran_seragam', 't_cart_detail.ukuran')
-            ->leftJoin('m_harga_seragam as mhs', function($join)
-            { $join->on('mhs.produk_id', '=', 'm_produk_seragam.id') 
-                ->on('mhs.jenis_produk_id', '=', 'mjps.id')
-                ->on('mus.id', '=', 'mhs.ukuran_id'); 
-            })
-            ->leftJoin('t_stok_seragam as tss', 'mhs.kode_produk', 'tss.kd_barang')
-            ->where('t_cart_detail.user_id', $user_id)
-            ->where('t_cart_detail.status_cart', 0)
-            ->where('t_cart_detail.is_selected', 1)
-            ->where('tss.qty', '>', 0)
-            ->get();
+                'm_produk_seragam.material', 'mhs.harga', 'mhs.diskon', 'mjps.id as jenis_id', 'mp.nama_lengkap as nama_siswa', 'mp.nama_kelas as nama_kelas', 
+                'mls.id as sekolah', 'mjps.jenis_produk', 't_cart_detail.quantity', 't_cart_detail.ukuran', 'mhs.kode_produk', 'mhs.hpp', 'mhs.ppn')
+                ->leftJoin('m_produk_seragam', 'm_produk_seragam.id', 't_cart_detail.produk_id')
+                ->leftJoin('m_profile as mp' , 'mp.nis', 't_cart_detail.nis')
+                ->leftJoin('mst_lokasi_sub as mls', 'mls.id', 'mp.sekolah_id')
+                ->leftJoin('m_jenis_produk_seragam as mjps', 'mjps.id', 't_cart_detail.jenis')
+                ->leftJoin('m_ukuran_seragam as mus', 'mus.ukuran_seragam', 't_cart_detail.ukuran')
+                ->leftJoin('m_harga_seragam as mhs', function($join)
+                { $join->on('mhs.produk_id', '=', 'm_produk_seragam.id') 
+                    ->on('mhs.jenis_produk_id', '=', 'mjps.id')
+                    ->on('mus.id', '=', 'mhs.ukuran_id'); 
+                })
+                ->leftJoin('t_stok_seragam as tss', 'mhs.kode_produk', 'tss.kd_barang')
+                ->where('t_cart_detail.user_id', $user_id)
+                ->where('t_cart_detail.status_cart', 0)
+                ->where('t_cart_detail.is_selected', 1)
+                ->where('tss.qty', '>', 0)
+                ->get();
 
             $total_harga = 0;
             $total_diskon =0;
@@ -511,6 +513,8 @@ class SeragamController extends Controller
                 $diskon = $item['diskon'];
                 $jenis_produk = $item['jenis_id'];
                 $kode_produk = $item['kode_produk'];
+                $hpp = $item['hpp'];
+                $ppn = $item['ppn'];
 
 
                 $order_detail = OrderDetailSeragam::create([
@@ -525,7 +529,9 @@ class SeragamController extends Controller
                 'harga' => $harga_awal,
                 'diskon' => $diskon/100 * $harga_awal,
                 'jenis_produk_id' => $jenis_produk,
-                'p_diskon' => $diskon
+                'p_diskon' => $diskon,
+                'hpp' => $hpp,
+                'ppn' => $ppn
                 ]);
 
                 $total_harga += $harga_awal * $quantity;
@@ -594,6 +600,8 @@ class SeragamController extends Controller
                 'produk_id' => $produk_id_now,
                 'ukuran' => $ukuran_now,
                 'kode_produk' => $kode_produk_now,
+                'hpp' => $hpp_now,
+                'ppn' => $ppn_now,
                 'quantity' => $quantity_now,
                 'harga' => $harga_awal_now,
                 'diskon' => $diskon_now,

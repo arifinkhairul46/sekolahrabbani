@@ -20,6 +20,8 @@
         <input type="hidden" id="diskon" value="{{$diskon}}">
         <input type="hidden" id="diskon_persen" value="{{$diskon_persen}}">
         <input type="hidden" id="kode_produk" value="{{$produk_seragam->kode_produk}}">
+        <input type="hidden" id="hpp" value="{{$produk_seragam->hpp}}">
+        <input type="hidden" id="ppn" value="{{$produk_seragam->ppn}}">
         <input type="hidden" id="quantity" value="{{$quantity}}">
         <input type="hidden" id="ukuran" value="{{$ukuran}}">
         <input type="hidden" id="jenis_produk" value="{{$produk_seragam->jenis_produk_id}}">
@@ -149,6 +151,8 @@
         var nama_kelas = $('#nama_kelas').val();
         var sekolah_id = $('#sekolah_id').val();
         var kode_produk = $('#kode_produk').val();
+        var hpp = $('#hpp').val();
+        var ppn = $('#ppn').val();
         var quantity = $('#quantity').val();
         var ukuran = $('#ukuran').val();
         var produk_id = $('#produk_id').val();
@@ -249,6 +253,8 @@
                                     nama_kelas: nama_kelas,
                                     sekolah_id: sekolah_id,
                                     kode_produk: kode_produk,
+                                    hpp: hpp,
+                                    ppn: ppn,
                                     produk_id: produk_id,
                                     quantity: quantity,
                                     ukuran: ukuran,
