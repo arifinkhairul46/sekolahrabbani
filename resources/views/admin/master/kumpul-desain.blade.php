@@ -14,6 +14,7 @@
             <div class="card-body">
                 <div class="d-flex" style="justify-content: flex-end">
                     <button class="btn btn-primary btn-sm mx-2" data-bs-toggle="modal" data-bs-target="#add_desain"> Add desain </button>
+                    <form action="{{route('export.karya')}}" method="GET" ><button class="btn btn-success btn-sm" > Export Excel </button> </form>
                 </div>
                 <div class="table-responsive mt-3">
                     <table id="list_desain" class="table table-striped" data-toggle="data-table">

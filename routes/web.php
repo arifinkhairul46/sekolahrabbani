@@ -171,6 +171,8 @@ Route::group(['middleware' =>['auth']], function () {
         Route::get('riwayat-transaksi/{id}', [MerchandiseController::class, 'rincian_pesanan'])->name('merchandise.history.detail');
         Route::get('download-invoice/{id}', [MerchandiseController::class, 'download_invoice'])->name('invoice-merchandise');
         Route::post('harga', [MerchandiseController::class, 'harga_per_kategori'])->name('harga_per_kategori');
+        Route::get('export-karya', [PalestineDayController::class, 'export_karya'])->name('export.karya');
+
 
 
 

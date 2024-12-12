@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\HaveReadList;
+use App\Exports\ListKarya;
 use App\Models\CartMerchandise;
 use App\Models\DesainPalestineday;
 use App\Models\HargaMerchandise;
@@ -278,6 +279,13 @@ class PalestineDayController extends Controller
         $now = date('d-m-y');
         $file_name = 'haveread-'.$now.'.xlsx';
         return Excel::download(new HaveReadList(), $file_name);
+    }
+
+    public function export_karya()
+    {
+        $now = date('d-m-y');
+        $file_name = 'list-karya-'.$now.'.xlsx';
+        return Excel::download(new ListKarya(), $file_name);
     }
 
     public function merchandise()
