@@ -24,7 +24,6 @@
                                 <th>Nama Siswa</th>
                                 <th>Sekolah</th>
                                 <th>Kelas</th>
-                                <th>Desain</th>
                                 <th>Waktu</th>
                                 <th>Aksi</th>
                             </tr>
@@ -36,7 +35,6 @@
                                     <td>{{$item->nis}} - {{$item->nama_siswa}}</td>
                                     <td>{{$item->lokasi}}</td>
                                     <td>{{$item->nama_kelas}}</td>
-                                    <td><img src="{{asset('storage/'.$item->image_file)}}"  id="img_cover_{{$item->id}}" onclick="zoomImage('{{asset('storage/'.$item->image_file)}}')" width="20px"></td>
                                     <td>{{$item->created_at}}</td>
                                     <td class="d-flex">
                                         <button class="btn btn-sm btn-warning" title="Edit" onclick="edit_desain('{{$item->id}}')" data-bs-toggle="modal" data-bs-target="#edit_materi">
@@ -45,6 +43,9 @@
                                         <a href="{{route('download_desain', $item->id)}}" class="btn btn-sm btn-success mx-2" title="Download">
                                             <i class="fa-solid fa-download"></i>
                                         </a>
+                                        <button class="btn btn-sm btn-info" title="Lihat Karya" onclick="zoomImage('{{asset('storage/'.$item->image_file)}}')">
+                                            <i class="fa-solid fa-eye"></i>
+                                        </button>
                                     </td>
                                 </tr>
                             @endforeach
