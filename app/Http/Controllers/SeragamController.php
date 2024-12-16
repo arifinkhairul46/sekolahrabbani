@@ -539,7 +539,7 @@ class SeragamController extends Controller
                 $harga_akhir = $total_harga - $total_diskon;
                 $harga_akhir_format = number_format($harga_akhir);
 
-                $this->send_pesan_seragam_detail($no_pesanan, $nama_siswa, $lokasi, $nama_kelas, $produk_id, $jenis_produk, $kode_produk, $ukuran, $quantity, $harga_awal, $diskon/100 * $harga_awal, $diskon);
+                $this->send_pesan_seragam_detail($no_pesanan, $nama_siswa, $lokasi, $nama_kelas, $produk_id, $jenis_produk, $kode_produk, $ukuran, $quantity, $harga_awal, $diskon/100 * $harga_awal, $diskon, $hpp, $ppn);
                 $this->update_cart_status($user_id, $kode_produk);
             }
 
@@ -609,7 +609,7 @@ class SeragamController extends Controller
                 'p_diskon' => $diskon_persen_now
             ]);
             $this->send_pesan_seragam($no_pesanan, $nama_pemesan, $no_hp);
-            $this->send_pesan_seragam_detail($no_pesanan, $nama_siswa_now, $sekolah_id_now, $nama_kelas_now, $produk_id_now, $jenis_produk_now, $kode_produk_now, $ukuran_now, $quantity_now, $harga_awal_now, $diskon_now, $diskon_persen_now);
+            $this->send_pesan_seragam_detail($no_pesanan, $nama_siswa_now, $sekolah_id_now, $nama_kelas_now, $produk_id_now, $jenis_produk_now, $kode_produk_now, $ukuran_now, $quantity_now, $harga_awal_now, $diskon_now, $diskon_persen_now, $hpp_now, $ppn_now);
 
                 // Set your Merchant Server Key
             \Midtrans\Config::$serverKey = config('midtrans.serverKey');
@@ -1202,7 +1202,7 @@ class SeragamController extends Controller
 	    // return ($response);
 	}
 
-    function send_pesan_seragam_detail($no_pesanan, $nama_siswa, $lokasi_sekolah, $nama_kelas, $produk_id, $jenis_produk_id, $kode_produk, $ukuran, $quantity, $harga, $diskon, $diskon_persen){
+    function send_pesan_seragam_detail($no_pesanan, $nama_siswa, $lokasi_sekolah, $nama_kelas, $produk_id, $jenis_produk_id, $kode_produk, $ukuran, $quantity, $harga, $diskon, $diskon_persen, $hpp, $ppn){
 	    $curl = curl_init();
 
 		curl_setopt_array($curl, array(
@@ -1228,7 +1228,9 @@ class SeragamController extends Controller
 		  	'quantity' => $quantity,
 		  	'harga' => $harga,
 		  	'diskon' => $diskon,
-		  	'diskon_persen' => $diskon_persen
+		  	'diskon_persen' => $diskon_persen,
+		  	'hpp' => $hpp,
+		  	'ppn' => $ppn 
             )
 
 		));
