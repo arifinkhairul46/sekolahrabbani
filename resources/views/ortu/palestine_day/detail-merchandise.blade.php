@@ -47,6 +47,10 @@
             <div class="carousel-item">
                 <img class="img-detail-card" src="{{ asset('storage/'.$merchandise->image_2) }}" alt="{{$merchandise->image_2}}">
             </div>
+
+            <div class="carousel-item">
+                <img class="img-detail-card" src="{{ asset('storage/'.$merchandise->image_3) }}" alt="{{$merchandise->image_3}}">
+            </div>
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#image-carousel"
             data-bs-slide="prev">
@@ -115,7 +119,7 @@
                                     </div>
                                 @endforeach
                             </div>
-                            <span class="mb-0 text-danger" style="font-size: 10px; display: none" id="valid_karya_{{$item->id}}" > Pilih karya terlebih dahulu! </span>
+                            <span class="mb-0 text-danger" style="font-size: 10px; display: none" id="valid_karya" > Pilih karya terlebih dahulu! </span>
                         </div>
 
                         <div class="produk-template mt-3">
@@ -207,7 +211,7 @@
                                     </div>
                                 @endforeach
                             </div>
-                            <span class="mb-0 text-danger" style="font-size: 10px; display: none" id="valid_karya_{{$item->id}}" > Pilih karya terlebih dahulu! </span>
+                            <span class="mb-0 text-danger" style="font-size: 10px; display: none" id="valid_karya" > Pilih karya terlebih dahulu! </span>
                         </div>
 
                         <div class="produk-template mt-3">
@@ -299,7 +303,7 @@
                                     </div>
                                 @endforeach
                             </div>
-                            <span class="mb-0 text-danger" style="font-size: 10px; display: none" id="valid_karya_{{$item->id}}" > Pilih karya terlebih dahulu! </span>
+                            <span class="mb-0 text-danger" style="font-size: 10px; display: none" id="valid_karya" > Pilih karya terlebih dahulu! </span>
                         </div>
 
                         <div class="produk-template mt-3">
@@ -510,19 +514,19 @@
             }
 
             if (design == '' || design == null || design == undefined)  {
-                $('#valid_karya_'+item_id).show();
+                $('#valid_karya').show();
             } else if (template == '' || template == null || template == undefined)  {
                 $('#valid_template').show();
             } else if (warna == '' || warna == null || warna == undefined)  {
                 $('#valid_warna').show();
-            } else if (kategori == undefined && item_id == 1 || kategori == undefined && item_id == 6)  {
+            } else if (kategori == undefined && item_id == 1 || kategori == undefined && item_id == 2)  {
                 $('#valid_kategori').show();
             } else if (ukuran == '' || ukuran == null || ukuran == undefined) {
                 $('#valid_ukuran_'+item_id).show();
             } else {
                 $('#valid_ukuran_'+item_id).hide(); 
                 $('#valid_template').hide();
-                $('#valid_karya_'+item_id).hide();
+                $('#valid_karya').hide();
                 $('#valid_warna').hide();
                 $('#valid_kategori').hide();
 
@@ -582,19 +586,19 @@
             }
 
             if (design == '' || design == null || design == undefined)  {
-                $('#valid_karya_'+merch_id).show();
+                $('#valid_karya').show();
             } else if (template == '' || template == null || template == undefined)  {
                 $('#valid_template').show();
             } else if (warna == '' || warna == null || warna == undefined)  {
                 $('#valid_warna').show();
-            } else if (kategori == undefined && merch_id == 1 || kategori == undefined && merch_id == 6)  {
+            } else if (kategori == undefined && merch_id == 1 || kategori == undefined && merch_id == 2)  {
                 $('#valid_kategori').show();
             } else if (ukuran == '' || ukuran == null || ukuran == undefined) {
                 $('#valid_ukuran_'+merch_id).show();
             } else {
                 $('#valid_ukuran_'+merch_id).hide(); 
                 $('#valid_template').hide();
-                $('#valid_karya_'+merch_id).hide();
+                $('#valid_karya').hide();
                 $('#valid_warna').hide();
                 $('#valid_kategori').hide();
 
