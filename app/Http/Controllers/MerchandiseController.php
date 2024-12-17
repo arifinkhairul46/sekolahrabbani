@@ -78,6 +78,14 @@ class MerchandiseController extends Controller
                 Storage::disk('public')->put($image_url_2, file_get_contents($request->file('image_2')->getRealPath()));
             }
 
+            $image_url_3 = null;
+            $path = 'palestineday/merchandise';
+            if ($request->has('image_3')) {
+                $image_name_3 = $request->file('image_3')->getClientOriginalName();
+                $image_url_3 = $path . '/' . $image_name_3;
+                Storage::disk('public')->put($image_url_3, file_get_contents($request->file('image_3')->getRealPath()));
+            }
+
             $add_merch = Merchandise::create([
                 'nama_produk' => $nama_merchandise,
                 'jenis_id' => $jenis,
@@ -86,6 +94,7 @@ class MerchandiseController extends Controller
                 'diskon' => $diskon,
                 'image_1' => $image_url_1,
                 'image_2' => $image_url_2,
+                'image_3' => $image_url_3,
             ]);
 
             // $add_harga = HargaMerchandise::create([
@@ -153,6 +162,7 @@ class MerchandiseController extends Controller
         $list_desain = DesainPalestineday::select('t_desain_palestineday.*', 'mls.sublokasi as lokasi')
                         ->leftJoin('mst_lokasi_sub as mls', 't_desain_palestineday.sekolah_id', 'mls.id')
                         ->orderby('created_at', 'desc')
+                        ->groupby('t_desain_palestineday.nis')
                         ->get();
                         
 

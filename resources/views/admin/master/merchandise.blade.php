@@ -98,6 +98,11 @@
                             <label for="image_2" class="form-control-label">Image 2</label>
                             <input type="file" class="form-control" name="image_2" id="image_2">
                         </div>
+
+                        <div class="form-group">
+                            <label for="image_3" class="form-control-label">Image 3</label>
+                            <input type="file" class="form-control" name="image_3" id="image_3">
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>

@@ -18,7 +18,7 @@ class TemplateController extends Controller
     public function index()
     {
         $template = TemplateDesain::all();
-        $jenis_merchandise = JenisMerchandise::whereIn('id', ['1', '2'])->get();
+        $jenis_merchandise = JenisMerchandise::whereIn('id', ['1', '2', '3'])->get();
         return view('admin.master.template-desain', compact('template', 'jenis_merchandise'));
     }
 

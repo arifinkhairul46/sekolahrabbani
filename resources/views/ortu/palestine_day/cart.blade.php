@@ -21,22 +21,23 @@
         <?php $total = 0; ?>
         <div class="container">
             @foreach ($cart_detail as $item)
-                @if ($item->jenis_id == '1' || $item->jenis_id == '2')
+                <?php $harga = $item->harga_baju !=null ? $item->harga_baju : $item->harga_awal ?>
+                @if ($item->jenis_id == '1' || $item->jenis_id == '2' || $item->jenis_id == '3')
                     <div class="row-card" style="justify-content: center; align-items:center">
                         <div class="frame">
                             <img src="{{asset('storage/'.$item->image_file)}}" width="100%" style="height: 100%; object-fit:cover; border-radius:1rem">
                         </div>
                         <div class="deskripsi" style="max-width: 225px">
                             <p class="mb-0" style="font-size: 14px"><b> {{$item->nama_produk}} Design by {{$item->nama_siswa}}, 
-                                {{$item->ukuran_seragam}}, {{$item->kategori}}, {{$item->warna}}, {{$item->template}} </b> 
+                                size {{$item->ukuran_seragam}}, {{$item->kategori}}, {{$item->warna}}, {{$item->template}} </b> 
                             </p>
                             @if ($item->diskon == 0 || $item->diskon == null)
-                                <p class="mb-0 price-diskon"> <b> Rp. {{number_format($item['harga_awal'] * $item['quantity']) }} </b> </p>
+                                <p class="mb-0 price-diskon"> <b> Rp. {{number_format($harga * $item['quantity']) }} </b> </p>
                             @else
-                                <p class="mb-0 price-diskon"> <b> Rp. {{number_format((($item['harga_awal']) - ($item['diskon']/100 * $item['harga_awal'])) * $item['quantity']) }} </b> 
+                                <p class="mb-0 price-diskon"> <b> Rp. {{number_format((($harga) - ($item['diskon']/100 * $harga)) * $item['quantity']) }} </b> 
                                     <span class="bg-danger py-1 px-2" style="font-size: 11px"> {{$item['diskon']}}% </span> 
                                 </p>
-                                <p class="mb-0" style="color: gray; font-size: 12px"> <s> Rp. {{number_format($item['harga_awal'] * $item['quantity']) }} </s> </p>
+                                <p class="mb-0" style="color: gray; font-size: 12px"> <s> Rp. {{number_format($harga * $item['quantity']) }} </s> </p>
                             @endif
                             <p class="mb-1" style="font-size: 11px"> Sekolah: {{$item['sekolah_id']}}, Kelas: {{$item['nama_kelas']}} </p>
                             

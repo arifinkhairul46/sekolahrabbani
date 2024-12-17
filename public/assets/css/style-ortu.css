@@ -481,6 +481,42 @@ main {
     line-height: 1.8em;
     }
 
+    .button-karya {
+        float: left;
+        background-color: #f5f5f5;
+        margin: 0 5px 0 0;
+        width: 150px;
+        height: 30px;
+        position: relative;
+        text-align: center;
+    }
+    
+    .button-karya label,
+        .button-karya input {
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        }
+    
+        .button-karya input[type="radio"] {
+        opacity: 0.011;
+        z-index: 100;
+        }
+    
+        .button-karya input[type="radio"]:checked + label {
+        background: #20b8be;
+        border-radius: 4px;
+        }
+    
+        .button-karya label {
+        cursor: pointer;
+        z-index: 90;
+        line-height: 1.8em;
+        }
+
 .produk-jumlah {
     display: flex;
     justify-content: start;

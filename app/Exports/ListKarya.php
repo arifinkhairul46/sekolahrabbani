@@ -16,6 +16,7 @@ class ListKarya implements FromCollection, WithHeadings
         $data = DesainPalestineday::select('t_desain_palestineday.nis', 't_desain_palestineday.nama_siswa',
                     'mls.sublokasi', 't_desain_palestineday.nama_kelas', 't_desain_palestineday.updated_by', 't_desain_palestineday.created_at' )
                     ->leftJoin('mst_lokasi_sub as mls', 't_desain_palestineday.sekolah_id', 'mls.id')
+                    ->groupby('t_desain_palestineday.nis')
                     ->get();
         return $data;
     }
