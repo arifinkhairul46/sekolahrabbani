@@ -127,7 +127,7 @@
                         <button id="btn-checkout" type="submit" class="btn btn-purple px-4" > Checkout </button>
                     </form>
                 @else
-                    <form action="#" method="GET"> 
+                    <form action="{{route('merchandise.bayar')}}" method="GET"> 
                         <button id="btn-checkout" type="submit" class="btn btn-purple px-4" disabled> Checkout </button>
                     </form>
                 @endif
@@ -301,6 +301,7 @@
                     _token: '{{csrf_token()}}'
                 },
                 success: function(msg){
+                    console.log(msg);
                     var formatter = new Intl.NumberFormat("en-US");
                     var harga = formatter.format(msg)
                     if (harga != 0) {
