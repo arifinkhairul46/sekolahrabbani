@@ -4,7 +4,7 @@
             <a onclick="window.history.go(-1); return false;" class="mt-1" style="text-decoration: none; color: black">
                 <i class="fa-solid fa-arrow-left"></i>
             </a>
-            <h4 class="mx-2"> Merchandise</h4>
+            <a href="{{route('palestine.merchandise')}}" style="text-decoration: none; color: black"> <h4 class="mx-2"> Merchandise</h4> </a>
             <div class="input-group mx-2" style="width: 100% !important; max-height: 30px">
                 <span class="input-group-text" style="max-height: 26px"><i class="fa fa-search fa-xs"></i></span>
                 <input class="form-control form-control-sm shadow-none" id="search" style="border: none; font-size: 0.675rem" placeholder="Cari" type="text" name="search" >
