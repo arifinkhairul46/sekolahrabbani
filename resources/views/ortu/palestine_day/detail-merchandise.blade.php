@@ -12,6 +12,7 @@
             <button type="button" data-bs-target="#image-carousel" data-bs-slide-to="5" aria-label="Slide 6"></button>
             <button type="button" data-bs-target="#image-carousel" data-bs-slide-to="6" aria-label="Slide 7"></button>
             <button type="button" data-bs-target="#image-carousel" data-bs-slide-to="7" aria-label="Slide 8"></button>
+            <button type="button" data-bs-target="#image-carousel" data-bs-slide-to="8" aria-label="Slide 9"></button>
         </div>
         <div class="carousel-inner">
             <div class="carousel-item active">
@@ -109,12 +110,12 @@
                     @if ($merchandise->jenis_id == '1')
                         <div class="produk-karya mt-3">
                             <h6 style="color: #3152A4"><b> Karya </b> </h6>
-                            <div class="d-flex">
+                            <div class="d-flex" style="flex-direction: column">
                                 @foreach ($design_anak as $item)
-                                    <div class="button-karya">
+                                    <div class="button-karya mt-1">
                                         <input class="form-check-input" type="radio" name="design" id="design_{{$item->id}}" value="{{$item->id}}">
                                         <label class="form-check-label" for="design_{{$item->id}}">
-                                        <span style="font-size: 10px"> {{$item->nama_siswa}} </span>
+                                        <span class="px-2" style="font-size: 10px"> {{$item->nama_siswa}} </span>
                                         </label>
                                     </div>
                                 @endforeach
@@ -173,7 +174,7 @@
                             <div class="d-flex">
                                 @foreach($ukuran_dewasa as $item)
                                     <div class="button-ukuran">
-                                        <input class="form-check-input" type="radio" name="ukuran_dewasa"  id="uk_dewasa_{{$item->ukuran_seragam}}_{{$item->id}}" value="{{$item->ukuran_seragam}}">
+                                        <input class="form-check-input" type="radio" name="ukuran_dewasa"  id="uk_dewasa_{{$item->ukuran_seragam}}_{{$item->id}}" value="{{$item->id}}">
                                         <label class="form-check-label" for="uk_dewasa_{{$item->ukuran_seragam}}_{{$item->id}}">
                                         <span>{{$item->ukuran_seragam}} </span>
                                         </label>
@@ -188,7 +189,7 @@
                             <div class="d-flex">
                                 @foreach($ukuran_anak as $item)
                                     <div class="button-ukuran">
-                                        <input class="form-check-input" type="radio" name="ukuran_anak"  id="uk_anak_{{$item->ukuran_seragam}}_{{$item->id}}" value="{{$item->ukuran_seragam}}">
+                                        <input class="form-check-input" type="radio" name="ukuran_anak"  id="uk_anak_{{$item->ukuran_seragam}}_{{$item->id}}" value="{{$item->id}}">
                                         <label class="form-check-label" for="uk_anak_{{$item->ukuran_seragam}}_{{$item->id}}">
                                         <span>{{$item->aliases}} </span>
                                         </label>
@@ -201,12 +202,12 @@
 
                         <div class="produk-karya mt-3">
                             <h6 style="color: #3152A4"><b> Karya </b> </h6>
-                            <div class="d-flex">
+                            <div class="d-flex" style="flex-direction: column">
                                 @foreach ($design_anak as $item)
-                                    <div class="button-karya">
+                                    <div class="button-karya mt-1">
                                         <input class="form-check-input" type="radio" name="design" id="design_{{$item->id}}" value="{{$item->id}}">
                                         <label class="form-check-label" for="design_{{$item->id}}">
-                                        <span style="font-size: 10px"> {{$item->nama_siswa}} </span>
+                                        <span class="px-2" style="font-size: 10px"> {{$item->nama_siswa}} </span>
                                         </label>
                                     </div>
                                 @endforeach
@@ -265,7 +266,7 @@
                             <div class="d-flex">
                                 @foreach($ukuran_dewasa as $item)
                                     <div class="button-ukuran">
-                                        <input class="form-check-input" type="radio" name="ukuran_dewasa"  id="uk_dewasa_{{$item->ukuran_seragam}}_{{$item->id}}" value="{{$item->ukuran_seragam}}">
+                                        <input class="form-check-input" type="radio" name="ukuran_dewasa"  id="uk_dewasa_{{$item->ukuran_seragam}}_{{$item->id}}" value="{{$item->id}}">
                                         <label class="form-check-label" for="uk_dewasa_{{$item->ukuran_seragam}}_{{$item->id}}">
                                         <span>{{$item->ukuran_seragam}} </span>
                                         </label>
@@ -280,7 +281,7 @@
                             <div class="d-flex">
                                 @foreach($ukuran_anak as $item)
                                     <div class="button-ukuran">
-                                        <input class="form-check-input" type="radio" name="ukuran_anak"  id="uk_anak_{{$item->ukuran_seragam}}_{{$item->id}}" value="{{$item->ukuran_seragam}}">
+                                        <input class="form-check-input" type="radio" name="ukuran_anak"  id="uk_anak_{{$item->ukuran_seragam}}_{{$item->id}}" value="{{$item->id}}">
                                         <label class="form-check-label" for="uk_anak_{{$item->ukuran_seragam}}_{{$item->id}}">
                                         <span>{{$item->aliases}} </span>
                                         </label>
@@ -293,12 +294,12 @@
                     @elseif ( $merchandise->jenis_id == '3')
                         <div class="produk-karya mt-3">
                             <h6 style="color: #3152A4"><b> Karya </b> </h6>
-                            <div class="d-flex">
+                            <div class="d-flex" style="flex-direction: column">
                                 @foreach ($design_anak as $item)
-                                    <div class="button-karya">
+                                    <div class="button-karya mt-1">
                                         <input class="form-check-input" type="radio" name="design" id="design_{{$item->id}}" value="{{$item->id}}">
                                         <label class="form-check-label" for="design_{{$item->id}}">
-                                        <span style="font-size: 10px"> {{$item->nama_siswa}} </span>
+                                        <span class="px-2" style="font-size: 10px"> {{$item->nama_siswa}} </span>
                                         </label>
                                     </div>
                                 @endforeach
@@ -341,7 +342,7 @@
                             <div class="d-flex" id="ukuran_seragam">
                                 @foreach($ukuran_kerudung as $item)
                                     <div class="button-ukuran">
-                                        <input class="form-check-input" type="radio" name="ukuran_dewasa" id="uk_{{$item->ukuran_seragam}}_{{$item->id}}" value="{{$item->ukuran_seragam}}">
+                                        <input class="form-check-input" type="radio" name="ukuran_dewasa" id="uk_{{$item->ukuran_seragam}}_{{$item->id}}" value="{{$item->id}}">
                                         <label class="form-check-label" for="uk_{{$item->ukuran_seragam}}_{{$item->id}}">
                                         <span>{{$item->ukuran_seragam}} </span>
                                         </label>
@@ -457,7 +458,7 @@
          // pilih kategori produk
         $('input[name="kategori"]').change(function(){
           var kategori = $('input[name="kategori"]:checked').val();
-          var merch_id = $('#merchandise_id').val()
+          var merch_id = $('#merchandise_id').val();
           if (kategori == '1') {
             $('#ukuran_anak').show();
             $('#ukuran_dewasa').hide();
@@ -468,6 +469,8 @@
 
           }
           update_price(kategori, merch_id);
+          $('input[name="ukuran_anak"]').prop('checked', false)
+          $('input[name="ukuran_dewasa"]').prop('checked', false)
 
         });
 
@@ -519,8 +522,6 @@
                 $('#valid_template').show();
             } else if (warna == '' || warna == null || warna == undefined)  {
                 $('#valid_warna').show();
-            } else if (kategori == undefined && item_id == 1 || kategori == undefined && item_id == 2)  {
-                $('#valid_kategori').show();
             } else if (ukuran == '' || ukuran == null || ukuran == undefined) {
                 $('#valid_ukuran_'+item_id).show();
             } else {
@@ -528,7 +529,6 @@
                 $('#valid_template').hide();
                 $('#valid_karya').hide();
                 $('#valid_warna').hide();
-                $('#valid_kategori').hide();
 
                 $.ajax({
                     url: "{{route('cart_post_merchandise')}}",
@@ -577,7 +577,6 @@
             }
 
             var design = $('input[name="design"]:checked').val();
-            var ukuran = '';
 
             if (ukuran_anak == null) {
                 var ukuran = ukuran_dewasa;
@@ -591,8 +590,6 @@
                 $('#valid_template').show();
             } else if (warna == '' || warna == null || warna == undefined)  {
                 $('#valid_warna').show();
-            } else if (kategori == undefined && merch_id == 1 || kategori == undefined && merch_id == 2)  {
-                $('#valid_kategori').show();
             } else if (ukuran == '' || ukuran == null || ukuran == undefined) {
                 $('#valid_ukuran_'+merch_id).show();
             } else {
@@ -600,7 +597,6 @@
                 $('#valid_template').hide();
                 $('#valid_karya').hide();
                 $('#valid_warna').hide();
-                $('#valid_kategori').hide();
 
                 new_pesanan['merch_id'] = merch_id;
                 new_pesanan['quantity'] = quantity;
@@ -613,7 +609,7 @@
                 pesanan.push(new_pesanan);
                 $('#data').val(JSON.stringify(pesanan));
                 $('#po_now').submit();
-                $('#pre_order').modal('hide')
+                $('#pre_order').modal('hide');
             }
         }
 

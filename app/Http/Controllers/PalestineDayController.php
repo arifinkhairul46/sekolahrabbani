@@ -308,7 +308,7 @@ class PalestineDayController extends Controller
                         ->leftJoin('m_jenis_merchandise as mjm', 'mjm.id', 't_cart_merchandise.jenis_id')
                         ->leftJoin('t_desain_palestineday as tdp', 'tdp.id', 't_cart_merchandise.design_id')
                         ->leftJoin('m_warna_kaos as mwk', 'mwk.id', 't_cart_merchandise.warna_id')
-                        ->leftJoin('m_ukuran_seragam as mus', 'mus.ukuran_seragam', 't_cart_merchandise.ukuran_id')
+                        ->leftJoin('m_ukuran_seragam as mus', 'mus.id', 't_cart_merchandise.ukuran_id')
                         ->leftJoin('m_kategori_umur as mku', 'mku.id', 't_cart_merchandise.kategori_id') 
                         ->where('t_cart_merchandise.user_id', $user_id)
                         ->where('t_cart_merchandise.status_cart', 0)
@@ -331,7 +331,7 @@ class PalestineDayController extends Controller
         $design_anak = DesainPalestineday::whereIn('nis', $nis)->groupby('nis')->get();
 
         $ukuran_dewasa = UkuranSeragam::whereNotIn('ukuran_seragam', ['ALL', 'XXS', '3XL', '4XL', '5XL'])->get();
-        $ukuran_anak = UkuranSeragam::whereNotIn('ukuran_seragam', ['ALL', 'XL', 'XXL', '3XL', '4XL', '5XL'])->orderby('urutan', 'asc')->get();
+        $ukuran_anak = UkuranSeragam::whereNotIn('ukuran_seragam', ['ALL', 'XXL', '3XL', '4XL', '5XL'])->orderby('urutan', 'asc')->get();
         $ukuran_kerudung = UkuranSeragam::where('ukuran_seragam', 'ALL')->get();
         $warna_kaos_ikhwan = WarnaKaos::where('id', '!=', 3)->get();
         $warna_kaos_akhwat = WarnaKaos::all();
@@ -342,13 +342,13 @@ class PalestineDayController extends Controller
         $template_kerudung = TemplateDesain::where('jenis_id', 3)->get();
 
         $cart_detail = CartMerchandise::select('t_cart_merchandise.quantity', 't_cart_merchandise.id', 't_cart_merchandise.merchandise_id', 't_cart_merchandise.is_selected', 
-                        'mwk.warna', 'mus.ukuran_seragam', 't_cart_merchandise.jenis_id', 't_cart_merchandise.template_id', 'mm.nama_produk', 'mm.harga_awal', 'mm.diskon', 'mm.image_1', 'mm.image_2', 
+                        'mwk.warna', 'mus.ukuran_seragam', 'mus.id as ukuran_id', 't_cart_merchandise.jenis_id', 't_cart_merchandise.template_id', 'mm.nama_produk', 'mm.harga_awal', 'mm.diskon', 'mm.image_1', 'mm.image_2', 
                         'tdp.nama_siswa', 'tdp.sekolah_id',  'tdp.nama_kelas', 'tdp.image_file', 'mjm.jenis', 'mku.kategori' )
                         ->leftJoin('m_merchandise as mm', 'mm.id', 't_cart_merchandise.merchandise_id')
                         ->leftJoin('m_jenis_merchandise as mjm', 'mjm.id', 't_cart_merchandise.jenis_id')
                         ->leftJoin('t_desain_palestineday as tdp', 'tdp.id', 't_cart_merchandise.design_id')
                         ->leftJoin('m_warna_kaos as mwk', 'mwk.id', 't_cart_merchandise.warna_id')
-                        ->leftJoin('m_ukuran_seragam as mus', 'mus.ukuran_seragam', 't_cart_merchandise.ukuran_id')
+                        ->leftJoin('m_ukuran_seragam as mus', 'mus.id', 't_cart_merchandise.ukuran_id')
                         ->leftJoin('m_kategori_umur as mku', 'mku.id', 't_cart_merchandise.kategori_id') 
                         ->where('t_cart_merchandise.user_id', $user_id)
                         ->where('t_cart_merchandise.status_cart', 0)
@@ -365,7 +365,6 @@ class PalestineDayController extends Controller
         $profile = Profile::get_user_profile_byphone($no_hp);
 
         $merchandise_kaos = DesainPalestineday::where('id', $id)->first();
-        // dd($merchandise_kaos);
         $detail_kaos = Merchandise::whereIn('jenis_id', ['1', '2'])->get();
         $ukuran = UkuranSeragam::whereNotIn('ukuran_seragam', ['ALL', 'XXS'])->get();
         $warna_kaos = WarnaKaos::all();
@@ -378,7 +377,7 @@ class PalestineDayController extends Controller
                         ->leftJoin('m_merchandise as mm', 'mm.id', 't_cart_merchandise.merchandise_id')
                         ->leftJoin('t_desain_palestineday as tdp', 'tdp.id', 't_cart_merchandise.design_id')
                         ->leftJoin('m_warna_kaos as mwk', 'mwk.id', 't_cart_merchandise.warna_id')
-                        ->leftJoin('m_ukuran_seragam as mus', 'mus.ukuran_seragam', 't_cart_merchandise.ukuran_id')
+                        ->leftJoin('m_ukuran_seragam as mus', 'mus.id', 't_cart_merchandise.ukuran_id')
                         ->leftJoin('m_kategori_umur as mku', 'mku.id', 't_cart_merchandise.kategori_id')
                         ->where('t_cart_merchandise.user_id', $user_id)
                         ->where('t_cart_merchandise.status_cart', 0)
@@ -422,13 +421,13 @@ class PalestineDayController extends Controller
         $profile = Profile::where('user_id', $user_id)->get();
 
         $cart_detail = CartMerchandise::select('t_cart_merchandise.quantity', 't_cart_merchandise.id', 't_cart_merchandise.merchandise_id', 't_cart_merchandise.is_selected', 
-                        'mwk.warna', 'mus.ukuran_seragam', 'mm.jenis_id', 't_cart_merchandise.template_id', 'mm.nama_produk', 'mm.harga_awal', 'mm.diskon', 'mm.image_1', 'mm.image_2', 
+                        'mwk.warna', 'mus.ukuran_seragam', 'mus.id as ukuran_id', 'mus.aliases', 'mm.jenis_id', 't_cart_merchandise.template_id', 'mm.nama_produk', 'mm.harga_awal', 'mm.diskon', 'mm.image_1', 'mm.image_2', 
                         'tdp.nama_siswa', 'tdp.sekolah_id',  'tdp.nama_kelas', 'tdp.image_file', 'mjm.jenis', 'mku.kategori', 'mtd.judul as template', 'mhk.harga as harga_baju' )
                         ->leftJoin('m_merchandise as mm', 'mm.id', 't_cart_merchandise.merchandise_id')
                         ->leftJoin('m_jenis_merchandise as mjm', 'mjm.id', 't_cart_merchandise.jenis_id')
                         ->leftJoin('t_desain_palestineday as tdp', 'tdp.id', 't_cart_merchandise.design_id')
                         ->leftJoin('m_warna_kaos as mwk', 'mwk.id', 't_cart_merchandise.warna_id')
-                        ->leftJoin('m_ukuran_seragam as mus', 'mus.ukuran_seragam', 't_cart_merchandise.ukuran_id')
+                        ->leftJoin('m_ukuran_seragam as mus', 'mus.id', 't_cart_merchandise.ukuran_id')
                         ->leftJoin('m_kategori_umur as mku', 'mku.id', 't_cart_merchandise.kategori_id') 
                         ->leftJoin('m_template_desain as mtd', 'mtd.id', 't_cart_merchandise.template_id')
                         ->leftJoin('m_harga_kaos as mhk', function($join)
@@ -448,7 +447,7 @@ class PalestineDayController extends Controller
                         ->leftJoin('m_jenis_merchandise as mjm', 'mjm.id', 't_cart_merchandise.jenis_id')
                         ->leftJoin('t_desain_palestineday as tdp', 'tdp.id', 't_cart_merchandise.design_id')
                         ->leftJoin('m_warna_kaos as mwk', 'mwk.id', 't_cart_merchandise.warna_id')
-                        ->leftJoin('m_ukuran_seragam as mus', 'mus.ukuran_seragam', 't_cart_merchandise.ukuran_id')
+                        ->leftJoin('m_ukuran_seragam as mus', 'mus.id', 't_cart_merchandise.ukuran_id')
                         ->leftJoin('m_kategori_umur as mku', 'mku.id', 't_cart_merchandise.kategori_id')
                         ->leftJoin('m_harga_kaos as mhk', function($join)
                         { $join->on('mhk.merchandise_id', '=', 'mm.id') 
@@ -533,7 +532,7 @@ class PalestineDayController extends Controller
                                 ->leftJoin('m_jenis_merchandise as mjm', 'mjm.id', 't_cart_merchandise.jenis_id')
                                 ->leftJoin('t_desain_palestineday as tdp', 'tdp.id', 't_cart_merchandise.design_id')
                                 ->leftJoin('m_warna_kaos as mwk', 'mwk.id', 't_cart_merchandise.warna_id')
-                                ->leftJoin('m_ukuran_seragam as mus', 'mus.ukuran_seragam', 't_cart_merchandise.ukuran_id')
+                                ->leftJoin('m_ukuran_seragam as mus', 'mus.id', 't_cart_merchandise.ukuran_id')
                                 ->leftJoin('m_kategori_umur as mku', 'mku.id', 't_cart_merchandise.kategori_id')
                                 ->leftJoin('m_harga_kaos as mhk', function($join)
                                 { $join->on('mhk.merchandise_id', '=', 'mm.id') 
@@ -587,13 +586,13 @@ class PalestineDayController extends Controller
         
         $profile = Profile::where('user_id', $user_id)->get();
         $cart_detail =  CartMerchandise::select('t_cart_merchandise.quantity', 't_cart_merchandise.id', 't_cart_merchandise.merchandise_id', 't_cart_merchandise.is_selected', 
-                        'mwk.warna', 'mus.ukuran_seragam', 'mm.jenis_id', 't_cart_merchandise.template_id', 'mm.nama_produk', 'mm.harga_awal', 'mm.diskon', 'mm.image_1', 'mm.image_2', 
+                        'mwk.warna', 'mus.ukuran_seragam', 'mus.aliases', 'mus.id as ukuran_id', 'mm.jenis_id', 't_cart_merchandise.template_id', 'mm.nama_produk', 'mm.harga_awal', 'mm.diskon', 'mm.image_1', 'mm.image_2', 
                         'tdp.nama_siswa', 'tdp.sekolah_id',  'tdp.nama_kelas', 'tdp.image_file', 'mjm.jenis', 'mku.kategori', 'mtd.judul as template', 'mhk.harga as harga_baju' )
                         ->leftJoin('m_merchandise as mm', 'mm.id', 't_cart_merchandise.merchandise_id')
                         ->leftJoin('m_jenis_merchandise as mjm', 'mjm.id', 't_cart_merchandise.jenis_id')
                         ->leftJoin('t_desain_palestineday as tdp', 'tdp.id', 't_cart_merchandise.design_id')
                         ->leftJoin('m_warna_kaos as mwk', 'mwk.id', 't_cart_merchandise.warna_id')
-                        ->leftJoin('m_ukuran_seragam as mus', 'mus.ukuran_seragam', 't_cart_merchandise.ukuran_id')
+                        ->leftJoin('m_ukuran_seragam as mus', 'mus.id', 't_cart_merchandise.ukuran_id')
                         ->leftJoin('m_kategori_umur as mku', 'mku.id', 't_cart_merchandise.kategori_id')
                         ->leftJoin('m_template_desain as mtd', 'mtd.id', 't_cart_merchandise.template_id')
                         ->leftJoin('m_harga_kaos as mhk', function($join)
@@ -615,9 +614,10 @@ class PalestineDayController extends Controller
         
         $order = $request->all();
         $order_dec = json_decode($order['data'], true);
+        $count = count($order_dec) - 1;
     
-        $merch_id = $order_dec[0]['merch_id'];
-        $quantity = $order_dec[0]['quantity'];
+        $merch_id = $order_dec[$count]['merch_id'];
+        $quantity = $order_dec[$count]['quantity'];
 
         $merchandise = Merchandise::find($merch_id);
 
@@ -629,11 +629,11 @@ class PalestineDayController extends Controller
 
         if ($merchandise->jenis_id == '1' || $merchandise->jenis_id == '2') {
 
-            $design_id = $order_dec[0]['design'];
-            $ukuran = $order_dec[0]['ukuran'];
-            $warna_id = $order_dec[0]['warna'];
-            $template_id = $order_dec[0]['template'];
-            $kategori_id = $order_dec[0]['kategori'];
+            $design_id = $order_dec[$count]['design'];
+            $ukuran = $order_dec[$count]['ukuran'];
+            $warna_id = $order_dec[$count]['warna'];
+            $template_id = $order_dec[$count]['template'];
+            $kategori_id = $order_dec[$count]['kategori'];
             $get_warna = WarnaKaos::where('id', $warna_id)->first();
             $warna = $get_warna->warna;
             $harga_baju = HargaMerchandise::where('merchandise_id', $merch_id)->where('kategori_id', $kategori_id)->first();
@@ -647,11 +647,11 @@ class PalestineDayController extends Controller
             'warna_id', 'design_id', 'kategori_id', 'template', 'harga_baju', 'profile'));
 
         } else if ($merchandise->jenis_id = '3') {
-            $design_id = $order_dec[0]['design'];
-            $ukuran = $order_dec[0]['ukuran'];
-            $warna_id = $order_dec[0]['warna'];
-            $template_id = $order_dec[0]['template'];
-            $kategori_id = $order_dec[0]['kategori'];
+            $design_id = $order_dec[$count]['design'];
+            $ukuran = $order_dec[$count]['ukuran'];
+            $warna_id = $order_dec[$count]['warna'];
+            $template_id = $order_dec[$count]['template'];
+            $kategori_id = $order_dec[$count]['kategori'];
             $get_warna = WarnaKaos::where('id', $warna_id)->first();
             $warna = $get_warna->warna;
             $harga_baju = HargaMerchandise::where('merchandise_id', $merch_id)->where('kategori_id', $kategori_id)->first();
@@ -699,7 +699,7 @@ class PalestineDayController extends Controller
                     ->leftJoin('m_jenis_merchandise as mjm', 'mjm.id', 't_cart_merchandise.jenis_id')
                     ->leftJoin('t_desain_palestineday as tdp', 'tdp.id', 't_cart_merchandise.design_id')
                     ->leftJoin('m_warna_kaos as mwk', 'mwk.id', 't_cart_merchandise.warna_id')
-                    ->leftJoin('m_ukuran_seragam as mus', 'mus.ukuran_seragam', 't_cart_merchandise.ukuran_id')
+                    ->leftJoin('m_ukuran_seragam as mus', 'mus.id', 't_cart_merchandise.ukuran_id')
                     ->leftJoin('m_kategori_umur as mku', 'mku.id', 't_cart_merchandise.kategori_id')
                     ->leftJoin('m_template_desain as mtd', 'mtd.id', 't_cart_merchandise.template_id')
                     ->leftJoin('m_harga_kaos as mhk', function($join)
