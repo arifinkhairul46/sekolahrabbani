@@ -3,7 +3,7 @@
 @section('content')
     <div class="top-navigate sticky-top">
         <div class="d-flex" style="justify-content: stretch; width: 100%;">
-            <a onclick="window.history.go(-1);" class="mt-1" style="text-decoration: none; color: black">
+            <a onclick="GoBackWithRefresh(); return false;" class="mt-1" style="text-decoration: none; color: black">
                 <i class="fa-solid fa-arrow-left fa-lg"></i>
             </a>
             <h4 class="mx-3"> Pembayaran </h4>
@@ -297,6 +297,16 @@
                     });
                 }
             });
+        }
+
+        function GoBackWithRefresh(event) {
+            if ('referrer' in document) {
+                window.location = document.referrer;
+                /* OR */
+                //location.replace(document.referrer);
+            } else {
+                window.history.back();
+            }
         }
 
     </script>
