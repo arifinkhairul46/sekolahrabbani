@@ -22,7 +22,7 @@
         <div class="container">
             @foreach ($cart_detail as $item)
                 <?php $harga = $item->harga_baju !=null ? $item->harga_baju : $item->harga_awal ?>
-                <?php $ukuran = $item->kategori == '1' ? $item->ukuran_seragam : $item->aliases ?>
+                <?php $ukuran = $item->kategori == 'Dewasa' ? $item->ukuran_seragam : $item->aliases.' th'  ?>
                 @if ($item->jenis_id == '1' || $item->jenis_id == '2' || $item->jenis_id == '3')
                     <div class="row-card" style="justify-content: center; align-items:center">
                         <div class="frame">

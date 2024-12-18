@@ -3,7 +3,7 @@
 @section('content')
     <div class="top-navigate sticky-top">
         <div class="d-flex" style="justify-content: stretch; width: 100%;">
-            <a onclick="GoBackWithRefresh(); return false;" class="mt-1" style="text-decoration: none; color: black">
+            <a onclick="window.history.go(-1); return false;" class="mt-1" style="text-decoration: none; color: black">
                 <i class="fa-solid fa-arrow-left fa-lg"></i>
             </a>
             <h4 class="mx-3"> Pembayaran </h4>
@@ -28,6 +28,8 @@
 
         <div class="container">
             <?php $kategori_umur = $kategori_id != '' ? $kategori->kategori : '' ?>
+            <?php $ukuran = $kategori_umur == 'Anak' ? $ukuran->aliases.' th' : $ukuran->ukuran_seragam ?>
+            
             @if ($merchandise->jenis_id == 1 || $merchandise->jenis_id == 2 || $merchandise->jenis_id == 3)
                 <input type="hidden" id="ukuran" value="{{$ukuran}}">
                 <input type="hidden" id="warna" value="{{$warna_id}}">
@@ -143,6 +145,7 @@
         <div class="container">
             @foreach ($cart_detail as $item)
                 <?php $harga = $item->harga_baju !=null ? $item->harga_baju : $item->harga_awal ?>
+                <?php $ukuran = $item->kategori == 'Dewasa' ? $item->ukuran_seragam : $item->aliases.' th'  ?>
                 @if ($item->jenis_id == '1' || $item->jenis_id == '2' || $item->jenis_id == '3')
                     <div class="row-card mx-1">
                         <div class="frame-bayar">
@@ -151,9 +154,8 @@
 
                         <div class="d-flex mx-2">
                             <div class="" style="width: 250px">
-                                {{-- <input type="hidden" class="kode_produk_fc" name="kode_produk[]" id="kode_produk_fc" value="{{$item->kode_produk}}"> --}}
                                 <p class="mb-0" style="font-size: 14px"><b> {{$item->nama_produk}} Design by {{$item->nama_siswa}}, 
-                                    {{$item->ukuran_seragam}}, {{$item->kategori}}, {{$item->warna}}, {{$item->template}} </b> 
+                                    {{$ukuran}}, {{$item->kategori}}, {{$item->warna}}, {{$item->template}} </b> 
                                 </p>
                                 @if ($item->diskon == 0 || $item->diskon == null)
                                     <p class="mb-0 price-diskon"> <b> Rp. {{number_format($harga * $item['quantity']) }} </b> </p>
@@ -176,7 +178,6 @@
 
                         <div class="d-flex mx-2">
                             <div class="" style="width: 250px">
-                                {{-- <input type="hidden" class="kode_produk_fc" name="kode_produk[]" id="kode_produk_fc" value="{{$item->kode_produk}}"> --}}
                                 <p class="mb-0" style="font-size: 14px"><b> {{$item->nama_produk}} </b> 
                                 </p>
                                 @if ($item->diskon == 0 || $item->diskon == null)

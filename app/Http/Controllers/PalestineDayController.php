@@ -631,7 +631,7 @@ class PalestineDayController extends Controller
         if ($merchandise->jenis_id == '1' || $merchandise->jenis_id == '2') {
 
             $design_id = $order_dec[$count]['design'];
-            $ukuran = $order_dec[$count]['ukuran'];
+            $ukuran_id = $order_dec[$count]['ukuran'];
             $warna_id = $order_dec[$count]['warna'];
             $template_id = $order_dec[$count]['template'];
             $kategori_id = $order_dec[$count]['kategori'];
@@ -643,13 +643,14 @@ class PalestineDayController extends Controller
 
             $design = DesainPalestineday::find($design_id);
             $kategori = KategoriUmur::find($kategori_id);
+            $ukuran = UkuranSeragam::find($ukuran_id);
             
             return view('ortu.palestine_day.pembayaran', compact('order', 'merchandise', 'design', 'kategori', 'quantity', 'ukuran', 'warna', 
             'warna_id', 'design_id', 'kategori_id', 'template', 'harga_baju', 'profile'));
 
         } else if ($merchandise->jenis_id = '3') {
             $design_id = $order_dec[$count]['design'];
-            $ukuran = $order_dec[$count]['ukuran'];
+            $ukuran_id = $order_dec[$count]['ukuran'];
             $warna_id = $order_dec[$count]['warna'];
             $template_id = $order_dec[$count]['template'];
             $kategori_id = $order_dec[$count]['kategori'];
@@ -658,8 +659,8 @@ class PalestineDayController extends Controller
             $harga_baju = HargaMerchandise::where('merchandise_id', $merch_id)->where('kategori_id', $kategori_id)->first();
 
             $template = TemplateDesain::find($template_id);
-
             $design = DesainPalestineday::find($design_id);
+            $ukuran = UkuranSeragam::find($ukuran_id);
             
             return view('ortu.palestine_day.pembayaran', compact('order', 'merchandise', 'design', 'quantity', 'ukuran', 'warna', 
             'warna_id', 'design_id', 'kategori_id', 'template', 'harga_baju', 'profile'));

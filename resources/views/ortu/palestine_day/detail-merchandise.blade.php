@@ -157,7 +157,7 @@
                                     <div class="button-jenis">
                                         <input class="form-check-input" type="radio" name="warna" id="warna_{{$item->id}}" value="{{$item->id}}">
                                         <label class="form-check-label" for="warna_{{$item->id}}">
-                                        <span style="font-size: 14px;"> {{$item->warna}} </span>
+                                        <span style="font-size: 11px;"> {{$item->warna}} </span>
                                         </label>
                                     </div>
                                 @endforeach
@@ -249,7 +249,7 @@
                                     <div class="button-jenis">
                                         <input class="form-check-input" type="radio" name="warna" id="warna_{{$item->id}}" value="{{$item->id}}">
                                         <label class="form-check-label" for="warna_{{$item->id}}">
-                                        <span style="font-size: 14px;"> {{$item->warna}} </span>
+                                        <span style="font-size: 11px;"> {{$item->warna}} </span>
                                         </label>
                                     </div>
                                 @endforeach
@@ -326,7 +326,7 @@
                                     <div class="button-jenis">
                                         <input class="form-check-input" type="radio" name="template" id="template_{{$item->id}}" value="{{$item->id}}">
                                         <label class="form-check-label" for="template_{{$item->id}}">
-                                        <span> {{$item->judul}} </span>
+                                        <span style="font-size: 12px"> {{$item->judul}} </span>
                                         </label>
                                     </div>
                                 @endforeach
@@ -341,7 +341,7 @@
                                     <div class="button-jenis">
                                         <input class="form-check-input" type="radio" name="warna" id="warna_{{$item->id}}" value="{{$item->id}}">
                                         <label class="form-check-label" for="warna_{{$item->id}}">
-                                        <span> {{$item->warna}} </span>
+                                        <span style="font-size: 11px"> {{$item->warna}} </span>
                                         </label>
                                     </div>
                                 @endforeach
