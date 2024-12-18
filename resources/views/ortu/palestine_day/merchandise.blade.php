@@ -3,6 +3,9 @@
 @section('content')
     @include('ortu.palestine_day.top-navigate')
     <div class="container">
+        <div class="center mb-3">
+            <img src="{{ asset('assets/images/header_merchandise.jpg') }}" alt="katalog" style="border-radius: 0.4rem" width="100%">
+        </div>
         <div class="d-grid-card">
             @if ($get_merch->count() > 0)
                 @foreach ($get_merch as $item)
