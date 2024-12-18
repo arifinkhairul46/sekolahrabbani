@@ -339,7 +339,7 @@ class PalestineDayController extends Controller
         $jenis_kaos = JenisMerchandise::where('grup', 1)->get();
         $kategori = KategoriUmur::all();
         $template_kaos = TemplateDesain::where('jenis_id', 1)->get();
-        $template_kerudung = TemplateDesain::where('jenis_id', 2)->get();
+        $template_kerudung = TemplateDesain::where('jenis_id', 3)->get();
 
         $cart_detail = CartMerchandise::select('t_cart_merchandise.quantity', 't_cart_merchandise.id', 't_cart_merchandise.merchandise_id', 't_cart_merchandise.is_selected', 
                         'mwk.warna', 'mus.ukuran_seragam', 't_cart_merchandise.jenis_id', 't_cart_merchandise.template_id', 'mm.nama_produk', 'mm.harga_awal', 'mm.diskon', 'mm.image_1', 'mm.image_2', 

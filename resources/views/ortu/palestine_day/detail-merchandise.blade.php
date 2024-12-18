@@ -613,6 +613,7 @@
                 pesanan.push(new_pesanan);
                 $('#data').val(JSON.stringify(pesanan));
                 $('#po_now').submit();
+                $('#pre_order').modal('hide')
             }
         }
 
