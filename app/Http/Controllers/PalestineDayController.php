@@ -339,6 +339,7 @@ class PalestineDayController extends Controller
         $jenis_kaos = JenisMerchandise::where('grup', 1)->get();
         $kategori = KategoriUmur::all();
         $template_kaos = TemplateDesain::where('jenis_id', 1)->get();
+        $template_kaos_akhwat = TemplateDesain::where('jenis_id', 2)->get();
         $template_kerudung = TemplateDesain::where('jenis_id', 3)->get();
 
         $cart_detail = CartMerchandise::select('t_cart_merchandise.quantity', 't_cart_merchandise.id', 't_cart_merchandise.merchandise_id', 't_cart_merchandise.is_selected', 
@@ -355,7 +356,7 @@ class PalestineDayController extends Controller
                         ->get();
 
         return view('ortu.palestine_day.detail-merchandise', compact('merchandise', 'cart_detail', 'profile', 'design_anak', 'kategori', 
-        'ukuran_dewasa', 'ukuran_anak', 'warna_kaos_ikhwan', 'warna_kaos_akhwat', 'warna_kerudung', 'jenis_kaos', 'ukuran_kerudung', 'template_kaos', 'template_kerudung'));
+        'ukuran_dewasa', 'ukuran_anak', 'warna_kaos_ikhwan', 'warna_kaos_akhwat', 'warna_kerudung', 'jenis_kaos', 'ukuran_kerudung', 'template_kaos', 'template_kaos_akhwat', 'template_kerudung'));
     }
 
     public function detail_merchandise_kaos($id) 

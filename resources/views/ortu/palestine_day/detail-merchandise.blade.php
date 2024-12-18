@@ -19,7 +19,7 @@
                 <img class="img-detail-card" src="{{ asset('storage/'.$merchandise->image_1) }}" alt="{{$merchandise->image_1}}">
             </div>
 
-            @if ($merchandise->jenis_id == 1 || $merchandise->jenis_id == 2 )
+            @if ($merchandise->jenis_id == 1 )
                 @foreach ($design_anak as $item)
                     <div class="carousel-item">
                         <img class="img-detail-card" src="{{ asset('storage/'.$item->image_file) }}" alt="{{$item->image_file}}">
@@ -27,6 +27,18 @@
                 @endforeach
 
                 @foreach ($template_kaos as $item)
+                    <div class="carousel-item">
+                        <img class="img-detail-card" src="{{ asset('storage/'.$item->image_1) }}" alt="{{$item->image_1}}">
+                    </div>
+                @endforeach
+            @elseif ($merchandise->jenis_id == 2)
+                @foreach ($design_anak as $item)
+                    <div class="carousel-item">
+                        <img class="img-detail-card" src="{{ asset('storage/'.$item->image_file) }}" alt="{{$item->image_file}}">
+                    </div>
+                @endforeach
+
+                @foreach ($template_kaos_akhwat as $item)
                     <div class="carousel-item">
                         <img class="img-detail-card" src="{{ asset('storage/'.$item->image_1) }}" alt="{{$item->image_1}}">
                     </div>
