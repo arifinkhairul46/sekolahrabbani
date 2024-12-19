@@ -14,7 +14,7 @@ class OrderDetailMerchandiseExport implements FromCollection, WithHeadings
     public function collection()
     {
         // return OrderDetailMerchandise::all();
-        $data = OrderDetailMerchandise::select('t_pesan_merchandise_detail.nama_siswa', 't_pesan_merchandise_detail.lokasi_sekolah',
+        $data = OrderDetailMerchandise::select('t_pesan_merchandise_detail.no_pesanan', 't_pesan_merchandise_detail.nama_siswa', 't_pesan_merchandise_detail.lokasi_sekolah',
                     't_pesan_merchandise_detail.nama_kelas', 'mm.nama_produk', 'mwk.warna', 'mtd.judul as template',  
                     'mus.ukuran_seragam', 'mku.kategori', 'tdp.nis', 't_pesan_merchandise_detail.quantity', 't_pesan_merchandise_detail.created_at' )
                     ->leftJoin('t_pesan_merchandise as tpm', 'tpm.no_pesanan', 't_pesan_merchandise_detail.no_pesanan')
@@ -32,6 +32,7 @@ class OrderDetailMerchandiseExport implements FromCollection, WithHeadings
     public function headings(): array
     {
         return [
+            'No Invoice',
             'Nama Siswa',
             'Sekolah',
             'Nama Kelas',

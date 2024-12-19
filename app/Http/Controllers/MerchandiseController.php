@@ -269,10 +269,10 @@ class MerchandiseController extends Controller
 
     public function order_detail ($id)
     {
-        $order_detail = OrderDetailMerchandise::select('mm.nama_produk', 'mwk.warna', 'mus.ukuran_seragam', 'mku.kategori', 'mtd.judul as template',
+        $order_detail = OrderDetailMerchandise::select('mm.nama_produk', 'mwk.warna', 'mus.ukuran_seragam',  'mku.kategori', 'mtd.judul as template',
                         't_pesan_merchandise_detail.nama_siswa', 'tdp.id as design_id', 'tdp.nis', 't_pesan_merchandise_detail.lokasi_sekolah as sekolah_id', 
                         't_pesan_merchandise_detail.nama_kelas', 'tdp.image_file', 't_pesan_merchandise_detail.quantity',
-                        't_pesan_merchandise_detail.harga', 't_pesan_merchandise_detail.persen_diskon')
+                        't_pesan_merchandise_detail.harga', 't_pesan_merchandise_detail.persen_diskon', 't_pesan_merchandise_detail.ukuran_id')
                         ->leftJoin('m_merchandise as mm', 'mm.id', 't_pesan_merchandise_detail.merchandise_id')
                         ->leftJoin('m_warna_kaos as mwk', 'mwk.id', 't_pesan_merchandise_detail.warna_id')
                         ->leftJoin('m_ukuran_seragam as mus', 'mus.id', 't_pesan_merchandise_detail.ukuran_id')
@@ -295,7 +295,7 @@ class MerchandiseController extends Controller
         $order_detail = OrderDetailMerchandise::select('t_pesan_merchandise_detail.nama_siswa', 't_pesan_merchandise_detail.lokasi_sekolah',
                     't_pesan_merchandise_detail.nama_kelas', 'mm.nama_produk', 'mwk.warna', 'mm.image_1', 'mtd.judul as template',  
                     'mus.ukuran_seragam', 'mku.kategori', 'tdp.nis', 't_pesan_merchandise_detail.harga', 't_pesan_merchandise_detail.persen_diskon', 
-                    't_pesan_merchandise_detail.quantity', 't_pesan_merchandise_detail.created_at')
+                    't_pesan_merchandise_detail.quantity', 't_pesan_merchandise_detail.ukuran_id', 't_pesan_merchandise_detail.created_at')
                     ->leftJoin('t_pesan_merchandise as tpm', 'tpm.no_pesanan', 't_pesan_merchandise_detail.no_pesanan')
                     ->leftJoin('m_merchandise as mm', 'mm.id', 't_pesan_merchandise_detail.merchandise_id')
                     ->leftJoin('m_warna_kaos as mwk', 'mwk.id', 't_pesan_merchandise_detail.warna_id')

@@ -119,7 +119,7 @@
                         var kategori = item.kategori != null ? item.kategori : ''
                         var warna = item.warna != null ? item.warna : ''
                         var template = item.template != null ? item.template : ''
-                        var ukuran_seragam = item.ukuran_seragam != null ? item.ukuran_seragam : ''
+                        var ukuran_seragam = item.ukuran_id != null ? item.ukuran_id : ''
                         var design_id = item.design_id;
 
                         var download =''

@@ -123,7 +123,7 @@
                         {{$loop->iteration}}
                     </td>
                     <td colspan="2">
-                        {{ $item->nama_produk }} {{$item->warna}} {{$item->template}} {{$item->ukuran_seragam}} {{$item->kategori}}
+                        {{ $item->nama_produk }} {{$item->warna}} {{$item->template}} {{$item->ukuran_id}} {{$item->kategori}}
                     </td>
                     <td class="text-center">
                         {{ number_format($item->harga) }}
