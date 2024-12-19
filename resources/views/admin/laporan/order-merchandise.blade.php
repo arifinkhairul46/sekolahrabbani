@@ -25,6 +25,7 @@
                                 <th>Jumlah</th>
                                 <th>Status</th>
                                 <th>Metode Bayar</th>
+                                <th>Waktu Pesanan</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -41,6 +42,7 @@
                                         <td> <span class="badge rounded-pill bg-danger"> Unpaid </span> </td>
                                     @endif
                                     <td>{{$item->metode_pembayaran}}</td>
+                                    <td>{{date_format($item->created_at, 'Y-m-d H:i:s')}}</td>
                                     <td class="d-flex">
                                         <button class="btn btn-sm btn-warning" title="Detail" onclick="detail('{{$item->no_pesanan}}')">
                                             <i class="fa-solid fa-eye"></i>

@@ -640,3 +640,12 @@ main {
      transform: translate(-50%, -50%);
      text-align: center;
   }
+
+  .control-slide {
+    display: inline-block;
+    width: 3rem !important;
+    height: 3rem !important;
+    background-repeat: no-repeat;
+    background-position: 50%;
+    background-size: 100% 100%;
+  }
