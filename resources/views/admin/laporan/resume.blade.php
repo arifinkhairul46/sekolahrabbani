@@ -6,88 +6,60 @@
             <img src="{{asset('assets/images/top-header.png')}} " alt="header" class="theme-color-default-img img-fluid w-100 h-100">
         </div>
         <div class="title my-3">
-            <h1 class="text-white" style="margin-left: 1rem">List Order Merchandise </h1>
+            <h1 class="text-white" style="margin-left: 1rem">Resume Order Merchandise </h1>
         </div>
     </div>
     <div class="container iq-container px-3">
-        <div class="card">
-            <div class="card-body">
-                <form action="{{route('list-order-merchandise')}}" method="GET" role="form" id="filter_tanggal" >  
-                    <div class="row g-3 align-items-center">
-
-                        <div class="col-auto">
-                            <label class="col-form-label">Tanggal</label>
+        <div class="d-flex" style="justify-content: space-around">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex" style="align-items: center">
+                        <i class="fa-solid fa-credit-card fa-xl"></i>
+                        <div class="progress-detail mx-3">
+                            <p  class="mb-2">Total Penjualan</p>
+                            <h4 class="counter">Rp. {{number_format($order_success->grand_total)}}</h4>
                         </div>
-
-                        <div class="col-auto">
-                            <input type="date" id="date_start" name="date_start" value="{{$date_start}}" class="form-control">
-                        </div>
-
-                        <div class="col-auto">
-                            -
-                        </div>
-
-                        <div class="col-auto">
-                            <input type="date" id="date_end" name="date_end" value="{{$date_end}}" class="form-control">
-                        </div>
-                    
                     </div>
-
-                    <div class="mt-3">
-                        <button type="submit" class="btn btn-primary btn-sm">Tampilkan</button>
-                        <a href="{{route('list-order-merchandise')}}" class="btn btn-dim btn-outline-danger btn-sm mx-1">Reset</a>   
-                    </div>
-                </form> 
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-body">
-                <div class="d-flex" style="justify-content: flex-end">
-                    <form action="{{route('list-order.export')}}" method="GET" ><button class="btn btn-success btn-sm" > Export Excel </button> </form>
                 </div>
-                <div class="table-responsive mt-3">
-                    <table id="list_order" class="table table-striped" data-toggle="data-table">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>No Invoice</th>
-                                <th>Nama Pemesan</th>
-                                <th>Jumlah</th>
-                                <th>Status</th>
-                                <th>Metode Bayar</th>
-                                <th>Waktu Pesanan</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($list_order as $item)
-                                <tr>
-                                    <td>{{$loop->iteration}}</td>
-                                    <td>{{$item->no_pesanan}}</td>
-                                    <td>{{$item->nama_pemesan}}</td>
-                                    <td>Rp. {{number_format($item->total_harga)}}</td>
-                                    @if ($item->status == 'success') 
-                                        <td> <span class="badge rounded-pill bg-success" >Paid </span></td>
-                                    @else
-                                        <td> <span class="badge rounded-pill bg-danger"> Unpaid </span> </td>
-                                    @endif
-                                    <td>{{$item->metode_pembayaran}}</td>
-                                    <td>{{date_format($item->updated_at, 'Y-m-d H:i:s')}}</td>
-                                    <td class="d-flex">
-                                        <button class="btn btn-sm btn-warning" title="Detail" onclick="detail('{{$item->no_pesanan}}')">
-                                            <i class="fa-solid fa-eye"></i>
-                                        </button>
-                                        <a href="{{route('download.invoice-merchandise', $item->no_pesanan)}}" class="btn btn-sm btn-info mx-1" title="Print" >
-                                            <i class="fa-solid fa-print"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex" style="align-items: center">
+                        <i class="fa-solid fa-shirt fa-xl"></i>
+                        <div class="progress-detail mx-3">
+                            <p  class="mb-2">Total Items Baju Ikhwan</p>
+                            <h4 class="counter">{{$total_item_baju_ikhwan->count()}}</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex" style="align-items: center">
+                        <i class="fa-solid fa-shirt fa-xl"></i>
+                        <div class="progress-detail mx-3">
+                            <p  class="mb-2">Total Items Baju Akhwat</p>
+                            <h4 class="counter">{{$total_item_baju_akhwat->count()}}</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex" style="align-items: center">
+                        <i class="fa-solid fa-shirt fa-xl"></i>
+                        <div class="progress-detail mx-3">
+                            <p  class="mb-2">Total Items Kerudung</p>
+                            <h4 class="counter">{{$total_item_kerudung->count()}}</h4>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+
     </div>
 
     <div class="modal fade" id="show_detail" tabindex="-1" role="dialog" aria-labelledby="desain" aria-hidden="true">

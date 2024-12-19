@@ -14,6 +14,7 @@ use App\Models\Profile;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -262,20 +263,31 @@ class MerchandiseController extends Controller
 
     public function list_order (Request $request)
     {
-        // $date_start = $request->date_start ?? null;
-        // $date_end = $request->date_end ?? null;
+        $date_start = $request->date_start ?? null;
+        $date_end = $request->date_end ?? null;
 
-        // if ($request->has('date_start') || $request->has('date_end')) {
-        //     $list_order = OrderMerchandise::query();
+        if ($request->has('date_start') || $request->has('date_end')) {
+            $list_order = OrderMerchandise::query();
 
-        //     if ($request->has('date_start')){
+            if ($request->has('date_start'))
+                $list_order = $list_order->selectRaw('id, no_pesanan, nama_pemesan, total_harga, metode_pembayaran, status, updated_at')->where('updated_at', 'like', '%' .$request->date_start.'%')->where('status', 'success');
 
-        //     }
-        // }
+            $list_order = $list_order->get();
 
-        $list_order = OrderMerchandise::where('status', 'success')->orderby('created_at', 'desc')->get();
+        } else if ($request->has('date_start') && $request->has('date_end')) {
+            $list_order = OrderMerchandise::query();
 
-        return view('admin.laporan.order-merchandise', compact('list_order'));
+            if ($request->has('date_start') && $request->has('date_end'))
+                $list_order = $list_order->selectRaw('id, no_pesanan, nama_pemesan, total_harga, metode_pembayaran, status, updated_at')->where('updated_at', '>='.$date_start.'%')->where('updated_at', '<='.$date_end.'%')->where('status', 'success');
+            $list_order = $list_order->get();
+
+        } else {
+            
+            $list_order = OrderMerchandise::where('status', 'success')->orderby('created_at', 'desc')->get();
+
+        }
+
+        return view('admin.laporan.order-merchandise', compact('list_order', 'date_start', 'date_end'));
     }
 
     public function order_detail ($id)
@@ -367,6 +379,44 @@ class MerchandiseController extends Controller
                         ->where('merchandise_id', $merch_id)->where('kategori_id', $kategori_id)->get();
      
         return response()->json($harga);
+    }
+
+    public function resume_order (Request $request) {
+        $order_success =  OrderDetailMerchandise::select('t_pesan_merchandise_detail.nama_siswa', 't_pesan_merchandise_detail.lokasi_sekolah',
+                        't_pesan_merchandise_detail.nama_kelas', 'mm.nama_produk', 'mwk.warna', 'mm.image_1', 'mtd.judul as template',  DB::raw('sum(tpm.total_harga) as grand_total'), 
+                        'mus.ukuran_seragam', 'mku.kategori', 'tdp.nis', 't_pesan_merchandise_detail.harga', 't_pesan_merchandise_detail.persen_diskon', 
+                        't_pesan_merchandise_detail.quantity', 't_pesan_merchandise_detail.ukuran_id', 't_pesan_merchandise_detail.created_at', 'tpm.metode_pembayaran', 'tpm.no_pesanan')
+                        ->leftJoin('t_pesan_merchandise as tpm', 'tpm.no_pesanan', 't_pesan_merchandise_detail.no_pesanan')
+                        ->leftJoin('m_merchandise as mm', 'mm.id', 't_pesan_merchandise_detail.merchandise_id')
+                        ->leftJoin('m_warna_kaos as mwk', 'mwk.id', 't_pesan_merchandise_detail.warna_id')
+                        ->leftJoin('m_ukuran_seragam as mus', 'mus.id', 't_pesan_merchandise_detail.ukuran_id')
+                        ->leftJoin('m_kategori_umur as mku', 'mku.id', 't_pesan_merchandise_detail.kategori_id')
+                        ->leftJoin('m_template_desain as mtd', 'mtd.id', 't_pesan_merchandise_detail.template_id')
+                        ->leftJoin('t_desain_palestineday as tdp', 'tdp.id', 't_pesan_merchandise_detail.design_id')
+                        ->where('tpm.status', 'success')
+                        ->first();
+        
+        $total_item = OrderDetailMerchandise::leftJoin('t_pesan_merchandise as tpm', 'tpm.no_pesanan', 't_pesan_merchandise_detail.no_pesanan')
+                                            ->where('tpm.status', 'success')->get();
+
+        $total_item_baju_ikhwan = OrderDetailMerchandise::leftJoin('t_pesan_merchandise as tpm', 'tpm.no_pesanan', 't_pesan_merchandise_detail.no_pesanan')
+        ->where('t_pesan_merchandise_detail.merchandise_id', 1)
+        ->where('tpm.status', 'success')
+        ->get();
+
+        $total_item_baju_akhwat = OrderDetailMerchandise::leftJoin('t_pesan_merchandise as tpm', 'tpm.no_pesanan', 't_pesan_merchandise_detail.no_pesanan')
+        ->where('t_pesan_merchandise_detail.merchandise_id', 2)
+        ->where('tpm.status', 'success')
+        ->get();
+
+        $total_item_kerudung = OrderDetailMerchandise::leftJoin('t_pesan_merchandise as tpm', 'tpm.no_pesanan', 't_pesan_merchandise_detail.no_pesanan')
+        ->where('tpm.status', 'success')
+        ->where('t_pesan_merchandise_detail.merchandise_id', 3)
+        ->get();
+                        // dd($order_success);
+
+        return view('admin.laporan.resume', compact( 'order_success', 'total_item', 'total_item_baju_ikhwan', 'total_item_baju_akhwat', 'total_item_kerudung'));
+
     }
 
 }

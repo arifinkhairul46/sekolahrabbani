@@ -104,6 +104,7 @@ Route::group(['middleware' =>['admin']], function () {
 
     Route::prefix('laporan')->group(function () {
         Route::get('merchandise', [MerchandiseController::class, 'list_order'])->name('list-order-merchandise');
+        Route::get('resume', [MerchandiseController::class, 'resume_order'])->name('resume_merchandise');
         Route::get('merchandise/{id}', [MerchandiseController::class, 'order_detail'])->name('get_pesanan_merchandise_by_invoice');
         Route::get('download-invoice/{id}', [MerchandiseController::class, 'download_invoice'])->name('download.invoice-merchandise');
         Route::get('list-order/export', [MerchandiseController::class, 'export_list_order'])->name('list-order.export');
