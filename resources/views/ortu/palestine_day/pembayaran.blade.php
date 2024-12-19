@@ -25,6 +25,7 @@
         <input type="hidden" id="nama_siswa" value="{{$profile->nama_lengkap}}">
         <input type="hidden" id="sekolah_id" value="{{$profile->sekolah_id}}">
         <input type="hidden" id="kelas" value="{{$profile->nama_kelas}}">
+        <input type="hidden" id="design_id" value="{{$design->id}}">
 
         <div class="container">
             <?php $kategori_umur = $kategori_id != '' ? $kategori->kategori : '' ?>
@@ -251,6 +252,7 @@
         var kelas = $('#kelas').val();
         var sekolah_id = $('#sekolah_id').val();
         var merchandise_id = $('#merchandise_id').val();
+        var design_id = $('#design_id').val();
 
         function bayar_merchandise() {
             $(this).prop("disabled", true);
@@ -275,6 +277,7 @@
                     nama_siswa: nama_siswa,
                     kelas: kelas,
                     sekolah_id: sekolah_id,
+                    design_id: design_id,
                     _token: '{{csrf_token()}}'
                 },
                 success: function (res) {

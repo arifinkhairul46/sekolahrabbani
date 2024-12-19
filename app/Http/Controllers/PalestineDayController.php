@@ -691,11 +691,12 @@ class PalestineDayController extends Controller
         $nama_siswa_now = $request->nama_siswa;
         $kelas_now = $request->kelas;
         $sekolah_id_now = $request->sekolah_id;
+        $design_now = $request->design_id;
 
         if ($total_harga_now == null || $total_harga_now == 'undefined' || $total_harga_now == '') {
 
             $order = CartMerchandise::select('t_cart_merchandise.quantity', 't_cart_merchandise.id', 't_cart_merchandise.merchandise_id', 't_cart_merchandise.is_selected', 
-                    'mwk.warna', 'mwk.id as warna_id', 'mus.ukuran_seragam', 'mm.jenis_id', 't_cart_merchandise.template_id', 't_cart_merchandise.kategori_id', 'mm.nama_produk', 'mm.harga_awal', 'mm.diskon', 'mm.image_1', 'mm.image_2', 
+                    'mwk.warna', 'mwk.id as warna_id', 'mus.ukuran_seragam', 'mus.aliases', 'mm.jenis_id', 't_cart_merchandise.template_id', 't_cart_merchandise.kategori_id', 'mm.nama_produk', 'mm.harga_awal', 'mm.diskon', 'mm.image_1', 'mm.image_2', 
                     'tdp.nama_siswa', 'tdp.sekolah_id as sekolah', 'tdp.id as design_id', 'tdp.nama_kelas', 'tdp.image_file', 'mus.id as ukuran_id', 'mjm.jenis', 'mku.kategori', 'mtd.judul as template', 'mhk.harga as harga_baju' )
                     ->leftJoin('m_merchandise as mm', 'mm.id', 't_cart_merchandise.merchandise_id')
                     ->leftJoin('m_jenis_merchandise as mjm', 'mjm.id', 't_cart_merchandise.jenis_id')
@@ -720,7 +721,8 @@ class PalestineDayController extends Controller
                 $lokasi = $item['sekolah'];
                 $nama_kelas = $item['nama_kelas'];
                 $merchandise_id = $item['merchandise_id'];
-                $ukuran = $item['ukuran_id'];
+                $ukuran_dewasa = $item['ukuran_seragam'];
+                $ukuran_anak = $item['aliases'];
                 $warna = $item['warna_id'];
                 $template = $item['template_id'];
                 $kategori = $item['kategori_id'];
@@ -734,6 +736,8 @@ class PalestineDayController extends Controller
                 } else {
                     $harga = $harga_awal;
                 }
+
+                $ukuran = $kategori == 1 ? $ukuran_anak : $ukuran_dewasa;
 
                 $diskon = $item['diskon'];
                 $nilai_diskon = $diskon/100 * $harga_awal * $quantity;
@@ -818,6 +822,7 @@ class PalestineDayController extends Controller
                 'warna_id' => $warna_now,
                 'template_id' => $template_now,
                 'kategori_id' => $kategori_now,
+                'design_id' => $design_now,
                 'quantity' => $quantity_now,
                 'harga' => $harga_awal_now,
                 'persen_diskon' => $diskon_now,
