@@ -216,7 +216,7 @@ class UserController extends Controller
                 } else {
                     return redirect()->route('login')->with('error', 'No Hp atau password salah');
                 }
-            } else if ($user->id_role == 4) {
+            } else if ($user->id_role == 4 || $user->id_role == 6) {
                 if (Hash::check($request->password, $user->password)) {
                     $request->session()->regenerate();
 
