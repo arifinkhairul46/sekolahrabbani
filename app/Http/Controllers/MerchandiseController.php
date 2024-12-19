@@ -394,6 +394,7 @@ class MerchandiseController extends Controller
                         ->leftJoin('m_template_desain as mtd', 'mtd.id', 't_pesan_merchandise_detail.template_id')
                         ->leftJoin('t_desain_palestineday as tdp', 'tdp.id', 't_pesan_merchandise_detail.design_id')
                         ->where('tpm.status', 'success')
+                        ->groupby('tpm.no_pesanan')
                         ->first();
         
         $total_item = OrderDetailMerchandise::leftJoin('t_pesan_merchandise as tpm', 'tpm.no_pesanan', 't_pesan_merchandise_detail.no_pesanan')
