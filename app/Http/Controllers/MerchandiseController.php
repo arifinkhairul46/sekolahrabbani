@@ -382,21 +382,12 @@ class MerchandiseController extends Controller
     }
 
     public function resume_order (Request $request) {
-        $order_success =  OrderDetailMerchandise::select('t_pesan_merchandise_detail.nama_siswa', 't_pesan_merchandise_detail.lokasi_sekolah',
-                        't_pesan_merchandise_detail.nama_kelas', 'mm.nama_produk', 'mwk.warna', 'mm.image_1', 'mtd.judul as template',  DB::raw('sum(tpm.total_harga) as grand_total'), 
-                        'mus.ukuran_seragam', 'mku.kategori', 'tdp.nis', 't_pesan_merchandise_detail.harga', 't_pesan_merchandise_detail.persen_diskon', 
-                        't_pesan_merchandise_detail.quantity', 't_pesan_merchandise_detail.ukuran_id', 't_pesan_merchandise_detail.created_at', 'tpm.metode_pembayaran', 'tpm.no_pesanan')
+
+        $order_success = OrderDetailMerchandise::select(DB::raw('sum(t_pesan_merchandise_detail.harga*t_pesan_merchandise_detail.quantity) as grand_total'))
                         ->leftJoin('t_pesan_merchandise as tpm', 'tpm.no_pesanan', 't_pesan_merchandise_detail.no_pesanan')
-                        ->leftJoin('m_merchandise as mm', 'mm.id', 't_pesan_merchandise_detail.merchandise_id')
-                        ->leftJoin('m_warna_kaos as mwk', 'mwk.id', 't_pesan_merchandise_detail.warna_id')
-                        ->leftJoin('m_ukuran_seragam as mus', 'mus.id', 't_pesan_merchandise_detail.ukuran_id')
-                        ->leftJoin('m_kategori_umur as mku', 'mku.id', 't_pesan_merchandise_detail.kategori_id')
-                        ->leftJoin('m_template_desain as mtd', 'mtd.id', 't_pesan_merchandise_detail.template_id')
-                        ->leftJoin('t_desain_palestineday as tdp', 'tdp.id', 't_pesan_merchandise_detail.design_id')
                         ->where('tpm.status', 'success')
-                        ->groupby('tpm.no_pesanan')
                         ->first();
-        
+
         $total_item = OrderDetailMerchandise::leftJoin('t_pesan_merchandise as tpm', 'tpm.no_pesanan', 't_pesan_merchandise_detail.no_pesanan')
                                             ->where('tpm.status', 'success')->get();
 
@@ -414,7 +405,6 @@ class MerchandiseController extends Controller
         ->where('tpm.status', 'success')
         ->where('t_pesan_merchandise_detail.merchandise_id', 3)
         ->get();
-                        // dd($order_success);
 
         return view('admin.laporan.resume', compact( 'order_success', 'total_item', 'total_item_baju_ikhwan', 'total_item_baju_akhwat', 'total_item_kerudung'));
 
