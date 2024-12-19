@@ -301,7 +301,6 @@
                     _token: '{{csrf_token()}}'
                 },
                 success: function(msg){
-                    console.log(msg);
                     var formatter = new Intl.NumberFormat("en-US");
                     var harga = formatter.format(msg)
                     if (harga != 0) {

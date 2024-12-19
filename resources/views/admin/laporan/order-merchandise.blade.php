@@ -137,7 +137,7 @@
                                 <td>${item.nama_siswa}</td>
                                 <td>${item.sekolah_id}</td>
                                 <td>${item.nama_kelas}</td>
-                                <td>${item.nama_produk} ${warna} ${template} ${ukuran_seragam} ${kategori}  </td>
+                                <td>${item.nama_produk} ${warna} ${template}, ${kategori} ${ukuran_seragam}  </td>
                                 <td><img src="${url_image}"  id="img_cover_${item.design_id}" width="20px"></td>
                                 <td>${item.quantity}</td>
                                 <td>${download}</td>

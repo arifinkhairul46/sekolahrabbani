@@ -48,9 +48,11 @@
                                     @elseif ($item->id_role == 3)
                                         <td> CSDM </td>
                                     @elseif ($item->id_role == 4)
-                                        <td> Karywan </td>
+                                        <td> Karyawan </td>
                                     @elseif ($item->id_role == 5)
                                         <td> Orang Tua </td>
+                                    @elseif ($item->id_role == 6)
+                                        <td> Tim Media </td>
                                     @endif
                                 </tr>
                             @endforeach
