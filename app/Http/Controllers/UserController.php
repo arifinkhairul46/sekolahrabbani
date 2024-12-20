@@ -311,6 +311,7 @@ class UserController extends Controller
 
             $get_pass = Profile::where('no_hp_ibu', $request->no_hp)
                             ->orWhere('no_hp_ayah', $request->no_hp)
+                            ->where('pass_akun', '!=', null)
                             ->first();
 
             $user = User::where('no_hp', $request->no_hp)
