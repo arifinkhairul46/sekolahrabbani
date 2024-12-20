@@ -6,54 +6,62 @@
             <img src="{{asset('assets/images/top-header.png')}} " alt="header" class="theme-color-default-img img-fluid w-100 h-100">
         </div>
         <div class="title my-3">
-            <h1 class="text-white" style="margin-left: 1rem">Resume Order Merchandise </h1>
+            <h3 class="text-white" style="margin-left: 1rem">Resume Order Merchandise </h3>
         </div>
     </div>
     <div class="container iq-container px-3">
-        <div class="d-flex" style="justify-content: space-around">
-            <div class="card">
-                <div class="card-body">
-                    <div class="d-flex" style="align-items: center">
-                        <i class="fa-solid fa-credit-card fa-xl"></i>
-                        <div class="progress-detail mx-3">
-                            <p  class="mb-2">Total Penjualan</p>
-                            <h4 class="counter">Rp. {{number_format($order_success->grand_total)}}</h4>
+        <div class="row">
+            <div class="col-auto">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex" style="align-items: center">
+                            <i class="fa-solid fa-credit-card fa-xl" style="color: #474E93"></i>
+                            <div class="progress-detail mx-3">
+                                <p  class="mb-2">Total Penjualan</p>
+                                <h4 class="counter">Rp. {{number_format($order_success->grand_total)}}</h4>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="card">
-                <div class="card-body">
-                    <div class="d-flex" style="align-items: center">
-                        <i class="fa-solid fa-shirt fa-xl"></i>
-                        <div class="progress-detail mx-3">
-                            <p  class="mb-2">Total Items Baju Ikhwan</p>
-                            <h4 class="counter">{{$total_item_baju_ikhwan->count()}}</h4>
+            <div class="col-auto">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex" style="align-items: center">
+                            <i class="fa-solid fa-shirt fa-xl" style="color: #72BAA9"></i>
+                            <div class="progress-detail mx-3">
+                                <p  class="mb-2">Total Baju Ikhwan</p>
+                                <h4 class="counter">{{$total_item_baju_ikhwan->count()}}</h4>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="card">
-                <div class="card-body">
-                    <div class="d-flex" style="align-items: center">
-                        <i class="fa-solid fa-shirt fa-xl"></i>
-                        <div class="progress-detail mx-3">
-                            <p  class="mb-2">Total Items Baju Akhwat</p>
-                            <h4 class="counter">{{$total_item_baju_akhwat->count()}}</h4>
+            <div class="col-auto">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex" style="align-items: center">
+                            <i class="fa-solid fa-shirt fa-xl" style="color: #7E5CAD"></i>
+                            <div class="progress-detail mx-3">
+                                <p  class="mb-2">Total Baju Akhwat</p>
+                                <h4 class="counter">{{$total_item_baju_akhwat->count()}}</h4>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="card">
-                <div class="card-body">
-                    <div class="d-flex" style="align-items: center">
-                        <i class="fa-solid fa-shirt fa-xl"></i>
-                        <div class="progress-detail mx-3">
-                            <p  class="mb-2">Total Items Kerudung</p>
-                            <h4 class="counter">{{$total_item_kerudung->count()}}</h4>
+            <div class="col-auto">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex" style="align-items: center">
+                            <i class="fa-solid fa-shirt fa-xl" style="color: #DA498D"></i>
+                            <div class="progress-detail mx-3">
+                                <p  class="mb-2">Total Kerudung</p>
+                                <h4 class="counter">{{$total_item_kerudung->count()}}</h4>
+                            </div>
                         </div>
                     </div>
                 </div>
