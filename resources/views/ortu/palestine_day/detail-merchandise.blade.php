@@ -545,8 +545,8 @@
         }
 
         
-        var url = 'http://sekolahrabbani.test/'
-        // var url = 'https://sekolahrabbani.sch.id/'
+        // var url = 'http://sekolahrabbani.test/'
+        var url = 'https://sekolahrabbani.sch.id/'
 
         function get_design(design_id) {
             $.ajax({
