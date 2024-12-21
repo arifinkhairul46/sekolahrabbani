@@ -11,9 +11,13 @@ use App\Models\Merchandise;
 use App\Models\OrderDetailMerchandise;
 use App\Models\OrderMerchandise;
 use App\Models\Profile;
+use App\Models\TemplateDesain;
+use App\Models\WarnaImage;
 use Barryvdh\DomPDF\Facade\Pdf;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
@@ -263,28 +267,31 @@ class MerchandiseController extends Controller
 
     public function list_order (Request $request)
     {
-        $date_start = $request->date_start ?? null;
+        $start = $request->date_start ?? null;
         $date_end = $request->date_end ?? null;
+        $date_start = date($start);
+        $new_date_end = new DateTime($date_end);
+        $date_end_plus = $new_date_end->modify('+1 day')->format('Y-m-d');
 
-        if ($request->has('date_start') || $request->has('date_end')) {
-            $list_order = OrderMerchandise::query();
+        
 
-            if ($request->has('date_start'))
-                $list_order = $list_order->selectRaw('id, no_pesanan, nama_pemesan, total_harga, metode_pembayaran, status, updated_at')->where('updated_at', 'like', '%' .$request->date_start.'%')->where('status', 'success');
-
-            $list_order = $list_order->get();
-
-        } else if ($request->has('date_start') && $request->has('date_end')) {
+        if ($request->has('date_start') && $request->has('date_end')) {
             $list_order = OrderMerchandise::query();
 
             if ($request->has('date_start') && $request->has('date_end'))
-                $list_order = $list_order->selectRaw('id, no_pesanan, nama_pemesan, total_harga, metode_pembayaran, status, updated_at')->where('updated_at', '>='.$date_start.'%')->where('updated_at', '<='.$date_end.'%')->where('status', 'success');
+                $list_order = $list_order->selectRaw('id, no_pesanan, nama_pemesan, total_harga, metode_pembayaran, status, updated_at')->whereBetween('updated_at', [$date_start, $date_end_plus])->where('status', 'success');
+                // $list_order = $list_order->selectRaw('id, no_pesanan, nama_pemesan, total_harga, metode_pembayaran, status, updated_at')->where('updated_at', '>=', "$date_start")->where('updated_at', '<=', "$date_end")->where('status', 'success');
+            $list_order = $list_order->get();
+        } else if ($request->has('date_start') || $request->has('date_end')) {
+            $list_order = OrderMerchandise::query();
+
+            if ($request->has('date_start'))
+                $list_order = $list_order->selectRaw('id, no_pesanan, nama_pemesan, total_harga, metode_pembayaran, status, updated_at')->where('updated_at', 'like', '%' .$date_start.'%')->where('status', 'success');
+
             $list_order = $list_order->get();
 
         } else {
-            
-            $list_order = OrderMerchandise::where('status', 'success')->orderby('created_at', 'desc')->get();
-
+            $list_order = OrderMerchandise::where('status', 'success')->orderby('updated_at', 'desc')->get();
         }
 
         return view('admin.laporan.order-merchandise', compact('list_order', 'date_start', 'date_end'));
@@ -420,6 +427,36 @@ class MerchandiseController extends Controller
         return view('admin.laporan.resume', compact( 'order_success', 'total_item', 'total_item_baju_ikhwan', 'total_item_baju_akhwat', 'total_item_kerudung',
         'total_item_by_merch_and_kategori'));
 
+    }
+
+    public function get_design(Request $request)
+    {
+        $design_id = $request->design_id;
+
+        $karya = DesainPalestineday::select('id', 'nis', 'image_file')
+                        ->where('id', $design_id)
+                        ->first();
+     
+        return response()->json($karya);
+    }
+
+    public function get_template(Request $request)
+    {
+        $template_id = $request->template_id;
+
+        $karya = TemplateDesain::where('id', $template_id)->first();
+     
+        return response()->json($karya);
+    }
+
+    public function get_warna(Request $request)
+    {
+        $warna_id = $request->warna_id;
+        $merch_id = $request->merch_id;
+
+        $karya = WarnaImage::where('warna_id', $warna_id)->where('merch_id', $merch_id)->first();
+     
+        return response()->json($karya);
     }
 
 }

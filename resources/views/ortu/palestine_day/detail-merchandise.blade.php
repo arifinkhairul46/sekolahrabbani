@@ -119,6 +119,18 @@
                         </div>
                     </div>
 
+                    <div class="produk-detail d-flex">
+                        <div class="frame-detail" id="frame_karya" style="display: none">
+                            <img src="#" id="image_karya" width="100%" style="height: 100%; object-fit:cover; border-radius:1rem">
+                        </div>
+                        <div class="frame-detail" id="frame_template" style="display: none">
+                            <img src="#" id="image_template" width="100%" style="height: 100%; object-fit:cover; border-radius:1rem">
+                        </div>
+                        <div class="frame-detail" id="frame_warna" style="display: none">
+                            <img src="#" id="image_warna" width="100%" style="height: 100%; object-fit:cover; border-radius:1rem">
+                        </div>
+                    </div>
+
                     @if ($merchandise->jenis_id == '1')
                         <div class="produk-karya mt-3">
                             <h6 style="color: #3152A4"><b> Karya </b> </h6>
@@ -467,6 +479,28 @@
                 }
         });
 
+        // pilih karya produk
+        $('input[name="design"]').change(function(){
+            var design_id = $('input[name="design"]:checked').val();
+
+            get_design(design_id);
+        })
+
+        // pilih template produk
+        $('input[name="template"]').change(function(){
+            var template_id = $('input[name="template"]:checked').val();
+
+            get_template(template_id);
+        })
+
+        // pilih warna produk
+        $('input[name="warna"]').change(function(){
+            var warna_id = $('input[name="warna"]:checked').val();
+            var merch_id = $('#merchandise_id').val();
+
+            get_warna(warna_id, merch_id);
+        })
+
          // pilih kategori produk
         $('input[name="kategori"]').change(function(){
           var kategori = $('input[name="kategori"]:checked').val();
@@ -506,6 +540,66 @@
                 
                         $("#harga_awal").html(format_harga);
                     });
+                }
+            })
+        }
+
+        
+        var url = 'http://sekolahrabbani.test/'
+        // var url = 'https://sekolahrabbani.sch.id/'
+
+        function get_design(design_id) {
+            $.ajax({
+                url: "{{route('get_design')}}",
+                type: 'POST',
+                data: {
+                    design_id: design_id,
+                    _token: '{{csrf_token()}}'
+                },
+                success: function (result) {
+                    var path_image = result.image_file;
+
+                    var src_img = url + 'storage/' + path_image;
+                    $('#frame_karya').show();
+                    $('#image_karya').attr('src', src_img)
+                }
+            })
+        }
+
+        function get_template(template_id) {
+            $.ajax({
+                url: "{{route('get_template')}}",
+                type: 'POST',
+                data: {
+                    template_id: template_id,
+                    _token: '{{csrf_token()}}'
+                },
+                success: function (result) {
+                    var path_image = result.image_1;
+
+                    var src_img = url + 'storage/' + path_image;
+                    $('#frame_template').show();
+                    $('#image_template').attr('src', src_img)
+                }
+            })
+        }
+
+        function get_warna(warna_id, merch_id) {
+            console.log(warna_id, merch_id);
+            $.ajax({
+                url: "{{route('get_warna')}}",
+                type: 'POST',
+                data: {
+                    warna_id: warna_id,
+                    merch_id: merch_id,
+                    _token: '{{csrf_token()}}'
+                },
+                success: function (result) {
+                    var path_image = result.image_file;
+
+                    var src_img = url + 'storage/' + path_image;
+                    $('#frame_warna').show();
+                    $('#image_warna').attr('src', src_img)
                 }
             })
         }
