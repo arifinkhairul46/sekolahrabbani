@@ -57,7 +57,7 @@ Route::controller(GoogleController::class)->group(function () {
     Route::get('/auth/google/callback', 'handleGoogleCallback');
 });
 
-Route::group(['middleware' =>['admin']], function () {
+Route::group(['middleware' =>['auth', 'admin']], function () {
     Route::prefix('master')->group(function () {
         Route::get('list-user', [UserController::class, 'list_user'])->name('list-user');
         Route::post('list-user/create', [UserController::class, 'add_user'])->name('add-user');
@@ -108,8 +108,7 @@ Route::group(['middleware' =>['admin']], function () {
         Route::get('merchandise/{id}', [MerchandiseController::class, 'order_detail'])->name('get_pesanan_merchandise_by_invoice');
         Route::get('download-invoice/{id}', [MerchandiseController::class, 'download_invoice'])->name('download.invoice-merchandise');
         Route::get('list-order/export', [MerchandiseController::class, 'export_list_order'])->name('list-order.export');
-
-
+        Route::get('seragam', [SeragamController::class, 'resume_seragam'])->name('resume_seragam');
 
     });
 });

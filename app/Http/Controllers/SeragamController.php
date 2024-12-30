@@ -1145,6 +1145,51 @@ class SeragamController extends Controller
         return response()->json($update_seragam);
     }
 
+    public function resume_seragam()
+    {
+        $this_month = date('Y-m');
+
+        $total_pesanan = OrderSeragam::select(DB::raw('SUM( (tpsd.harga * tpsd.quantity) - (tpsd.diskon * quantity) ) as grand_total'))
+        ->leftJoin('t_pesan_seragam_detail as tpsd', 'tpsd.no_pemesanan', 't_pesan_seragam.no_pemesanan')
+        ->where('t_pesan_seragam.status', 'success')
+        ->first();
+
+        $hpp = OrderSeragam::select(DB::raw('SUM( (tpsd.hpp * tpsd.quantity) ) as total_hpp'))
+        ->leftJoin('t_pesan_seragam_detail as tpsd', 'tpsd.no_pemesanan', 't_pesan_seragam.no_pemesanan')
+        ->where('t_pesan_seragam.status', 'success')
+        ->first();
+
+        $profit = $total_pesanan->grand_total - $hpp->total_hpp;
+
+        $sales_per_month = OrderSeragam::select(DB::raw('SUM( total_harga ) as sales_month'))
+                        ->where('status', 'success')
+                        ->where('updated_at', 'LIKE', $this_month.'%')
+                        ->first();
+
+        $total_sales_by_item = OrderSeragam::select('mps.nama_produk', 'mjps.jenis_produk', 'mus.ukuran_seragam', DB::raw('count(tpsd.produk_id) as total_item'))
+        ->leftJoin('t_pesan_seragam_detail as tpsd', 'tpsd.no_pemesanan', 't_pesan_seragam.no_pemesanan')
+        ->leftJoin('m_produk_seragam as mps', 'mps.id', 'tpsd.produk_id')
+        ->leftJoin('m_jenis_produk_seragam as mjps', 'mjps.id', 'tpsd.jenis_produk_id')
+        ->leftJoin('m_ukuran_seragam as mus', 'mus.ukuran_seragam', 'tpsd.ukuran')
+        ->where('t_pesan_seragam.status', 'success')
+        ->groupby('tpsd.produk_id', 'tpsd.jenis_produk_id', 'tpsd.ukuran')
+        ->orderby('total_item', 'desc')
+        ->take(5)
+        ->get();
+
+        $total_sales_by_school = OrderSeragam::select('mls.sublokasi', DB::raw('count(tpsd.lokasi_sekolah) as total_item'))
+        ->leftJoin('t_pesan_seragam_detail as tpsd', 'tpsd.no_pemesanan', 't_pesan_seragam.no_pemesanan')
+        ->leftJoin('mst_lokasi_sub as mls', 'mls.id', 'tpsd.lokasi_sekolah')
+        ->where('t_pesan_seragam.status', 'success')
+        ->groupby('tpsd.lokasi_sekolah')
+        ->orderby('total_item', 'desc')
+        ->take(5)
+        ->get();
+
+        return view('admin.laporan.seragam', compact( 'total_pesanan', 'hpp', 'profit', 'sales_per_month', 'total_sales_by_item',
+        'total_sales_by_school'));
+    }
+
 
     function send_notif ($no_wha, $message) {
         $dataSending = array();
