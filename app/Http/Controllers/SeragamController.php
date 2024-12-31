@@ -1220,7 +1220,7 @@ class SeragamController extends Controller
                         ->where('updated_at', 'LIKE', $this_month.'%')
                         ->first();
 
-        $total_sales_by_item = OrderSeragam::select('mps.nama_produk', 'tpsd.quantity', DB::raw('sum(tpsd.quantity) as total_quantity'), DB::raw('tpsd.harga as harga'), DB::raw('tpsd.diskon as diskon'))
+        $total_sales_by_item = OrderSeragam::select('mps.nama_produk', 'tpsd.harga', 'tpsd.diskon', 'tpsd.quantity', DB::raw('sum(tpsd.quantity) as total_quantity'))
         ->leftJoin('t_pesan_seragam_detail as tpsd', 'tpsd.no_pemesanan', 't_pesan_seragam.no_pemesanan')
         ->leftJoin('m_produk_seragam as mps', 'mps.id', 'tpsd.produk_id')
         ->where('t_pesan_seragam.status', 'success')

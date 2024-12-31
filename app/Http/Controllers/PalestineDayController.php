@@ -824,7 +824,7 @@ class PalestineDayController extends Controller
                 'kategori_id' => $kategori_now,
                 'design_id' => $design_now,
                 'quantity' => $quantity_now,
-                'harga' => $harga_awal_now,
+                'harga' => $total_harga_now,
                 'persen_diskon' => $diskon_now,
             ]);
 
