@@ -105,10 +105,12 @@ Route::group(['middleware' =>['auth', 'admin']], function () {
     Route::prefix('laporan')->group(function () {
         Route::get('merchandise', [MerchandiseController::class, 'list_order'])->name('list-order-merchandise');
         Route::get('resume', [MerchandiseController::class, 'resume_order'])->name('resume_merchandise');
+        Route::get('resume/all', [MerchandiseController::class, 'resume_detail'])->name('resume_merchandise_detail');
         Route::get('merchandise/{id}', [MerchandiseController::class, 'order_detail'])->name('get_pesanan_merchandise_by_invoice');
         Route::get('download-invoice/{id}', [MerchandiseController::class, 'download_invoice'])->name('download.invoice-merchandise');
         Route::get('list-order/export', [MerchandiseController::class, 'export_list_order'])->name('list-order.export');
         Route::get('seragam', [SeragamController::class, 'resume_seragam'])->name('resume_seragam');
+        Route::get('seragam/all', [SeragamController::class, 'resume_detail'])->name('resume_seragam_detail');
 
     });
 });

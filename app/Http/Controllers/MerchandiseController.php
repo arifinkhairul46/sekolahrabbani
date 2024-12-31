@@ -413,7 +413,8 @@ class MerchandiseController extends Controller
         ->where('t_pesan_merchandise_detail.merchandise_id', 3)
         ->get();
 
-        $total_item_by_merch_and_kategori = OrderMerchandise::select('mm.nama_produk', 'mku.kategori', 'mwk.warna', DB::raw('count(tpmd.merchandise_id) as total_item'))
+        $total_item_by_merch_and_kategori = OrderMerchandise::select('mm.nama_produk', 'mku.kategori', 'mwk.warna', 'tpmd.harga',
+        DB::raw('sum(tpmd.quantity) as total_item'))
         ->leftJoin('t_pesan_merchandise_detail as tpmd', 'tpmd.no_pesanan', 't_pesan_merchandise.no_pesanan')
         ->leftJoin('m_merchandise as mm', 'mm.id', 'tpmd.merchandise_id')
         ->leftJoin('m_kategori_umur as mku', 'mku.id', 'tpmd.kategori_id')
@@ -424,7 +425,59 @@ class MerchandiseController extends Controller
         ->take(5)
         ->get();
 
+        $count_item_by_merch_and_kategori = OrderMerchandise::select('mm.nama_produk', 'mku.kategori', 'mwk.warna', 'tpmd.harga',
+        DB::raw('sum(tpmd.quantity) as total_item'))
+        ->leftJoin('t_pesan_merchandise_detail as tpmd', 'tpmd.no_pesanan', 't_pesan_merchandise.no_pesanan')
+        ->leftJoin('m_merchandise as mm', 'mm.id', 'tpmd.merchandise_id')
+        ->leftJoin('m_kategori_umur as mku', 'mku.id', 'tpmd.kategori_id')
+        ->leftJoin('m_warna_kaos as mwk', 'mwk.id', 'tpmd.warna_id')
+        ->where('t_pesan_merchandise.status', 'success')
+        ->groupby('tpmd.merchandise_id', 'tpmd.kategori_id', 'tpmd.warna_id')
+        ->orderby('total_item', 'desc')
+        ->get();
+
         return view('admin.laporan.resume', compact( 'order_success', 'total_item', 'total_item_baju_ikhwan', 'total_item_baju_akhwat', 'total_item_kerudung',
+        'total_item_by_merch_and_kategori', 'count_item_by_merch_and_kategori'));
+
+    }
+
+    public function resume_detail (Request $request) {
+
+        $order_success = OrderDetailMerchandise::select(DB::raw('sum(t_pesan_merchandise_detail.harga*t_pesan_merchandise_detail.quantity) as grand_total'))
+                        ->leftJoin('t_pesan_merchandise as tpm', 'tpm.no_pesanan', 't_pesan_merchandise_detail.no_pesanan')
+                        ->where('tpm.status', 'success')
+                        ->first();
+
+        $total_item = OrderDetailMerchandise::leftJoin('t_pesan_merchandise as tpm', 'tpm.no_pesanan', 't_pesan_merchandise_detail.no_pesanan')
+                                            ->where('tpm.status', 'success')->get();
+
+        $total_item_baju_ikhwan = OrderDetailMerchandise::leftJoin('t_pesan_merchandise as tpm', 'tpm.no_pesanan', 't_pesan_merchandise_detail.no_pesanan')
+        ->where('t_pesan_merchandise_detail.merchandise_id', 1)
+        ->where('tpm.status', 'success')
+        ->get();
+
+        $total_item_baju_akhwat = OrderDetailMerchandise::leftJoin('t_pesan_merchandise as tpm', 'tpm.no_pesanan', 't_pesan_merchandise_detail.no_pesanan')
+        ->where('t_pesan_merchandise_detail.merchandise_id', 2)
+        ->where('tpm.status', 'success')
+        ->get();
+
+        $total_item_kerudung = OrderDetailMerchandise::leftJoin('t_pesan_merchandise as tpm', 'tpm.no_pesanan', 't_pesan_merchandise_detail.no_pesanan')
+        ->where('tpm.status', 'success')
+        ->where('t_pesan_merchandise_detail.merchandise_id', 3)
+        ->get();
+
+        $total_item_by_merch_and_kategori = OrderMerchandise::select('mm.nama_produk', 'mku.kategori', 'mwk.warna', 'tpmd.harga',
+        DB::raw('sum(tpmd.quantity) as total_item'))
+        ->leftJoin('t_pesan_merchandise_detail as tpmd', 'tpmd.no_pesanan', 't_pesan_merchandise.no_pesanan')
+        ->leftJoin('m_merchandise as mm', 'mm.id', 'tpmd.merchandise_id')
+        ->leftJoin('m_kategori_umur as mku', 'mku.id', 'tpmd.kategori_id')
+        ->leftJoin('m_warna_kaos as mwk', 'mwk.id', 'tpmd.warna_id')
+        ->where('t_pesan_merchandise.status', 'success')
+        ->groupby('tpmd.merchandise_id', 'tpmd.kategori_id', 'tpmd.warna_id')
+        ->orderby('total_item', 'desc')
+        ->get();
+
+        return view('admin.laporan.resume-all', compact( 'order_success', 'total_item', 'total_item_baju_ikhwan', 'total_item_baju_akhwat', 'total_item_kerudung',
         'total_item_by_merch_and_kategori'));
 
     }

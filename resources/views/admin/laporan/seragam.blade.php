@@ -72,7 +72,7 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-lg-6">
-                        <h5> Top 5 Sales by Item </h5>
+                        <h5> Sales by Item </h5>
                         <div class="table-responsive mt-3">
                             <table id="list_order" class="table table-striped">
                                 <thead>
@@ -80,29 +80,36 @@
                                         <th>No</th>
                                         <th>Nama Produk</th>
                                         <th>Total Item</th>
+                                        <th>Total Harga</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($total_sales_by_item as $item)
                                         <tr>
                                             <td>{{$loop->iteration}}</td>
-                                            <td>{{$item->nama_produk}} {{$item->jenis_produk}} {{$item->ukuran}}</td>
-                                            <td>{{$item->total_item}}</td>
+                                            <td>{{$item->nama_produk}}</td>
+                                            <td>{{$item->total_quantity}}</td>
+                                            <td style="text-align: right">Rp. {{number_format(($item->harga * $item->total_quantity) - ($item->diskon * $item->total_quantity))}}</td>
                                         </tr>
-                                    @endforeach
+                                        @endforeach
+                                        <tr> 
+                                            @if ($count_sales_by_item->count() > 5)
+                                                <td class="text-center" colspan="4"> <a href="{{route('resume_seragam_detail')}}"> See All </a> </td>
+                                            @endif
+                                        </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
 
                     <div class="col-lg-6">
-                        <h5> Top 5 Sales by School </h5>
+                        <h5> Sales by School </h5>
                         <div class="table-responsive mt-3">
                             <table id="list_order" class="table table-striped">
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Nama Produk</th>
+                                        <th>Nama Sekolah</th>
                                         <th>Total Item</th>
                                     </tr>
                                 </thead>

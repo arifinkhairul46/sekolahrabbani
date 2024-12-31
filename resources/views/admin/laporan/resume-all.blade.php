@@ -18,7 +18,7 @@
                             <i class="fa-solid fa-credit-card fa-xl" style="color: #474E93"></i>
                             <div class="progress-detail mx-3">
                                 <p  class="mb-2">Total Penjualan</p>
-                                <h4 class="counter">Rp. {{number_format($order_success->grand_total)}}</h4>
+                                <h4 >Rp. {{number_format($order_success->grand_total)}}</h4>
                             </div>
                         </div>
                     </div>
@@ -32,7 +32,7 @@
                             <i class="fa-solid fa-shirt fa-xl" style="color: #72BAA9"></i>
                             <div class="progress-detail mx-3">
                                 <p  class="mb-2">Total Baju Ikhwan</p>
-                                <h4 class="counter">{{$total_item_baju_ikhwan->count()}}</h4>
+                                <h4 >{{$total_item_baju_ikhwan->count()}}</h4>
                             </div>
                         </div>
                     </div>
@@ -46,7 +46,7 @@
                             <i class="fa-solid fa-shirt fa-xl" style="color: #7E5CAD"></i>
                             <div class="progress-detail mx-3">
                                 <p  class="mb-2">Total Baju Akhwat</p>
-                                <h4 class="counter">{{$total_item_baju_akhwat->count()}}</h4>
+                                <h4 >{{$total_item_baju_akhwat->count()}}</h4>
                             </div>
                         </div>
                     </div>
@@ -60,7 +60,7 @@
                             <i class="fa-solid fa-shirt fa-xl" style="color: #DA498D"></i>
                             <div class="progress-detail mx-3">
                                 <p  class="mb-2">Total Kerudung</p>
-                                <h4 class="counter">{{$total_item_kerudung->count()}}</h4>
+                                <h4 >{{$total_item_kerudung->count()}}</h4>
                             </div>
                         </div>
                     </div>
@@ -94,11 +94,10 @@
                                         </tr>
                                         <?php $total_harga += $item->harga * $item->total_item ?>
                                     @endforeach
-                                    @if ($count_item_by_merch_and_kategori->count() > 5)
-                                        <tr> 
-                                            <td class="text-center" colspan="4"> <a href="{{route('resume_merchandise_detail')}}"> Show More </a> </td>
+                                        <tr>
+                                            <td class="text-center" colspan="3"> <b> Total </b></td>
+                                            <td > <i> Rp. {{number_format($total_harga)}} </i></td>
                                         </tr>
-                                    @endif
                                 </tbody>
                             </table>
                         </div>
