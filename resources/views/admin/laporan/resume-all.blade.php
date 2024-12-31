@@ -94,10 +94,10 @@
                                         </tr>
                                         <?php $total_harga += $item->harga * $item->total_item ?>
                                     @endforeach
-                                        <tr>
+                                        {{-- <tr>
                                             <td class="text-center" colspan="3"> <b> Total </b></td>
                                             <td > <i> Rp. {{number_format($total_harga)}} </i></td>
-                                        </tr>
+                                        </tr> --}}
                                 </tbody>
                             </table>
                         </div>
