@@ -692,12 +692,13 @@ class PalestineDayController extends Controller
         $kelas_now = $request->kelas;
         $sekolah_id_now = $request->sekolah_id;
         $design_now = $request->design_id;
+        $hpp_now = $request->hpp;
 
         if ($total_harga_now == null || $total_harga_now == 'undefined' || $total_harga_now == '') {
 
             $order = CartMerchandise::select('t_cart_merchandise.quantity', 't_cart_merchandise.id', 't_cart_merchandise.merchandise_id', 't_cart_merchandise.is_selected', 
-                    'mwk.warna', 'mwk.id as warna_id', 'mus.ukuran_seragam', 'mus.aliases', 'mm.jenis_id', 't_cart_merchandise.template_id', 't_cart_merchandise.kategori_id', 'mm.nama_produk', 'mm.harga_awal', 'mm.diskon', 'mm.image_1', 'mm.image_2', 
-                    'tdp.nama_siswa', 'tdp.sekolah_id as sekolah', 'tdp.id as design_id', 'tdp.nama_kelas', 'tdp.image_file', 'mus.id as ukuran_id', 'mjm.jenis', 'mku.kategori', 'mtd.judul as template', 'mhk.harga as harga_baju' )
+                    'mwk.warna', 'mwk.id as warna_id', 'mus.ukuran_seragam', 'mus.aliases', 'mm.jenis_id', 't_cart_merchandise.template_id', 't_cart_merchandise.kategori_id', 'mm.nama_produk', 'mm.harga_awal', 'mm.hpp as hpp_awal', 'mm.diskon', 'mm.image_1', 'mm.image_2', 
+                    'tdp.nama_siswa', 'tdp.sekolah_id as sekolah', 'tdp.id as design_id', 'tdp.nama_kelas', 'tdp.image_file', 'mus.id as ukuran_id', 'mjm.jenis', 'mku.kategori', 'mtd.judul as template', 'mhk.harga as harga_baju', 'mhk.hpp' )
                     ->leftJoin('m_merchandise as mm', 'mm.id', 't_cart_merchandise.merchandise_id')
                     ->leftJoin('m_jenis_merchandise as mjm', 'mjm.id', 't_cart_merchandise.jenis_id')
                     ->leftJoin('t_desain_palestineday as tdp', 'tdp.id', 't_cart_merchandise.design_id')
@@ -730,11 +731,15 @@ class PalestineDayController extends Controller
                 $quantity = $item['quantity'];
                 $harga_awal = $item['harga_awal'];
                 $harga_baju = $item['harga_baju'];
+                $hpp = $item['hpp'];
+                $hpp_awal = $item['hpp_awal'];
 
                 if ($harga_baju != null) {
                     $harga = $harga_baju;
+                    $harga_pokok = $hpp;
                 } else {
                     $harga = $harga_awal;
+                    $harga_pokok = $hpp_awal;
                 }
 
                 $ukuran = $kategori == 1 ? $ukuran_anak : $ukuran_dewasa;
@@ -757,6 +762,7 @@ class PalestineDayController extends Controller
                 'quantity' => $quantity,
                 'harga' => $harga,
                 'persen_diskon' => $diskon,
+                'hpp' => $harga_pokok
                 ]);
 
                 $total_harga += $harga * $quantity;
@@ -826,6 +832,7 @@ class PalestineDayController extends Controller
                 'quantity' => $quantity_now,
                 'harga' => $total_harga_now,
                 'persen_diskon' => $diskon_now,
+                'hpp' => $hpp_now
             ]);
 
                // Set your Merchant Server Key

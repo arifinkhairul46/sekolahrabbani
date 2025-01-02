@@ -12,6 +12,7 @@
     
     @if ($order)
         <?php $price = $harga_baju != null ? $harga_baju->harga : $merchandise->harga_awal ?>
+        <?php $phh = $harga_baju != null ? $harga_baju->hpp : $merchandise->hpp ?>
         <?php $harga = (($price) - ($merchandise->diskon/100 * $price)) * $quantity; ?>
         <?php $diskon =  ($merchandise->diskon/100 * $price) * $quantity; ?>
         <?php $diskon_persen =  ($merchandise->diskon); ?>
@@ -28,6 +29,8 @@
         <input type="hidden" id="design_id" value="{{$design->id}}">
 
         <div class="container">
+            <input type="hidden" id="pph" value="{{$phh}}">
+
             <?php $kategori_umur = $kategori_id != '' ? $kategori->kategori : '' ?>
             <?php $ukuran = $kategori_umur == 'Anak' ? $ukuran->aliases.' th' : $ukuran->ukuran_seragam ?>
             
@@ -253,6 +256,7 @@
         var sekolah_id = $('#sekolah_id').val();
         var merchandise_id = $('#merchandise_id').val();
         var design_id = $('#design_id').val();
+        var hpp = $('#pph').val();
 
         function bayar_merchandise() {
             $(this).prop("disabled", true);
@@ -278,6 +282,7 @@
                     kelas: kelas,
                     sekolah_id: sekolah_id,
                     design_id: design_id,
+                    hpp: hpp,
                     _token: '{{csrf_token()}}'
                 },
                 success: function (res) {
