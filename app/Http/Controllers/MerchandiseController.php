@@ -300,7 +300,7 @@ class MerchandiseController extends Controller
     public function order_detail ($id)
     {
         $order_detail = OrderDetailMerchandise::select('mm.nama_produk', 'mwk.warna', 'mus.ukuran_seragam',  'mku.kategori', 'mtd.judul as template',
-                        't_pesan_merchandise_detail.nama_siswa', 'tdp.id as design_id', 'tdp.nis', 'tdp.nama_siswa as siswa', 't_pesan_merchandise_detail.lokasi_sekolah as sekolah_id', 
+                        't_pesan_merchandise_detail.nama_siswa', 'tdp.id as design_id', 'tdp.nis', 'tdp.nama_siswa as siswa', 'tdp.sekolah_id', 'tdp.nama_kelas as kelas', 't_pesan_merchandise_detail.lokasi_sekolah', 
                         't_pesan_merchandise_detail.nama_kelas', 'tdp.image_file', 't_pesan_merchandise_detail.quantity',
                         't_pesan_merchandise_detail.harga', 't_pesan_merchandise_detail.persen_diskon', 't_pesan_merchandise_detail.ukuran_id')
                         ->leftJoin('m_merchandise as mm', 'mm.id', 't_pesan_merchandise_detail.merchandise_id')
