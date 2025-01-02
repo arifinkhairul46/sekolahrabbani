@@ -14,8 +14,8 @@ class OrderDetailMerchandiseExport implements FromCollection, WithHeadings
     public function collection()
     {
         // return OrderDetailMerchandise::all();
-        $data = OrderDetailMerchandise::select('t_pesan_merchandise_detail.no_pesanan', 't_pesan_merchandise_detail.nama_siswa', 't_pesan_merchandise_detail.lokasi_sekolah',
-                    't_pesan_merchandise_detail.nama_kelas', 'mm.nama_produk', 'mwk.warna', 'mtd.judul as template',  
+        $data = OrderDetailMerchandise::select('t_pesan_merchandise_detail.no_pesanan', 'tdp.nama_siswa', 'tdp.sekolah_id',
+                    'tdp.nama_kelas', 'mm.nama_produk', 'mwk.warna', 'mtd.judul as template',  
                     't_pesan_merchandise_detail.ukuran_id', 'mku.kategori', 'tdp.nis', 't_pesan_merchandise_detail.quantity', 't_pesan_merchandise_detail.created_at' )
                     ->leftJoin('t_pesan_merchandise as tpm', 'tpm.no_pesanan', 't_pesan_merchandise_detail.no_pesanan')
                     ->leftJoin('m_merchandise as mm', 'mm.id', 't_pesan_merchandise_detail.merchandise_id')

@@ -32,7 +32,7 @@
                             @foreach ($list_desain as $item)
                                 <tr>
                                     <td>{{$loop->iteration}}</td>
-                                    <td>{{$item->nis}} - {{$item->nama_siswa}}</td>
+                                    <td>{{$item->nis}} - {{$item->siswa}}</td>
                                     <td>{{$item->lokasi}}</td>
                                     <td>{{$item->nama_kelas}}</td>
                                     <td>{{$item->created_at}}</td>

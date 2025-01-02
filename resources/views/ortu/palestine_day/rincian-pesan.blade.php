@@ -21,10 +21,10 @@
                     </div>
                     <div class="d-flex mx-2">
                         <div class="" style="width: 200px">
-                            <p class="mb-0" style="font-size: 14px;"> {{$item->nama_produk}} Design by {{$item->nama_siswa}}, Size: {{$item->ukuran_id}} {{$item->kategori}}, {{$item->warna}} {{$item->template}} </p>
+                            <p class="mb-0" style="font-size: 14px;"> {{$item->nama_produk}} Design by {{$item->design_siswa}}, Size: {{$item->ukuran_id}} {{$item->kategori}}, {{$item->warna}} {{$item->template}} </p>
                             <p class="mb-0 price-diskon"> <b> Rp. {{number_format($item->harga * $item['quantity']  - ($item->diskon * $item['quantity']))}} </b> </p>
                             <p class="mb-0" style="color: gray; font-size: 10px"> <s> Rp. {{number_format($item->harga * $item['quantity'])}} </s> </p>     
-                            <p class="mb-0" style="font-size: 10px">Nama: {{$item['nama_siswa']}} </p>
+                            <p class="mb-0" style="font-size: 10px">Nama: {{$item['design_siswa']}} </p>
                             <p class="mb-0" style="font-size: 10px">Qty: {{$item['quantity']}}</p>
                         </div>
                     </div>
