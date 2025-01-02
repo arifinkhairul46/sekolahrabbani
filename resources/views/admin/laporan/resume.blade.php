@@ -103,6 +103,30 @@
                             </table>
                         </div>
                     </div>
+
+                    <div class="col-lg-6">
+                        <h5> Sales by School </h5>
+                        <div class="table-responsive mt-3">
+                            <table id="list_order" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Nama Sekolah</th>
+                                        <th>Total Item</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($sales_by_school as $item)
+                                        <tr>
+                                            <td>{{$loop->iteration}}</td>
+                                            <td>{{$item->sublokasi}}</td>
+                                            <td>{{$item->total_item}}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

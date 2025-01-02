@@ -436,8 +436,16 @@ class MerchandiseController extends Controller
         ->orderby('total_item', 'desc')
         ->get();
 
+        $sales_by_school = OrderMerchandise::select('mls.sublokasi', DB::raw('count(tpmd.lokasi_sekolah) as total_item'))
+        ->leftJoin('t_pesan_merchandise_detail as tpmd', 'tpmd.no_pesanan', 't_pesan_merchandise.no_pesanan')
+        ->leftJoin('mst_lokasi_sub as mls', 'mls.id', 'tpmd.lokasi_sekolah')
+        ->where('t_pesan_merchandise.status', 'success')
+        ->groupby('tpmd.lokasi_sekolah')
+        ->orderby('total_item', 'desc')
+        ->get();
+
         return view('admin.laporan.resume', compact( 'order_success', 'total_item', 'total_item_baju_ikhwan', 'total_item_baju_akhwat', 'total_item_kerudung',
-        'total_item_by_merch_and_kategori', 'count_item_by_merch_and_kategori'));
+        'total_item_by_merch_and_kategori', 'count_item_by_merch_and_kategori', 'sales_by_school'));
 
     }
 
@@ -477,8 +485,16 @@ class MerchandiseController extends Controller
         ->orderby('total_item', 'desc')
         ->get();
 
+        $sales_by_school = OrderMerchandise::select('mls.sublokasi', DB::raw('count(tpmd.lokasi_sekolah) as total_item'))
+        ->leftJoin('t_pesan_merchandise_detail as tpmd', 'tpmd.no_pesanan', 't_pesan_merchandise.no_pesanan')
+        ->leftJoin('mst_lokasi_sub as mls', 'mls.id', 'tpmd.lokasi_sekolah')
+        ->where('t_pesan_merchandise.status', 'success')
+        ->groupby('tpmd.lokasi_sekolah')
+        ->orderby('total_item', 'desc')
+        ->get();
+
         return view('admin.laporan.resume-all', compact( 'order_success', 'total_item', 'total_item_baju_ikhwan', 'total_item_baju_akhwat', 'total_item_kerudung',
-        'total_item_by_merch_and_kategori'));
+        'total_item_by_merch_and_kategori', 'sales_by_school'));
 
     }
 
