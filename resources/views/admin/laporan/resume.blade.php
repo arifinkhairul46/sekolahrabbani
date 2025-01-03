@@ -150,10 +150,10 @@
                                         </tr>
                                         <?php $total_item += $item->total_item ?>
                                     @endforeach
-                                        <tr>
+                                        {{-- <tr>
                                             <td class="text-center" colspan="2"> <b> Total </b></td>
                                             <td > <i>{{$total_item}} </i></td>
-                                        </tr>
+                                        </tr> --}}
                                 </tbody>
                             </table>
                         </div>
