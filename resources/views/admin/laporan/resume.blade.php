@@ -52,48 +52,6 @@
                     </div>
                 </div>
             </div>
-
-            {{-- <div class="col-auto">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="d-flex" style="align-items: center">
-                            <i class="fa-solid fa-shirt fa-xl" style="color: #72BAA9"></i>
-                            <div class="progress-detail mx-3">
-                                <p  class="mb-2">Total Baju Ikhwan</p>
-                                <h4 class="counter">{{$total_item_baju_ikhwan->count()}}</h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-auto">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="d-flex" style="align-items: center">
-                            <i class="fa-solid fa-shirt fa-xl" style="color: #7E5CAD"></i>
-                            <div class="progress-detail mx-3">
-                                <p  class="mb-2">Total Baju Akhwat</p>
-                                <h4 class="counter">{{$total_item_baju_akhwat->count()}}</h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-auto">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="d-flex" style="align-items: center">
-                            <i class="fa-solid fa-shirt fa-xl" style="color: #DA498D"></i>
-                            <div class="progress-detail mx-3">
-                                <p  class="mb-2">Total Kerudung</p>
-                                <h4 class="counter">{{$total_item_kerudung->count()}}</h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> --}}
         </div>
 
         <div class="card">

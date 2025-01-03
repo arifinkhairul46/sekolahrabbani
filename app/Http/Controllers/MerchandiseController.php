@@ -269,19 +269,26 @@ class MerchandiseController extends Controller
     {
         $start = $request->date_start ?? null;
         $date_end = $request->date_end ?? null;
+        $sekolah_id = $request->sekolah ?? null;
+
         $date_start = date($start);
         $new_date_end = new DateTime($date_end);
         $date_end_plus = $new_date_end->modify('+1 day')->format('Y-m-d');
 
-        $sekolah = LokasiSub::where('status', 1)->get();
+        $sekolah = LokasiSub::select('id as id_sekolah', 'sublokasi')->where('status', 1)->get();
 
-        if ($request->has('date_start') && $request->has('date_end')) {
+        if ($request->has('date_start') && $request->has('date_end') || $request->has('sekolah')) {
             $list_order = OrderMerchandise::query();
 
             if ($request->has('date_start') && $request->has('date_end'))
-                $list_order = $list_order->selectRaw('id, no_pesanan, nama_pemesan, total_harga, metode_pembayaran, status, updated_at')->whereBetween('updated_at', [$date_start, $date_end_plus])->where('status', 'success');
-                // $list_order = $list_order->selectRaw('id, no_pesanan, nama_pemesan, total_harga, metode_pembayaran, status, updated_at')->where('updated_at', '>=', "$date_start")->where('updated_at', '<=', "$date_end")->where('status', 'success');
+                $list_order = $list_order->selectRaw('t_pesan_merchandise.id, t_pesan_merchandise.no_pesanan, nama_pemesan, total_harga, metode_pembayaran, status, t_pesan_merchandise.updated_at')->whereBetween('t_pesan_merchandise.updated_at', [$date_start, $date_end_plus])->where('status', 'success');
+
+            if ($request->has('sekolah'))
+                $list_order = $list_order->selectRaw('t_pesan_merchandise.id, t_pesan_merchandise.no_pesanan, nama_pemesan, total_harga, metode_pembayaran, status, t_pesan_merchandise.updated_at')->leftJoin('t_pesan_merchandise_detail as tpmd', 't_pesan_merchandise.no_pesanan', 'tpmd.no_pesanan')->where('tpmd.lokasi_sekolah', $sekolah_id)
+                            ->where('status', 'success');
+
             $list_order = $list_order->get();
+
         } else if ($request->has('date_start') || $request->has('date_end')) {
             $list_order = OrderMerchandise::query();
 
@@ -294,7 +301,7 @@ class MerchandiseController extends Controller
             $list_order = OrderMerchandise::where('status', 'success')->orderby('updated_at', 'desc')->get();
         }
 
-        return view('admin.laporan.order-merchandise', compact('list_order', 'date_start', 'date_end', 'sekolah'));
+        return view('admin.laporan.order-merchandise', compact('list_order', 'date_start', 'date_end', 'sekolah', 'sekolah_id'));
     }
 
     public function order_detail ($id)
