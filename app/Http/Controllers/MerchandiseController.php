@@ -273,7 +273,7 @@ class MerchandiseController extends Controller
         $new_date_end = new DateTime($date_end);
         $date_end_plus = $new_date_end->modify('+1 day')->format('Y-m-d');
 
-        
+        $sekolah = LokasiSub::where('status', 1)->get();
 
         if ($request->has('date_start') && $request->has('date_end')) {
             $list_order = OrderMerchandise::query();
@@ -294,7 +294,7 @@ class MerchandiseController extends Controller
             $list_order = OrderMerchandise::where('status', 'success')->orderby('updated_at', 'desc')->get();
         }
 
-        return view('admin.laporan.order-merchandise', compact('list_order', 'date_start', 'date_end'));
+        return view('admin.laporan.order-merchandise', compact('list_order', 'date_start', 'date_end', 'sekolah'));
     }
 
     public function order_detail ($id)
@@ -451,8 +451,16 @@ class MerchandiseController extends Controller
         ->orderby('total_item', 'desc')
         ->get();
 
+        $sales_by_produk = OrderMerchandise::select('mm.nama_produk', DB::raw('count(tpmd.merchandise_id) as total_item'))
+        ->leftJoin('t_pesan_merchandise_detail as tpmd', 'tpmd.no_pesanan', 't_pesan_merchandise.no_pesanan')
+        ->leftJoin('m_merchandise as mm', 'mm.id', 'tpmd.merchandise_id')
+        ->where('t_pesan_merchandise.status', 'success')
+        ->groupby('tpmd.merchandise_id')
+        ->orderby('total_item', 'desc')
+        ->get();
+
         return view('admin.laporan.resume', compact( 'order_success', 'total_item', 'total_item_baju_ikhwan', 'total_item_baju_akhwat', 'total_item_kerudung',
-        'total_item_by_merch_and_kategori', 'count_item_by_merch_and_kategori', 'sales_by_school', 'hpp', 'profit'));
+        'total_item_by_merch_and_kategori', 'count_item_by_merch_and_kategori', 'sales_by_school', 'hpp', 'profit', 'sales_by_produk'));
 
     }
 
@@ -507,8 +515,16 @@ class MerchandiseController extends Controller
         ->orderby('total_item', 'desc')
         ->get();
 
+        $sales_by_produk = OrderMerchandise::select('mm.nama_produk', DB::raw('count(tpmd.merchandise_id) as total_item'))
+        ->leftJoin('t_pesan_merchandise_detail as tpmd', 'tpmd.no_pesanan', 't_pesan_merchandise.no_pesanan')
+        ->leftJoin('m_merchandise as mm', 'mm.id', 'tpmd.merchandise_id')
+        ->where('t_pesan_merchandise.status', 'success')
+        ->groupby('tpmd.merchandise_id')
+        ->orderby('total_item', 'desc')
+        ->get();
+
         return view('admin.laporan.resume-all', compact( 'order_success', 'total_item', 'total_item_baju_ikhwan', 'total_item_baju_akhwat', 'total_item_kerudung',
-        'total_item_by_merch_and_kategori', 'sales_by_school', 'hpp', 'profit'));
+        'total_item_by_merch_and_kategori', 'sales_by_school', 'hpp', 'profit', 'sales_by_produk'));
 
     }
 

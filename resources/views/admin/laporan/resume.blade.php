@@ -100,9 +100,9 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-lg-6">
-                        <h5> Sales Item By Produk, Kategori & Warna </h5>
+                        <h6> Sales Item By Produk, Kategori & Warna </h6>
                         <div class="table-responsive mt-3">
-                            <table id="list_order" class="table table-striped">
+                            <table id="list_order" class="table table-striped" style="font-size: 14px">
                                 <thead>
                                     <tr>
                                         <th>No</th>
@@ -132,10 +132,10 @@
                         </div>
                     </div>
 
-                    <div class="col-lg-6">
-                        <h5> Sales by School </h5>
+                    <div class="col-lg-3">
+                        <h6> Sales by School </h6>
                         <div class="table-responsive mt-3">
-                            <table id="list_order" class="table table-striped">
+                            <table id="list_order" class="table table-striped" style="font-size: 12px;">
                                 <thead>
                                     <tr>
                                         <th>No</th>
@@ -148,6 +148,30 @@
                                         <tr>
                                             <td>{{$loop->iteration}}</td>
                                             <td>{{$item->sublokasi}}</td>
+                                            <td>{{$item->total_item}}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3">
+                        <h6> Sales by Product </h6>
+                        <div class="table-responsive mt-3">
+                            <table id="list_order" class="table table-striped" style="font-size: 12px">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Nama Produk</th>
+                                        <th>Total Item</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($sales_by_produk as $item)
+                                        <tr>
+                                            <td>{{$loop->iteration}}</td>
+                                            <td>{{$item->nama_produk}}</td>
                                             <td>{{$item->total_item}}</td>
                                         </tr>
                                     @endforeach
