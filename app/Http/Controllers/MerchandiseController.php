@@ -452,7 +452,7 @@ class MerchandiseController extends Controller
         ->orderby('total_item', 'desc')
         ->get();
 
-        $sales_by_produk = OrderMerchandise::select('mm.nama_produk', DB::raw('count(tpmd.merchandise_id) as total_item'))
+        $sales_by_produk = OrderMerchandise::select('mm.nama_produk', DB::raw('sum(tpmd.quantity) as total_item'))
         ->leftJoin('t_pesan_merchandise_detail as tpmd', 'tpmd.no_pesanan', 't_pesan_merchandise.no_pesanan')
         ->leftJoin('m_merchandise as mm', 'mm.id', 'tpmd.merchandise_id')
         ->where('t_pesan_merchandise.status', 'success')
@@ -517,7 +517,7 @@ class MerchandiseController extends Controller
         ->orderby('total_item', 'desc')
         ->get();
 
-        $sales_by_produk = OrderMerchandise::select('mm.nama_produk', DB::raw('count(tpmd.merchandise_id) as total_item'))
+        $sales_by_produk = OrderMerchandise::select('mm.nama_produk', DB::raw('sum(tpmd.quantity) as total_item'))
         ->leftJoin('t_pesan_merchandise_detail as tpmd', 'tpmd.no_pesanan', 't_pesan_merchandise.no_pesanan')
         ->leftJoin('m_merchandise as mm', 'mm.id', 'tpmd.merchandise_id')
         ->where('t_pesan_merchandise.status', 'success')
