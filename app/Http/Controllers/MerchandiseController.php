@@ -268,8 +268,8 @@ class MerchandiseController extends Controller
     public function list_order (Request $request)
     {
         $sekolah_id = $request->sekolah ?? null;
-        $start = $request->date_start ?? null;
-        $date_end = $request->date_end ?? null;
+        $start = $request->date_start != '' ? $request->date_start : null ;
+        $date_end = $request->date_end != '' ? $request->date_end : null;
 
         $date_start = date($start);
         $new_date_end = new DateTime($date_end);
