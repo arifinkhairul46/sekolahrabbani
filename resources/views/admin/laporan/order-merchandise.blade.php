@@ -16,6 +16,22 @@
                     <div class="row g-3 align-items-center">
 
                         <div class="col-auto">
+                            <label for="sekolah" class="col-auto form-control-label">Sekolah</label>
+                        </div>
+
+                        <div class="col-auto">
+                            <select name="sekolah" id="sekolah" class="col-auto select form-control form-control-sm" aria-label=".form-select-sm" >
+                                <option value="" disabled selected> --Pilih Sekolah-- </option>
+                                @foreach ($sekolah as $item)
+                                    <option value="{{ $item->id_sekolah }}" {{($item->id_sekolah == $sekolah_id) ? 'selected' : ''}} >{{ $item->sublokasi }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        
+                        <div class="col-3">
+                        </div>
+
+                        <div class="col-auto">
                             <label class="col-form-label">Tanggal</label>
                         </div>
 
@@ -29,22 +45,6 @@
 
                         <div class="col-auto">
                             <input type="date" id="date_end" name="date_end" value="{{$date_end}}" class="form-control">
-                        </div>
-
-                        <div class="col-3">
-                        </div>
-
-                        <div class="col-auto">
-                            <label for="sekolah" class="col-auto form-control-label">Sekolah</label>
-                        </div>
-
-                        <div class="col-auto">
-                            <select name="sekolah" id="sekolah" class="col-auto select form-control form-control-sm" aria-label=".form-select-sm" >
-                                <option value="" disabled selected> --Pilih Sekolah-- </option>
-                                @foreach ($sekolah as $item)
-                                    <option value="{{ $item->id_sekolah }}" {{($item->id_sekolah == $sekolah_id) ? 'selected' : ''}} >{{ $item->sublokasi }}</option>
-                                @endforeach
-                            </select>
                         </div>
                     
                     </div>

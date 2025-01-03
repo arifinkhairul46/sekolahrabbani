@@ -26,7 +26,7 @@
             </div>
 
             <div class="col-auto">
-                <div class="card">
+                <div class="card" style="width: 15rem">
                     <div class="card-body">
                         <div class="d-flex" style="align-items: center">
                             <i class="fa-solid fa-coins fa-xl" style="color: #FFB200"></i>
@@ -52,6 +52,21 @@
                     </div>
                 </div>
             </div>
+
+            <div class="col-auto">
+                <div class="card" style="width: 15rem">
+                    <div class="card-body">
+                        <div class="d-flex" style="align-items: center">
+                            <i class="fa-solid fa-shirt fa-xl" style="color: #5653ed"></i>
+                            <div class="progress-detail mx-3">
+                                <p  class="mb-2">Total Produk</p>
+                                <h4 class="counter">{{$total_item->total_item}}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
         <div class="card">
@@ -126,13 +141,19 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <?php $total_item = 0; ?>
                                     @foreach ($sales_by_produk as $item)
                                         <tr>
                                             <td>{{$loop->iteration}}</td>
                                             <td>{{$item->nama_produk}}</td>
                                             <td>{{$item->total_item}}</td>
                                         </tr>
+                                        <?php $total_item += $item->total_item ?>
                                     @endforeach
+                                        <tr>
+                                            <td class="text-center" colspan="2"> <b> Total </b></td>
+                                            <td > <i>{{$total_item}} </i></td>
+                                        </tr>
                                 </tbody>
                             </table>
                         </div>

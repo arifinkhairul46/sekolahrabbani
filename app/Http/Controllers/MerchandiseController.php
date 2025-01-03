@@ -267,9 +267,9 @@ class MerchandiseController extends Controller
 
     public function list_order (Request $request)
     {
+        $sekolah_id = $request->sekolah ?? null;
         $start = $request->date_start ?? null;
         $date_end = $request->date_end ?? null;
-        $sekolah_id = $request->sekolah ?? null;
 
         $date_start = date($start);
         $new_date_end = new DateTime($date_end);
@@ -279,21 +279,13 @@ class MerchandiseController extends Controller
 
         if ($request->has('date_start') && $request->has('date_end') || $request->has('sekolah')) {
             $list_order = OrderMerchandise::query();
-
-            if ($request->has('date_start') && $request->has('date_end'))
-                $list_order = $list_order->selectRaw('t_pesan_merchandise.id, t_pesan_merchandise.no_pesanan, nama_pemesan, total_harga, metode_pembayaran, status, t_pesan_merchandise.updated_at')->whereBetween('t_pesan_merchandise.updated_at', [$date_start, $date_end_plus])->where('status', 'success');
-
+            
             if ($request->has('sekolah'))
-                $list_order = $list_order->selectRaw('t_pesan_merchandise.id, t_pesan_merchandise.no_pesanan, nama_pemesan, total_harga, metode_pembayaran, status, t_pesan_merchandise.updated_at')->leftJoin('t_pesan_merchandise_detail as tpmd', 't_pesan_merchandise.no_pesanan', 'tpmd.no_pesanan')->where('tpmd.lokasi_sekolah', $sekolah_id)
+            $list_order = $list_order->selectRaw('t_pesan_merchandise.id, t_pesan_merchandise.no_pesanan, nama_pemesan, total_harga, metode_pembayaran, status, t_pesan_merchandise.updated_at')->leftJoin('t_pesan_merchandise_detail as tpmd', 't_pesan_merchandise.no_pesanan', 'tpmd.no_pesanan')->where('tpmd.lokasi_sekolah', $sekolah_id)
                             ->where('status', 'success');
 
-            $list_order = $list_order->get();
-
-        } else if ($request->has('date_start') || $request->has('date_end')) {
-            $list_order = OrderMerchandise::query();
-
-            if ($request->has('date_start'))
-                $list_order = $list_order->selectRaw('id, no_pesanan, nama_pemesan, total_harga, metode_pembayaran, status, updated_at')->where('updated_at', 'like', '%' .$date_start.'%')->where('status', 'success');
+            if ($request->has('date_start') && $request->has('date_end'))
+            $list_order = $list_order->selectRaw('t_pesan_merchandise.id, t_pesan_merchandise.no_pesanan, nama_pemesan, total_harga, metode_pembayaran, status, t_pesan_merchandise.updated_at')->whereBetween('t_pesan_merchandise.updated_at', [$date_start, $date_end_plus])->where('status', 'success');
 
             $list_order = $list_order->get();
 
@@ -402,8 +394,10 @@ class MerchandiseController extends Controller
                         ->where('tpm.status', 'success')
                         ->first();
 
-        $total_item = OrderDetailMerchandise::leftJoin('t_pesan_merchandise as tpm', 'tpm.no_pesanan', 't_pesan_merchandise_detail.no_pesanan')
-                                            ->where('tpm.status', 'success')->get();
+        $total_item = OrderDetailMerchandise::select(DB::raw('sum(t_pesan_merchandise_detail.quantity) as total_item'))
+                        ->leftJoin('t_pesan_merchandise as tpm', 'tpm.no_pesanan', 't_pesan_merchandise_detail.no_pesanan')
+                        ->where('tpm.status', 'success')
+                        ->first();
 
         $total_item_baju_ikhwan = OrderDetailMerchandise::leftJoin('t_pesan_merchandise as tpm', 'tpm.no_pesanan', 't_pesan_merchandise_detail.no_pesanan')
         ->where('t_pesan_merchandise_detail.merchandise_id', 1)
@@ -467,7 +461,7 @@ class MerchandiseController extends Controller
         ->get();
 
         return view('admin.laporan.resume', compact( 'order_success', 'total_item', 'total_item_baju_ikhwan', 'total_item_baju_akhwat', 'total_item_kerudung',
-        'total_item_by_merch_and_kategori', 'count_item_by_merch_and_kategori', 'sales_by_school', 'hpp', 'profit', 'sales_by_produk'));
+        'total_item_by_merch_and_kategori', 'total_item', 'count_item_by_merch_and_kategori', 'sales_by_school', 'hpp', 'profit', 'sales_by_produk'));
 
     }
 
@@ -478,9 +472,10 @@ class MerchandiseController extends Controller
                         ->where('tpm.status', 'success')
                         ->first();
 
-        $total_item = OrderDetailMerchandise::leftJoin('t_pesan_merchandise as tpm', 'tpm.no_pesanan', 't_pesan_merchandise_detail.no_pesanan')
-                                            ->where('tpm.status', 'success')->get();
-
+        $total_item = OrderDetailMerchandise::select(DB::raw('sum(t_pesan_merchandise_detail.quantity) as total_item'))
+                        ->leftJoin('t_pesan_merchandise as tpm', 'tpm.no_pesanan', 't_pesan_merchandise_detail.no_pesanan')
+                        ->where('tpm.status', 'success')
+                        ->first();
         $hpp = OrderMerchandise::select(DB::raw('SUM( (tpmd.hpp * tpmd.quantity) ) as total_hpp'))
         ->leftJoin('t_pesan_merchandise_detail as tpmd', 'tpmd.no_pesanan', 't_pesan_merchandise.no_pesanan')
         ->where('t_pesan_merchandise.status', 'success')
@@ -531,7 +526,7 @@ class MerchandiseController extends Controller
         ->get();
 
         return view('admin.laporan.resume-all', compact( 'order_success', 'total_item', 'total_item_baju_ikhwan', 'total_item_baju_akhwat', 'total_item_kerudung',
-        'total_item_by_merch_and_kategori', 'sales_by_school', 'hpp', 'profit', 'sales_by_produk'));
+        'total_item_by_merch_and_kategori', 'total_item', 'sales_by_school', 'hpp', 'profit', 'sales_by_produk'));
 
     }
 
