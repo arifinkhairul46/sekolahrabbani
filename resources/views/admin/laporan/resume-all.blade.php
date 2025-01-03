@@ -26,7 +26,7 @@
             </div>
 
             <div class="col-auto">
-                <div class="card" style="width: 15rem">
+                <div class="card">
                     <div class="card-body">
                         <div class="d-flex" style="align-items: center">
                             <i class="fa-solid fa-coins fa-xl" style="color: #FFB200"></i>
