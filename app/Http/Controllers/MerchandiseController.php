@@ -413,6 +413,13 @@ class MerchandiseController extends Controller
         ->where('t_pesan_merchandise_detail.merchandise_id', 3)
         ->get();
 
+        $hpp = OrderMerchandise::select(DB::raw('SUM( (tpmd.hpp * tpmd.quantity) ) as total_hpp'))
+        ->leftJoin('t_pesan_merchandise_detail as tpmd', 'tpmd.no_pesanan', 't_pesan_merchandise.no_pesanan')
+        ->where('t_pesan_merchandise.status', 'success')
+        ->first();
+
+        $profit = $order_success->grand_total - $hpp->total_hpp;
+
         $total_item_by_merch_and_kategori = OrderMerchandise::select('mm.nama_produk', 'mku.kategori', 'mwk.warna', 'tpmd.harga',
         DB::raw('sum(tpmd.quantity) as total_item'))
         ->leftJoin('t_pesan_merchandise_detail as tpmd', 'tpmd.no_pesanan', 't_pesan_merchandise.no_pesanan')
@@ -445,7 +452,7 @@ class MerchandiseController extends Controller
         ->get();
 
         return view('admin.laporan.resume', compact( 'order_success', 'total_item', 'total_item_baju_ikhwan', 'total_item_baju_akhwat', 'total_item_kerudung',
-        'total_item_by_merch_and_kategori', 'count_item_by_merch_and_kategori', 'sales_by_school'));
+        'total_item_by_merch_and_kategori', 'count_item_by_merch_and_kategori', 'sales_by_school', 'hpp', 'profit'));
 
     }
 
@@ -458,6 +465,13 @@ class MerchandiseController extends Controller
 
         $total_item = OrderDetailMerchandise::leftJoin('t_pesan_merchandise as tpm', 'tpm.no_pesanan', 't_pesan_merchandise_detail.no_pesanan')
                                             ->where('tpm.status', 'success')->get();
+
+        $hpp = OrderMerchandise::select(DB::raw('SUM( (tpmd.hpp * tpmd.quantity) ) as total_hpp'))
+        ->leftJoin('t_pesan_merchandise_detail as tpmd', 'tpmd.no_pesanan', 't_pesan_merchandise.no_pesanan')
+        ->where('t_pesan_merchandise.status', 'success')
+        ->first();
+
+        $profit = $order_success->grand_total - $hpp->total_hpp;
 
         $total_item_baju_ikhwan = OrderDetailMerchandise::leftJoin('t_pesan_merchandise as tpm', 'tpm.no_pesanan', 't_pesan_merchandise_detail.no_pesanan')
         ->where('t_pesan_merchandise_detail.merchandise_id', 1)
@@ -494,7 +508,7 @@ class MerchandiseController extends Controller
         ->get();
 
         return view('admin.laporan.resume-all', compact( 'order_success', 'total_item', 'total_item_baju_ikhwan', 'total_item_baju_akhwat', 'total_item_kerudung',
-        'total_item_by_merch_and_kategori', 'sales_by_school'));
+        'total_item_by_merch_and_kategori', 'sales_by_school', 'hpp', 'profit'));
 
     }
 

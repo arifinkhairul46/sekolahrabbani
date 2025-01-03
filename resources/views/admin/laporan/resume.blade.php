@@ -29,6 +29,34 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="d-flex" style="align-items: center">
+                            <i class="fa-solid fa-coins fa-xl" style="color: #FFB200"></i>
+                            <div class="progress-detail mx-3">
+                                <p  class="mb-2">Total Cost HPP</p>
+                                <h4 class="counter">Rp. {{ number_format($hpp->total_hpp)}}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-auto">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex" style="align-items: center">
+                            <i class="fa-solid fa-money-bill-trend-up fa-xl" style="color: #DA498D"></i>
+                            <div class="progress-detail mx-3">
+                                <p  class="mb-2">Total Profit</p>
+                                <h4 class="counter">Rp. {{number_format($profit)}}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- <div class="col-auto">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex" style="align-items: center">
                             <i class="fa-solid fa-shirt fa-xl" style="color: #72BAA9"></i>
                             <div class="progress-detail mx-3">
                                 <p  class="mb-2">Total Baju Ikhwan</p>
@@ -65,7 +93,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
         </div>
 
         <div class="card">
