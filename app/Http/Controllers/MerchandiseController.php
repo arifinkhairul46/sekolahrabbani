@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\OrderDetailMerchandiseExport;
+use App\Exports\SalesMerchandiseExport;
 use App\Models\DesainPalestineday;
 use App\Models\HargaMerchandise;
 use App\Models\JenisMerchandise;
@@ -351,7 +352,7 @@ class MerchandiseController extends Controller
     {
         $now = date('d-m-y');
         $file_name = 'list-order-by-'.$now.'.xlsx';
-        return Excel::download(new OrderDetailMerchandiseExport(), $file_name);
+        return Excel::download(new SalesMerchandiseExport(), $file_name);
     }
 
     public function rincian_pesanan (Request $request, $id) {
