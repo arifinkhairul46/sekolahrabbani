@@ -319,7 +319,9 @@ class UserController extends Controller
                         ->first();
 
             if ($user) {
-                $message = "Password anda adalah " . $get_pass->pass_akun . "
+                $message = "Password anda adalah 
+                
+" . $get_pass->pass_akun . "
 
 Silahkan masuk ke https://sekolahrabbani.sch.id/login
 
