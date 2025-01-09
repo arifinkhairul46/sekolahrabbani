@@ -737,7 +737,7 @@ Apabila ada pertanyaan silahkan hubungi Customer Service kami di nomor ".$no_adm
 
     function send_notif($message,$no_wha){
         $curl = curl_init();
-        $token = "Q2mvYXDH5NP14owSabnbFCp4pCv6x6W7qjszwV1gNp86ZXkvv32ErAbDi9gOrwmH";
+        $token = "uMh0jG5F7omQRNI2wlFS0IHg8qVhsGj2ZcUW3JrCpGUlyPjI2GyqE26sRX8LgpF1";
     
         $payload = [
             "data" => [
