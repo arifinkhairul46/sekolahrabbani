@@ -315,7 +315,7 @@ class PalestineDayController extends Controller
                         ->get();
 
         
-        return view('ortu.palestine_day.merchandise', compact('get_nis', 'list_karya', 'get_merch', 'cart_detail'));
+        return view('ortu.palestine_day.closed', compact('get_nis', 'list_karya', 'get_merch', 'cart_detail'));
     }
 
     public function detail_merchandise($id) 
