@@ -770,7 +770,7 @@ class PalestineDayController extends Controller
                 $harga_akhir = $total_harga - $total_diskon;
                 $harga_akhir_format = number_format($harga_akhir);
 
-                $this->send_pesan_merchandise_detail($no_pesanan, $nama_siswa, $lokasi, $nama_kelas, $merchandise_id, $warna, $template, $kategori, $desgin, $ukuran, $quantity, $harga, $diskon, $hpp);
+                $this->send_pesan_merchandise_detail($no_pesanan, $nama_siswa, $lokasi, $nama_kelas, $merchandise_id, $warna, $template, $kategori, $desgin, $ukuran, $quantity, $harga, $diskon, $harga_pokok);
                 $this->update_cart_status($user_id, $merchandise_id);
             }
 
