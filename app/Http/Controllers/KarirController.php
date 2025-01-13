@@ -299,7 +299,9 @@ class KarirController extends Controller
 
     function send_notif($message,$no_wha){
         $curl = curl_init();
-        $token = "uMh0jG5F7omQRNI2wlFS0IHg8qVhsGj2ZcUW3JrCpGUlyPjI2GyqE26sRX8LgpF1";
+        $token = env('TOKEN_WABLAS');
+        $secret = env('SECRET_WABLAS');
+        $auth = $token.'.'.$secret;
     
         $payload = [
             "data" => [
@@ -317,7 +319,7 @@ class KarirController extends Controller
     
         curl_setopt($curl, CURLOPT_HTTPHEADER,
             array(
-                "Authorization: $token",
+                "Authorization: $auth",
                 "Content-Type: application/json"
             )
         );
