@@ -122,6 +122,7 @@ Route::group(['middleware' =>['auth']], function () {
     Route::post('change-password', [ProfileController::class, 'update_password'])->name('update-password');
     Route::get('seragam', [SeragamController::class, 'index'])->name('seragam');
     Route::post('seragam/search', [SeragamController::class, 'search_produk'])->name('seragam.search');
+    Route::post('seragam/filter', [SeragamController::class, 'filter_produk'])->name('seragam.filter');
     Route::get('seragam/{id}', [SeragamController::class, 'detail_produk'])->name('seragam.detail');
     Route::get('cart', [SeragamController::class, 'cart'])->name('seragam.cart');
     Route::post('cart', [SeragamController::class, 'add_to_cart'])->name('cart_post');

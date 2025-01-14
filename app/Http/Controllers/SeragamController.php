@@ -7,7 +7,9 @@ use App\Exports\StokExport;
 use App\Models\Cart;
 use App\Models\CartDetail;
 use App\Models\HargaSeragam;
+use App\Models\JenisKategori;
 use App\Models\JenisSeragam;
+use App\Models\Jenjang;
 use App\Models\LokasiSub;
 use App\Models\MenuMobile;
 use App\Models\OrderDetailMerchandise;
@@ -31,6 +33,8 @@ class SeragamController extends Controller
     {
         $user_id = auth()->user()->id;
         $lokasi = LokasiSub::select('id as kode_lokasi', 'sublokasi')->where('status', 1)->get();
+        $jenjang = Jenjang::select('nama_jenjang', 'value')->get();
+        $kategori_seragam = JenisKategori::all();
         $produk_seragam = ProdukSeragam::all();
         $produk_seragam_tk = ProdukSeragam::where('jenjang_id', 3)->get();
         $produk_seragam_sd = ProdukSeragam::where('jenjang_id', 4)->get();
@@ -62,7 +66,7 @@ class SeragamController extends Controller
 
         $menubar = MenuMobile::where('is_footer', 1)->get();
 
-        return view('ortu.seragam.index', compact('lokasi', 'produk_seragam', 'produk_seragam_tk', 'produk_seragam_sd', 'produk_seragam_smp', 'produk_seragam_kober', 'search_produk', 'cart_detail', 'menubar'));
+        return view('ortu.seragam.index', compact('lokasi', 'produk_seragam', 'jenjang', 'kategori_seragam', 'produk_seragam_tk', 'produk_seragam_sd', 'produk_seragam_smp', 'produk_seragam_kober', 'search_produk', 'cart_detail', 'menubar'));
     }
 
     public function search_produk(Request $request)
@@ -74,6 +78,63 @@ class SeragamController extends Controller
 
             if ($keyword != '') {
                 $produk = ProdukSeragam::where('nama_produk', 'LIKE', '%'.$keyword.'%')->where('jenjang_id', '!=', '10')->get();
+                
+                if ($produk) {
+                    foreach ($produk as $item) {
+                        $harga = number_format($item->harga_awal);
+                        $harga_akhir = number_format((100-$item->diskon_persen)/100 * $item->harga_awal);
+                        $src_image = asset('assets/images/'.$item->image);
+                        $route = route('seragam.detail', $item->id);
+                        $output .=  
+                        '<a href="'.$route.'" style="text-decoration: none">
+                            <div class="card catalog mb-1">
+                                <img src="'.$src_image.'" class="card-img-top" alt="'.$item->image.'" style="max-height: 180px">
+                                <div class="card-body pt-1" style="padding-left: 0.8rem; padding-right: 0">
+                                    <h6 class="card-title mb-0">'.$item->nama_produk.'</h6>
+                                    <p class="mb-0 price-diskon" ><b> Rp. '.$harga_akhir.' </b> </p>
+                                    <p class="mb-1 price-normal"><s> Rp. '.$harga.' </s> </p>
+                                    <p class="mb-0" style="font-size: 10px"> Disc. 
+                                        <span class="bg-danger p-1">'.$item->diskon_persen.'% </span> 
+                                        <span class="mx-2"> <i class="fa-solid fa-paper-plane fa-sm"></i> Sekolah Rabbani </span> 
+                                    </p>
+                                </div>
+                            </div>
+                        </a>';
+                    }
+                    return response()->json([
+                        'message' => 'success',
+                        'output' => $output
+                    ]);
+                }
+            } else {
+                return response()->json([
+                    'message' => 'not',
+                    'output' => $output
+                ]);
+            }
+        
+
+        return view('ortu.seragam.index');
+    }
+
+    public function filter_produk(Request $request)
+    {
+        $jenjang = $request->jenjang ?? null;
+        $jenis = $request->jenis ?? null;
+
+
+            $output = '';
+
+            if ($jenjang != '' || $jenis != '') {
+                $produk = ProdukSeragam::query();
+
+                if ($jenjang != '')
+                $produk = $produk->where('jenjang_id', $jenjang);
+
+                if ($jenis != '')
+                $produk = $produk->where('kategori_id', $jenis);
+
+                $produk = $produk->get();
                 
                 if ($produk) {
                     foreach ($produk as $item) {

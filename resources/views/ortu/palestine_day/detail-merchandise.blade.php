@@ -585,7 +585,6 @@
         }
 
         function get_warna(warna_id, merch_id) {
-            console.log(warna_id, merch_id);
             $.ajax({
                 url: "{{route('get_warna')}}",
                 type: 'POST',
