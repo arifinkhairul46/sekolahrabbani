@@ -479,19 +479,42 @@
                 event.preventDefault();
                 var form = document.getElementById('update_data_pendaftaran');
                 var data = new FormData(form);
-                for (var [key, value] of data) {
-                    if (value == "" || value == null) {
-                        alert("Mohon cek kembali bagian " + key +", Pastikan Semua Data Sudah Terisi")
-                        return false;
-                    } 
+                var provinsi = $('#provinsi').val();
+                var kota = $('#kota').val();
+                var kecamatan = $('#kecamatan').val();
+                var kelurahan = $('#kelurahan').val();
+                var pekerjaan_ibu = $('#pekerjaan_ibu').val();
+                var pekerjaan_ayah = $('#pekerjaan_ayah').val();
+
+                console.log('u', provinsi, kota, kecamatan, kelurahan, pekerjaan_ayah, pekerjaan_ibu);
+
+                if (provinsi == null ) {
+                    alert('Mohon cek kembali inputan provinsi, Pastikan Semua Data Sudah Terisi' )
+                } else if( kota == null ) {
+                    alert('Mohon cek kembali inputan kota, Pastikan Semua Data Sudah Terisi' )
+                } else if ( kecamatan == null) {
+                    alert('Mohon cek kembali inputan kota, Pastikan Semua Data Sudah Terisi' )
+                } else if (kelurahan == null) {
+                    alert('Mohon cek kembali inputan kelurahan, Pastikan Semua Data Sudah Terisi' )
+                } else if (pekerjaan_ayah == null) {
+                    alert('Mohon cek kembali inputan pekerjaan ayah, Pastikan Semua Data Sudah Terisi' )
+                } else if (pekerjaan_ibu == null) {
+                    alert('Mohon cek kembali inputan pekerjaan ibu, Pastikan Semua Data Sudah Terisi' )
+                } else {
+                    for (var [key, value] of data) {
+                        if (value == "" || value == null) {
+                            alert("Mohon cek kembali bagian " + key +", Pastikan Semua Data Sudah Terisi")
+                            return false;
+                        } 
+                    }
+                    // disable button
+                    $(this).prop("disabled", true);
+                    // add spinner to button
+                    $(this).html(
+                        `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...`
+                    );
+                    $("#update_data_pendaftaran").submit();
                 }
-                // disable button
-                $(this).prop("disabled", true);
-                // add spinner to button
-                $(this).html(
-                    `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...`
-                );
-                $("#update_data_pendaftaran").submit();
 
             });
         });
