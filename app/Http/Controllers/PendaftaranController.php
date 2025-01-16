@@ -14,6 +14,7 @@ use App\Models\KuesionerOrtu;
 use App\Models\KuotaPPDB;
 use App\Models\Lokasi;
 use App\Models\LokasiSub;
+use App\Models\Pekerjaan;
 use App\Models\Pendaftaran;
 use App\Models\PendaftaranAyah;
 use App\Models\PendaftaranIbu;
@@ -284,6 +285,9 @@ Apabila ada pertanyaan silahkan hubungi Customer Service kami di nomor ".$no_adm
         $provinsi = Provinsi::all();
         $kecamatan_asal_sekolah = Kecamatan::kecamatan_with_kota();
 
+        $list_pekerjaan_ayah = Pekerjaan::whereNotIn('id', [6,7,10])->get();
+        $list_pekerjaan_ibu = Pekerjaan::whereNotIn('id', [6,7])->get();
+
         if ($get_profile != null) {
             $kota = Kota::where('provinsi_id', $get_profile->provinsi)->get();
             $kecamatan = Kecamatan::where('kabkot_id', $get_profile->kota)->get();
@@ -320,7 +324,7 @@ Apabila ada pertanyaan silahkan hubungi Customer Service kami di nomor ".$no_adm
 
         return view('pendaftaran.tk-sd.pemenuhan-data', compact('provinsi', 'kecamatan', 'kecamatan_asal_sekolah', 'kelurahan', 'kota', 
         'get_profile',  'get_profile_ibu',  'get_profile_ayah', 'get_profile_wali', 'no_registrasi', 'kuesioner', 'kuesioner_ortu',
-        'get_kuesioner_ortu', 'get_kuesioner_anak'));
+        'get_kuesioner_ortu', 'get_kuesioner_anak', 'list_pekerjaan_ayah', 'list_pekerjaan_ibu'));
     }
 
     public function find(Request $request, Pendaftaran $pendaftaran)

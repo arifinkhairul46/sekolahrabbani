@@ -233,14 +233,9 @@
                                     <span for="pekerjaan_ibu" class="form-label">Pekerjaan Ibu</span>
                                     <select id="pekerjaan_ibu" name="pekerjaan_ibu" class="select form-control form-control-sm px-3" required>
                                         <option value="" disabled selected>-- Pilih Pekerjaan --</option>
-                                        <option value="PNS" {{($get_profile_ibu->pekerjaan_jabatan == 'PNS') ? 'selected' : ''}} >PNS</option>
-                                        <option value="Karyawan BUMN/BUMD" {{($get_profile_ibu->pekerjaan_jabatan == 'Karyawan BUMN/BUMD') ? 'selected' : ''}}>Karyawan BUMN/BUMD</option>
-                                        <option value="Karyawan Swasta" {{($get_profile_ibu->pekerjaan_jabatan == 'Karyawan Swasta') ? 'selected' : ''}} >Karyawan Swasta</option>
-                                        <option value="Karyawan Rabbani" {{($get_profile_ibu->pekerjaan_jabatan == 'Karyawan Rabbani') ? 'selected' : ''}} >Karyawan Rabbani</option>
-                                        <option value="Guru/Dosen" {{($get_profile_ibu->pekerjaan_jabatan == 'Guru/Dosen') ? 'selected' : ''}} >Guru/Dosen</option>
-                                        <option value="TNI/POLRI" {{($get_profile_ibu->pekerjaan_jabatan == 'TNI/POLRI') ? 'selected' : ''}} >TNI/POLRI</option>
-                                        <option value="Wiraswasta" {{($get_profile_ibu->pekerjaan_jabatan == 'Wiraswasta') ? 'selected' : ''}} >Wiraswasta</option>
-                                        <option value="Ibu Rumah Tangga" {{($get_profile_ibu->pekerjaan_jabatan == 'Ibu Rumah Tangga') ? 'selected' : ''}} >Ibu Rumah Tangga</option>
+                                        @foreach ($list_pekerjaan_ibu as $item)
+                                            <option value="{{ $item->id }}" {{($get_profile_ibu->pekerjaan_jabatan == $item->id) ? 'selected' : ''}} >{{ $item->pekerjaan }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
 
@@ -300,13 +295,9 @@
                                     <span for="pekerjaan_ayah" class="form-label">Pekerjaan ayah</span>
                                     <select id="pekerjaan_ayah" name="pekerjaan_ayah" class="select form-control form-control-sm px-3" required>
                                         <option value="" disabled selected>-- Pilih Pekerjaan --</option>
-                                        <option value="PNS" {{($get_profile_ayah->pekerjaan_jabatan == 'PNS') ? 'selected' : ''}} >PNS</option>
-                                        <option value="Karyawan BUMN/BUMD" {{($get_profile_ayah->pekerjaan_jabatan == 'Karyawan BUMN/BUMD') ? 'selected' : ''}}>Karyawan BUMN/BUMD</option>
-                                        <option value="Karyawan Swasta" {{($get_profile_ayah->pekerjaan_jabatan == 'Karyawan Swasta') ? 'selected' : ''}} >Karyawan Swasta</option>
-                                        <option value="Karyawan Rabbani" {{($get_profile_ayah->pekerjaan_jabatan == 'Karyawan Rabbani') ? 'selected' : ''}} >Karyawan Rabbani</option>
-                                        <option value="Guru/Dosen" {{($get_profile_ayah->pekerjaan_jabatan == 'Guru/Dosen') ? 'selected' : ''}} >Guru/Dosen</option>
-                                        <option value="TNI/POLRI" {{($get_profile_ayah->pekerjaan_jabatan == 'TNI/POLRI') ? 'selected' : ''}} >TNI/POLRI</option>
-                                        <option value="Wiraswasta" {{($get_profile_ayah->pekerjaan_jabatan == 'Wiraswasta') ? 'selected' : ''}} >Wiraswasta</option>
+                                        @foreach ($list_pekerjaan_ayah as $item)
+                                            <option value="{{ $item->id }}" {{($get_profile_ayah->pekerjaan_jabatan == $item->id) ? 'selected' : ''}} >{{ $item->pekerjaan }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
 
