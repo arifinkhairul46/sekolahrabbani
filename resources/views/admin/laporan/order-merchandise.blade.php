@@ -59,7 +59,11 @@
         <div class="card">
             <div class="card-body">
                 <div class="d-flex" style="justify-content: flex-end">
-                    <form action="{{route('list-order.export')}}" method="GET" ><button class="btn btn-success btn-sm" > Export Excel </button> </form>
+                    <form action="{{route('list-order.export')}}" method="GET" >
+                        <input type="hidden" name="date_start_ex" value="{{$date_start}}" class="form-control">
+                        <input type="hidden" name="date_end_ex" value="{{$date_end}}" class="form-control">
+                        <button type="submit" class="btn btn-success btn-sm" > Export Excel </button> 
+                    </form>
                 </div>
                 <div class="table-responsive mt-3">
                     <table id="list_order" class="table table-striped" data-toggle="data-table">

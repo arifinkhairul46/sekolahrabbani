@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\OrderDetailMerchandiseExport;
+use App\Exports\OrderMerchandiseExport;
 use App\Exports\SalesMerchandiseExport;
 use App\Models\DesainPalestineday;
 use App\Models\HargaMerchandise;
@@ -348,11 +349,19 @@ class MerchandiseController extends Controller
         return $pdf->download('Invoice-'.$id.'.pdf');
     }
 
-    public function export_list_order()
+    public function export_list_order(Request $request)
     {
+        $sekolah_id = $request->sekolah ?? null;
+        $start = $request->date_start_ex != '' ? $request->date_start_ex : null ;
+        $date_end = $request->date_end_ex != '' ? $request->date_end_ex : null;
+        
+        $date_start = date($start);
+        $new_date_end = new DateTime($date_end);
+        $date_end_plus = $new_date_end->modify('+1 day')->format('Y-m-d');
+
         $now = date('d-m-y');
         $file_name = 'list-order-by-'.$now.'.xlsx';
-        return Excel::download(new SalesMerchandiseExport(), $file_name);
+        return Excel::download(new SalesMerchandiseExport($start, $date_end_plus), $file_name);
     }
 
     public function rincian_pesanan (Request $request, $id) {

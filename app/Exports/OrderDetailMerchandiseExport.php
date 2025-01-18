@@ -11,6 +11,15 @@ class OrderDetailMerchandiseExport implements FromCollection, WithHeadings
     /**
     * @return \Illuminate\Support\Collection
     */
+
+    private $from_date;
+    private $to_date;
+
+    public function __construct($from_date, $to_date) {
+        $this->from_date = $from_date;
+        $this->to_date = $to_date;
+    }
+
     public function collection()
     {
         // return OrderDetailMerchandise::all();
@@ -25,6 +34,7 @@ class OrderDetailMerchandiseExport implements FromCollection, WithHeadings
                     ->leftJoin('m_template_desain as mtd', 'mtd.id', 't_pesan_merchandise_detail.template_id')
                     ->leftJoin('t_desain_palestineday as tdp', 'tdp.id', 't_pesan_merchandise_detail.design_id')
                     ->where('tpm.status', 'success')
+                    ->whereBetween('tpm.updated_at', [$this->from_date,$this->to_date])
                     ->get();
         return $data;
     }
