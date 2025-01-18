@@ -352,7 +352,7 @@ class MerchandiseController extends Controller
     public function export_list_order(Request $request)
     {
         $sekolah_id = $request->sekolah ?? null;
-        $start = $request->date_start_ex != '' ? $request->date_start_ex : null ;
+        $start = $request->date_start_ex != '' ? $request->date_start_ex : '2024-12-18' ;
         $date_end = $request->date_end_ex != '' ? $request->date_end_ex : null;
         
         $date_start = date($start);
