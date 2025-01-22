@@ -233,18 +233,19 @@ class PendaftaranController extends Controller
 		$message_for_admin_wl='Pendaftaran telah berhasil dengan nomor registrasi "'.$id_anak.'". a/n "'.$nama_lengkap.'" masuk dalam waiting list';
 
         //send notif ke ortu
-        $message_ortu = "Terimakasih *Ayah/Bunda $nama_lengkap* telah mendaftar ke Sekolah Rabbani. 
+        $message_ortu = "Terimakasih *Ayah/Bunda $nama_lengkap* telah mendaftarkan Anandanya ke Sekolah Rabbani. 
 No Registrasi / Pendaftaran adalah *$id_anak* mohon disimpan untuk selanjutnya pemenuhan data saat psikotest. 
 
 Silahkan lakukan pembayaran pendaftaran sebesar *Rp ".number_format($biaya)."* ke rekening *".$nama_rek." ".$no_rek."* dan kirim bukti bayar ke nomor https://wa.me/".$no_admin." 
 
 Apabila ada pertanyaan silahkan hubungi Customer Service kami di nomor ".$no_admin.", Terima Kasih.";
 
-        $message_waiting_list = "Terimakasih *Ayah/Bunda $nama_lengkap* telah mendaftar ke Sekolah Rabbani dengan No Registrasi adalah *$id_anak*. 
+        $message_waiting_list = "Terimakasih *Ayah/Bunda $nama_lengkap* telah mendaftarkan Anandanya ke Sekolah Rabbani dengan No Registrasi adalah *$id_anak*. Kami sangat menghargai kepercayaan Ayah/Bunda kepada kami. 
 
-Mohon maaf saat ini kuota pendaftaran sudah terpenuhi, saat ini Ayah/Bunda sedang masuk ke dalam _waiting list_. 
+Kami akan segera menginformasikan kepada Ayah/Bunda mengenai proses selanjutnya. Jika ada pertanyaan atau kebutuhan informasi tambahan, jangan ragu untuk menghubungi kami melalui nomor ".$no_admin." 
 
-Apabila ada pertanyaan silahkan hubungi Customer Service kami di nomor ".$no_admin.", Terima Kasih.";
+Hormat Kami,
+Sekolah Rabbani.";
 
         if ($status_daftar == 3) {
             $this->send_notif($message_for_admin_wl, $no_admin);
