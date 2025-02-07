@@ -41,19 +41,7 @@
                                     {{-- <td>{{$item->nis}}</td> --}}
                                     <td>{{$item->no_hp}} </td>
                                     <td>{{$item->no_hp_2}}</td>
-                                    @if ($item->id_role == 1) 
-                                        <td> Super Admin </td>
-                                    @elseif ($item->id_role == 2)
-                                        <td> Admin </td>
-                                    @elseif ($item->id_role == 3)
-                                        <td> CSDM </td>
-                                    @elseif ($item->id_role == 4)
-                                        <td> Karyawan </td>
-                                    @elseif ($item->id_role == 5)
-                                        <td> Orang Tua </td>
-                                    @elseif ($item->id_role == 6)
-                                        <td> Tim Media </td>
-                                    @endif
+                                    <td> {{$item->role_name}} </td>
                                 </tr>
                             @endforeach
                         </tbody>

@@ -477,8 +477,6 @@
                 var pekerjaan_ibu = $('#pekerjaan_ibu').val();
                 var pekerjaan_ayah = $('#pekerjaan_ayah').val();
 
-                console.log('u', provinsi, kota, kecamatan, kelurahan, pekerjaan_ayah, pekerjaan_ibu);
-
                 if (provinsi == null ) {
                     alert('Mohon cek kembali inputan provinsi, Pastikan Semua Data Sudah Terisi' )
                 } else if( kota == null ) {

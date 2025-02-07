@@ -19,7 +19,8 @@ class UserController extends Controller
 
     public function list_user()
     {
-        $list_user = User::all();
+        $list_user = User::select('users.*', 'role.name as role_name')
+                        ->leftJoin('role', 'users.id_role', 'role.id')->get();
         $list_role = Role::all();
         // dd($list_user);
         return view('admin.master.index', compact('list_user', 'list_role'));

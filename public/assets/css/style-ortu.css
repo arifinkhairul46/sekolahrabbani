@@ -530,6 +530,15 @@ main {
 	overflow: hidden;
 }
 
+.input-nama-punggung {
+    background-color: #F8F0FF;
+    border: none;
+    border-radius: 1rem !important;
+	width: 50%;
+	height: 25px;
+	overflow: hidden;
+}
+
 .btn-outline-plus-minus {
     border: none !important;
     margin: 0 !important;

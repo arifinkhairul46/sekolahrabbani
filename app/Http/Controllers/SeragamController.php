@@ -14,6 +14,7 @@ use App\Models\LokasiSub;
 use App\Models\MenuMobile;
 use App\Models\OrderDetailMerchandise;
 use App\Models\OrderDetailSeragam;
+use App\Models\OrderJersey;
 use App\Models\OrderMerchandise;
 use App\Models\OrderSeragam;
 use App\Models\ProdukSeragam;
@@ -759,7 +760,6 @@ class SeragamController extends Controller
 
             $mtd_pembayaran = $bank;
             $no_va = $va_number;
-            // return response()->json($no_va);
         } else if ($paymentType == 'bank_transfer' && $request->permata_va_number) {
             $va_number = $request->permata_va_number;
             
@@ -774,14 +774,15 @@ class SeragamController extends Controller
         $orderId = $request->order_id;
         $order = OrderSeragam::where('no_pemesanan', $orderId)->first();
         $order_merch = OrderMerchandise::where('no_pesanan', $orderId)->first();
+        $order_jersey = OrderJersey::where('no_pesanan', $orderId)->first();
        
-        if (!$order && !$order_merch) {
+        if (!$order && !$order_merch && !$order_jersey) {
             return response()->json(['message' => 'Order not found'], 404);
         }
 
         $order_detail = OrderDetailSeragam::select('kode_produk', 'quantity')->where('no_pemesanan', $orderId)->get();
 
-        if ($order != null && $order_merch == null) {
+        if ($order != null && $order_merch == null && $order_jersey == null) {
             switch ($transactionStatus) {
                 case 'capture':
                     if ($request->payment_type == 'credit_card') {
@@ -901,7 +902,76 @@ class SeragamController extends Controller
             }
     
             return response()->json(['message' => 'Callback received successfully']);
-        } else if ($order_merch != null && $order == null) {
+        } else if ($order_jersey != null && $order == null  && $order_merch == null) {
+            switch ($transactionStatus) {
+                case 'capture':
+                    if ($request->payment_type == 'credit_card') {
+                        if ($request->fraud_status == 'challenge') {
+                            $order_jersey->update([
+                                'status' => 'pending',
+                                'metode_pembayaran' => $mtd_pembayaran,
+                                'va_number' => $no_va
+                            ]);
+                        } else {
+                            $order_jersey->update([
+                                'status' => 'success',
+                                'metode_pembayaran' => $mtd_pembayaran,
+                                'va_number' => $no_va
+                            ]);
+                        }
+                    }
+                    break;
+                case 'settlement':
+                    $order_jersey->update([
+                        'status' => 'success',
+                        'metode_pembayaran' => $mtd_pembayaran,
+                        'va_number' => $no_va,
+                        'tgl_bayar' => $request->settlement_time,
+                        'updated_at' => $request->settlement_time
+                    ]);
+                    $this->update_status_merchandise('success', $mtd_pembayaran, $orderId);
+                    break;
+                case 'pending':
+                    $order_jersey->update([
+                        'status' => 'pending',
+                        'metode_pembayaran' => $mtd_pembayaran,
+                        'va_number' => $no_va,
+                        'expire_time' => $request->expiry_time
+                    ]);
+                    $this->update_status_merchandise('pending', $mtd_pembayaran, $orderId);
+                    break;
+                case 'deny':
+                    $order_jersey->update([
+                        'status' => 'failed',
+                        'metode_pembayaran' => $mtd_pembayaran,
+                        'va_number' => $no_va
+                    ]);
+                   
+                    break;
+                case 'expire':
+                    $order_jersey->update([
+                        'status' => 'expired',
+                        'metode_pembayaran' => $mtd_pembayaran,
+                        'va_number' => $no_va
+                    ]);
+                    $this->update_status_merchandise('expired', $mtd_pembayaran, $orderId);
+                    break;
+                case 'cancel':
+                    $order_jersey->update([
+                        'status' => 'canceled',
+                        'metode_pembayaran' => $mtd_pembayaran,
+                        'va_number' => $no_va
+                    ]);
+                    break;
+                default:
+                    $order_jersey->update([
+                        'status' => 'unknown',
+                    ]);
+                    break;
+            }
+    
+            return response()->json(['message' => 'Callback received successfully']);
+        } else if ($order_merch != null && $order == null  && $order_jersey == null) {
             switch ($transactionStatus) {
                 case 'capture':
                     if ($request->payment_type == 'credit_card') {
@@ -969,7 +1039,7 @@ class SeragamController extends Controller
             }
     
             return response()->json(['message' => 'Callback received successfully']);
-        }
+        } 
     }
 
     public function return_stock($kode_barang, $qty) {
@@ -1014,8 +1084,16 @@ class SeragamController extends Controller
                         ->groupby('tpmd.no_pesanan')
                         ->orderby('tpmd.created_at', 'DESC')
                         ->get();
+
+        $order_jersey = Orderjersey::select('psj.*', 'mj.image_1', 'mj.nama_jersey', 't_pesan_jersey.status', 't_pesan_jersey.total_harga', 't_pesan_jersey.user_id')
+                                ->leftJoin('t_pesan_jersey_detail as psj', 'psj.no_pesanan', 't_pesan_jersey.no_pesanan')
+                                ->leftJoin('m_jersey as mj', 'psj.jersey_id', 'mj.id')
+                                ->where('t_pesan_jersey.user_id', $user_id)
+                                ->groupby('psj.no_pesanan', 't_pesan_jersey.total_harga')
+                                ->orderby('psj.created_at', 'DESC')
+                                ->get();
         
-        return view('ortu.seragam.history', compact('order', 'menubar', 'order_merch', 'order_detail_merch'));
+        return view('ortu.seragam.history', compact('order', 'menubar', 'order_merch', 'order_detail_merch', 'order_jersey'));
     }
 
     public function rincian_pesanan (Request $request, $id) {

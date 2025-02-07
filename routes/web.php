@@ -7,6 +7,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\JadwalKontrakController;
+use App\Http\Controllers\JerseyController;
 use App\Http\Controllers\KarirController;
 use App\Http\Controllers\KelasDiklatController;
 use App\Http\Controllers\KurikulumController;
@@ -98,6 +99,10 @@ Route::group(['middleware' =>['auth', 'admin']], function () {
         Route::get('template-desain', [TemplateController::class, 'index'])->name('template-desain');
         Route::post('template-desain', [TemplateController::class, 'store'])->name('store_template');
 
+        Route::get('jersey', [JerseyController::class, 'index_master'])->name('master.jersey');
+        Route::post('jersey', [JerseyController::class, 'store'])->name('store_jersey');
+        Route::post('jenis-ekskul', [JerseyController::class, 'create_jenis_ekskul'])->name('master.create_jenis_ekskul');
+
 
 
     });
@@ -179,11 +184,25 @@ Route::group(['middleware' =>['auth']], function () {
         Route::post('get-warna', [MerchandiseController::class, 'get_warna'])->name('get_warna');
         Route::get('export-karya', [PalestineDayController::class, 'export_karya'])->name('export.karya');
 
+    });
+
+    Route::prefix('jersey')->group(function () {
+        Route::get('/', [JerseyController::class, 'index'])->name('jersey.index');
+        Route::get('/cart', [JerseyController::class, 'cart'])->name('jersey.cart');
+        Route::get('/detail/{id}', [JerseyController::class, 'detail_jersey'])->name('jersey.detail');
+        Route::post('cart', [JerseyController::class, 'add_to_cart'])->name('cart_post_jersey');
+        Route::put('/cart/{id}', [JerseyController::class, 'update_cart'])->name('jersey-cart.update');
+        Route::put('cart-select-all', [JerseyController::class, 'select_all_cart'])->name('jersey-select-all-cart');
+        Route::put('/cart-select/{id}', [JerseyController::class, 'update_select_cart'])->name('jersey-cart-select.update');
+        Route::delete('cart/{id}', [JerseyController::class, 'remove_cart'])->name('jersey-cart.delete');
+        Route::get('pembayaran', [JerseyController::class, 'pembayaran'])->name('jersey.bayar');
+        Route::post('payment', [JerseyController::class, 'pre_order'])->name('pre_order.jersey');
+        Route::post('pembayaran', [JerseyController::class, 'store_order'])->name('jersey.store');
+        Route::get('riwayat-transaksi/{id}', [JerseyController::class, 'rincian_pesanan'])->name('jersey.history.detail');
 
 
 
     });
-
 });
 
     Route::prefix('karir')->group(function () {
