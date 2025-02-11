@@ -171,10 +171,14 @@ class PendaftaranController extends Controller
         
         $count_pendaftar = $pendaftar->count();
 
-        if ($kuota > $count_pendaftar) {
-            $status_daftar = 2 ;
+        if ($kelas == 1 || $kelas == 7 || $kelas == 'tka' || $kelas == 'tkb' || $kelas == 'kober') {
+            if ($kuota > $count_pendaftar) {
+                $status_daftar = 2 ;
+            } else {
+                $status_daftar = 3 ;
+            }
         } else {
-            $status_daftar = 3 ;
+            $status_daftar = 2;
         }
 
         // simpan ke tbl_anak
@@ -220,7 +224,7 @@ class PendaftaranController extends Controller
         ]);
 
         // send ke qlp
-        $this->send_pendaftaran($id_anak, $nama_lengkap, $jenis_kelamin, $tempat_lahir, $tgl_lahir, $lokasi, $kelas, $jenjang, $tingkat, $no_hp_ayah, $no_hp_ibu, $nama_ayah, $nama_ibu, $sumber_ppdb, $tahun_ajaran, $asal_sekolah, $status_daftar);
+        // $this->send_pendaftaran($id_anak, $nama_lengkap, $jenis_kelamin, $tempat_lahir, $tgl_lahir, $lokasi, $kelas, $jenjang, $tingkat, $no_hp_ayah, $no_hp_ibu, $nama_ayah, $nama_ibu, $sumber_ppdb, $tahun_ajaran, $asal_sekolah, $status_daftar);
 
         $contact_person =  ContactPerson::where('is_aktif', '1')->where('kode_sekolah', $lokasi)->where('id_jenjang', $jenjang)->first();
         $no_admin = $contact_person->telp;
@@ -245,7 +249,7 @@ Apabila ada pertanyaan silahkan hubungi Customer Service kami di nomor ".$no_adm
 Kami akan segera menginformasikan kepada Ayah/Bunda mengenai proses selanjutnya. Jika ada pertanyaan atau kebutuhan informasi tambahan, jangan ragu untuk menghubungi kami melalui nomor ".$no_admin." 
 
 Hormat Kami,
-Sekolah Rabbani.";
+*Sekolah Rabbani.*";
 
         if ($status_daftar == 3) {
             $this->send_notif($message_for_admin_wl, $no_admin);
