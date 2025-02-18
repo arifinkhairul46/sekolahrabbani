@@ -224,7 +224,7 @@ class PendaftaranController extends Controller
         ]);
 
         // send ke qlp
-        // $this->send_pendaftaran($id_anak, $nama_lengkap, $jenis_kelamin, $tempat_lahir, $tgl_lahir, $lokasi, $kelas, $jenjang, $tingkat, $no_hp_ayah, $no_hp_ibu, $nama_ayah, $nama_ibu, $sumber_ppdb, $tahun_ajaran, $asal_sekolah, $status_daftar);
+        $this->send_pendaftaran($id_anak, $nama_lengkap, $jenis_kelamin, $tempat_lahir, $tgl_lahir, $lokasi, $kelas, $jenjang, $tingkat, $no_hp_ayah, $no_hp_ibu, $nama_ayah, $nama_ibu, $sumber_ppdb, $tahun_ajaran, $asal_sekolah, $status_daftar);
 
         $contact_person =  ContactPerson::where('is_aktif', '1')->where('kode_sekolah', $lokasi)->where('id_jenjang', $jenjang)->first();
         $no_admin = $contact_person->telp;
