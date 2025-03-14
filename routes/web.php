@@ -116,6 +116,9 @@ Route::group(['middleware' =>['auth', 'admin']], function () {
         Route::get('list-order/export', [MerchandiseController::class, 'export_list_order'])->name('list-order.export');
         Route::get('seragam', [SeragamController::class, 'resume_seragam'])->name('resume_seragam');
         Route::get('seragam/all', [SeragamController::class, 'resume_detail'])->name('resume_seragam_detail');
+        Route::get('jersey', [JerseyController::class, 'list_order_jersey'])->name('list_order_jersey');
+        Route::get('jersey/{id}', [JerseyController::class, 'order_jersey_detail'])->name('order_jersey_detail');
+
 
     });
 });

@@ -6,11 +6,13 @@ use App\Models\CartJersey;
 use App\Models\JenisEkskul;
 use App\Models\Jenjang;
 use App\Models\Jersey;
+use App\Models\LokasiSub;
 use App\Models\MenuMobile;
 use App\Models\OrderDetailJersey;
 use App\Models\OrderJersey;
 use App\Models\Profile;
 use App\Models\UkuranSeragam;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -271,8 +273,8 @@ class JerseyController extends Controller
         $profile = Profile::where('user_id', $user_id)->get();
 
         $cart_detail = CartJersey::select('t_cart_jersey.quantity', 't_cart_jersey.id', 't_cart_jersey.jersey_id', 't_cart_jersey.is_selected', 
-                        'mus.ukuran_seragam', 'mj.nama_jersey', 'mj.harga_awal', 'mj.persen_diskon', 'mj.image_1', 'mj.image_2', 'mp.nama_lengkap',
-                        'mls.sublokasi', 'mp.nama_kelas')
+                        'mus.ukuran_seragam', 'mj.nama_jersey', 'mj.ekskul_id', 'mj.harga_awal', 'mj.persen_diskon', 'mj.image_1', 'mj.image_2', 'mp.nama_lengkap',
+                        'mls.sublokasi', 'mp.nama_kelas', 't_cart_jersey.nama_punggung', 't_cart_jersey.no_punggung')
                         ->leftJoin('m_jersey as mj', 'mj.id', 't_cart_jersey.jersey_id')
                         ->leftJoin('m_ukuran_seragam as mus', 'mus.id', 't_cart_jersey.ukuran_id')
                         ->leftJoin('m_profile as mp', 'mp.nis', 't_cart_jersey.nis')
@@ -634,5 +636,60 @@ class JerseyController extends Controller
                         ->get();
 
         return view('ortu.jersey.rincian-pesan', compact( 'order', 'order_detail'));
+    }
+
+    public function list_order_jersey(Request $request) {
+        $sekolah_id = $request->sekolah ?? null;
+        $start = $request->date_start != '' ? $request->date_start : null ;
+        $date_end = $request->date_end != '' ? $request->date_end : null;
+
+        $date_start = date($start);
+        $new_date_end = new DateTime($date_end);
+        $date_end_plus = $new_date_end->modify('+1 day')->format('Y-m-d');
+
+        $sekolah = LokasiSub::select('id as id_sekolah', 'sublokasi')->where('status', 1)->get();
+
+        if ($request->has('date_start') && $request->has('date_end') || $request->has('sekolah')) {
+            $list_order = OrderJersey::query();
+            
+            if ($request->has('sekolah'))
+            $list_order = $list_order->selectRaw('t_pesan_jersey.id, t_pesan_jersey.no_pesanan, nama_pemesan, total_harga, metode_pembayaran, status, t_pesan_jersey.updated_at', 'r.name as role_name')
+                            ->leftJoin('t_pesan_jersey_detail as tpmd', 't_pesan_jersey.no_pesanan', 'tpmd.no_pesanan')
+                            ->leftJoin('users as u', 't_pesan_jersey.user_id', 'u.id')
+                            ->leftJoin('role as r', 'u.id_role', 'r.id')
+                            ->where('tpmd.lokasi_sekolah', $sekolah_id)
+                            ->where('status', 'success');
+
+            if ($start!= null && $date_end != null)
+            $list_order = $list_order->selectRaw('t_pesan_jersey.id, t_pesan_jersey.no_pesanan, nama_pemesan, total_harga, metode_pembayaran, status, t_pesan_jersey.updated_at', 'r.name as role_name')
+                                    ->whereBetween('t_pesan_jersey.updated_at', [$date_start, $date_end_plus])
+                                    ->where('status', 'success');
+
+            $list_order = $list_order->get();
+
+        } else {
+            $list_order = OrderJersey::select('t_pesan_jersey.id', 'no_pesanan', 'nama_pemesan', 'total_harga', 'metode_pembayaran', 'status', 't_pesan_jersey.updated_at', 'r.name as role_name')
+                            ->leftJoin('users as u', 't_pesan_jersey.user_id', 'u.id')
+                            ->leftJoin('role as r', 'u.id_role', 'r.id')
+                            ->where('status', 'success')
+                            ->orderby('t_pesan_jersey.updated_at', 'desc')
+                            ->get();
+        }
+
+        return view('admin.laporan.jersey', compact('list_order', 'date_start', 'date_end', 'sekolah', 'sekolah_id'));
+    }
+
+    public function order_jersey_detail($id){
+        $order_detail = OrderDetailJersey::select('t_pesan_jersey_detail.nama_siswa', 't_pesan_jersey_detail.lokasi_sekolah', 'mj.persen_diskon',
+                        't_pesan_jersey_detail.nama_kelas', 'mj.nama_jersey', 'mj.image_1', 'mj.harga_awal', 'mus.ukuran_seragam', 't_pesan_jersey_detail.harga', 
+                        't_pesan_jersey_detail.persen_diskon', 't_pesan_jersey_detail.quantity', 't_pesan_jersey_detail.ukuran_id',
+                        't_pesan_jersey_detail.created_at', 'tpj.metode_pembayaran', 'tpj.no_pesanan', 't_pesan_jersey_detail.nama_punggung', 't_pesan_jersey_detail.no_punggung')
+                        ->leftJoin('t_pesan_jersey as tpj', 'tpj.no_pesanan', 't_pesan_jersey_detail.no_pesanan')
+                        ->leftJoin('m_jersey as mj', 'mj.id', 't_pesan_jersey_detail.jersey_id')
+                        ->leftJoin('m_ukuran_seragam as mus', 'mus.id', 't_pesan_jersey_detail.ukuran_id')
+                        ->where('tpj.no_pesanan', $id)
+                        ->get();
+
+        return response()->json($order_detail);
     }
 }

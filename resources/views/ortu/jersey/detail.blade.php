@@ -177,7 +177,7 @@
                         <form action="{{route('pre_order.jersey')}}" method="POST" id="po_jersey">
                             @csrf
                             <input type="hidden" name="data" id="data" value="">
-                            <button type="button" class="btn btn-purple mx-2 px-3" onclick="pre_order('{{$produk->id}}')" > Pre Order (30 Hari) </button>
+                            <button type="button" class="btn btn-purple mx-2 px-3" onclick="pre_order('{{$produk->id}}')" > Pre Order (14 Hari) </button>
                         </form>
                     </div>
                 </div>

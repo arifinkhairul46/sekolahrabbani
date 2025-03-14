@@ -51,7 +51,7 @@
             </div>
         </div>
 
-        <div class="">
+        <div class="mb-3">
             <p class="px-2 mb-0" style="background-color:#f5f5f5; font-size: 12px" > 
                 <i class="fa-solid fa-money-bill" style="color: #624F8F"></i> 
                 &nbsp; <b> Rincian Bayar </b> 
@@ -68,6 +68,17 @@
                 <span >  <b> Total Pembayaran </b> </span>
                 <span style="color: #FF419C"> <b> Rp. {{number_format($harga)}} </b> </span>
             </div>
+        </div>
+
+        <div style="font-size: 9px; background-color: #f5f5f5">
+            <span class="px-2"> <strong> Syarat & Ketentuan </strong> </span>
+            <ol type="1">
+                <li>No punggung didapatkan dari ekskul masing-masing</li>
+                <li>Setelah Pembayaran, Order tidak bisa cancel dan refund</li>
+                <li>Tidak bisa ganti size</li>
+                <li>Tidak bisa ganti No. Punggung dan Nama Punggung</li>
+                <li>Waktu Pre Order paling lambat 14 Hari Kerja</li>
+            </ol>
         </div>
 
         <div class="bottom-navigate mt-3" style="background-color: #f5f5f5">
@@ -113,7 +124,7 @@
             @endforeach
         </div>
 
-        <div class="">
+        <div class="mb-3">
             <p class="px-2 mb-0" style="background-color:#f5f5f5; font-size: 12px" > 
                 <i class="fa-solid fa-money-bill" style="color: #624F8F"></i> 
                 &nbsp; <b> Rincian Bayar </b> 
@@ -132,10 +143,21 @@
             </div>
         </div>
 
+        <div style="font-size: 9px; background-color: #f5f5f5">
+            <span> <strong> Syarat & Ketentuan </strong> </span>
+            <ol type="1">
+                <li>No punggung didapatkan dari ekskul masing-masing</li>
+                <li>Setelah Pembayaran, tidak bisa cancel dan refund</li>
+                <li>Tidak bisa ganti size</li>
+                <li>Tidak bisa ganti No. Punggung dan Nama Punggung</li>
+                <li>Waktu Pre Order paling lambat 14 Hari Kerja</li>
+            </ol>
+        </div>
+
         <div class="bottom-navigate mt-3" style="background-color: #f5f5f5">
             <div class="d-flex" >
                 <input type="checkbox" id="checklist-sk" name="checklist-sk" class="mx-1" onclick="oncheck()" >
-                <a href="#" style="font-size: 10px; color: #624F8F;" data-bs-toggle="modal" data-bs-target="#privacy_policy"> Syarat dan Ketentuan </a>
+                <a href="#" style="font-size: 10px; color: #624F8F;"> Syarat dan Ketentuan </a>
             </div>
             <div class="p-2 d-flex" style="justify-content: space-between">
                 <h6> Total Pembayaran <br> <b> Rp. <span id="total_bayar"> {{number_format($total_akhir)}} </span> </b> </h6>
@@ -148,25 +170,6 @@
             </div>
         </div>
     @endif
-
-    <div class="modal fade" id="privacy_policy" tabindex="-1" role="dialog" aria-labelledby="stok" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3> Privacy Policy </h3>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <ol type="1"> 
-                        <li> Jika ada salah pembelian, tidak ada kebijakan refund atau pengembalian uang</li>
-                        <li> Jika salah ukuran maka dapat ditukar dengan barang sejenis maksimal H+1 setelah barang diterima dan hanya dapat dilakukan 1 kali</li>
-                        <li> Penukaran barang sejenis dimulai dari ukuran XS s.d. 3XL</li>
-                        <li> Proses penukaran membutuhkan waktu maksimal 14 hari kerja</li>
-                    </ol>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 

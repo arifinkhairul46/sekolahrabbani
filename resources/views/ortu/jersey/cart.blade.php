@@ -32,7 +32,12 @@
                         </p>
                         <p class="mb-0" style="color: gray; font-size: 12px"> <s> Rp. {{number_format($item['harga_awal'] * $item['quantity']) }} </s> </p>
                         <p class="mb-0" style="font-size: 11px"> Nama: {{$item['nama_lengkap']}} </p>
-                        <p class="mb-1" style="font-size: 11px"> Sekolah: {{$item['sublokasi']}}, Kelas: {{$item['nama_kelas']}} </p>
+                        <p class="mb-0" style="font-size: 11px"> Sekolah: {{$item['sublokasi']}}, Kelas: {{$item['nama_kelas']}} </p>
+                        @if ($item->ekskul_id == 1)
+                            <p class="mb-1" style="font-size: 10px">Nama Punggung: {{$item['nama_punggung']}}, No Punggung: {{$item['no_punggung']}} </p>
+                        @elseif (($item->ekskul_id == 2))
+                            <p class="mb-1" style="font-size: 10px">No Punggung: {{$item['no_punggung']}} </p>
+                        @endif
                         
                         <div class="input-group" style="border: none;">
                             <div class="button minus">
