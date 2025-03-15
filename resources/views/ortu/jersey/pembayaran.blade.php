@@ -41,10 +41,8 @@
                         <p class="mb-0" style="color: gray; font-size: 10px"> <s> Rp. {{number_format($harga_awal)}} </s> </p>     
                         <p class="mb-0" style="font-size: 10px">Quantity: {{$quantity}}, Size: {{$ukuran->ukuran_seragam}} </p>
                         <p class="mb-0" style="font-size: 10px">Sekolah: {{$profile->sublokasi}}, Kelas: {{$profile->nama_kelas}} </p>
-                        @if ($jersey->ekskul_id == 1)
+                        @if ($jersey->ekskul_id == 1 || $jersey->ekskul_id == 2)
                                 <p class="mb-1" style="font-size: 10px">Nama Punggung: {{$nama_punggung}}, No Punggung: {{$no_punggung}} </p>
-                            @elseif (($jersey->ekskul_id == 2))
-                                <p class="mb-1" style="font-size: 10px">No Punggung: {{$no_punggung}} </p>
                             @endif
                     </div>
                 </div>
@@ -73,7 +71,7 @@
         <div style="font-size: 9px; background-color: #f5f5f5">
             <span class="px-2"> <strong> Syarat & Ketentuan </strong> </span>
             <ol type="1">
-                <li>No punggung didapatkan dari ekskul masing-masing</li>
+                <li>No punggung didapatkan dari ekskul masing-masing <i>(khusus futsal dan basket) </i></li>
                 <li>Setelah Pembayaran, Order tidak bisa cancel dan refund</li>
                 <li>Tidak bisa ganti size</li>
                 <li>Tidak bisa ganti No. Punggung dan Nama Punggung</li>
@@ -110,10 +108,8 @@
                             <p class="mb-0" style="color: gray; font-size: 10px"> <s> Rp. {{number_format($item->harga_awal * $item['quantity'])}} </s> </p>     
                             <p class="mb-0" style="font-size: 10px">Quantity: {{$item['quantity']}}, Size: {{$item['ukuran_seragam']}} </p>
                             <p class="mb-0" style="font-size: 10px">Sekolah: {{$item['sublokasi']}}, Kelas: {{$item['nama_kelas']}} </p>
-                            @if ($item->ekskul_id == 1)
+                            @if ($item->ekskul_id == 1 || $item->ekskul_id == 2)
                                 <p class="mb-1" style="font-size: 10px">Nama Punggung: {{$item['nama_punggung']}}, No Punggung: {{$item['no_punggung']}} </p>
-                            @elseif (($item->ekskul_id == 2))
-                                <p class="mb-1" style="font-size: 10px">No Punggung: {{$item['no_punggung']}} </p>
                             @endif
                         </div>
                     </div>
@@ -146,7 +142,7 @@
         <div style="font-size: 9px; background-color: #f5f5f5">
             <span> <strong> Syarat & Ketentuan </strong> </span>
             <ol type="1">
-                <li>No punggung didapatkan dari ekskul masing-masing</li>
+                <li>No punggung didapatkan dari ekskul masing-masing <i>(khusus futsal dan basket) </i></li>
                 <li>Setelah Pembayaran, tidak bisa cancel dan refund</li>
                 <li>Tidak bisa ganti size</li>
                 <li>Tidak bisa ganti No. Punggung dan Nama Punggung</li>

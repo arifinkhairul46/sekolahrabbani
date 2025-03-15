@@ -38,7 +38,7 @@
                                 <img src="{{ asset('storage/'.$item->image_1) }}" class="card-img-top" alt="{{$item->image_1}}" style="max-height: 180px">
                                 <div class="card-body pt-1 px-2">
                                     <h6 class="card-title mb-0">{{$item->nama_jersey}}</h6>
-                                    <p class="mb-0 price-diskon" ><b> Rp. {{number_format($item->harga_awal * 80/100)}} </b> </p>
+                                    <p class="mb-0 price-diskon" ><b> Rp. {{number_format($item->harga_awal * ((100-$item->persen_diskon)/100))}} </b> </p>
                                     <p class="mb-1 price-normal"><s> Rp. {{number_format($item->harga_awal)}} </s> </p>
                                     <p class="mb-0" style="font-size: 9px"> Disc. 
                                         <span class="bg-danger p-1"> {{($item->persen_diskon)}}% </span> 

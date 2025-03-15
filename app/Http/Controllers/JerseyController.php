@@ -228,7 +228,8 @@ class JerseyController extends Controller
         $produk = Jersey::find($id);
         $role_id = auth()->user()->id_role;
 
-        $ukuran = UkuranSeragam::whereNotIn('ukuran_seragam', ['ALL', 'XXS', '5XL'])->get();
+        $ukuran = UkuranSeragam::whereNotIn('ukuran_seragam', ['ALL', '4XL', '5XL'])->orderby('urutan', 'asc')->get();
+        $ukuran_futsal_sd = UkuranSeragam::whereIn('ukuran_seragam', ['M', 'L', 'XL'])->get();
         
         $profile = Profile::get_user_profile_byphone($no_hp);
 
@@ -240,7 +241,7 @@ class JerseyController extends Controller
                         ->where('t_cart_jersey.status_cart', 0)
                         ->get();
 
-        return view('ortu.jersey.detail', compact('produk', 'profile', 'ukuran', 'cart_detail', 'role_id'));
+        return view('ortu.jersey.detail', compact('produk', 'profile', 'ukuran', 'cart_detail', 'role_id', 'ukuran_futsal_sd'));
     }
 
     public function add_to_cart(Request $request)
@@ -463,7 +464,7 @@ class JerseyController extends Controller
 
             $order = CartJersey::select('t_cart_jersey.quantity', 't_cart_jersey.id', 't_cart_jersey.jersey_id', 't_cart_jersey.is_selected', 
                     't_cart_jersey.nama_punggung', 't_cart_jersey.no_punggung','mus.ukuran_seragam', 'mj.nama_jersey', 'mj.harga_awal', 'mj.persen_diskon as diskon', 
-                    'mj.hpp', 'mj.image_1', 'mj.image_2', 'mp.nama_lengkap','mls.sublokasi as sekolah', 'mp.nama_kelas', 'mj.ekskul_id')
+                    'mj.hpp', 'mj.image_1', 'mj.image_2', 'mp.nama_lengkap','mp.sekolah_id as sekolah', 'mp.nama_kelas', 'mj.ekskul_id')
                     ->leftJoin('m_jersey as mj', 'mj.id', 't_cart_jersey.jersey_id')
                     ->leftJoin('m_ukuran_seragam as mus', 'mus.id', 't_cart_jersey.ukuran_id')
                     ->leftJoin('m_profile as mp', 'mp.nis', 't_cart_jersey.nis')
@@ -509,8 +510,8 @@ class JerseyController extends Controller
                 $total_diskon += $nilai_diskon;
                 $harga_akhir = $total_harga - $total_diskon;
 
-                // $this->send_pesan_jersey_detail($no_pesanan, $nama_siswa, $lokasi, $nama_kelas, $jersey_id, $desgin, $ukuran, $quantity, $harga_awal, $diskon, $hpp);
-                // $this->update_cart_status($user_id, $jersey_id);
+                $this->send_pesan_jersey_detail($no_pesanan, $nama_siswa, $lokasi, $nama_kelas, $jersey_id, $ukuran, $quantity, $harga_awal, $diskon, $hpp);
+                $this->update_cart_status($user_id, $jersey_id);
             }
 
             $order_jersey = OrderJersey::create([
@@ -522,7 +523,7 @@ class JerseyController extends Controller
                 'user_id' => $user_id
             ]);
 
-            // $this->send_pesan_jersey($no_pesanan, $nama_pemesan, $no_hp);
+            $this->send_pesan_jersey($no_pesanan, $nama_pemesan, $no_hp);
 
                 // Set your Merchant Server Key
                 \Midtrans\Config::$serverKey = config('midtrans.serverKey');
@@ -589,8 +590,8 @@ class JerseyController extends Controller
                 'hpp' => $hpp_now
             ]);
 
-            // $this->send_pesan_jersey($no_pesanan, $nama_pemesan, $no_hp);
-            // $this->send_pesan_jersey_detail($no_pesanan, $nama_siswa_now, $sekolah_id_now, $kelas_now, $jersey_id_now, $warna_now, $template_now, $kategori_now, $design_now, $ukuran_now, $quantity_now, $total_harga_now, $diskon_now, $hpp_now);
+            $this->send_pesan_jersey($no_pesanan, $nama_pemesan, $no_hp);
+            $this->send_pesan_jersey_detail($no_pesanan, $nama_lengkap, $sekolah_id, $nama_kelas, $jersey_id_now, $ukuran_now, $quantity_now, $total_harga_now, $diskon_now, $hpp_now);
 
                // Set your Merchant Server Key
                \Midtrans\Config::$serverKey = config('midtrans.serverKey');
@@ -692,4 +693,83 @@ class JerseyController extends Controller
 
         return response()->json($order_detail);
     }
+
+    public function update_cart_status($user_id, $jersey_id) 
+    {
+        $cart_detail = CartJersey::where('user_id', $user_id)
+                ->where('status_cart', 0)
+                ->where('jersey_id', $jersey_id)
+                ->where('is_selected', 1)
+                ->first();
+        
+        $update_status_cart = $cart_detail->update([
+            'status_cart' => 1
+        ]);
+
+        return response()->json($update_status_cart);
+    }
+
+    function send_pesan_jersey($no_pesanan, $nama_pemesan, $no_hp){
+	    $curl = curl_init();
+
+		curl_setopt_array($curl, array(
+		  CURLOPT_URL => 'http://103.135.214.11:81/qlp_system/api_regist/simpan_pesan_jersey.php',
+		  CURLOPT_RETURNTRANSFER => 1,
+		  CURLOPT_ENCODING => '',
+		  CURLOPT_MAXREDIRS => 10,
+		  CURLOPT_TIMEOUT => 0,
+		  CURLOPT_FOLLOWLOCATION => true,
+		  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+		  CURLOPT_CUSTOMREQUEST => 'POST',
+		  // CURLOPT_SSL_VERIFYPEER => false,
+		  // CURLOPT_SSL_VERIFYHOST => false,
+		  CURLOPT_POSTFIELDS => array(
+		  	'no_pesanan' => $no_pesanan,
+		  	'nama_pemesan' => $nama_pemesan,
+		  	'no_hp' => $no_hp)
+
+		));
+
+		$response = curl_exec($curl);
+
+		// echo $response;
+		curl_close($curl);
+	    // return ($response);
+	}
+
+    function send_pesan_jersey_detail($no_pesanan, $nama_siswa, $lokasi_sekolah, $nama_kelas, $jersey_id, $ukuran, $quantity, $harga, $diskon, $hpp){
+	    $curl = curl_init();
+
+		curl_setopt_array($curl, array(
+		  CURLOPT_URL => 'http://103.135.214.11:81/qlp_system/api_regist/simpan_pesan_jersey_detail.php',
+		  CURLOPT_RETURNTRANSFER => 1,
+		  CURLOPT_ENCODING => '',
+		  CURLOPT_MAXREDIRS => 10,
+		  CURLOPT_TIMEOUT => 0,
+		  CURLOPT_FOLLOWLOCATION => true,
+		  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+		  CURLOPT_CUSTOMREQUEST => 'POST',
+		  // CURLOPT_SSL_VERIFYPEER => false,
+		  // CURLOPT_SSL_VERIFYHOST => false,
+		  CURLOPT_POSTFIELDS => array(
+		  	'no_pesanan' => $no_pesanan,
+		  	'nama_siswa' => $nama_siswa,
+		  	'lokasi_sekolah' => $lokasi_sekolah,
+		  	'nama_kelas' => $nama_kelas,
+		  	'jersey_id' => $jersey_id,
+		  	'ukuran' => $ukuran,
+		  	'quantity' => $quantity,
+		  	'harga' => $harga,
+		  	'diskon' => $diskon,
+		  	'hpp' => $hpp,
+            )
+
+		));
+
+		$response = curl_exec($curl);
+
+		// echo $response;
+		curl_close($curl);
+	    // return ($response);
+	}
 }

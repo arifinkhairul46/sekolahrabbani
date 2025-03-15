@@ -929,7 +929,7 @@ class SeragamController extends Controller
                         'tgl_bayar' => $request->settlement_time,
                         'updated_at' => $request->settlement_time
                     ]);
-                    $this->update_status_merchandise('success', $mtd_pembayaran, $orderId);
+                    $this->update_status_jersey('success', $mtd_pembayaran, $orderId);
                     break;
                 case 'pending':
                     $order_jersey->update([
@@ -938,7 +938,7 @@ class SeragamController extends Controller
                         'va_number' => $no_va,
                         'expire_time' => $request->expiry_time
                     ]);
-                    $this->update_status_merchandise('pending', $mtd_pembayaran, $orderId);
+                    $this->update_status_jersey('pending', $mtd_pembayaran, $orderId);
                     break;
                 case 'deny':
                     $order_jersey->update([
@@ -954,7 +954,7 @@ class SeragamController extends Controller
                         'metode_pembayaran' => $mtd_pembayaran,
                         'va_number' => $no_va
                     ]);
-                    $this->update_status_merchandise('expired', $mtd_pembayaran, $orderId);
+                    $this->update_status_jersey('expired', $mtd_pembayaran, $orderId);
                     break;
                 case 'cancel':
                     $order_jersey->update([
@@ -1516,6 +1516,38 @@ class SeragamController extends Controller
     
             curl_setopt_array($curl, array(
               CURLOPT_URL => 'http://103.135.214.11:81/qlp_system/api_regist/update_pesan_merchandise.php',
+              CURLOPT_RETURNTRANSFER => 1,
+              CURLOPT_ENCODING => '',
+              CURLOPT_MAXREDIRS => 10,
+              CURLOPT_TIMEOUT => 0,
+              CURLOPT_FOLLOWLOCATION => true,
+              CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+              CURLOPT_CUSTOMREQUEST => 'POST',
+              // CURLOPT_SSL_VERIFYPEER => false,
+              // CURLOPT_SSL_VERIFYHOST => false,
+              CURLOPT_POSTFIELDS => array(
+                'status' => $status,
+                'mtd_pembayaran' => $mtd_pembayaran,
+                'no_pesanan' => $no_pesanan,
+                )
+    
+            ));
+    
+            $response = curl_exec($curl);
+    
+            // echo $response;
+            curl_close($curl);
+            // return ($response);
+        }
+    }
+
+    function update_status_jersey($status, $mtd_pembayaran, $no_pesanan)
+    {
+        {
+            $curl = curl_init();
+    
+            curl_setopt_array($curl, array(
+              CURLOPT_URL => 'http://103.135.214.11:81/qlp_system/api_regist/update_pesan_jersey.php',
               CURLOPT_RETURNTRANSFER => 1,
               CURLOPT_ENCODING => '',
               CURLOPT_MAXREDIRS => 10,

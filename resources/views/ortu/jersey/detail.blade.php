@@ -37,9 +37,11 @@
                 <img class="img-detail-card" src="{{ asset('storage/'.$produk->image_6) }}" alt="{{$produk->image_6}}">
             </div>
 
-            <div class="carousel-item">
-                <img class="img-detail-card" src="{{ asset('storage/'.$produk->image_7) }}" alt="{{$produk->image_7}}">
-            </div>
+            @if ($produk->ekskul_id != 5)
+                <div class="carousel-item">
+                    <img class="img-detail-card" src="{{ asset('storage/'.$produk->image_7) }}" alt="{{$produk->image_7}}">
+                </div>
+            @endif
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#image-carousel"
             data-bs-slide="prev">
@@ -125,17 +127,20 @@
                                     <h6 style="color: #3152A4"><b> Nomor Punggung </b> </h6>
                                     <input type="text" name="no_punggung" id="no_punggung" class="input-number mx-2" min="1" max="100">
                                 </div>
-                            </div>
-                        @endif
+                                <span class="mb-0 text-danger" style="font-size: 10px; display: none" id="valid_no_punggung" > Isi No Punggung terlebih dahulu! </span>
 
-                        @if ($produk->ekskul_id == 1)
+                            </div>
+
                             <div class="produk-nama-punggung mt-3">
                                 <div class="d-flex">
                                     <h6 style="color: #3152A4"><b> Nama Punggung </b> </h6>
                                     <input type="text" name="nama_punggung" id="nama_punggung" maxlength="10" class="input-nama-punggung mx-3 px-2" maxlength="30">
                                 </div>
+                                <span class="mb-0 text-danger" style="font-size: 10px; display: none" id="valid_nama_punggung" > Isi Nama Punggung terlebih dahulu! </span>
+
                             </div>
                         @endif
+
                     @endif
 
                     <input type="hidden" id="role_id" value="{{$role_id}}">
@@ -143,14 +148,25 @@
                     <div class="produk-ukuran mt-3">
                         <h6 style="color: #3152A4"><b> Ukuran </b> </h6>
                         <div class="d-flex">
-                            @foreach($ukuran as $item)
-                                <div class="button-ukuran">
-                                    <input class="form-check-input" type="radio" name="ukuran"  id="uk_{{$item->id}}" value="{{$item->id}}">
-                                    <label class="form-check-label" for="uk_{{$item->id}}">
-                                    <span>{{$item->ukuran_seragam}} </span>
-                                    </label>
-                                </div>
-                            @endforeach
+                            @if ($produk->ekskul_id == '1' && $produk->jenjang_id == '4')
+                                @foreach($ukuran_futsal_sd as $item)
+                                    <div class="button-ukuran">
+                                        <input class="form-check-input" type="radio" name="ukuran"  id="uk_{{$item->id}}" value="{{$item->id}}">
+                                        <label class="form-check-label" for="uk_{{$item->id}}">
+                                        <span>{{$item->ukuran_seragam}} </span>
+                                        </label>
+                                    </div>
+                                @endforeach
+                            @else
+                                @foreach($ukuran as $item)
+                                    <div class="button-ukuran">
+                                        <input class="form-check-input" type="radio" name="ukuran"  id="uk_{{$item->id}}" value="{{$item->id}}">
+                                        <label class="form-check-label" for="uk_{{$item->id}}">
+                                        <span>{{$item->ukuran_seragam}} </span>
+                                        </label>
+                                    </div>
+                                @endforeach
+                            @endif
                         </div>
                         <span class="mb-0 text-danger" style="font-size: 10px; display: none" id="valid_ukuran_{{$produk->id}}" > Pilih ukuran terlebih dahulu! </span>
                     </div>
@@ -301,6 +317,10 @@
 
             if (nis == '' || nis == null || nis == undefined) {
                 $('#valid_nis').show();
+            } else if (no_punggung == '') {
+                $('#valid_no_punggung').show();
+            } else if (nama_punggung == '') {
+                $('#valid_nama_punggung').show();
             } else if (ukuran == '' || ukuran == null || ukuran == undefined) {
                 $('#valid_ukuran_'+item_id).show();
             } else {
@@ -355,6 +375,10 @@
 
             if (nis == '' || nis == null || nis == undefined)  {
                 $('#valid_nis').show();
+            } else if (no_punggung == '') {
+                $('#valid_no_punggung').show();
+            } else if (nama_punggung == '') {
+                $('#valid_nama_punggung').show();
             } else if (ukuran == '' || ukuran == null || ukuran == undefined ) {
                 $('#valid_ukuran_'+item_id).show();
             } else {
