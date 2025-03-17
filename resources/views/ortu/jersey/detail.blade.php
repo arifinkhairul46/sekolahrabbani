@@ -148,7 +148,7 @@
                     <div class="produk-ukuran mt-3">
                         <h6 style="color: #3152A4"><b> Ukuran </b> </h6>
                         <div class="d-flex">
-                            @if ($produk->ekskul_id == '1' && $produk->jenjang_id == '4')
+                            @if ($produk->ekskul_id == '1' && $produk->jenjang_id == '4' || $produk->ekskul_id == '3' && $produk->jenjang_id =='4' && $produk->jenis_kelamin == 'L' || $produk->ekskul_id == '2' && $produk->jenjang_id == '4' && $produk->jenis_kelamin =='P')
                                 @foreach($ukuran_futsal_sd as $item)
                                     <div class="button-ukuran">
                                         <input class="form-check-input" type="radio" name="ukuran"  id="uk_{{$item->id}}" value="{{$item->id}}">
@@ -157,7 +157,43 @@
                                         </label>
                                     </div>
                                 @endforeach
-                            @else
+                            @elseif ($produk->ekskul_id == '2' && $produk->jenjang_id == '4' && $produk->jenis_kelamin =='L')
+                                @foreach($ukuran_basket_sd_l as $item)
+                                    <div class="button-ukuran">
+                                        <input class="form-check-input" type="radio" name="ukuran"  id="uk_{{$item->id}}" value="{{$item->id}}">
+                                        <label class="form-check-label" for="uk_{{$item->id}}">
+                                        <span>{{$item->ukuran_seragam}} </span>
+                                        </label>
+                                    </div>
+                                @endforeach
+                            @elseif ($produk->ekskul_id == '3' && $produk->jenjang_id == '4' && $produk->jenis_kelamin =='P')
+                                @foreach($ukuran_badminton_sd_p as $item)
+                                    <div class="button-ukuran">
+                                        <input class="form-check-input" type="radio" name="ukuran"  id="uk_{{$item->id}}" value="{{$item->id}}">
+                                        <label class="form-check-label" for="uk_{{$item->id}}">
+                                        <span>{{$item->ukuran_seragam}} </span>
+                                        </label>
+                                    </div>
+                                @endforeach
+                            @elseif ($produk->ekskul_id == '5' && $produk->jenjang_id == '4' && $produk->jenis_kelamin =='L')
+                                @foreach($ukuran_memanah_sd_l as $item)
+                                    <div class="button-ukuran">
+                                        <input class="form-check-input" type="radio" name="ukuran"  id="uk_{{$item->id}}" value="{{$item->id}}">
+                                        <label class="form-check-label" for="uk_{{$item->id}}">
+                                        <span>{{$item->ukuran_seragam}} </span>
+                                        </label>
+                                    </div>
+                                @endforeach
+                            @elseif ($produk->ekskul_id == '5' && $produk->jenjang_id == '4' && $produk->jenis_kelamin =='P')
+                                @foreach($ukuran_memanah_sd_p as $item)
+                                    <div class="button-ukuran">
+                                        <input class="form-check-input" type="radio" name="ukuran"  id="uk_{{$item->id}}" value="{{$item->id}}">
+                                        <label class="form-check-label" for="uk_{{$item->id}}">
+                                        <span>{{$item->ukuran_seragam}} </span>
+                                        </label>
+                                    </div>
+                                @endforeach
+                            @else 
                                 @foreach($ukuran as $item)
                                     <div class="button-ukuran">
                                         <input class="form-check-input" type="radio" name="ukuran"  id="uk_{{$item->id}}" value="{{$item->id}}">
