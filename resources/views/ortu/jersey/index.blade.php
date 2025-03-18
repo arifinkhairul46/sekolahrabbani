@@ -11,12 +11,12 @@
                 <span class="input-group-text" style="max-height: 26px"><i class="fa fa-search fa-xs"></i></span>
                 <input class="form-control form-control-sm shadow-none" id="search" style="border: none; font-size: 0.675rem" placeholder="Cari" type="text" name="search" >
             </div>
-            <div class="py-1">
+            {{-- <div class="py-1">
                 <svg class="icon-32 mx-1" width="30" viewBox="0 2 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="color: #704996" onclick="filter_modal()"> 
                     <path fill-rule="evenodd" clip-rule="evenodd" d="M4.56517 3C3.70108 3 3 3.71286 3 4.5904V5.52644C3 6.17647 3.24719 6.80158 3.68936 7.27177L8.5351 12.4243L8.53723 12.4211C9.47271 13.3788 9.99905 14.6734 9.99905 16.0233V20.5952C9.99905 20.9007 10.3187 21.0957 10.584 20.9516L13.3436 19.4479C13.7602 19.2204 14.0201 18.7784 14.0201 18.2984V16.0114C14.0201 14.6691 14.539 13.3799 15.466 12.4243L20.3117 7.27177C20.7528 6.80158 21 6.17647 21 5.52644V4.5904C21 3.71286 20.3 3 19.4359 3H4.56517Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                     </path>                                
                 </svg>                            
-            </div>
+            </div> --}}
             <form action="{{route('jersey.cart')}}" method="GET" class="mt-1 mb-0" id="cart_submit">
                 <a href="#"  onclick="submit_cart()" style="text-decoration: none; color: black">
                     @if ($cart_detail->count() > 0)
@@ -31,8 +31,81 @@
     <div class="container">
         <div class="row mx-auto" id="card_main_seragam">       
             <div class="col-md">
-                <div class="d-grid-card" id="produk_smp">
-                    @foreach ($list_jersey as $item)
+                <div class="center mb-3">
+                    <img src="{{ asset('assets/images/header_futsal.png') }}" alt="katalog" style="border-radius: 0.4rem" width="100%">
+                </div>
+
+                <div class="d-grid-card">
+                    @foreach ($jersey_futsal as $item)
+                        <a href="{{route('jersey.detail', $item->id)}}" style="text-decoration: none">
+                            <div class="card catalog mb-1">
+                                <img src="{{ asset('storage/'.$item->image_1) }}" class="card-img-top" alt="{{$item->image_1}}" style="max-height: 180px">
+                                <div class="card-body pt-1 px-2">
+                                    <h6 class="card-title mb-0">{{$item->nama_jersey}}</h6>
+                                    <p class="mb-0 price-diskon" ><b> Rp. {{number_format($item->harga_awal * ((100-$item->persen_diskon)/100))}} </b> </p>
+                                    <p class="mb-1 price-normal"><s> Rp. {{number_format($item->harga_awal)}} </s> </p>
+                                    <p class="mb-0" style="font-size: 9px"> Disc. 
+                                        <span class="bg-danger p-1"> {{($item->persen_diskon)}}% </span> 
+                                        <span class="mx-1"> <i class="fa-solid fa-paper-plane fa-sm"></i> Sekolah Rabbani </span> 
+                                    </p>
+                                </div>
+                            </div>
+                        </a>
+                    @endforeach
+                </div>
+
+                <div class="center my-3">
+                    <img src="{{ asset('assets/images/header_badminton.png') }}" alt="katalog" style="border-radius: 0.4rem" width="100%">
+                </div>
+
+                <div class="d-grid-card">
+                    @foreach ($jersey_badminton as $item)
+                        <a href="{{route('jersey.detail', $item->id)}}" style="text-decoration: none">
+                            <div class="card catalog mb-1">
+                                <img src="{{ asset('storage/'.$item->image_1) }}" class="card-img-top" alt="{{$item->image_1}}" style="max-height: 180px">
+                                <div class="card-body pt-1 px-2">
+                                    <h6 class="card-title mb-0">{{$item->nama_jersey}}</h6>
+                                    <p class="mb-0 price-diskon" ><b> Rp. {{number_format($item->harga_awal * ((100-$item->persen_diskon)/100))}} </b> </p>
+                                    <p class="mb-1 price-normal"><s> Rp. {{number_format($item->harga_awal)}} </s> </p>
+                                    <p class="mb-0" style="font-size: 9px"> Disc. 
+                                        <span class="bg-danger p-1"> {{($item->persen_diskon)}}% </span> 
+                                        <span class="mx-1"> <i class="fa-solid fa-paper-plane fa-sm"></i> Sekolah Rabbani </span> 
+                                    </p>
+                                </div>
+                            </div>
+                        </a>
+                    @endforeach
+                </div>
+
+                <div class="center my-3">
+                    <img src="{{ asset('assets/images/header_basket.png') }}" alt="katalog" style="border-radius: 0.4rem" width="100%">
+                </div>
+
+                <div class="d-grid-card">
+                    @foreach ($jersey_basket as $item)
+                        <a href="{{route('jersey.detail', $item->id)}}" style="text-decoration: none">
+                            <div class="card catalog mb-1">
+                                <img src="{{ asset('storage/'.$item->image_1) }}" class="card-img-top" alt="{{$item->image_1}}" style="max-height: 180px">
+                                <div class="card-body pt-1 px-2">
+                                    <h6 class="card-title mb-0">{{$item->nama_jersey}}</h6>
+                                    <p class="mb-0 price-diskon" ><b> Rp. {{number_format($item->harga_awal * ((100-$item->persen_diskon)/100))}} </b> </p>
+                                    <p class="mb-1 price-normal"><s> Rp. {{number_format($item->harga_awal)}} </s> </p>
+                                    <p class="mb-0" style="font-size: 9px"> Disc. 
+                                        <span class="bg-danger p-1"> {{($item->persen_diskon)}}% </span> 
+                                        <span class="mx-1"> <i class="fa-solid fa-paper-plane fa-sm"></i> Sekolah Rabbani </span> 
+                                    </p>
+                                </div>
+                            </div>
+                        </a>
+                    @endforeach
+                </div>
+
+                <div class="center my-3">
+                    <img src="{{ asset('assets/images/header_memanah.png') }}" alt="katalog" style="border-radius: 0.4rem" width="100%">
+                </div>
+
+                <div class="d-grid-card">
+                    @foreach ($jersey_memanah as $item)
                         <a href="{{route('jersey.detail', $item->id)}}" style="text-decoration: none">
                             <div class="card catalog mb-1">
                                 <img src="{{ asset('storage/'.$item->image_1) }}" class="card-img-top" alt="{{$item->image_1}}" style="max-height: 180px">

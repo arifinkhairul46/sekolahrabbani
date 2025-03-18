@@ -31,6 +31,10 @@ class JerseyController extends Controller
         $jenjang = Jenjang::select('nama_jenjang', 'value')->get();
 
         $list_jersey = Jersey::where('status', 1)->get();
+        $jersey_futsal = Jersey::where('status', 1)->where('ekskul_id', 1)->get();
+        $jersey_badminton = Jersey::where('status', 1)->where('ekskul_id', 3)->get();
+        $jersey_basket = Jersey::where('status', 1)->where('ekskul_id', 2)->get();
+        $jersey_memanah = Jersey::where('status', 1)->where('ekskul_id', 5)->get();
 
         $cart_detail = CartJersey::select('t_cart_jersey.quantity', 't_cart_jersey.id', 't_cart_jersey.jersey_id', 't_cart_jersey.is_selected', 
                         'mus.ukuran_seragam', 'mj.nama_jersey', 'mj.harga_awal', 'mj.persen_diskon', 'mj.image_1', 'mj.image_2')
@@ -40,7 +44,8 @@ class JerseyController extends Controller
                         ->where('t_cart_jersey.status_cart', 0)
                         ->get();
         
-        return view('ortu.jersey.index', compact('menubar', 'jenjang', 'list_jersey', 'cart_detail'));
+        return view('ortu.jersey.index', compact('menubar', 'jenjang', 'list_jersey', 'cart_detail', 'jersey_futsal', 'jersey_badminton',
+                    'jersey_basket', 'jersey_memanah'));
     }
 
     /**
