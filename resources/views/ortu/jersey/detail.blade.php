@@ -97,7 +97,11 @@
                         <div class="mx-2 mt-2" style="width: 255px">
                             <div class="titel">
                                 <p class="card-title mb-0"> <b> {{$produk->nama_jersey}} </b> </p>
-                                <p class="mb-1 price-diskon" style="font-size: 24px"> <b> Rp. <span id="harga_awal"> {{number_format($produk->harga_awal - ($produk->persen_diskon/100 * $produk->harga_awal)) }} </span> </b> </p>
+                                @if ($produk->ekskul_id == '5')
+                                    <p class="mb-1 price-diskon" style="font-size: 24px"> <b> Rp. <span id="harga_awal"> {{number_format($produk->harga_awal - ($produk->persen_diskon/100 * $produk->harga_awal)) }}/kaos </span> </b> </p>
+                                @else
+                                    <p class="mb-1 price-diskon" style="font-size: 24px"> <b> Rp. <span id="harga_awal"> {{number_format($produk->harga_awal - ($produk->persen_diskon/100 * $produk->harga_awal)) }}/set </span> </b> </p>
+                                @endif
                                 <p class="mb-1" style="font-size: 13px"> Discount 
                                     <span class="bg-danger py-1 px-2" id="diskon_persen"> {{($produk->persen_diskon)}}% </span>
                                     <span class="mx-2" style="color: gray"> <s> Rp. <span id="harga_awal"> {{number_format($produk->harga_awal)}} </span> </s> </span>

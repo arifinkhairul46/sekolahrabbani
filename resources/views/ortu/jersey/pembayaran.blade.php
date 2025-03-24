@@ -37,7 +37,11 @@
                 <div class="d-flex mx-2">
                     <div class="" style="width: 200px">
                         <p class="mb-0" style="font-size: 14px;"> {{$jersey->nama_jersey}} </p>
-                        <p class="mb-0 price-diskon"> <b> Rp. {{number_format($harga) }} </b> </p>
+                        @if ($jersey->ekskul_id == '5')
+                        <p class="mb-0 price-diskon"> <b> Rp. {{number_format($harga) }}/kaos </b> </p>
+                        @else
+                        <p class="mb-0 price-diskon"> <b> Rp. {{number_format($harga) }}/set </b> </p>
+                        @endif
                         <p class="mb-0" style="color: gray; font-size: 10px"> <s> Rp. {{number_format($harga_awal)}} </s> </p>     
                         <p class="mb-0" style="font-size: 10px">Quantity: {{$quantity}}, Size: {{$ukuran->ukuran_seragam}} </p>
                         <p class="mb-0" style="font-size: 10px">Sekolah: {{$profile->sublokasi}}, Kelas: {{$profile->nama_kelas}} </p>
@@ -104,7 +108,11 @@
                     <div class="d-flex mx-2">
                         <div class="" style="width: 200px">
                             <p class="mb-0" style="font-size: 14px;"> {{$item->nama_jersey}} </p>
-                            <p class="mb-0 price-diskon"> <b> Rp. {{number_format((($item['harga_awal']) - ($item['persen_diskon']/100 * $item['harga_awal'])) * $item['quantity']) }} </b> </p>
+                            @if ($item->ekskul_id == '5')
+                            <p class="mb-0 price-diskon"> <b> Rp. {{number_format((($item['harga_awal']) - ($item['persen_diskon']/100 * $item['harga_awal'])) * $item['quantity']) }}/kaos </b> </p>
+                            @else
+                            <p class="mb-0 price-diskon"> <b> Rp. {{number_format((($item['harga_awal']) - ($item['persen_diskon']/100 * $item['harga_awal'])) * $item['quantity']) }}/set </b> </p>
+                            @endif
                             <p class="mb-0" style="color: gray; font-size: 10px"> <s> Rp. {{number_format($item->harga_awal * $item['quantity'])}} </s> </p>     
                             <p class="mb-0" style="font-size: 10px">Quantity: {{$item['quantity']}}, Size: {{$item['ukuran_seragam']}} </p>
                             <p class="mb-0" style="font-size: 10px">Sekolah: {{$item['sublokasi']}}, Kelas: {{$item['nama_kelas']}} </p>

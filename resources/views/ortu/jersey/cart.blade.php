@@ -27,9 +27,16 @@
                     </div>
                     <div class="deskripsi">
                         <p class="mb-0" style="font-size: 14px"><b> {{$item->nama_jersey}} </b>, Size: {{$item['ukuran_seragam']}} </p>
-                        <p class="mb-0 price-diskon"> <b> Rp. {{number_format((($item['harga_awal']) - ($item['persen_diskon']/100 * $item['harga_awal'])) * $item['quantity']) }} </b> 
-                            <span class="bg-danger py-1 px-2" style="font-size: 11px"> {{$item['persen_diskon']}}% </span> 
-                        </p>
+
+                        @if ($item->ekskul_id == '5')
+                            <p class="mb-0 price-diskon"> <b> Rp. {{number_format((($item['harga_awal']) - ($item['persen_diskon']/100 * $item['harga_awal'])) * $item['quantity']) }}/kaos </b> 
+                                <span class="bg-danger py-1 px-2" style="font-size: 11px"> {{$item['persen_diskon']}}% </span> 
+                            </p>
+                        @else
+                            <p class="mb-0 price-diskon"> <b> Rp. {{number_format((($item['harga_awal']) - ($item['persen_diskon']/100 * $item['harga_awal'])) * $item['quantity']) }}/set </b> 
+                                <span class="bg-danger py-1 px-2" style="font-size: 11px"> {{$item['persen_diskon']}}% </span> 
+                            </p>
+                        @endif
                         <p class="mb-0" style="color: gray; font-size: 12px"> <s> Rp. {{number_format($item['harga_awal'] * $item['quantity']) }} </s> </p>
                         <p class="mb-0" style="font-size: 11px"> Nama: {{$item['nama_lengkap']}} </p>
                         <p class="mb-0" style="font-size: 11px"> Sekolah: {{$item['sublokasi']}}, Kelas: {{$item['nama_kelas']}} </p>
