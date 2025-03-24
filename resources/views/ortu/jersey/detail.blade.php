@@ -60,7 +60,11 @@
             <input type="hidden" id="produk_id" value="{{$produk->id}}">
             <div class="produk-title">
                 <h5 class="card-title mb-0">{{$produk->nama_jersey}}</h5>
-                <p class="mb-1 price-diskon-detail" ><b> Rp. {{number_format($produk->harga_awal - ($produk->persen_diskon/100 * $produk->harga_awal))}} </b> </p>
+                @if ($produk->ekskul_id == '5')
+                    <p class="mb-1 price-diskon-detail" ><b> Rp. {{number_format($produk->harga_awal - ($produk->persen_diskon/100 * $produk->harga_awal))}}/kaos </b> </p>
+                @else
+                    <p class="mb-1 price-diskon-detail" ><b> Rp. {{number_format($produk->harga_awal - ($produk->persen_diskon/100 * $produk->harga_awal))}}/set </b> </p>
+                @endif
                 <p class="mb-0" style="font-size: 16px"> Discount 
                     <span class="bg-danger py-1 px-2"> {{($produk->persen_diskon)}}% </span>
                     <span class="mx-2" style="color: gray"> <s> Rp. {{number_format($produk->harga_awal)}} </s> </span>

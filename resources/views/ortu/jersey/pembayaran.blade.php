@@ -74,7 +74,7 @@
                 <li>No punggung didapatkan dari ekskul masing-masing <i>(khusus futsal dan basket) </i></li>
                 <li>Setelah Pembayaran, Order tidak bisa cancel dan refund</li>
                 <li>Tidak bisa ganti size</li>
-                <li>Tidak bisa ganti No. Punggung dan Nama Punggung</li>
+                <li>Tidak bisa ganti No. Punggung dan Nama Punggung <i>(khusus futsal dan basket) </i></li>
                 <li>Waktu Pre Order paling lambat 14 Hari Kerja</li>
             </ol>
         </div>
@@ -145,7 +145,7 @@
                 <li>No punggung didapatkan dari ekskul masing-masing <i>(khusus futsal dan basket) </i></li>
                 <li>Setelah Pembayaran, tidak bisa cancel dan refund</li>
                 <li>Tidak bisa ganti size</li>
-                <li>Tidak bisa ganti No. Punggung dan Nama Punggung</li>
+                <li>Tidak bisa ganti No. Punggung dan Nama Punggung <i>(khusus futsal dan basket) </i></li>
                 <li>Waktu Pre Order paling lambat 14 Hari Kerja</li>
             </ol>
         </div>
