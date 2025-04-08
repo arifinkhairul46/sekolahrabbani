@@ -48,22 +48,9 @@ class DashboardController extends Controller
 
         $menubar = MenuMobile::where('is_footer', 1)->get();
 
-        // $main_menu = MenuMobile::where('is_footer', 0)->where('is_profile', 0)->where('status', 1)->get();
+        $main_menu = MenuMobile::where('is_footer', 0)->where('is_profile', 0)->where('status', 1)->get();
 
-        if ($user_id == '367' || $user_id == '825' || $user_id == '1792' || $user_id == '17') {
-            $main_menu = MenuMobile::where('is_footer', 0)->where('is_profile', 0)->where('status', 1)->get();
-            $ext_menu = MenuMobile::where('id', 6)->first();
-
-            return view('ortu.dashboard', compact('main_menu', 'menubar', 'ext_menu', 'user_id'));
-
-        } else {
-            $main_menu = MenuMobile::where('is_footer', 0)->where('is_profile', 0)->where('status', 1)->get();
-
-            return view('ortu.dashboard', compact('main_menu', 'menubar', 'user_id'));
-
-        }
-
-        
+        return view('ortu.dashboard', compact('main_menu', 'menubar', 'user_id'));
 
     }
 

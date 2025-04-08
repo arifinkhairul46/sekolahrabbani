@@ -67,14 +67,6 @@
                     </div>
                 @endif
             @endforeach
-            @if ($user_id == '367' || $user_id == '825' || $user_id == '1792' || $user_id == '17')
-                <div class="col-4 mb-2">
-                    <a href="{{$ext_menu->url}}" style="text-decoration: none; color:black" >
-                        <img class="center" src="{{asset($ext_menu->icon)}}" alt="{{$ext_menu->icon}}" width="80px" >
-                        <span class="center p-0" style="font-size: 12px"> {{$ext_menu->name}} </span>
-                    </a>
-                </div>
-            @endif
         </div>
         {{-- end menu --}}
 
