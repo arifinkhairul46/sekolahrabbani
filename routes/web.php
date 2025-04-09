@@ -120,6 +120,8 @@ Route::group(['middleware' =>['auth', 'admin']], function () {
         Route::get('jersey/{id}', [JerseyController::class, 'order_jersey_detail'])->name('order_jersey_detail');
         Route::get('invoice-jersey/{id}', [JerseyController::class, 'download_invoice'])->name('download.invoice-jersey');
         Route::get('order-jersey/export', [JerseyController::class, 'export_list_order'])->name('order-jersey.export');
+        Route::get('resume-jersey', [JerseyController::class, 'resume_order'])->name('resume_jersey');
+
 
 
 

@@ -21,9 +21,8 @@ class OrderDetailJerseyExport implements FromCollection, WithHeadings
 
     public function collection()
     {
-        // return OrderDetailMerchandise::all();
         $data = OrderDetailJersey::select('t_pesan_jersey_detail.no_pesanan', 't_pesan_jersey_detail.nama_siswa', 't_pesan_jersey_detail.lokasi_sekolah',
-                    't_pesan_jersey_detail.nama_kelas', 'mj.nama_jersey', 'mus.ukuran_seragam', 't_pesan_jersey_detail.quantity', 
+                    't_pesan_jersey_detail.nama_kelas', 'mj.nama_jersey', 't_pesan_jersey_detail.ukuran_id', 't_pesan_jersey_detail.quantity', 
                     't_pesan_jersey_detail.nama_punggung', 't_pesan_jersey_detail.no_punggung', 't_pesan_jersey_detail.created_at',)
                     ->leftJoin('t_pesan_jersey as tpj', 'tpj.no_pesanan', 't_pesan_jersey_detail.no_pesanan')
                     ->leftJoin('m_jersey as mj', 'mj.id', 't_pesan_jersey_detail.jersey_id')
