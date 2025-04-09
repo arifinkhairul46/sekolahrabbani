@@ -59,7 +59,7 @@
         <div class="card">
             <div class="card-body">
                 <div class="d-flex" style="justify-content: flex-end">
-                    <form action="#" method="GET" >
+                    <form action="{{route('order-jersey.export')}}" method="GET" >
                         <input type="hidden" name="date_start_ex" value="{{$date_start}}" class="form-control">
                         <input type="hidden" name="date_end_ex" value="{{$date_end}}" class="form-control">
                         <button type="submit" class="btn btn-success btn-sm" > Export Excel </button> 
@@ -97,7 +97,7 @@
                                         <button class="btn btn-sm btn-warning" title="Detail" onclick="detail('{{$item->no_pesanan}}')">
                                             <i class="fa-solid fa-eye"></i>
                                         </button>
-                                        <a href="#" class="btn btn-sm btn-info mx-1" title="Print" >
+                                        <a href="{{route('download.invoice-jersey', $item->no_pesanan)}}" class="btn btn-sm btn-info mx-1" title="Print" >
                                             <i class="fa-solid fa-print"></i>
                                         </a>
                                     </td>

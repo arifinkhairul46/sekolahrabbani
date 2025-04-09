@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\SalesJerseyExport;
 use App\Models\CartJersey;
 use App\Models\JenisEkskul;
 use App\Models\Jenjang;
@@ -12,10 +13,12 @@ use App\Models\OrderDetailJersey;
 use App\Models\OrderJersey;
 use App\Models\Profile;
 use App\Models\UkuranSeragam;
+use Barryvdh\DomPDF\Facade\Pdf;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 
 class JerseyController extends Controller
 {
@@ -702,6 +705,49 @@ class JerseyController extends Controller
                         ->get();
 
         return response()->json($order_detail);
+    }
+
+    public function download_invoice(Request $request, $id)
+    {
+        $user_id = auth()->user()->id;
+
+        $order = OrderJersey::where('no_pesanan', $id)->first();
+
+        $order_detail = OrderDetailJersey::select('t_pesan_jersey_detail.nama_siswa', 't_pesan_jersey_detail.lokasi_sekolah', 'mj.persen_diskon',
+                        't_pesan_jersey_detail.nama_kelas', 'mj.nama_jersey', 'mj.image_1', 'mj.harga_awal', 'mus.ukuran_seragam', 't_pesan_jersey_detail.harga', 
+                        't_pesan_jersey_detail.persen_diskon', 't_pesan_jersey_detail.quantity', 't_pesan_jersey_detail.ukuran_id',
+                        't_pesan_jersey_detail.created_at', 'tpj.metode_pembayaran', 'tpj.no_pesanan', 't_pesan_jersey_detail.nama_punggung', 't_pesan_jersey_detail.no_punggung')
+                        ->leftJoin('t_pesan_jersey as tpj', 'tpj.no_pesanan', 't_pesan_jersey_detail.no_pesanan')
+                        ->leftJoin('m_jersey as mj', 'mj.id', 't_pesan_jersey_detail.jersey_id')
+                        ->leftJoin('m_ukuran_seragam as mus', 'mus.id', 't_pesan_jersey_detail.ukuran_id')
+                        ->where('tpj.no_pesanan', $id)
+                        ->get();
+
+        // Load view dengan data yang disiapkan
+        $pdf = Pdf::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])->loadView('admin.laporan.invoice-jersey', [
+                        'order' => $order,
+                        'order_detail' => $order_detail
+                    ]);
+        $pdf->setPaper('Letter');
+        $pdf->setWarnings(false);
+
+        // Download file PDF
+        return $pdf->download('Invoice-'.$id.'.pdf');
+    }
+
+    public function export_list_order(Request $request)
+    {
+        $sekolah_id = $request->sekolah ?? null;
+        $start = $request->date_start_ex != '' ? $request->date_start_ex : '2024-12-18' ;
+        $date_end = $request->date_end_ex != '' ? $request->date_end_ex : null;
+        
+        $date_start = date($start);
+        $new_date_end = new DateTime($date_end);
+        $date_end_plus = $new_date_end->modify('+1 day')->format('Y-m-d');
+
+        $now = date('d-m-y');
+        $file_name = 'list-order-by-'.$now.'.xlsx';
+        return Excel::download(new SalesJerseyExport($start, $date_end_plus), $file_name);
     }
 
     public function update_cart_status($user_id, $jersey_id) 

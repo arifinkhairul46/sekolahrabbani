@@ -53,8 +53,11 @@
 </nav> 
 <aside class="sidebar sidebar-default sidebar-white sidebar-base navs-rounded-all ">
     <div class="sidebar-header d-flex align-items-center justify-content-start">
-        <a href="{{route('dashboard')}}" class="navbar-brand">
-            
+        @if (auth()->user()->id_role != 4)
+            <a href="{{route('dashboard')}}" class="navbar-brand">
+        @else 
+            <a href="#" class="navbar-brand">
+        @endif
             <!--Logo start-->
             <div >
                 <img src="{{ asset('assets/images/logo-yayasan_1.png') }}" class="logo" alt="logo-yayasan" width="60">
