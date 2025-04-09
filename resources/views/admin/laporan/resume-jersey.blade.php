@@ -25,6 +25,7 @@
                 </div>
             </div>
 
+        @if ($user_id != 1787)
             <div class="col-auto">
                 <div class="card">
                     <div class="card-body">
@@ -52,6 +53,7 @@
                     </div>
                 </div>
             </div>
+        @endif
 
             <div class="col-auto">
                 <div class="card" style="width: 15rem">

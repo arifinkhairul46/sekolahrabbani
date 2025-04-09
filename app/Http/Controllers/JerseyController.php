@@ -754,6 +754,7 @@ class JerseyController extends Controller
     public function resume_order()
     {
         $this_month = date('Y-m');
+        $user_id = auth()->user()->id;
 
         $order_success = OrderDetailJersey::select(DB::raw('sum(t_pesan_jersey_detail.harga*t_pesan_jersey_detail.quantity) as grand_total'))
                         ->leftJoin('t_pesan_jersey as tpj', 'tpj.no_pesanan', 't_pesan_jersey_detail.no_pesanan')
@@ -803,7 +804,7 @@ class JerseyController extends Controller
         ->first();
 
         return view('admin.laporan.resume-jersey', compact( 'order_success', 'hpp', 'profit', 'sales_per_month', 'total_sales_by_ekskul',
-        'total_sales_by_school', 'total_sales_by_produk', 'total_item'));
+        'total_sales_by_school', 'total_sales_by_produk', 'total_item', 'user_id'));
     }
 
     public function update_cart_status($user_id, $jersey_id) 
