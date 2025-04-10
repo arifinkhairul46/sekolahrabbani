@@ -77,7 +77,7 @@
                     <div class="col-lg-5">
                         <h6> Sales Item By Produk </h6>
                         <div class="table-responsive mt-3">
-                            <table id="list_order" class="table table-striped" style="font-size: 14px">
+                            <table id="list_order" class="table table-striped" style="font-size: 12px">
                                 <thead>
                                     <tr>
                                         <th>No</th>
@@ -88,6 +88,7 @@
                                 </thead>
                                 <tbody>
                                     <?php $total_harga = 0; ?>
+                                    <?php $total_item = 0; ?>
                                     @foreach ($total_sales_by_produk as $item)
                                         <tr>
                                             <td>{{$loop->iteration}}</td>
@@ -96,9 +97,11 @@
                                             <td>Rp. {{number_format($item->harga * $item->total_quantity)}}</td>
                                         </tr>
                                         <?php $total_harga += $item->harga * $item->total_quantity ?>
+                                        <?php $total_item += $item->total_quantity ?>
                                     @endforeach
                                         <tr>
-                                            <td class="text-center" colspan="3"> <b> Total </b></td>
+                                            <td class="text-center" colspan="2"> <b> Total </b></td>
+                                            <td > <i> {{number_format($total_item)}} </i></td>
                                             <td > <i> Rp. {{number_format($total_harga)}} </i></td>
                                         </tr>
                                 </tbody>

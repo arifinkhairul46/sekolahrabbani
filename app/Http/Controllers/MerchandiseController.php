@@ -283,11 +283,15 @@ class MerchandiseController extends Controller
             $list_order = OrderMerchandise::query();
             
             if ($request->has('sekolah'))
-            $list_order = $list_order->selectRaw('t_pesan_merchandise.id, t_pesan_merchandise.no_pesanan, nama_pemesan, total_harga, metode_pembayaran, status, t_pesan_merchandise.updated_at')->leftJoin('t_pesan_merchandise_detail as tpmd', 't_pesan_merchandise.no_pesanan', 'tpmd.no_pesanan')->where('tpmd.lokasi_sekolah', $sekolah_id)
+            $list_order = $list_order->selectRaw('t_pesan_merchandise.id, t_pesan_merchandise.no_pesanan, nama_pemesan, total_harga, metode_pembayaran, status, t_pesan_merchandise.updated_at')
+                            ->leftJoin('t_pesan_merchandise_detail as tpmd', 't_pesan_merchandise.no_pesanan', 'tpmd.no_pesanan')
+                            ->where('tpmd.lokasi_sekolah', $sekolah_id)
                             ->where('status', 'success');
 
             if ($start!= null && $date_end != null)
-            $list_order = $list_order->selectRaw('t_pesan_merchandise.id, t_pesan_merchandise.no_pesanan, nama_pemesan, total_harga, metode_pembayaran, status, t_pesan_merchandise.updated_at')->whereBetween('t_pesan_merchandise.updated_at', [$date_start, $date_end_plus])->where('status', 'success');
+            $list_order = $list_order->selectRaw('t_pesan_merchandise.id, t_pesan_merchandise.no_pesanan, nama_pemesan, total_harga, metode_pembayaran, status, t_pesan_merchandise.updated_at')
+                            ->whereBetween('t_pesan_merchandise.updated_at', [$date_start, $date_end_plus])
+                            ->where('status', 'success');
 
             $list_order = $list_order->get();
 

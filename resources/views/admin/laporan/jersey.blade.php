@@ -12,7 +12,7 @@
     <div class="container iq-container px-3">
         <div class="card">
             <div class="card-body">
-                <form action="#" method="GET" role="form" id="filter_tanggal" >  
+                <form action="{{route('list_order_jersey')}}" method="GET" role="form" id="filter_tanggal" >  
                     <div class="row g-3 align-items-center">
 
                         <div class="col-auto">
@@ -51,7 +51,7 @@
 
                     <div class="mt-3">
                         <button type="submit" class="btn btn-primary btn-sm">Tampilkan</button>
-                        <a href="#" class="btn btn-dim btn-outline-danger btn-sm mx-1">Reset</a>   
+                        <a href="{{route('list_order_jersey')}}" class="btn btn-dim btn-outline-danger btn-sm mx-1">Reset</a>   
                     </div>
                 </form> 
             </div>

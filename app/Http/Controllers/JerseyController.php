@@ -668,17 +668,26 @@ class JerseyController extends Controller
             $list_order = OrderJersey::query();
             
             if ($request->has('sekolah'))
-            $list_order = $list_order->selectRaw('t_pesan_jersey.id, t_pesan_jersey.no_pesanan, nama_pemesan, total_harga, metode_pembayaran, status, t_pesan_jersey.updated_at', 'r.name as role_name')
-                            ->leftJoin('t_pesan_jersey_detail as tpmd', 't_pesan_jersey.no_pesanan', 'tpmd.no_pesanan')
-                            ->leftJoin('users as u', 't_pesan_jersey.user_id', 'u.id')
-                            ->leftJoin('role as r', 'u.id_role', 'r.id')
-                            ->where('tpmd.lokasi_sekolah', $sekolah_id)
+            $list_order = $list_order->selectRaw('t_pesan_jersey.id, t_pesan_jersey.no_pesanan, nama_pemesan, total_harga, metode_pembayaran, status, t_pesan_jersey.updated_at, r.name as role_name')
+                            ->leftJoin('t_pesan_jersey_detail as tpjd', 't_pesan_jersey.no_pesanan', 'tpjd.no_pesanan')
+                            ->leftJoin('users as user', 't_pesan_jersey.user_id', 'user.id')
+                            ->leftJoin('role as r', 'user.id_role', 'r.id')
+                            ->where('tpjd.lokasi_sekolah', $sekolah_id)
                             ->where('status', 'success');
-
+                         
             if ($start!= null && $date_end != null)
-            $list_order = $list_order->selectRaw('t_pesan_jersey.id, t_pesan_jersey.no_pesanan, nama_pemesan, total_harga, metode_pembayaran, status, t_pesan_jersey.updated_at', 'r.name as role_name')
+
+            $list_order = $list_order->selectRaw('t_pesan_jersey.id, t_pesan_jersey.no_pesanan, nama_pemesan, total_harga, metode_pembayaran, status, t_pesan_jersey.updated_at, role.name as role_name')
+                                    ->leftJoin('users', 't_pesan_jersey.user_id', 'users.id')
+                                    ->leftJoin('role', 'users.id_role', 'role.id')                        
                                     ->whereBetween('t_pesan_jersey.updated_at', [$date_start, $date_end_plus])
                                     ->where('status', 'success');
+
+            if ($start == '' && $date_end == '')
+            $list_order = $list_order->selectRaw('t_pesan_jersey.id, t_pesan_jersey.no_pesanan, nama_pemesan, total_harga, metode_pembayaran, status, t_pesan_jersey.updated_at, role.name as role_name')
+                            ->leftJoin('users', 't_pesan_jersey.user_id', 'users.id')
+                            ->leftJoin('role', 'users.id_role', 'role.id')
+                            ->where('status', 'success');
 
             $list_order = $list_order->get();
 
