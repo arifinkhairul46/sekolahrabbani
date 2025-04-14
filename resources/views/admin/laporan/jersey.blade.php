@@ -94,9 +94,10 @@
                                     <td>{{date_format($item->updated_at, 'Y-m-d H:i:s')}}</td>
                                     <td>{{$item->role_name}}</td>
                                     <td class="d-flex">
-                                        <button class="btn btn-sm btn-warning" title="Detail" onclick="detail('{{$item->no_pesanan}}')">
+                                        <button class="btn btn-sm btn-success" title="Detail" onclick="detail('{{$item->no_pesanan}}')">
                                             <i class="fa-solid fa-eye"></i>
                                         </button>
+                                       
                                         <a href="{{route('download.invoice-jersey', $item->no_pesanan)}}" class="btn btn-sm btn-info mx-1" title="Print" >
                                             <i class="fa-solid fa-print"></i>
                                         </a>
@@ -129,6 +130,7 @@
                                     <th> Nama Punggung </th>
                                     <th> No Punggung </th>
                                     <th> Quantity </th>
+                                    <th> Aksi </th>
                                 </tr>
                             </thead>
                             <tbody id="detail_order">
@@ -146,7 +148,6 @@
     <script> 
          function detail(no_pesanan) {
             var id = no_pesanan;
-            // console.log(no_pesanan);
             $('#detail_no_pesanan').html(id)
 
             var url = "{{ route('order_jersey_detail', ":id") }}";
@@ -176,6 +177,11 @@
                                 <td>${item.nama_punggung}</td>
                                 <td>${item.no_punggung}</td>
                                 <td>${item.quantity}</td>
+                                <td> 
+                                    <button class="btn btn-sm btn-warning mx-1" title="Edit" onclick="edit_jersey('${item.no_pesanan}', '${item.jersey_id}', '${item.no_punggung}')" data-bs-toggle="modal" data-bs-target="#edit_jersey">
+                                            <i class="fa-solid fa-pencil"></i>
+                                    </button>
+                                </td>
                             </tr>
                             `
                     )
@@ -183,6 +189,101 @@
                 }
             });
         }
+
+        function edit_jersey(id, jersey_id, no_punggung) {
+            fetch('/laporan/jersey/edit/' + id +'/' +jersey_id + '/' +no_punggung)
+                .then(response => response.json())
+                .then(data => {
+                    $("#jersey_id").val(data.jersey_id)
+                    $("#ukuran").val(data.ukuran_id)
+                    $("#nama_punggung").val(data.nama_punggung)
+                    $("#no_punggung").val(data.no_punggung)
+                    $("#no_pesanan").val(id)
+                    $("#old_jersey_id").val(jersey_id)
+                    $("#old_no_punggung").val(no_punggung)
+                })
+        }
+
+        function update_jersey() {
+            var id = $('#no_pesanan').val();
+            var jersey_id = $('#jersey_id').val();
+            var ukuran = $('#ukuran').val();
+            var nama_punggung = $('#nama_punggung').val();
+            var no_punggung = $('#no_punggung').val();
+            var old_jersey_id = $('#old_jersey_id').val();
+            var old_no_punggung = $('#old_no_punggung').val();
+
+            var url = "{{ route('update-jersey', ":id") }}";
+            url = url.replace(':id', id);
+
+            $.ajax({
+                url: url,
+                type: 'PUT',
+                data: {
+                    id: id,
+                    jersey_id: jersey_id,
+                    old_jersey_id: old_jersey_id,
+                    ukuran: ukuran,
+                    nama_punggung: nama_punggung,
+                    no_punggung: no_punggung,
+                    old_no_punggung: old_no_punggung,
+                    _token: '{{csrf_token()}}'
+                },
+                success: function (result) {
+                    window.location.reload()
+                }
+            })
+        }
     </script>
+
+    <div class="modal fade" id="edit_jersey" tabindex="-1" role="dialog" aria-labelledby="label" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="label">Edit Jersey</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="jersey_id" class="form-control-label">Nama Jersey</label>
+                        <select name="jersey_id" id="jersey_id" class="select form-control form-control-sm" aria-label=".form-select-sm" onchange="get_kelas()" >
+                            <option value="" disabled selected>-- Pilih Jersey -- </option>
+                                @foreach ($list_jersey as $item)
+                                    <option value="{{ $item->id }}" >{{ $item->nama_jersey }}</option>
+                                @endforeach
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ukuran" class="form-control-label">Ukuran</label>
+                        <select name="ukuran" id="ukuran" class="select form-control form-control-sm" aria-label=".form-select-sm" onchange="get_kelas()" >
+                            <option value="" disabled selected>-- Pilih Ukuran -- </option>
+                                @foreach ($list_ukuran as $item)
+                                    <option value="{{ $item->ukuran_seragam }}" >{{ $item->ukuran_seragam }}</option>
+                                @endforeach
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nama_punggung" class="form-control-label">Nama Punggung</label>
+                        <input type="text" class="form-control" name="nama_punggung" id="nama_punggung">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="no_punggung" class="form-control-label">No Punggung</label>
+                        <input type="text" class="form-control" name="no_punggung" id="no_punggung">
+                        <input type="hidden" class="form-control" name="no_pesanan" id="no_pesanan">
+                        <input type="hidden" class="form-control" name="old_jersey_id" id="old_jersey_id">
+                        <input type="hidden" class="form-control" name="old_no_punggung" id="old_no_punggung">
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                    <input type="hidden" id="id_harga_seragam">
+                    <button type="button" class="btn btn-success btn-sm" onclick="update_jersey()" >Update</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 

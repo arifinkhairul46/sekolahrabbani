@@ -220,6 +220,22 @@ class JerseyController extends Controller
         return view('admin.master.jersey', compact('jersey', 'jenis_ekskul', 'jenjang'));
     }
 
+    public function detail_order(Request $request, $id, $jersey_id, $no_punggung)
+    {
+        $order_detail = OrderDetailJersey::select('t_pesan_jersey_detail.nama_siswa', 't_pesan_jersey_detail.lokasi_sekolah', 't_pesan_jersey_detail.jersey_id',
+                        't_pesan_jersey_detail.nama_kelas', 'mj.nama_jersey','t_pesan_jersey_detail.persen_diskon', 't_pesan_jersey_detail.ukuran_id',
+                        'tpj.no_pesanan', 't_pesan_jersey_detail.nama_punggung', 't_pesan_jersey_detail.no_punggung')
+                        ->leftJoin('t_pesan_jersey as tpj', 'tpj.no_pesanan', 't_pesan_jersey_detail.no_pesanan')
+                        ->leftJoin('m_jersey as mj', 'mj.id', 't_pesan_jersey_detail.jersey_id')
+                        ->leftJoin('m_ukuran_seragam as mus', 'mus.id', 't_pesan_jersey_detail.ukuran_id')
+                        ->where('tpj.no_pesanan', $id)
+                        ->where('t_pesan_jersey_detail.jersey_id', $jersey_id)
+                        ->where('t_pesan_jersey_detail.no_punggung', $no_punggung)
+                        ->first();
+
+        return response($order_detail);
+    }
+
     public function create_jenis_ekskul(Request $request)
     {
         $add_jenis = JenisEkskul::create([
@@ -655,6 +671,9 @@ class JerseyController extends Controller
     }
 
     public function list_order_jersey(Request $request) {
+        $list_jersey = Jersey::all();
+        $list_ukuran = UkuranSeragam::whereNotIn('ukuran_seragam', ['ALL', '4XL', '5XL'])->orderby('urutan', 'asc')->get();
+
         $sekolah_id = $request->sekolah ?? null;
         $start = $request->date_start != '' ? $request->date_start : null ;
         $date_end = $request->date_end != '' ? $request->date_end : null;
@@ -701,13 +720,13 @@ class JerseyController extends Controller
                             ->get();
         }
 
-        return view('admin.laporan.jersey', compact('list_order', 'date_start', 'date_end', 'sekolah', 'sekolah_id'));
+        return view('admin.laporan.jersey', compact('list_order', 'date_start', 'date_end', 'sekolah', 'sekolah_id', 'list_jersey', 'list_ukuran'));
     }
 
     public function order_jersey_detail($id){
         $order_detail = OrderDetailJersey::select('t_pesan_jersey_detail.nama_siswa', 't_pesan_jersey_detail.lokasi_sekolah', 'mj.persen_diskon',
                         't_pesan_jersey_detail.nama_kelas', 'mj.nama_jersey', 'mj.image_1', 'mj.harga_awal', 'mus.ukuran_seragam', 't_pesan_jersey_detail.harga', 
-                        't_pesan_jersey_detail.persen_diskon', 't_pesan_jersey_detail.quantity', 't_pesan_jersey_detail.ukuran_id',
+                        't_pesan_jersey_detail.persen_diskon', 't_pesan_jersey_detail.quantity', 't_pesan_jersey_detail.ukuran_id', 't_pesan_jersey_detail.jersey_id',
                         't_pesan_jersey_detail.created_at', 'tpj.metode_pembayaran', 'tpj.no_pesanan', 't_pesan_jersey_detail.nama_punggung', 't_pesan_jersey_detail.no_punggung')
                         ->leftJoin('t_pesan_jersey as tpj', 'tpj.no_pesanan', 't_pesan_jersey_detail.no_pesanan')
                         ->leftJoin('m_jersey as mj', 'mj.id', 't_pesan_jersey_detail.jersey_id')
@@ -716,6 +735,31 @@ class JerseyController extends Controller
                         ->get();
 
         return response()->json($order_detail);
+    }
+
+    public function update_jersey(Request $request)
+    {
+        $user = auth()->user()->name;
+
+        $id = $request->id;
+        $jersey_id = $request->jersey_id;
+        $old_jersey_id = $request->old_jersey_id;
+        $ukuran = $request->ukuran;
+        $nama_punggung = $request->nama_punggung;
+        $no_punggung = $request->no_punggung;
+        $old_no_punggung = $request->old_no_punggung;
+
+        $update_jersey = OrderDetailJersey::where('no_pesanan', $id)->where('jersey_id', $old_jersey_id)->where('no_punggung', $old_no_punggung)->first();
+
+        $update_jersey->update([
+            'jersey_id' => $jersey_id,
+            'ukuran_id' => $ukuran,
+            'nama_punggung' => $nama_punggung,
+            'no_punggung' => $no_punggung
+
+        ]);
+
+        return response()->json($update_jersey);
     }
 
     public function download_invoice(Request $request, $id)
