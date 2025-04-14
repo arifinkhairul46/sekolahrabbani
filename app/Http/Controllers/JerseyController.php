@@ -643,8 +643,8 @@ class JerseyController extends Controller
 
         $order_detail = OrderDetailJersey::select('t_pesan_jersey_detail.nama_siswa', 't_pesan_jersey_detail.lokasi_sekolah', 'mj.persen_diskon',
                         't_pesan_jersey_detail.nama_kelas', 'mj.nama_jersey', 'mj.image_1', 'mj.harga_awal', 'mus.ukuran_seragam', 't_pesan_jersey_detail.harga', 
-                        't_pesan_jersey_detail.persen_diskon', 't_pesan_jersey_detail.quantity', 't_pesan_jersey_detail.ukuran_id', 
-                        't_pesan_jersey_detail.created_at', 'tpj.metode_pembayaran', 'tpj.no_pesanan')
+                        't_pesan_jersey_detail.persen_diskon', 't_pesan_jersey_detail.quantity', 't_pesan_jersey_detail.ukuran_id', 'mj.ekskul_id',
+                        't_pesan_jersey_detail.created_at', 'tpj.metode_pembayaran', 'tpj.no_pesanan', 't_pesan_jersey_detail.nama_punggung', 't_pesan_jersey_detail.no_punggung')
                         ->leftJoin('t_pesan_jersey as tpj', 'tpj.no_pesanan', 't_pesan_jersey_detail.no_pesanan')
                         ->leftJoin('m_jersey as mj', 'mj.id', 't_pesan_jersey_detail.jersey_id')
                         ->leftJoin('m_ukuran_seragam as mus', 'mus.id', 't_pesan_jersey_detail.ukuran_id')

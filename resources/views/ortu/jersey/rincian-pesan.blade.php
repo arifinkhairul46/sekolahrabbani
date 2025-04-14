@@ -24,8 +24,10 @@
                             <p class="mb-0" style="font-size: 14px;"> {{$item->nama_jersey}} Size: {{$item->ukuran_id}} </p>
                             <p class="mb-0 price-diskon"> <b> Rp. {{number_format($item->harga_awal * $item['quantity']  - ($item->persen_diskon/100 * $item->harga_awal * $item['quantity']))}} </b> </p>
                             <p class="mb-0" style="color: gray; font-size: 10px"> <s> Rp. {{number_format($item->harga_awal * $item['quantity'])}} </s> </p>     
-                            <p class="mb-0" style="font-size: 10px">Nama: {{$item['nama_siswa']}} </p>
-                            <p class="mb-0" style="font-size: 10px">Qty: {{$item['quantity']}}</p>
+                            <p class="mb-0" style="font-size: 10px">Nama: {{$item['nama_siswa']}}, Qty: {{$item['quantity']}} </p>
+                            @if ($item->ekskul_id == 1 || $item->ekskul_id == 2)
+                                <p class="mb-1" style="font-size: 10px">Nama Punggung: {{$item['nama_punggung']}}, No Punggung: {{$item['no_punggung']}} </p>
+                            @endif
                         </div>
                     </div>
                 </div>
