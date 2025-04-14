@@ -243,6 +243,7 @@ class JerseyController extends Controller
         $ukuran_memanah_sd_l = UkuranSeragam::whereIn('ukuran_seragam', ['S', 'M', 'L', 'XL'])->get();
         $ukuran_memanah_sd_p = UkuranSeragam::whereIn('ukuran_seragam', ['S', 'M', 'L', 'XL', 'XXL', '3XL'])->get();
         $ukuran_badminton_sd_p = UkuranSeragam::whereIn('ukuran_seragam', ['S', 'M', 'L', 'XL', 'XXL'])->get();
+        $ukuran_badminton_sd_l = UkuranSeragam::whereIn('ukuran_seragam', ['M', 'L', 'XL', 'XXL', '3XL'])->get();
         
         $profile = Profile::get_user_profile_byphone($no_hp);
 
@@ -255,7 +256,7 @@ class JerseyController extends Controller
                         ->get();
 
         return view('ortu.jersey.detail', compact('produk', 'profile', 'ukuran', 'cart_detail', 'role_id', 'ukuran_futsal_sd',
-                    'ukuran_basket_sd_l', 'ukuran_badminton_sd_p', 'ukuran_memanah_sd_p', 'ukuran_memanah_sd_l'));
+                    'ukuran_basket_sd_l', 'ukuran_badminton_sd_p', 'ukuran_badminton_sd_l', 'ukuran_memanah_sd_p', 'ukuran_memanah_sd_l'));
     }
 
     public function add_to_cart(Request $request)
