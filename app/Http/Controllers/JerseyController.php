@@ -254,7 +254,7 @@ class JerseyController extends Controller
         $role_id = auth()->user()->id_role;
 
         $ukuran = UkuranSeragam::whereNotIn('ukuran_seragam', ['ALL', '4XL', '5XL'])->orderby('urutan', 'asc')->get();
-        $ukuran_futsal_sd = UkuranSeragam::whereIn('ukuran_seragam', ['M', 'L', 'XL'])->get();
+        $ukuran_futsal_sd = UkuranSeragam::whereIn('ukuran_seragam', ['M', 'L', 'XL', 'XXL'])->get();
         $ukuran_basket_sd_l = UkuranSeragam::whereIn('ukuran_seragam', ['L', 'XL'])->get();
         $ukuran_memanah_sd_l = UkuranSeragam::whereIn('ukuran_seragam', ['S', 'M', 'L', 'XL'])->get();
         $ukuran_memanah_sd_p = UkuranSeragam::whereIn('ukuran_seragam', ['S', 'M', 'L', 'XL', 'XXL', '3XL'])->get();
@@ -433,7 +433,7 @@ class JerseyController extends Controller
                         ->leftJoin('mst_lokasi_sub as mls', 'mls.id', 'm_profile.sekolah_id') 
                         ->where('user_id', $user_id)
                         ->first();
-                        
+
         $cart_detail = CartJersey::select('t_cart_jersey.quantity', 't_cart_jersey.id', 't_cart_jersey.jersey_id', 't_cart_jersey.is_selected', 
                     'mus.ukuran_seragam', 'mj.nama_jersey', 'mj.harga_awal', 'mj.persen_diskon', 'mj.image_1', 'mj.image_2', 'mp.nama_lengkap',
                     'mls.sublokasi', 'mp.nama_kelas', 't_cart_jersey.nama_punggung', 't_cart_jersey.no_punggung', 'mj.ekskul_id')
@@ -486,6 +486,9 @@ class JerseyController extends Controller
         $no_hp = auth()->user()->no_hp;
         $nama_pemesan = auth()->user()->name;
         $no_pesanan = 'INV-JRS-'. date('YmdHis');
+        $profile = Profile::select('sekolah_id')
+                        ->where('user_id', $user_id)
+                        ->first();
 
         $total_harga_now = $request->total_harga;
         $harga_awal_now = $request->harga_awal;
@@ -517,6 +520,11 @@ class JerseyController extends Controller
             foreach ($order as $item) {
                 $nama_siswa = $item['nama_lengkap'];
                 $lokasi = $item['sekolah'];
+                if ($lokasi != null) {
+                    $lokasi_sekolah = $lokasi;
+                } else {
+                    $lokasi_sekolah = $profile->sekolah_id;
+                }
                 $nama_kelas = $item['nama_kelas'];
                 $jersey_id = $item['jersey_id'];
                 $ukuran = $item['ukuran_seragam'];
@@ -532,7 +540,7 @@ class JerseyController extends Controller
                 $order_detail = OrderDetailJersey::create([
                 'no_pesanan' => $no_pesanan,
                 'nama_siswa' => $nama_siswa,
-                'lokasi_sekolah' => $lokasi,
+                'lokasi_sekolah' => $lokasi_sekolah,
                 'nama_kelas' => $nama_kelas,
                 'jersey_id' => $jersey_id,
                 'ukuran_id' => $ukuran,
@@ -597,8 +605,9 @@ class JerseyController extends Controller
                 $sekolah_id = $get_siswa->sekolah_id;
                 $nama_kelas = $get_siswa->nama_kelas;
             } else {
+                $get_profile = Profile::where('user_id', $user_id)->first();
                 $nama_lengkap = auth()->user()->name;
-                $sekolah_id = '-';
+                $sekolah_id = $get_profile->sekolah_id;
                 $nama_kelas = '-';
             }
 
