@@ -66,7 +66,7 @@
         </div>
 
         @if($order->status == 'success')
-            <div class="d-flex" style="justify-content: space-between; font-size: 14px">
+            <div class="d-flex mb-5" style="justify-content: space-between; font-size: 14px">
                 <span> Waktu Pembayaran </span>
                 <span> {{$order->updated_at}} </span>
             </div>
