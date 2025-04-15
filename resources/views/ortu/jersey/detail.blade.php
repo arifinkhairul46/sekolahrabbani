@@ -113,43 +113,41 @@
                         </div>
                     </div>
 
-                    @if ($role_id != 7)
-                        <div class="produk mt-3">
-                            <h6 style="color: #3152A4"><b> Nama Siswa </b> </h6>
-                            <div class="d-flex" style="flex-direction: column">
-                                @foreach ($profile as $item)
-                                <div class="button-karya mt-1">
-                                    <input class="form-check-input" type="radio" name="nama_siswa" id="nama_siswa_{{$item->nis}}" value="{{$item->nis}}">
-                                    <label class="form-check-label" for="nama_siswa_{{$item->nis}}">
-                                    <span class="px-2" style="font-size: 10px"> {{$item->nama_lengkap}} </span>
-                                    </label>
-                                </div>
-                                @endforeach
+                    <div class="produk mt-3">
+                        <h6 style="color: #3152A4"><b> Nama Siswa </b> </h6>
+                        <div class="d-flex" style="flex-direction: column">
+                            @foreach ($profile as $item)
+                            <div class="button-karya mt-1">
+                                <input class="form-check-input" type="radio" name="nama_siswa" id="nama_siswa_{{$item->nis}}" value="{{$item->nis}}">
+                                <label class="form-check-label" for="nama_siswa_{{$item->nis}}">
+                                <span class="px-2" style="font-size: 10px"> {{$item->nama_lengkap}} </span>
+                                </label>
                             </div>
-                            <span class="mb-0 text-danger" style="font-size: 10px; display: none" id="valid_nis" > Pilih nama siswa terlebih dahulu! </span>
+                            @endforeach
+                        </div>
+                        <span class="mb-0 text-danger" style="font-size: 10px; display: none" id="valid_nis" > Pilih nama siswa terlebih dahulu! </span>
+                    </div>
+
+                    @if ($produk->ekskul_id == 1 || $produk->ekskul_id == 2)
+                        <div class="produk-no-punggung mt-3">
+                            <div class="d-flex">
+                                <h6 style="color: #3152A4"><b> Nomor Punggung </b> </h6>
+                                <input type="text" name="no_punggung" id="no_punggung" class="input-number mx-2" min="1" max="100">
+                            </div>
+                            <span class="mb-0 text-danger" style="font-size: 10px; display: none" id="valid_no_punggung" > Isi No Punggung terlebih dahulu! </span>
+
                         </div>
 
-                        @if ($produk->ekskul_id == 1 || $produk->ekskul_id == 2)
-                            <div class="produk-no-punggung mt-3">
-                                <div class="d-flex">
-                                    <h6 style="color: #3152A4"><b> Nomor Punggung </b> </h6>
-                                    <input type="text" name="no_punggung" id="no_punggung" class="input-number mx-2" min="1" max="100">
-                                </div>
-                                <span class="mb-0 text-danger" style="font-size: 10px; display: none" id="valid_no_punggung" > Isi No Punggung terlebih dahulu! </span>
-
+                        <div class="produk-nama-punggung mt-3">
+                            <div class="d-flex">
+                                <h6 style="color: #3152A4"><b> Nama Punggung </b> </h6>
+                                <input type="text" name="nama_punggung" id="nama_punggung" maxlength="10" class="input-nama-punggung mx-3 px-2" maxlength="30">
                             </div>
+                            <span class="mb-0 text-danger" style="font-size: 10px; display: none" id="valid_nama_punggung" > Isi Nama Punggung terlebih dahulu! </span>
 
-                            <div class="produk-nama-punggung mt-3">
-                                <div class="d-flex">
-                                    <h6 style="color: #3152A4"><b> Nama Punggung </b> </h6>
-                                    <input type="text" name="nama_punggung" id="nama_punggung" maxlength="10" class="input-nama-punggung mx-3 px-2" maxlength="30">
-                                </div>
-                                <span class="mb-0 text-danger" style="font-size: 10px; display: none" id="valid_nama_punggung" > Isi Nama Punggung terlebih dahulu! </span>
-
-                            </div>
-                        @endif
-
+                        </div>
                     @endif
+
 
                     <input type="hidden" id="role_id" value="{{$role_id}}">
 
