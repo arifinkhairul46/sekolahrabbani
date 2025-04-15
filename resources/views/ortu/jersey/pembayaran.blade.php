@@ -44,7 +44,11 @@
                         @endif
                         <p class="mb-0" style="color: gray; font-size: 10px"> <s> Rp. {{number_format($harga_awal)}} </s> </p>     
                         <p class="mb-0" style="font-size: 10px">Quantity: {{$quantity}}, Size: {{$ukuran->ukuran_seragam}} </p>
-                        <p class="mb-0" style="font-size: 10px">Sekolah: {{$profile->sublokasi}}, Kelas: {{$profile->nama_kelas}} </p>
+                        @if (auth()->user()->id_role != 7)
+                            <p class="mb-0" style="font-size: 10px">Sekolah: {{$profile->sublokasi}}, Kelas: {{$profile->nama_kelas}} </p>
+                        @else 
+                            <p class="mb-0" style="font-size: 10px">Sekolah: {{$profile->sublokasi}} </p>
+                        @endif
                         @if ($jersey->ekskul_id == 1 || $jersey->ekskul_id == 2)
                                 <p class="mb-1" style="font-size: 10px">Nama Punggung: {{$nama_punggung}}, No Punggung: {{$no_punggung}} </p>
                             @endif
@@ -115,7 +119,11 @@
                             @endif
                             <p class="mb-0" style="color: gray; font-size: 10px"> <s> Rp. {{number_format($item->harga_awal * $item['quantity'])}} </s> </p>     
                             <p class="mb-0" style="font-size: 10px">Quantity: {{$item['quantity']}}, Size: {{$item['ukuran_seragam']}} </p>
-                            <p class="mb-0" style="font-size: 10px">Sekolah: {{$item['sublokasi']}}, Kelas: {{$item['nama_kelas']}} </p>
+                            @if (auth()->user()->id_role != 7)
+                                <p class="mb-0" style="font-size: 10px">Sekolah: {{$item['sublokasi']}}, Kelas: {{$item['nama_kelas']}} </p>
+                            @else 
+                                <p class="mb-0" style="font-size: 10px">Sekolah: {{$profile->sublokasi}} </p>
+                            @endif
                             @if ($item->ekskul_id == 1 || $item->ekskul_id == 2)
                                 <p class="mb-1" style="font-size: 10px">Nama Punggung: {{$item['nama_punggung']}}, No Punggung: {{$item['no_punggung']}} </p>
                             @endif

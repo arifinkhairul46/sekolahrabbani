@@ -38,12 +38,14 @@
                             </p>
                         @endif
                         <p class="mb-0" style="color: gray; font-size: 12px"> <s> Rp. {{number_format($item['harga_awal'] * $item['quantity']) }} </s> </p>
-                        <p class="mb-0" style="font-size: 11px"> Nama: {{$item['nama_lengkap']}} </p>
-                        <p class="mb-0" style="font-size: 11px"> Sekolah: {{$item['sublokasi']}}, Kelas: {{$item['nama_kelas']}} </p>
-                        @if ($item->ekskul_id == 1)
+                        @if (auth()->user()->id_role != 7)
+                            <p class="mb-0" style="font-size: 11px"> Nama: {{$item['nama_lengkap']}} </p>
+                            <p class="mb-0" style="font-size: 11px"> Sekolah: {{$item['sublokasi']}}, Kelas: {{$item['nama_kelas']}} </p>
+                        @else 
+                            <p class="mb-0" style="font-size: 11px"> Sekolah: {{$profile->sublokasi}}</p>    
+                        @endif
+                        @if ($item->ekskul_id == 1 || $item->ekskul_id == 2 )
                             <p class="mb-1" style="font-size: 10px">Nama Punggung: {{$item['nama_punggung']}}, No Punggung: {{$item['no_punggung']}} </p>
-                        @elseif (($item->ekskul_id == 2))
-                            <p class="mb-1" style="font-size: 10px">No Punggung: {{$item['no_punggung']}} </p>
                         @endif
                         
                         <div class="input-group" style="border: none;">
@@ -93,7 +95,7 @@
     @else
         <div class="center-cart">
             <h6> Keranjang Anda kosong saat ini </h6>
-            <a href="{{route('seragam')}}" style="text-decoration: none">
+            <a href="{{route('jersey.index')}}" style="text-decoration: none">
                 <button class="btn btn-primary px-3"> Belanja Sekarang</button>
             </a>
         </div>

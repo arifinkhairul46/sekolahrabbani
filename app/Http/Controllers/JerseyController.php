@@ -302,7 +302,10 @@ class JerseyController extends Controller
     public function cart(Request $request)
     {
         $user_id = auth()->user()->id;
-        $profile = Profile::where('user_id', $user_id)->get();
+        $profile = Profile::select('mls.sublokasi')
+                        ->leftJoin('mst_lokasi_sub as mls', 'mls.id', 'm_profile.sekolah_id') 
+                        ->where('user_id', $user_id)
+                        ->first();
 
         $cart_detail = CartJersey::select('t_cart_jersey.quantity', 't_cart_jersey.id', 't_cart_jersey.jersey_id', 't_cart_jersey.is_selected', 
                         'mus.ukuran_seragam', 'mj.nama_jersey', 'mj.ekskul_id', 'mj.harga_awal', 'mj.persen_diskon', 'mj.image_1', 'mj.image_2', 'mp.nama_lengkap',
@@ -426,7 +429,11 @@ class JerseyController extends Controller
 
         $order = $request->all();
         
-        $profile = Profile::where('user_id', $user_id)->get();
+        $profile = Profile::select('mls.sublokasi')
+                        ->leftJoin('mst_lokasi_sub as mls', 'mls.id', 'm_profile.sekolah_id') 
+                        ->where('user_id', $user_id)
+                        ->first();
+                        
         $cart_detail = CartJersey::select('t_cart_jersey.quantity', 't_cart_jersey.id', 't_cart_jersey.jersey_id', 't_cart_jersey.is_selected', 
                     'mus.ukuran_seragam', 'mj.nama_jersey', 'mj.harga_awal', 'mj.persen_diskon', 'mj.image_1', 'mj.image_2', 'mp.nama_lengkap',
                     'mls.sublokasi', 'mp.nama_kelas', 't_cart_jersey.nama_punggung', 't_cart_jersey.no_punggung', 'mj.ekskul_id')
