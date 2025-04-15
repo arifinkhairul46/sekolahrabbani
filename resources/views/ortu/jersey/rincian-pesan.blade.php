@@ -8,71 +8,70 @@
             </a>
             <h4 class="mx-3"> Rincian Pesanan </h4>
         </div>
-
+    </div>
         
-        <div class="container">
-            <?php $total_awal = 0; ?>
-            <?php $total_diskon = 0; ?>
-            <?php $total_akhir = 0; ?>
-            @foreach ($order_detail as $item)
-                <div class="row-card ">
-                    <div class="frame-bayar">
-                        <img src="{{asset('storage/'.$item->image_1)}}" width="100%" style="height: 100%; object-fit:cover; border-radius:1rem">
+    <div class="container">
+        <?php $total_awal = 0; ?>
+        <?php $total_diskon = 0; ?>
+        <?php $total_akhir = 0; ?>
+        @foreach ($order_detail as $item)
+            <div class="row-card ">
+                <div class="frame-bayar">
+                    <img src="{{asset('storage/'.$item->image_1)}}" width="100%" style="height: 100%; object-fit:cover; border-radius:1rem">
+                </div>
+                <div class="d-flex mx-2">
+                    <div class="" style="width: 200px">
+                        <p class="mb-0" style="font-size: 14px;"> {{$item->nama_jersey}} Size: {{$item->ukuran_id}} </p>
+                        <p class="mb-0 price-diskon"> <b> Rp. {{number_format($item->harga_awal * $item['quantity']  - ($item->persen_diskon/100 * $item->harga_awal * $item['quantity']))}} </b> </p>
+                        <p class="mb-0" style="color: gray; font-size: 10px"> <s> Rp. {{number_format($item->harga_awal * $item['quantity'])}} </s> </p>     
+                        <p class="mb-0" style="font-size: 10px">Nama: {{$item['nama_siswa']}}, Qty: {{$item['quantity']}} </p>
+                        @if ($item->ekskul_id == 1 || $item->ekskul_id == 2)
+                            <p class="mb-1" style="font-size: 10px">Nama Punggung: {{$item['nama_punggung']}}, No Punggung: {{$item['no_punggung']}} </p>
+                        @endif
                     </div>
-                    <div class="d-flex mx-2">
-                        <div class="" style="width: 200px">
-                            <p class="mb-0" style="font-size: 14px;"> {{$item->nama_jersey}} Size: {{$item->ukuran_id}} </p>
-                            <p class="mb-0 price-diskon"> <b> Rp. {{number_format($item->harga_awal * $item['quantity']  - ($item->persen_diskon/100 * $item->harga_awal * $item['quantity']))}} </b> </p>
-                            <p class="mb-0" style="color: gray; font-size: 10px"> <s> Rp. {{number_format($item->harga_awal * $item['quantity'])}} </s> </p>     
-                            <p class="mb-0" style="font-size: 10px">Nama: {{$item['nama_siswa']}}, Qty: {{$item['quantity']}} </p>
-                            @if ($item->ekskul_id == 1 || $item->ekskul_id == 2)
-                                <p class="mb-1" style="font-size: 10px">Nama Punggung: {{$item['nama_punggung']}}, No Punggung: {{$item['no_punggung']}} </p>
-                            @endif
-                        </div>
-                    </div>
                 </div>
-                <?php $total_awal += (($item->harga_awal * $item->quantity) ); ?>
-                <?php $total_diskon += ($item->persen_diskon/100 * $item->harga_awal * $item->quantity);?>
-                <?php $total_akhir = ($total_awal - $total_diskon); ?>
-            @endforeach
-
-            <div class="d-flex mt-3" style="justify-content: space-between; font-size: 14px">
-                <input type="text" style="display: none" value="{{$total_akhir}}" id="nominal" >
-                <span> Total Pesanan </span>
-                <span> Rp. {{number_format($total_akhir)}} <i class="fa solid fa-copy" onclick="copy_nominal()" title="salin"> </i> </span>
             </div>
-            <hr>
+            <?php $total_awal += (($item->harga_awal * $item->quantity) ); ?>
+            <?php $total_diskon += ($item->persen_diskon/100 * $item->harga_awal * $item->quantity);?>
+            <?php $total_akhir = ($total_awal - $total_diskon); ?>
+        @endforeach
 
-            <div class="d-flex mt-3" style="justify-content: space-between; font-size: 14px">
-                <span> Metode Pembayaran </span>
-                <span> {{ strtoupper($order->metode_pembayaran) }} </span>
-            </div>
-
-            @if($order->status == 'pending' && $order->metode_pembayaran != 'shopeepay' && $order->metode_pembayaran != 'gopay' )
-                <div class="d-flex" style="justify-content: space-between; font-size: 14px">
-                    <span> No VA Pembayaran </span>
-                    <span id="va_number">{{$order->va_number}} <i class="fa solid fa-copy" onclick="copy_number()" title="salin"> </i> </span>
-                </div>
-                <div class="d-flex" style="justify-content: space-between; font-size: 14px">
-                    <span> Batas Pembayaran </span>
-                    <span class="text-danger" style="font-weight: bold" id="batas_pembayaran" data-countdown = "{{ date('Y-m-d H:i:s', strtotime($order->expire_time))}}" >{{$order->expire_time}} </span>
-                </div>
-            @endif
-            <hr>
-
-            <div class="d-flex mt-3" style="justify-content: space-between; font-size: 14px">
-                <span> No Pesanan </span>
-                <span> {{$order->no_pesanan}} </span>
-            </div>
-
-            @if($order->status == 'success')
-                <div class="d-flex" style="justify-content: space-between; font-size: 14px">
-                    <span> Waktu Pembayaran </span>
-                    <span> {{$order->updated_at}} </span>
-                </div>
-            @endif
-
+        <div class="d-flex mt-3" style="justify-content: space-between; font-size: 14px">
+            <input type="text" style="display: none" value="{{$total_akhir}}" id="nominal" >
+            <span> Total Pesanan </span>
+            <span> Rp. {{number_format($total_akhir)}} <i class="fa solid fa-copy" onclick="copy_nominal()" title="salin"> </i> </span>
         </div>
+        <hr>
+
+        <div class="d-flex mt-3" style="justify-content: space-between; font-size: 14px">
+            <span> Metode Pembayaran </span>
+            <span> {{ strtoupper($order->metode_pembayaran) }} </span>
+        </div>
+
+        @if($order->status == 'pending' && $order->metode_pembayaran != 'shopeepay' && $order->metode_pembayaran != 'gopay' )
+            <div class="d-flex" style="justify-content: space-between; font-size: 14px">
+                <span> No VA Pembayaran </span>
+                <span id="va_number">{{$order->va_number}} <i class="fa solid fa-copy" onclick="copy_number()" title="salin"> </i> </span>
+            </div>
+            <div class="d-flex" style="justify-content: space-between; font-size: 14px">
+                <span> Batas Pembayaran </span>
+                <span class="text-danger" style="font-weight: bold" id="batas_pembayaran" data-countdown = "{{ date('Y-m-d H:i:s', strtotime($order->expire_time))}}" >{{$order->expire_time}} </span>
+            </div>
+        @endif
+        <hr>
+
+        <div class="d-flex mt-3" style="justify-content: space-between; font-size: 14px">
+            <span> No Pesanan </span>
+            <span> {{$order->no_pesanan}} </span>
+        </div>
+
+        @if($order->status == 'success')
+            <div class="d-flex" style="justify-content: space-between; font-size: 14px">
+                <span> Waktu Pembayaran </span>
+                <span> {{$order->updated_at}} </span>
+            </div>
+        @endif
+
     </div>
     
     @if($order->status == 'success')
