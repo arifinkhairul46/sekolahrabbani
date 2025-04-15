@@ -211,6 +211,7 @@ Route::group(['middleware' =>['auth']], function () {
         Route::post('payment', [JerseyController::class, 'pre_order'])->name('pre_order.jersey');
         Route::post('pembayaran', [JerseyController::class, 'store_order'])->name('jersey.store');
         Route::get('riwayat-transaksi/{id}', [JerseyController::class, 'rincian_pesanan'])->name('jersey.history.detail');
+        Route::get('download-invoice/{id}', [JerseyController::class, 'download_invoice'])->name('invoice-jersey');
 
 
 

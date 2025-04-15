@@ -76,7 +76,7 @@
     </div>
     
     @if($order->status == 'success')
-        <a href="{{route('invoice-merchandise', $order->no_pesanan)}}" target="_blank">
+        <a href="{{route('invoice-jersey', $order->no_pesanan)}}" target="_blank">
             <div class="d-grid gap-2 mt-3 bottom-navigate">
                 <button class="btn btn-purple btn-block py-2" > Download Invoice </button>
             </div>
