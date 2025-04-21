@@ -15,7 +15,8 @@
         "laravel/socialite": "^5.12",
         "laravel/tinker": "^2.5",
         "maatwebsite/excel": "^3.1",
-        "midtrans/midtrans-php": "^2.5"
+        "midtrans/midtrans-php": "^2.5",
+        "stevebauman/location": "^6.6"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
