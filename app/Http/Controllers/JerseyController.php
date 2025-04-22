@@ -31,7 +31,7 @@ class JerseyController extends Controller
     public function index()
     {
         $user_id = Auth::user()->id;
-        $menubar = MenuMobile::where('is_footer', 1)->get();
+        $menubar = MenuMobile::where('is_footer', 1)->orderBy('no', 'asc')->get();
         $jenjang = Jenjang::select('nama_jenjang', 'value')->get();
 
         $list_jersey = Jersey::where('status', 1)->get();
@@ -48,7 +48,7 @@ class JerseyController extends Controller
                         ->where('t_cart_jersey.status_cart', 0)
                         ->get();
         
-        return view('ortu.jersey.index', compact('menubar', 'jenjang', 'list_jersey', 'cart_detail', 'jersey_futsal', 'jersey_badminton',
+        return view('ortu.jersey.closed', compact('menubar', 'jenjang', 'list_jersey', 'cart_detail', 'jersey_futsal', 'jersey_badminton',
                     'jersey_basket', 'jersey_memanah'));
     }
 
