@@ -124,6 +124,8 @@ Route::group(['middleware' =>['auth', 'admin']], function () {
         Route::get('invoice-jersey/{id}', [JerseyController::class, 'download_invoice'])->name('download.invoice-jersey');
         Route::get('order-jersey/export', [JerseyController::class, 'export_list_order'])->name('order-jersey.export');
         Route::get('resume-jersey', [JerseyController::class, 'resume_order'])->name('resume_jersey');
+        Route::get('wishlist', [SeragamController::class, 'wishlist_seragam'])->name('wishlist_seragam');
+        Route::get('export-wishlist', [SeragamController::class, 'export_wishlist'])->name('export_wishlist');
 
 
 
@@ -160,6 +162,9 @@ Route::group(['middleware' =>['auth']], function () {
 
     Route::get('download-invoice/{id}', [SeragamController::class, 'download'])->name('download.invoice');
 
+    Route::get('wishlist', [SeragamController::class, 'wishlist'])->name('seragam.wishlist');
+    Route::post('wishlist', [SeragamController::class, 'add_to_wishlist'])->name('wishlist_post');
+    Route::delete('wishlist/{id}', [SeragamController::class, 'remove_wishlist'])->name('wishlist.delete');
 
 
     

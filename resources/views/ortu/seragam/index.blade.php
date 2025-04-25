@@ -17,7 +17,7 @@
                     </path>                                
                 </svg>                            
             </div>
-            <form action="{{route('seragam.cart')}}" method="GET" class="mt-1 mb-0" id="cart_submit">
+            <form action="{{route('seragam.cart')}}" method="GET" class="mt-1 mb-0 mx-1" id="cart_submit">
                 <a href="#"  onclick="submit_cart()" style="text-decoration: none; color: black">
                     @if ($cart_detail->count() > 0)
                         <i class="fa-solid fa-cart-shopping fa-xl" style="color: #704996"> <span id="count_cart" class="count-cart py-1" >{{$cart_detail->count()}}</span> </i>
@@ -26,6 +26,17 @@
                     @endif
                 </a>
             </form>
+            @if (auth()->user()->id == '825')
+                <form action="{{route('seragam.wishlist')}}" method="GET" class="mt-1 mb-0" id="wishlist_submit">
+                    <a href="#"  onclick="submit_wishlist()" style="text-decoration: none; color: black">
+                        @if ($wishlist->count() > 0)
+                            <i class="fa-solid fa-heart fa-xl" style="color: #C95792"> <span id="count_wishlist" class="count-wishlist py-1" >{{$wishlist->count()}}</span> </i>
+                        @else 
+                            <i class="fa-solid fa-heart fa-xl" style="color: #C95792"> <span id="count_wishlist" class="count-wishlist py-1" style="display:none;" > {{$cart_detail->count()}} </span> </i>
+                        @endif
+                    </a>
+                </form>
+            @endif
         </div>
     </div>
     <div class="container">
@@ -178,6 +189,10 @@
     <script>
         function submit_cart() {
             $('#cart_submit').submit();
+        }
+
+        function submit_wishlist() {
+            $('#wishlist_submit').submit();
         }
 
         $('#search').on('keyup', function(){

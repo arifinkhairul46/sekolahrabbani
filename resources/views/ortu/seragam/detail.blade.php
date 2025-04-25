@@ -85,7 +85,10 @@
     <div class="bottom-navigate sticky-bottom">
         <div class="d-flex" style="justify-content: end">
             <a href="#" class="btn btn-primary px-3" data-bs-toggle="modal" data-bs-target="#buy_now" > <i class="fa-solid fa-plus"></i> Keranjang </a>
-            <a href="#" class="btn btn-purple mx-2 px-3" data-bs-toggle="modal" data-bs-target="#buy_now" > Beli Sekarang </a>
+            <a href="#" class="btn btn-purple mx-1 px-3" data-bs-toggle="modal" data-bs-target="#buy_now" > Beli Sekarang </a>
+            @if (auth()->user()->id == '825')
+                <button class="btn px-1" onclick="showModalWL()" title="wishlist"> <i class="fa-solid fa-heart fa-xl" style="color: #E6E6E6;"></i> </button>
+            @endif
         </div>
     </div>
 
@@ -220,6 +223,98 @@
         </div>
     </div>
 
+    <div class="modal fade" id="wishlist" tabindex="-1" role="dialog" aria-labelledby="wishlist_popup" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" style="align-items: flex-end">
+            <div class="modal-content animate-bottom ">
+                <div class="modal-body">
+                    <div class="d-flex mx-1" style="justify-content: space-between">
+                        <div class="frame">
+                            <img src="{{asset('assets/images/'.$produk->image)}}" width="100%" style="height: 100%; object-fit:cover; border-radius:1rem">
+                        </div>
+                        <div class="mx-2 mt-2" style="width: 255px">
+                            <div class="titel">
+                                <p class="card-title mb-0"> <b> {{$produk->nama_produk}} </b> </p>
+                                <p class="mb-1 price-diskon" style="font-size: 24px"> <b> Rp. <span id="harga_diskon"> {{number_format(($produk['harga']) - ($produk['diskon']/100 * $produk['harga'])) }} </span> </b> </p>
+                                <p class="mb-1" style="font-size: 13px"> Discount 
+                                    <span class="bg-danger py-1 px-2" id="diskon_persen"> {{($produk->diskon)}}% </span>
+                                    <span class="mx-2" style="color: gray"> <s> Rp. <span id="harga_awal"> {{number_format($produk->harga)}} </span> </s> </span>
+                                </p>
+                                
+                            </div>
+                        </div>
+                        <div class="close">
+                            <a style="color:gray; text-decoration:none" data-bs-dismiss="modal" ><i class="fa-solid fa-chevron-down"></i></a>
+                        </div>
+                    </div>
+    
+                    <div class="produk-detail d-flex">
+                        <div class="frame-detail">
+                            <img src="{{asset('assets/images/'.$produk->image_2)}}" width="100%" style="height: 100%; object-fit:cover; border-radius:1rem">
+                        </div>
+                        <div class="frame-detail">
+                            <img src="{{asset('assets/images/'.$produk->image_3)}}" width="100%" style="height: 100%; object-fit:cover; border-radius:1rem">
+                        </div>
+                        <div class="frame-detail">
+                            <img src="{{asset('assets/images/'.$produk->image_4)}}" width="100%" style="height: 100%; object-fit:cover; border-radius:1rem">
+                        </div>
+                    </div>
+
+                    <div class="produk-jenis mt-3">
+                        <div class="d-flex">
+                            @foreach ($jenis_produk as $item)
+                                <div class="button-jenis">
+                                    <input class="form-check-input" type="radio" name="jenis_wl_{{$produk->id}}" id="jenis_wl_{{$produk->id}}_{{$item->id}}" value="{{$item->id}}">
+                                    <label class="form-check-label" for="jenis_wl_{{$produk->id}}_{{$item->id}}">
+                                    <span> {{$item->jenis_produk}} </span>
+                                    </label>
+                                </div>
+                            @endforeach
+                        </div>
+                        <span class="mb-0 text-danger" style="font-size: 10px; display: none" id="valid_jenis_wl_{{$produk->id}}" > Pilih jenis seragam terlebih dahulu! </span>
+
+                    </div>
+                    
+                    <div class="produk-ukuran mt-3">
+                        <h6 style="color: #3152A4"><b> Ukuran </b> </h6>
+                        <div class="d-flex" id="ukuran_seragam">
+                            @foreach($ukuran_seragam as $item)
+                                <div class="button-ukuran">
+                                    <input class="form-check-input" type="radio" name="ukuran_wl_{{$produk->id}}"  id="uk_wl_{{$item->ukuran_seragam}}_{{$produk->id}}" value="{{$item->ukuran_seragam}}">
+                                    <label class="form-check-label" for="uk_wl_{{$item->ukuran_seragam}}_{{$produk->id}}">
+                                    <span>{{$item->ukuran_seragam}} </span>
+                                    </label>
+                                </div>
+                            @endforeach
+                        </div>
+                        <span class="mb-0 text-danger" style="font-size: 10px; display: none" id="valid_ukuran_wl_{{$produk->id}}" > Pilih ukuran terlebih dahulu! </span>
+                    </div>
+                    
+                    <div class="produk-jumlah my-4">
+                        <h6 class="mt-1" style="color: #3152A4"><b> Jumlah </b> </h6>
+                        <div class="input-group mx-3" style="border: none;">
+                            <div class="button minus">
+                                <button type="button" class="btn btn-outline-plus-minus btn-number" disabled="disabled" data-type="minus" data-field="quant_wl_[{{$produk->id}}]">
+                                    <i class="fas fa-minus-circle"></i>
+                                </button>
+                            </div>
+                            <input type="text" name="quant[{{$produk->id}}]" id="quant_wl_{{$produk->id}}" class="input-number" value="1" min="1" max="10">
+                            <div class="button plus">
+                                <button type="button" class="btn btn-outline-plus-minus btn-number" data-type="plus" data-field="quant_wl_[{{$produk->id}}]">
+                                    <i class="fas fa-plus-circle"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex mt-3" style="justify-content: end">
+                        <button type="button" class="btn btn-primary px-3 " onclick="addToWishlist('{{$produk->id}}')" > Simpan Wishlist </button>
+                        <a href="{{route('seragam.wishlist')}}" class="btn btn-purple px-3 mx-1 " > Lihat Wishlist </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
 
@@ -469,37 +564,45 @@
             }
         }
 
-        // function beli_sekarang(id) {
-        //     var item_id = id;
-        //     var ukuran = $('input[name="ukuran_'+item_id+'"]:checked').val();
-        //     var jenis = $('input[name="jenis_'+item_id+'"]:checked').val();
-        //     var quantity = $('.input-number').val();
-        //     var nama_siswa = $('#nama_siswa').val();
+        function showModalWL() {
+            $('#wishlist').modal('show')
+        }
 
-        //     if (ukuran == '' || ukuran == null || ukuran == undefined) {
-        //         $('#valid_ukuran_'+item_id).show();
-        //     } else if (jenis == '' || jenis == null || jenis == undefined)  {
-        //         $('#valid_jenis_'+item_id).show();
-        //     } else {
-        //         $('#valid_ukuran_'+item_id).hide(); 
-        //         $('#valid_jenis_'+item_id).hide();
+        function addToWishlist(produk_id) {
+            var produk_id = produk_id;
+            var ukuran = $('input[name="ukuran_wl_'+produk_id+'"]:checked').val();
+            var jenis = $('input[name="jenis_wl_'+produk_id+'"]:checked').val();
+            var quantity = $('.input-number').val();
 
-        //         $.ajax({
-        //             url: "{{route('buy_now')}}",
-        //             type: 'POST',
-        //             data: {
-        //                 produk_id : item_id,
-        //                 ukuran : ukuran,
-        //                 quantity : quantity,
-        //                 jenis: jenis,
-        //                 nama_siswa: nama_siswa,
-        //                 _token: '{{csrf_token()}}'
-        //             },
-        //             success: function (result) {
-        //             }
-        //         })
-        //     }
-        // }
+            console.log(ukuran, jenis, quantity, produk_id);
+            if (ukuran == '' || ukuran == null || ukuran == undefined) {
+                $('#valid_ukuran_wl_'+produk_id).show();
+            } else if (jenis == '' || jenis == null || jenis == undefined)  {
+                $('#valid_jenis_wl_'+produk_id).show();
+            } else {
+                $('#valid_ukuran_wl'+produk_id).hide(); 
+                $('#valid_jenis_wl'+produk_id).hide();
+
+                $.ajax({
+                    url: "{{route('wishlist_post')}}",
+                    type: 'POST',
+                    data: {
+                        produk_id : produk_id,
+                        ukuran : ukuran,
+                        quantity : quantity,
+                        jenis: jenis,
+                        _token: '{{csrf_token()}}'
+                    },
+                    success: function (result) {
+                        console.log(result);
+                    }
+                })
+
+                $('#wishlist').modal('hide')
+                
+            }
+
+        }
 
         function submit_cart() {
             $('#cart_submit').submit();

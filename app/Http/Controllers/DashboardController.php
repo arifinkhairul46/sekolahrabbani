@@ -46,7 +46,7 @@ class DashboardController extends Controller
     {
         $user_id = Auth::user()->id;
 
-        $menubar = MenuMobile::where('is_footer', 1)->get();
+        $menubar = MenuMobile::where('is_footer', 1)->orderBy('no', 'asc')->get();
 
         $main_menu = MenuMobile::where('is_footer', 0)->where('is_profile', 0)->where('status', 1)->get();
 
@@ -57,7 +57,7 @@ class DashboardController extends Controller
     public function footer() 
     {
 
-        $menubar = MenuMobile::where('is_footer', 1)->get();
+        $menubar = MenuMobile::where('is_footer', 1)->orderBy('no', 'asc')->get();
 
         return view('ortu.footer.index', compact('menubar'));
     }

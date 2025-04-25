@@ -555,6 +555,15 @@ main {
     padding-left: 6px;
 }
 
+.count-wishlist{
+    background-color: #F8B55F;
+    color: white;
+    border-radius: 1rem;
+    font-size: 9px;
+    padding-right: 6px;
+    padding-left: 6px;
+}
+
 .total_cart {
     background-color: #F8F0FF;
     border-radius: 50%

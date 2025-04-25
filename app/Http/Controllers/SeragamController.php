@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exports\HargaExport;
 use App\Exports\StokExport;
+use App\Exports\WishlistExport;
 use App\Models\Cart;
 use App\Models\CartDetail;
 use App\Models\HargaSeragam;
@@ -22,6 +23,7 @@ use App\Models\Profile;
 use App\Models\StokCard;
 use App\Models\StokSeragam;
 use App\Models\UkuranSeragam;
+use App\Models\Wishlist;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -65,9 +67,26 @@ class SeragamController extends Controller
                     ->where('tss.qty', '>', 0)
                     ->get();
 
-        $menubar = MenuMobile::where('is_footer', 1)->get();
+        $wishlist = Wishlist::select('t_wishlist_seragam.id', 'm_produk_seragam.id as id_produk','m_produk_seragam.nama_produk', 'm_produk_seragam.deskripsi', 'm_produk_seragam.image', 
+                    'm_produk_seragam.material', 'mhs.harga', 'mhs.diskon', 'mjps.id as jenis_id', 'mhs.kode_produk',
+                    'mjps.jenis_produk', 't_wishlist_seragam.quantity', 't_wishlist_seragam.ukuran', 'tss.qty')
+                    ->leftJoin('m_produk_seragam', 'm_produk_seragam.id', 't_wishlist_seragam.produk_id')
+                    ->leftJoin('m_jenis_produk_seragam as mjps', 'mjps.id', 't_wishlist_seragam.jenis')
+                    ->leftJoin('m_ukuran_seragam as mus', 'mus.ukuran_seragam', 't_wishlist_seragam.ukuran')
+                    ->leftJoin('m_harga_seragam as mhs', function($join)
+                    { $join->on('mhs.produk_id', '=', 'm_produk_seragam.id') 
+                        ->on('mhs.jenis_produk_id', '=', 'mjps.id')
+                        ->on('mus.id', '=', 'mhs.ukuran_id'); 
+                    })
+                    ->leftJoin('t_stok_seragam as tss', 'mhs.kode_produk', 'tss.kd_barang')
+                    ->where('t_wishlist_seragam.user_id', $user_id)
+                    ->where('t_wishlist_seragam.status_wl', 1)
+                    ->where('tss.qty', '>', 0)
+                    ->get();
 
-        return view('ortu.seragam.index', compact('lokasi', 'produk_seragam', 'jenjang', 'kategori_seragam', 'produk_seragam_tk', 'produk_seragam_sd', 'produk_seragam_smp', 'produk_seragam_kober', 'search_produk', 'cart_detail', 'menubar'));
+        $menubar = MenuMobile::where('is_footer', 1)->orderBy('no', 'asc')->get();
+
+        return view('ortu.seragam.index', compact('lokasi', 'produk_seragam', 'jenjang', 'kategori_seragam', 'produk_seragam_tk', 'produk_seragam_sd', 'produk_seragam_smp', 'produk_seragam_kober', 'search_produk', 'cart_detail', 'menubar', 'wishlist'));
     }
 
     public function search_produk(Request $request)
@@ -437,6 +456,91 @@ class SeragamController extends Controller
 
         return redirect()->route('seragam.cart')
             ->with('error', 'Remove from cart successfully');
+    }
+
+    public function add_to_wishlist(Request $request)
+    {
+        $produk_id = $request->produk_id;
+        $quantity = $request->quantity;
+        $ukuran = $request->ukuran;
+        $jenis = $request->jenis;
+        $user_id = auth()->user()->id;
+
+        $add_wishlist_detail =  Wishlist::create([
+            'produk_id' => $produk_id,
+            'user_id' => $user_id,
+            'quantity' => $quantity,
+            'ukuran' => $ukuran,
+            'jenis' => $jenis,
+            'status_wl' => '1',
+            'user_id' => $user_id
+        ]);
+    
+        return response()->json($add_wishlist_detail);
+
+    }
+
+    public function wishlist(Request $request)
+    {
+
+        $user_id = auth()->user()->id;
+
+        $profile = Profile::where('user_id', $user_id)->get();
+
+        $wishlist = Wishlist::select('t_wishlist_seragam.id', 'm_produk_seragam.id as id_produk','m_produk_seragam.nama_produk', 'm_produk_seragam.deskripsi', 'm_produk_seragam.image', 
+                    'm_produk_seragam.material', 'mhs.harga', 'mhs.diskon', 'mjps.id as jenis_id', 'mhs.kode_produk',
+                    'mjps.jenis_produk', 't_wishlist_seragam.quantity', 't_wishlist_seragam.ukuran', 'tss.qty')
+                    ->leftJoin('m_produk_seragam', 'm_produk_seragam.id', 't_wishlist_seragam.produk_id')
+                    ->leftJoin('m_jenis_produk_seragam as mjps', 'mjps.id', 't_wishlist_seragam.jenis')
+                    ->leftJoin('m_ukuran_seragam as mus', 'mus.ukuran_seragam', 't_wishlist_seragam.ukuran')
+                    ->leftJoin('m_harga_seragam as mhs', function($join)
+                    { $join->on('mhs.produk_id', '=', 'm_produk_seragam.id') 
+                        ->on('mhs.jenis_produk_id', '=', 'mjps.id')
+                        ->on('mus.id', '=', 'mhs.ukuran_id'); 
+                    })
+                    ->leftJoin('t_stok_seragam as tss', 'mhs.kode_produk', 'tss.kd_barang')
+                    ->where('t_wishlist_seragam.user_id', $user_id)
+                    ->where('t_wishlist_seragam.status_wl', 1)
+                    ->get();
+        // dd($wishlist);
+
+        return view('ortu.seragam.wishlist', compact('profile', 'wishlist'));
+    }
+
+    public function wishlist_seragam(Request $request)
+    {
+        $user_id = auth()->user()->id;
+
+        $wishlist = Wishlist::select('t_wishlist_seragam.id', 'm_produk_seragam.id as id_produk','m_produk_seragam.nama_produk', 'm_produk_seragam.deskripsi', 'm_produk_seragam.image', 
+                    'm_produk_seragam.material', 'mhs.harga', 'mhs.diskon', 'mjps.id as jenis_id', 'mhs.kode_produk',
+                    'mjps.jenis_produk', 't_wishlist_seragam.quantity', 't_wishlist_seragam.ukuran', 't_wishlist_seragam.created_at')
+                    ->leftJoin('m_produk_seragam', 'm_produk_seragam.id', 't_wishlist_seragam.produk_id')
+                    ->leftJoin('m_jenis_produk_seragam as mjps', 'mjps.id', 't_wishlist_seragam.jenis')
+                    ->leftJoin('m_ukuran_seragam as mus', 'mus.ukuran_seragam', 't_wishlist_seragam.ukuran')
+                    ->leftJoin('m_harga_seragam as mhs', function($join)
+                    { $join->on('mhs.produk_id', '=', 'm_produk_seragam.id') 
+                        ->on('mhs.jenis_produk_id', '=', 'mjps.id')
+                        ->on('mus.id', '=', 'mhs.ukuran_id'); 
+                    })
+                    ->where('t_wishlist_seragam.status_wl', 1)
+                    ->get();
+        // dd($wishlist);
+
+        return view('admin.laporan.wishlist-seragam', compact('wishlist'));
+    }
+
+
+    public function remove_wishlist($id) 
+    {
+        Wishlist::find($id)->delete();
+
+        return redirect()->route('seragam.wishlist')
+            ->with('error', 'Remove from wishlist successfully');
+    }
+
+    public function export_wishlist()
+    {
+        return Excel::download(new WishlistExport(), 'wishlist.xlsx');
     }
 
     public function buy_now(Request $request)
@@ -1057,7 +1161,7 @@ class SeragamController extends Controller
 
     public function history(Request $request) {
         $user_id = auth()->user()->id;
-        $menubar = MenuMobile::where('is_footer', 1)->get();
+        $menubar = MenuMobile::where('is_footer', 1)->orderBy('no', 'asc')->get();
 
 
         $order = OrderSeragam::select('psd.*', 'mps.image', 'mps.nama_produk', 't_pesan_seragam.status', 't_pesan_seragam.total_harga', 't_pesan_seragam.user_id')
