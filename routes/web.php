@@ -27,6 +27,7 @@ use App\Http\Controllers\TugasDiklatController;
 use App\Http\Controllers\UserController;
 use App\Models\JadwalKontrak;
 use App\Models\Merchandise;
+use App\Models\Pendaftaran;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 
@@ -337,3 +338,5 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/jenjang/{jenjang}', [HomeController::class, 'jenjang'])->name('jenjang.sekolah');
 Route::get('/profile', [ProfileSekolahController::class, 'index'])->name('profile.sekolah');
 Route::get('/kurikulum', [KurikulumController::class, 'index'])->name('kurikulum.sekolah');
+Route::get('trial-class', [PendaftaranController::class, 'trial_class'])->name('trial.class');
+Route::post('trial-class', [PendaftaranController::class, 'store_trial_class'])->name('store.trial.class');

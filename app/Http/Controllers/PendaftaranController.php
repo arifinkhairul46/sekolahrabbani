@@ -22,6 +22,7 @@ use App\Models\PendaftaranWali;
 use App\Models\ProgramReg;
 use App\Models\Provinsi;
 use App\Models\TahunAjaranAktif;
+use App\Models\TrialClass;
 use Illuminate\Http\Request;
 
 class PendaftaranController extends Controller
@@ -591,6 +592,40 @@ Hormat Kami,
         // dd($get_profile);
 
         return view('pendaftaran.tk-sd.pemenuhan-data', compact('get_profile', 'provinsi', 'kecamatan', 'kelurahan', 'kota'));
+    }
+
+    
+    public function trial_class()
+    {
+        $lokasi = Lokasi::where('status', 1)->get();
+        $jenjang_per_sekolah = JenjangSekolah::all();
+
+        return view('pendaftaran.trial-class', compact('lokasi', 'jenjang_per_sekolah'));
+    }
+
+    public function store_trial_class(Request $request)
+    {
+        $jenjang_id = $request->jenjang;
+        if ($request->lokasi == 'UBR') {
+            $jenjang_id = 5;
+        }
+
+        $nama_ortu = $request->nama_ortu;
+        $lokasi = $request->lokasi;
+        $no_wa = $request->no_wa;
+        $asal_sekolah = $request->asal_sekolah;
+        $now = date('YmdHis');
+
+        TrialClass::create([
+            'nama_ortu' => $nama_ortu,
+            'no_wa' => $no_wa,
+            'asal_sekolah' => $asal_sekolah,
+            'tujuan_sekolah' => $lokasi,
+            'jenjang_id' => $jenjang_id
+        ]);
+
+        return redirect()->route('pendaftaran')
+            ->with('success', 'Pendaftaran Triall Class Berhasil.');
     }
 
 
