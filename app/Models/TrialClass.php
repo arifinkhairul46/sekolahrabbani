@@ -13,6 +13,7 @@ class TrialClass extends Model
 
     protected $fillable = [
         'nama_anak',
+        'usia_anak',
         'tujuan_sekolah',
         'jenjang_id',
         'no_wa',

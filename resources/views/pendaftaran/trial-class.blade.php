@@ -22,6 +22,11 @@
                     </div>
 
                     <div class="form-group mt-3">
+                        <label for="usia_anak" class="form-label">Usia Anak </label>
+                        <input class="form-control" type="tel" id="usia_anak" maxlength="2" name="usia_anak" placeholder="Usia Anak (Tahun)" onkeypress="return /[0-9]/i.test(event.key)" required>
+                    </div>
+
+                    <div class="form-group mt-3">
                         <label for="no_wa" class="form-label">No Whatsapp Ayah/Bunda</label>
                         <input class="form-control" id="no_wa" type="tel" name="no_wa" placeholder="08123xxx" minlength="10" maxlength="13" onkeypress="return /[0-9]/i.test(event.key)" required>
                         @if ($errors->has('no_wa'))
@@ -65,9 +70,10 @@
             $("#btn-submit").click(function() {
 
                 var nama_anak = $('#nama_anak').val();
+                var usia_anak = $('#usia_anak').val();
                 var no_wa = $('#no_wa').val();
                 var asal_sekolah = $('#asal_sekolah').val();
-                if (nama_anak == '' || asal_sekolah == '' || no_wa == '' ) {
+                if (nama_anak == '' || asal_sekolah == '' || no_wa == '' || usia_anak == '' ) {
 
                 } else {
                     // disable button

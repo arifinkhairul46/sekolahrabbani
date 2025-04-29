@@ -611,6 +611,7 @@ Hormat Kami,
         }
 
         $nama_anak = $request->nama_anak;
+        $usia_anak = $request->usia_anak;
         $lokasi = $request->lokasi;
         $no_wa = $request->no_wa;
         $asal_sekolah = $request->asal_sekolah;
@@ -618,6 +619,7 @@ Hormat Kami,
 
         $add_trial = TrialClass::create([
             'nama_anak' => $nama_anak,
+            'usia_anak' => $usia_anak,
             'no_wa' => $no_wa,
             'asal_sekolah' => $asal_sekolah,
             'tujuan_sekolah' => $lokasi,
@@ -625,15 +627,15 @@ Hormat Kami,
         ]);
 
         $contact_person =  ContactPerson::where('is_aktif', '1')->where('kode_sekolah', $lokasi)->where('id_jenjang', $jenjang_id)->first();
-        $no_admin = $contact_person->telp;
+        $no_admins = $contact_person->telp;
         $message_trial = 'Pendaftaran trial class telah berhasil dengan nama "'.$nama_anak.'" nomor wa ortu "'.$no_wa.'". ';
 
         if ($add_trial) {
-            $this->send_notif($message_trial, $no_admin); 
+            $this->send_notif($message_trial, $no_admins); 
         }
 
         return redirect()->route('pendaftaran')
-            ->with('success', 'Pendaftaran Triall Class Berhasil.');
+            ->with('success', 'Pendaftaran Trial Class Berhasil.');
     }
 
 
