@@ -17,8 +17,8 @@
                     @csrf
 
                     <div class="form-group mt-3">
-                        <label for="nama_ortu" class="form-label">Nama Ayah/Bunda</label>
-                        <input class="form-control" id="nama_ortu" name="nama_ortu" placeholder="Nama Ortu" required>
+                        <label for="nama_anak" class="form-label">Nama Anak </label>
+                        <input class="form-control" id="nama_anak" name="nama_anak" placeholder="Nama Anak" required>
                     </div>
 
                     <div class="form-group mt-3">
@@ -64,10 +64,10 @@
         $(document).ready(function() {
             $("#btn-submit").click(function() {
 
-                var nama_ortu = $('#nama_ortu').val();
+                var nama_anak = $('#nama_anak').val();
                 var no_wa = $('#no_wa').val();
                 var asal_sekolah = $('#asal_sekolah').val();
-                if (nama_ortu == '' || asal_sekolah == '' || no_wa == '' ) {
+                if (nama_anak == '' || asal_sekolah == '' || no_wa == '' ) {
 
                 } else {
                     // disable button

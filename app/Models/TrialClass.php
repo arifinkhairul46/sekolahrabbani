@@ -12,7 +12,7 @@ class TrialClass extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'nama_ortu',
+        'nama_anak',
         'tujuan_sekolah',
         'jenjang_id',
         'no_wa',
