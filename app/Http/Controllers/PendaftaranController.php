@@ -630,6 +630,9 @@ Hormat Kami,
         $no_admins = $contact_person->telp;
         $message_trial = 'Pendaftaran trial class telah berhasil dengan nama "'.$nama_anak.'" nomor wa ortu "'.$no_wa.'". ';
 
+         // send ke qlp
+         $this->send_trial_class($nama_anak, $usia_anak, $no_wa, $lokasi, $jenjang_id, $asal_sekolah);
+
         if ($add_trial) {
             $this->send_notif($message_trial, $no_admins); 
         }
@@ -788,6 +791,39 @@ Hormat Kami,
 		curl_close($curl);
 	    return ($response);
 	}
+
+    function send_trial_class($nama_anak, $usia_anak, $no_wa, $lokasi, $jenjang, $asal_sekolah )
+    {
+        $curl = curl_init();
+
+		curl_setopt_array($curl, array(
+		  CURLOPT_URL => 'http://103.135.214.11:81/qlp_system/api_regist/simpan_trial_class.php',
+		  CURLOPT_RETURNTRANSFER => 1,
+		  CURLOPT_ENCODING => '',
+		  CURLOPT_MAXREDIRS => 10,
+		  CURLOPT_TIMEOUT => 0,
+		  CURLOPT_FOLLOWLOCATION => true,
+		  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+		  CURLOPT_CUSTOMREQUEST => 'POST',
+		  // CURLOPT_SSL_VERIFYPEER => false,
+		  // CURLOPT_SSL_VERIFYHOST => false,
+		  CURLOPT_POSTFIELDS => array(
+		  	'nama_anak' => $nama_anak,
+		  	'usia_anak' => $usia_anak,
+		  	'no_wa' => $no_wa,
+		  	'lokasi' => $lokasi,
+		  	'jenjang_id' => $jenjang,
+			'asal_sekolah' => $asal_sekolah
+            )
+
+		));
+
+		$response = curl_exec($curl);
+
+		// echo $response;
+		curl_close($curl);
+	    // return ($response)
+    }
 
     function send_notif($message,$no_wha){
         $curl = curl_init();
