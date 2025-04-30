@@ -17,6 +17,7 @@ class TrialClass extends Model
         'tujuan_sekolah',
         'jenjang_id',
         'no_wa',
-        'asal_sekolah'
+        'asal_sekolah',
+        'tahun_ajaran'
     ];
 }

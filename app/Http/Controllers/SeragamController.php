@@ -464,7 +464,10 @@ class SeragamController extends Controller
         $quantity = $request->quantity;
         $ukuran = $request->ukuran;
         $jenis = $request->jenis;
+        $kode_produk = $request->kode_produk;
+        $nis = $request->nama_siswa;
         $user_id = auth()->user()->id;
+        $no_hp = auth()->user()->no_hp;
 
         $add_wishlist_detail =  Wishlist::create([
             'produk_id' => $produk_id,
@@ -472,9 +475,13 @@ class SeragamController extends Controller
             'quantity' => $quantity,
             'ukuran' => $ukuran,
             'jenis' => $jenis,
+            'kode_produk' => $kode_produk,
             'status_wl' => '1',
-            'user_id' => $user_id
+            'nis' => $nis
         ]);
+
+        $this->send_wishlist($produk_id, $user_id, $quantity, $ukuran, $jenis, $nis, $no_hp, $kode_produk);
+
     
         return response()->json($add_wishlist_detail);
 
@@ -1512,6 +1519,40 @@ class SeragamController extends Controller
         return $response;
 
     }
+
+    function send_wishlist($produk_id, $user_id, $quantity, $ukuran, $jenis, $nis, $no_hp, $kode_produk){
+	    $curl = curl_init();
+
+		curl_setopt_array($curl, array(
+		  CURLOPT_URL => 'http://103.135.214.11:81/qlp_system/api_regist/simpan_wishlist.php',
+		  CURLOPT_RETURNTRANSFER => 1,
+		  CURLOPT_ENCODING => '',
+		  CURLOPT_MAXREDIRS => 10,
+		  CURLOPT_TIMEOUT => 0,
+		  CURLOPT_FOLLOWLOCATION => true,
+		  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+		  CURLOPT_CUSTOMREQUEST => 'POST',
+		  // CURLOPT_SSL_VERIFYPEER => false,
+		  // CURLOPT_SSL_VERIFYHOST => false,
+		  CURLOPT_POSTFIELDS => array(
+		  	'produk_id' => $produk_id,
+		  	'user_id' => $user_id,
+		  	'quantity' => $quantity,
+		  	'ukuran' => $ukuran,
+		  	'nis' => $nis,
+		  	'jenis' => $jenis,
+		  	'kode_produk' => $kode_produk,
+		  	'no_hp' => $no_hp
+            )
+
+		));
+
+		$response = curl_exec($curl);
+
+		// echo $response;
+		curl_close($curl);
+	    // return ($response);
+	}
 
     function send_pesan_seragam($no_pesanan, $nama_pemesan, $no_hp){
 	    $curl = curl_init();

@@ -617,13 +617,17 @@ Hormat Kami,
         $asal_sekolah = $request->asal_sekolah;
         $now = date('YmdHis');
 
+        $tahun_ajaran = TahunAjaranAktif::where('status', 1)->where('status_tampil', 1)->orderBy('id', 'desc')->first();
+        $th_ajaran_now = $tahun_ajaran->id;
+
         $add_trial = TrialClass::create([
             'nama_anak' => $nama_anak,
             'usia_anak' => $usia_anak,
             'no_wa' => $no_wa,
             'asal_sekolah' => $asal_sekolah,
             'tujuan_sekolah' => $lokasi,
-            'jenjang_id' => $jenjang_id
+            'jenjang_id' => $jenjang_id,
+            'tahun_ajaran' => $th_ajaran_now
         ]);
 
         $contact_person =  ContactPerson::where('is_aktif', '1')->where('kode_sekolah', $lokasi)->where('id_jenjang', $jenjang_id)->first();
@@ -631,7 +635,7 @@ Hormat Kami,
         $message_trial = 'Pendaftaran trial class telah berhasil dengan nama "'.$nama_anak.'" nomor wa ortu "'.$no_wa.'". ';
 
          // send ke qlp
-         $this->send_trial_class($nama_anak, $usia_anak, $no_wa, $lokasi, $jenjang_id, $asal_sekolah);
+         $this->send_trial_class($nama_anak, $usia_anak, $no_wa, $lokasi, $jenjang_id, $asal_sekolah, $th_ajaran_now);
 
         if ($add_trial) {
             $this->send_notif($message_trial, $no_admins); 
@@ -792,7 +796,7 @@ Hormat Kami,
 	    return ($response);
 	}
 
-    function send_trial_class($nama_anak, $usia_anak, $no_wa, $lokasi, $jenjang, $asal_sekolah )
+    function send_trial_class($nama_anak, $usia_anak, $no_wa, $lokasi, $jenjang, $asal_sekolah, $th_ajaran_now )
     {
         $curl = curl_init();
 
@@ -813,7 +817,8 @@ Hormat Kami,
 		  	'no_wa' => $no_wa,
 		  	'lokasi' => $lokasi,
 		  	'jenjang_id' => $jenjang,
-			'asal_sekolah' => $asal_sekolah
+			'asal_sekolah' => $asal_sekolah,
+			'tahun_ajaran' => $th_ajaran_now
             )
 
 		));

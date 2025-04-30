@@ -239,6 +239,8 @@
                                     <span class="bg-danger py-1 px-2" id="diskon_persen"> {{($produk->diskon)}}% </span>
                                     <span class="mx-2" style="color: gray"> <s> Rp. <span id="harga_awal"> {{number_format($produk->harga)}} </span> </s> </span>
                                 </p>
+                                <input type="hidden" id="kode_produk_wl">
+
                                 
                             </div>
                         </div>
@@ -261,13 +263,31 @@
 
                     <div class="produk-jenis mt-3">
                         <div class="d-flex">
-                            @foreach ($jenis_produk as $item)
+                            {{-- @foreach ($jenis_produk as $item)
                                 <div class="button-jenis">
                                     <input class="form-check-input" type="radio" name="jenis_wl_{{$produk->id}}" id="jenis_wl_{{$produk->id}}_{{$item->id}}" value="{{$item->id}}">
                                     <label class="form-check-label" for="jenis_wl_{{$produk->id}}_{{$item->id}}">
                                     <span> {{$item->jenis_produk}} </span>
                                     </label>
                                 </div>
+                            @endforeach --}}
+
+                            @foreach ($jenis_produk as $item)
+                                @if ($item->quantity > 0)
+                                    <div class="button-jenis">
+                                        <input class="form-check-input" type="radio" name="jenis_wl_{{$produk->id}}" id="jenis_wl_{{$produk->id}}_{{$item->id}}" value="{{$item->id}}">
+                                        <label class="form-check-label" for="jenis_wl_{{$produk->id}}_{{$item->id}}">
+                                        <span> {{$item->jenis_produk}} </span>
+                                        </label>
+                                    </div>
+                                @else 
+                                    <div class="button-jenis">
+                                        <input class="form-check-input" type="radio" name="jenis_wl_{{$produk->id}}" id="jenis_wl_{{$produk->id}}_{{$item->id}}" value="{{$item->id}}" disabled>
+                                        <label class="form-check-label" for="jenis_wl_{{$produk->id}}_{{$item->id}}">
+                                        <span> {{$item->jenis_produk}} </span>
+                                        </label>
+                                    </div>
+                                @endif
                             @endforeach
                         </div>
                         <span class="mb-0 text-danger" style="font-size: 10px; display: none" id="valid_jenis_wl_{{$produk->id}}" > Pilih jenis seragam terlebih dahulu! </span>
@@ -277,13 +297,30 @@
                     <div class="produk-ukuran mt-3">
                         <h6 style="color: #3152A4"><b> Ukuran </b> </h6>
                         <div class="d-flex" id="ukuran_seragam">
-                            @foreach($ukuran_seragam as $item)
+                            {{-- @foreach($ukuran_seragam as $item)
                                 <div class="button-ukuran">
                                     <input class="form-check-input" type="radio" name="ukuran_wl_{{$produk->id}}"  id="uk_wl_{{$item->ukuran_seragam}}_{{$produk->id}}" value="{{$item->ukuran_seragam}}">
                                     <label class="form-check-label" for="uk_wl_{{$item->ukuran_seragam}}_{{$produk->id}}">
                                     <span>{{$item->ukuran_seragam}} </span>
                                     </label>
                                 </div>
+                            @endforeach --}}
+                            @foreach($ukuran_seragam as $item)
+                                @if ($item->quantity == 0)
+                                    <div class="button-ukuran">
+                                        <input class="form-check-input" type="radio" name="ukuran_wl_{{$produk->id}}"  id="uk_wl_{{$item->ukuran_seragam}}_{{$produk->id}}" value="{{$item->ukuran_seragam}}">
+                                        <label class="form-check-label" for="uk_wl_{{$item->ukuran_seragam}}_{{$produk->id}}">
+                                        <span>{{$item->ukuran_seragam}} </span>
+                                        </label>
+                                    </div>
+                                @else
+                                    <div class="button-ukuran">
+                                        <input class="form-check-input" type="radio" name="ukuran_wl_{{$produk->id}}"  id="uk_wl_{{$item->ukuran_seragam}}_{{$produk->id}}" value="{{$item->ukuran_seragam}}" disabled>
+                                        <label class="form-check-label" for="uk_wl_{{$item->ukuran_seragam}}_{{$produk->id}}">
+                                        <span>{{$item->ukuran_seragam}} </span>
+                                        </label>
+                                    </div>
+                                @endif
                             @endforeach
                         </div>
                         <span class="mb-0 text-danger" style="font-size: 10px; display: none" id="valid_ukuran_wl_{{$produk->id}}" > Pilih ukuran terlebih dahulu! </span>
@@ -304,6 +341,15 @@
                                 </button>
                             </div>
                         </div>
+                    </div>
+
+                    <div class="produk-siswa d-flex">
+                        <h6 class="mt-1" style="color: #3152A4; width: 150px;"><b> Nama Siswa </b> </h6>
+                        <select id="nama_siswa_wl" name="nama_siswa_wl" class="select form-control form-control-sm px-3" required>
+                            @foreach ($profile as $item)
+                                <option value="{{ $item->nis }}" >{{ $item->nama_lengkap }}</option>
+                            @endforeach
+                        </select>
                     </div>
 
                     <div class="d-flex mt-3" style="justify-content: end">
@@ -396,6 +442,8 @@
           
             var jenis_id = $('input[name="jenis_'+item_id+'"]:checked').val();
             var ukuran_id = $('input[name="ukuran_'+item_id+'"]:checked').val();
+            console.log('jp1', ukuran_id, jenis_id);
+
             update_price(ukuran_id, jenis_id);
             update_stok(jenis_id);
 
@@ -407,9 +455,32 @@
           
             var ukuran_id = $('input[name="ukuran_'+item_id+'"]:checked').val();
             var jenis_id = $('input[name="jenis_'+item_id+'"]:checked').val();
+            console.log('uk1', ukuran_id, jenis_id);
+
             update_price(ukuran_id, jenis_id);
 
         });
+
+        // pilih jenis produk wl
+        $('input[name="jenis_wl_'+item_id+'"]').change(function(){
+          
+          var jenis_id = $('input[name="jenis_wl_'+item_id+'"]:checked').val();
+          var ukuran_id = $('input[name="ukuran_wl_'+item_id+'"]:checked').val();
+          console.log('jp', ukuran_id, jenis_id);
+
+          update_price_wl(ukuran_id, jenis_id);
+          update_stok_wl(jenis_id);
+      });
+      
+      // pilih ukuran wl
+      $('input[name="ukuran_wl_'+item_id+'"]').change(function(){
+        
+          var ukuran_id = $('input[name="ukuran_wl_'+item_id+'"]:checked').val();
+          var jenis_id = $('input[name="jenis_wl_'+item_id+'"]:checked').val();
+          console.log('uk', ukuran_id, jenis_id);
+          update_price_wl(ukuran_id, jenis_id);
+
+      });
 
         function update_price(ukuran_id, jenis_id){
             $.ajax({
@@ -471,6 +542,74 @@
                             
                         } else {
                             $("#uk_"+item.ukuran_seragam+"_"+item_id).attr('disabled', false)
+                        }
+                    })
+
+                }
+            })
+        }
+
+        function update_price_wl(ukuran_id, jenis_id){
+            $.ajax({
+                url: "{{route('harga_per_jenis')}}",
+                type: 'POST',
+                data: {
+                    jenis_id: jenis_id,
+                    produk_id : item_id,
+                    ukuran_id : ukuran_id,
+                    _token: '{{csrf_token()}}'
+
+                },
+                success: function (result) {
+                    if (!$.trim(result)) {
+                        var stok = 0;
+                        $("#total_stok").val(stok);
+                        $("#uk_wl_"+ukuran_id+"_"+item_id).attr('disabled', true)
+                    } else {
+                        $.each(result, function (key, item) {
+                            var harga = parseInt(item.harga);
+                            var diskon = parseInt(item.diskon);
+                            var harga_diskon = (harga - diskon/100*harga);
+                            var formatter = new Intl.NumberFormat("en-US");
+                            var format_harga = formatter.format(harga);
+                            var format_harga_diskon = formatter.format(harga_diskon);
+                            var stok = item.qty;
+                            var kode_produk = item.kode_produk
+                            console.log(kode_produk);
+                    
+                            $("#harga_awal").html(format_harga);
+                            $("#harga_diskon").html(format_harga_diskon)
+                            $("#total_stok").val(stok)
+                            $("#kode_produk_wl").val(kode_produk)
+                            $(".input-number").attr({
+                                'max' : stok
+                            })
+                        });
+                    }                    
+                }
+            })
+        }
+
+        function update_stok_wl(jenis_id) {
+            $.ajax({
+                url: "{{route('stok')}}",
+                type: 'POST',
+                data: {
+                    jenis_id: jenis_id,
+                    produk_id : item_id,
+                    _token: '{{csrf_token()}}'
+
+                },
+                success: function (result) {
+                    
+                    $.each(result, function (key, item) {
+                        var stok = item.qty;
+
+                        if (stok > 0 ) {
+                            $("#uk_wl_"+item.ukuran_seragam+"_"+item_id).attr('disabled', true)
+                            
+                        } else {
+                            $("#uk_wl_"+item.ukuran_seragam+"_"+item_id).attr('disabled', false)
                         }
                     })
 
@@ -573,8 +712,11 @@
             var ukuran = $('input[name="ukuran_wl_'+produk_id+'"]:checked').val();
             var jenis = $('input[name="jenis_wl_'+produk_id+'"]:checked').val();
             var quantity = $('.input-number').val();
+            var nama_siswa = $('#nama_siswa_wl').val();
+            var kode_produk = $('#kode_produk_wl').val();
 
-            console.log(ukuran, jenis, quantity, produk_id);
+
+
             if (ukuran == '' || ukuran == null || ukuran == undefined) {
                 $('#valid_ukuran_wl_'+produk_id).show();
             } else if (jenis == '' || jenis == null || jenis == undefined)  {
@@ -591,10 +733,12 @@
                         ukuran : ukuran,
                         quantity : quantity,
                         jenis: jenis,
+                        nama_siswa: nama_siswa,
+                        kode_produk: kode_produk,
                         _token: '{{csrf_token()}}'
                     },
                     success: function (result) {
-                        console.log(result);
+                        // console.log(result);
                     }
                 })
 

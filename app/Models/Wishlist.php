@@ -18,6 +18,7 @@ class Wishlist extends Model
         'ukuran',
         'jenis',
         'kode_produk',
-        'status_wl'
+        'status_wl',
+        'nis'
     ];
 }
