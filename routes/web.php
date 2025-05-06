@@ -20,6 +20,7 @@ use App\Http\Controllers\PendaftaranController;
 use App\Http\Controllers\PosisiLamaranController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProfileSekolahController;
+use App\Http\Controllers\QurbanController;
 use App\Http\Controllers\SeragamController;
 use App\Http\Controllers\TagihanController;
 use App\Http\Controllers\TemplateController;
@@ -104,7 +105,12 @@ Route::group(['middleware' =>['auth', 'admin']], function () {
         Route::post('jersey', [JerseyController::class, 'store'])->name('store_jersey');
         Route::post('jenis-ekskul', [JerseyController::class, 'create_jenis_ekskul'])->name('master.create_jenis_ekskul');
 
-
+        Route::get('qurban', [QurbanController::class, 'master_materi_qurban'])->name('master.qurban');
+        Route::get('qurban/{id}', [QurbanController::class, 'master_materi_by_id'])->name('materi-qurban-by-id');
+        Route::post('qurban/create', [QurbanController::class, 'store'])->name('materi-qurban.store');
+        Route::put('qurban/{id}', [QurbanController::class, 'update_materi'])->name('master.update-materi-qurban');
+        Route::get('sudah-baca', [QurbanController::class, 'list_sudah_baca'])->name('master.sudah-baca-qurban');
+        Route::get('sudah-baca/export', [QurbanController::class, 'export_have_read'])->name('export-sudahbaca-qurban');
 
     });
 
@@ -202,6 +208,16 @@ Route::group(['middleware' =>['auth']], function () {
         Route::post('get-warna', [MerchandiseController::class, 'get_warna'])->name('get_warna');
         Route::get('export-karya', [PalestineDayController::class, 'export_karya'])->name('export.karya');
 
+    });
+
+    Route::prefix('edukasi-qurban')->group(function () {
+        Route::get('/', [QurbanController::class, 'index'])->name('qurban.index');
+        Route::get('/tk-sd', [QurbanController::class, 'materi_tksd'])->name('qurban.tksd');
+        Route::get('/tk-sd/{id}', [QurbanController::class, 'materi_tksd_by_id'])->name('materi-qurban-tksd-by-id');
+        Route::get('/tksd/{id}', [QurbanController::class, 'materi_tksd_by_id'])->name('materi_qurban_by_id');
+        Route::get('/smp', [QurbanController::class, 'materi_smp'])->name('qurban.smp');
+        Route::get('/smp/{id}', [QurbanController::class, 'materi_smp_by_id'])->name('materi-qurban-smp-by-id');
+        Route::post('/sudahbaca', [QurbanController::class, 'sudah_baca'])->name('qurban_sudah_baca');
     });
 
     Route::prefix('jersey')->group(function () {
