@@ -26,6 +26,7 @@ use App\Http\Controllers\TagihanController;
 use App\Http\Controllers\TemplateController;
 use App\Http\Controllers\TugasDiklatController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VisitorController;
 use App\Models\JadwalKontrak;
 use App\Models\Merchandise;
 use App\Models\Pendaftaran;
@@ -134,6 +135,7 @@ Route::group(['middleware' =>['auth', 'admin']], function () {
         Route::get('wishlist', [SeragamController::class, 'wishlist_seragam'])->name('wishlist_seragam');
         Route::get('export-wishlist', [SeragamController::class, 'export_wishlist'])->name('export_wishlist');
 
+        Route::get('visitors', [VisitorController::class, 'index'])->name('visitor.index');
 
 
 
