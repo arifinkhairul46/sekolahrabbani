@@ -109,8 +109,8 @@ Route::group(['middleware' =>['auth', 'admin']], function () {
         Route::get('qurban/{id}', [QurbanController::class, 'master_materi_by_id'])->name('materi-qurban-by-id');
         Route::post('qurban/create', [QurbanController::class, 'store'])->name('materi-qurban.store');
         Route::put('qurban/{id}', [QurbanController::class, 'update_materi'])->name('master.update-materi-qurban');
-        Route::get('sudah-baca', [QurbanController::class, 'list_sudah_baca'])->name('master.sudah-baca-qurban');
-        Route::get('sudah-baca/export', [QurbanController::class, 'export_have_read'])->name('export-sudahbaca-qurban');
+        Route::get('sudah-nonton', [QurbanController::class, 'list_sudah_nonton'])->name('master.sudah-nonton-qurban');
+        Route::get('sudah-nonton/export', [QurbanController::class, 'export_have_read'])->name('export-sudahnonton-qurban');
 
     });
 

@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\HaveWatchExport;
 use App\Models\EdukasiQurban;
 use App\Models\HaveWatch;
 use App\Models\Profile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 
 class QurbanController extends Controller
 {
@@ -97,17 +99,17 @@ class QurbanController extends Controller
         
     }
 
-    public function list_sudah_baca()
+    public function list_sudah_nonton()
     {
-        $haveRead = HaveWatch::select('t_sudah_materi_qurban.materi_id', 't_sudah_materi_qurban.created_at', 'mpro.nis', 'mpro.nama_lengkap', 'mls.sublokasi as lokasi', 'mpro.nama_kelas', 'mpd.judul', )
-                            ->leftJoin('m_paledukasi_qurban mpd', 'mpd.id', 't_sudah_materi_qurban.materi_id')
+        $haveWatch = HaveWatch::select('t_sudah_materi_qurban.materi_id', 't_sudah_materi_qurban.created_at', 'mpro.nis', 'mpro.nama_lengkap', 'mls.sublokasi as lokasi', 'mpro.nama_kelas', 'mpd.judul', )
+                            ->leftJoin('m_edukasi_qurban as mpd', 'mpd.id', 't_sudah_materi_qurban.materi_id')
                             ->leftJoin('m_profile as mpro', 'mpro.nis', 't_sudah_materi_qurban.nis')
                             ->leftJoin('mst_lokasi_sub as mls', 'mpro.sekolah_id', 'mls.id')
                             ->groupby('t_sudah_materi_qurban.materi_id', 't_sudah_materi_qurban.nis')
                             ->orderby('t_sudah_materi_qurban.created_at', 'Desc')
                             ->get();
 
-        return view('admin.master.qurban.sudahbaca', compact('haveRead'));
+        return view('admin.master.qurban.sudah-nonton', compact('haveWatch'));
     }
 
     public function index()
@@ -217,5 +219,12 @@ class QurbanController extends Controller
             return response()->json($store_have_read);
         }
 
+    }
+
+    public function export_have_read()
+    {
+        $now = date('d-m-y');
+        $file_name = 'have-watch-qurban-'.$now.'.xlsx';
+        return Excel::download(new HaveWatchExport(), $file_name);
     }
 }
