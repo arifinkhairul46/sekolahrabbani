@@ -11,24 +11,24 @@
     </div>
 
     <div class="container mt-0 pt-0">
-        @foreach ($get_jenjang as $item)
-            @if ($item->sekolah_id != 'UBRSMP' || $item->user_id == 2)
+        @if ($get_jenjang_tksd)
+            @foreach ($get_jenjang_tksd as $item)
                 <div class="center">
                     <a style="text-decoration: none" href="{{route('qurban.tksd')}}"> 
                         <img src="{{ asset('assets/images/qurban-tksd.png') }}" alt="qrb_tk_sd" style="border-radius: 0.4rem" width="100%" >
                     </a>
                 </div>
-            @endif
-        @endforeach
+            @endforeach
+        @endif
 
-        @foreach ($get_jenjang as $item)
-            @if ($item->sekolah_id == 'UBRSMP' || $item->user_id == 2)
+        @if ($get_jenjang)
+            @foreach ($get_jenjang as $item)
                 <div class="center">
                     <a style="text-decoration: none" href="{{route('qurban.smp')}}"> 
                         <img src="{{ asset('assets/images/qurban-smp.png') }}" alt="qrb_smp" style="border-radius: 0.4rem" width="100%" >
                     </a>
                 </div>
-            @endif
-        @endforeach
+            @endforeach
+        @endif
     </div>
 @endsection

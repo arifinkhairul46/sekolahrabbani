@@ -8,6 +8,7 @@ use App\Models\HaveWatch;
 use App\Models\Profile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -117,9 +118,38 @@ class QurbanController extends Controller
         $user_id = Auth::user()->id;
         $user_phone = Auth::user()->no_hp;
 
-        $get_jenjang = Profile::where('no_hp_ibu', $user_phone)->groupby('sekolah_id')->get();
+        $keys = ['7', '5', '6', '7', '8', '9'];
+        $keywords = [];
+        foreach($keys as $key){
+            $keywords[] = ['nama_kelas', 'LIKE', '%'.$key.'%'];
+        }
 
-        return view('ortu.qurban.index', compact('get_jenjang'));
+        $get_jenjang_tksd = DB::table('m_profile')->where('no_hp_ibu', $user_phone)  
+                            ->Where(function ($query) {
+                                $query->whereIn('jenjang_id', [1,2])
+                                    ->orwhere('nama_kelas', 'like', '1%')
+                                    ->orwhere('nama_kelas', 'like', '2%')
+                                    ->orwhere('nama_kelas', 'like', '3%');
+                                    
+
+                            })
+                            ->groupBy('no_hp_ibu')
+                            ->get();
+
+        $get_jenjang = DB::table('m_profile')->where('no_hp_ibu', $user_phone) 
+                            ->Where(function ($query) {
+                                $query->where('jenjang_id', 4)
+                                    ->orwhere('nama_kelas', 'like', '4%')
+                                    ->orwhere('nama_kelas', 'like', '5%')
+                                    ->orwhere('nama_kelas', 'like', '6%')
+                                    ->orwhere('nama_kelas', 'like', '7%')
+                                    ->orwhere('nama_kelas', 'like', '8%')
+                                    ->orwhere('nama_kelas', 'like', '9%');
+                            })
+                            ->groupBy('no_hp_ibu')
+                            ->get();
+
+        return view('ortu.qurban.index', compact('get_jenjang_tksd', 'get_jenjang'));
         
     }
 
