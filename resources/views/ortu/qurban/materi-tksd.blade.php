@@ -6,7 +6,7 @@
             <a href="{{route('qurban.index')}}" class="mt-1" style="text-decoration: none; color: black">
                 <i class="fa-solid fa-arrow-left"></i>
             </a>
-            <h4 class="mx-2"> Materi Qurban TK SD </h4>
+            <h4 class="mx-2"> Materi Qurban KB, TK, SD (1-3) </h4>
         </div>
     </div>
 
