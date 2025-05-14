@@ -30,5 +30,19 @@
                 </div>
             @endforeach
         @endif
+
+        @if ($id_role == 4)
+            <div class="center">
+                <a style="text-decoration: none" href="{{route('qurban.tksd')}}"> 
+                    <img src="{{ asset('assets/images/qurban-tksd.png') }}" alt="qrb_tk_sd" style="border-radius: 0.4rem" width="100%" >
+                </a>
+            </div>
+
+            <div class="center">
+                <a style="text-decoration: none" href="{{route('qurban.smp')}}"> 
+                    <img src="{{ asset('assets/images/qurban-smp.png') }}" alt="qrb_smp" style="border-radius: 0.4rem" width="100%" >
+                </a>
+            </div>
+        @endif
     </div>
 @endsection

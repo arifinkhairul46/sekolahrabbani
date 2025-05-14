@@ -116,6 +116,7 @@ class QurbanController extends Controller
     public function index()
     {
         $user_id = Auth::user()->id;
+        $id_role = Auth::user()->id_role;
         $user_phone = Auth::user()->no_hp;
 
         $keys = ['7', '5', '6', '7', '8', '9'];
@@ -149,7 +150,8 @@ class QurbanController extends Controller
                             ->groupBy('no_hp_ibu')
                             ->get();
 
-        return view('ortu.qurban.index', compact('get_jenjang_tksd', 'get_jenjang'));
+
+        return view('ortu.qurban.index', compact('get_jenjang_tksd', 'get_jenjang', 'id_role'));
         
     }
 
