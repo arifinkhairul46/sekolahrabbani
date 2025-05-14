@@ -195,7 +195,7 @@ class QurbanController extends Controller
 
         $sudah_nonton = HaveWatch::where('user_id', $user_id)->where('materi_id', $id)->first();
 
-        return view('ortu.qurban.materi-tksd-by-id', compact('materi', 'sudah_nonton'));
+        return view('ortu.qurban.materi-smp-by-id', compact('materi', 'sudah_nonton'));
         
     }
 
@@ -216,7 +216,6 @@ class QurbanController extends Controller
                             ->leftJoin('t_sudah_materi_qurban as tsbm', 'tsbm.user_id', 'm_profile.user_id')
                             ->leftJoin('m_edukasi_qurban as meq', 'meq.id', 'tsbm.materi_id')
                             ->where('m_profile.user_id', $user_id)
-                            ->where('m_profile.sekolah_id', 'UBRSMP')
                             ->groupby('m_profile.user_id', 'm_profile.nis', 'tsbm.materi_id')
                             ->get();
             
@@ -236,7 +235,6 @@ class QurbanController extends Controller
                             ->leftJoin('t_sudah_materi_qurban as tsbm', 'tsbm.user_id', 'm_profile.user_id')
                             ->leftJoin('m_edukasi_qurban as meq', 'meq.id', 'tsbm.materi_id')
                             ->where('m_profile.user_id', $user_id)
-                            ->where('m_profile.sekolah_id', '!=', 'UBRSMP')
                             ->groupby('m_profile.user_id', 'm_profile.nis', 'tsbm.materi_id')
                             ->get();
 
