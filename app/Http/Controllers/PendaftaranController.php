@@ -611,7 +611,7 @@ Hormat Kami,
         }
 
         $nama_anak = $request->nama_anak;
-        $usia_anak = $request->usia_anak;
+        $tgl_lahir = $request->tgl_lahir;
         $lokasi = $request->lokasi;
         $no_wa = $request->no_wa;
         $asal_sekolah = $request->asal_sekolah;
@@ -622,7 +622,7 @@ Hormat Kami,
 
         $add_trial = TrialClass::create([
             'nama_anak' => $nama_anak,
-            'usia_anak' => $usia_anak,
+            'tgl_lahir' => $tgl_lahir,
             'no_wa' => $no_wa,
             'asal_sekolah' => $asal_sekolah,
             'tujuan_sekolah' => $lokasi,
@@ -633,16 +633,34 @@ Hormat Kami,
         $contact_person =  ContactPerson::where('is_aktif', '1')->where('kode_sekolah', $lokasi)->where('id_jenjang', $jenjang_id)->first();
         $no_admins = $contact_person->telp;
         $message_trial = 'Pendaftaran trial class telah berhasil dengan nama "'.$nama_anak.'" nomor wa ortu "'.$no_wa.'". ';
+        $message_ortu = "*Terima Kasih atas Pendaftarannya!*
+
+Ayah dan Bunda yang kami hormati,
+
+Terima kasih telah mendaftarkan Anandanya untuk mengikuti trial class bersama kami. Kami sangat menghargai kepercayaan yang telah diberikan serta semangat Ayah dan Bunda dalam mendukung proses belajar dan perkembangan Ananda tercinta.☺️
+
+Kami akan menghubungi Ayah dan Bunda dalam waktu *maksimal 3 hari* ke depan untuk menyampaikan informasi mengenai *jadwal trial class* yang tersedia.☺️🙏🏻
+
+Sampai jumpa di kelas, dan mari bersama ciptakan pengalaman belajar yang menyenangkan dan bermakna!
+
+*Salam hangat,*
+Sekolah Rabbani";
 
          // send ke qlp
-         $this->send_trial_class($nama_anak, $usia_anak, $no_wa, $lokasi, $jenjang_id, $asal_sekolah, $th_ajaran_now);
+         $this->send_trial_class($nama_anak, $tgl_lahir, $no_wa, $lokasi, $jenjang_id, $asal_sekolah, $th_ajaran_now);
 
         if ($add_trial) {
             $this->send_notif($message_trial, $no_admins); 
+            $this->send_notif($message_ortu, $no_wa); 
         }
 
-        return redirect()->route('pendaftaran')
+        return redirect()->route('trial-class.success')
             ->with('success', 'Pendaftaran Trial Class Berhasil.');
+    }
+
+    public function trial_class_success()
+    {
+        return view('pendaftaran.trial-success');
     }
 
 
@@ -796,7 +814,7 @@ Hormat Kami,
 	    return ($response);
 	}
 
-    function send_trial_class($nama_anak, $usia_anak, $no_wa, $lokasi, $jenjang, $asal_sekolah, $th_ajaran_now )
+    function send_trial_class($nama_anak, $tgl_lahir, $no_wa, $lokasi, $jenjang, $asal_sekolah, $th_ajaran_now )
     {
         $curl = curl_init();
 
@@ -813,7 +831,7 @@ Hormat Kami,
 		  // CURLOPT_SSL_VERIFYHOST => false,
 		  CURLOPT_POSTFIELDS => array(
 		  	'nama_anak' => $nama_anak,
-		  	'usia_anak' => $usia_anak,
+		  	'tgl_lahir' => $tgl_lahir,
 		  	'no_wa' => $no_wa,
 		  	'lokasi' => $lokasi,
 		  	'jenjang_id' => $jenjang,

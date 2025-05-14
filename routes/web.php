@@ -357,4 +357,5 @@ Route::get('/jenjang/{jenjang}', [HomeController::class, 'jenjang'])->name('jenj
 Route::get('/profile', [ProfileSekolahController::class, 'index'])->name('profile.sekolah');
 Route::get('/kurikulum', [KurikulumController::class, 'index'])->name('kurikulum.sekolah');
 Route::get('trial-class', [PendaftaranController::class, 'trial_class'])->name('trial.class');
+Route::get('trial-class-success', [PendaftaranController::class, 'trial_class_success'])->name('trial-class.success');
 Route::post('trial-class', [PendaftaranController::class, 'store_trial_class'])->name('store.trial.class');

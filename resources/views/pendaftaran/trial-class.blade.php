@@ -22,8 +22,8 @@
                     </div>
 
                     <div class="form-group mt-3">
-                        <label for="usia_anak" class="form-label">Usia Anak </label>
-                        <input class="form-control" type="tel" id="usia_anak" maxlength="2" name="usia_anak" placeholder="Usia Anak (Tahun)" onkeypress="return /[0-9]/i.test(event.key)" required>
+                        <label for="tgl_lahir" class="form-label">Tanggal Lahir </label>
+                        <input type="date" class="form-control" id="tgl_lahir" maxlength="2" name="tgl_lahir" placeholder="Tanggal Lahir Anak" required>
                     </div>
 
                     <div class="form-group mt-3">
@@ -124,7 +124,6 @@
                          _token: '{{csrf_token()}}'
                     },
                     success: function (result) {
-                        console.log(result);
                         $('#jenjang').html('<option value="" disabled selected>-- Pilih Jenjang --</option>');
                         $.each(result.jenjang, function (key, item) {
                             // console.log(item.jenjang.value);
