@@ -202,6 +202,7 @@ class QurbanController extends Controller
     public function sudah_baca(Request $request) {
         $user = auth()->user();
         $user_id = $user->id;
+        $no_hp = $user->no_hp;
         $user_name = $user->name;
         $materi_id = $request->materi_id;
 
@@ -215,8 +216,8 @@ class QurbanController extends Controller
             $data = Profile::select('m_profile.nis')
                             ->leftJoin('t_sudah_materi_qurban as tsbm', 'tsbm.user_id', 'm_profile.user_id')
                             ->leftJoin('m_edukasi_qurban as meq', 'meq.id', 'tsbm.materi_id')
-                            ->where('m_profile.user_id', $user_id)
-                            ->groupby('m_profile.user_id', 'm_profile.nis', 'tsbm.materi_id')
+                            ->where('m_profile.no_hp_ibu', $no_hp)
+                            ->groupby('m_profile.no_hp_ibu', 'm_profile.nis', 'tsbm.materi_id')
                             ->get();
             
             
@@ -234,8 +235,8 @@ class QurbanController extends Controller
             $data = Profile::select('m_profile.nis')
                             ->leftJoin('t_sudah_materi_qurban as tsbm', 'tsbm.user_id', 'm_profile.user_id')
                             ->leftJoin('m_edukasi_qurban as meq', 'meq.id', 'tsbm.materi_id')
-                            ->where('m_profile.user_id', $user_id)
-                            ->groupby('m_profile.user_id', 'm_profile.nis', 'tsbm.materi_id')
+                            ->where('m_profile.no_hp_ibu', $no_hp)
+                            ->groupby('m_profile.no_hp_ibu', 'm_profile.nis', 'tsbm.materi_id')
                             ->get();
 
             foreach ($data as $item) {
